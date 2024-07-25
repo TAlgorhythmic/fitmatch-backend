@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS passwds(
+    id INT NOT NULL AUTO_INCREMENT,
+    salt CHAR(36) NOT NULL,
+    pwhash INT NOT NULL,
+    userId INT NOT NULL,
+    FOREIGN KEY (userId) REFERENCES users(id)
+);
+CREATE TABLE IF NOT EXISTS users(
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(32),
+    lastname VARCHAR(36),
+    
+);
