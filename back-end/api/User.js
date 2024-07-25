@@ -7,8 +7,9 @@ export default class User {
      * @param {*} number 
      * @param {*} email 
      */
-    constructor(number, email, password) {
+    constructor(email) {
         // Generar salt per seguretat extra.
-        this.salt = genUUID();
+        this.email = email;
+
     }
 }
