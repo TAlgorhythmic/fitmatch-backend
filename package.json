@@ -1,0 +1,19 @@
+{
+  "name": "gymder-backend",
+  "version": "0.0",
+  "description": "Backend for Gymder.",
+  "main": "main.js",
+  "type": "module",
+  "module": "",
+  "scripts": {
+    "start": "node ./main.js",
+    "test": "node ./test.js"
+  },
+  "author": "Yang, Inti",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "sequelize": "^6.37.3"
+  }
+}
