@@ -1,16 +1,20 @@
 import express from "express";
+import config from "../config/configServer.js";
 import { Sequelize } from "sequelize";
-
-let instance;
-
-export function init() {
-    instance = new Fitmatch();
-}
 
 class Fitmatch {
     constructor() {
-        this.sql = new Sequelize(); // TODO
-        this.server = express(); 
+        this.sql = new Sequelize(
+            config.database,
+            config.username,
+            config.password,
+            {
+                host: config.host,
+                dialect: config.dialect
+            }
+        ); // TODO
+        this.server = express();
+        this.server.use(express.json());
     }
 
     /**
@@ -36,4 +40,4 @@ class Fitmatch {
     }
 }
 
-export default instance;
+export default Fitmatch;
