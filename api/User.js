@@ -1,4 +1,4 @@
-import { genUUID } from "./Gymder";
+import { genUUID } from "./Fitmatch.js";
 
 export default class User {
     /**
