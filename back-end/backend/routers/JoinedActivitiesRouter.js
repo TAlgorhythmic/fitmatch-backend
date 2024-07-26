@@ -1,6 +1,6 @@
 import express from 'express';
 import { DataTypes } from "sequelize";
-import Fitmatch from "./api/Fitmatch.js";
+import Fitmatch from "../../api/Fitmatch.js";
 
 const instance = new Fitmatch();
 const sequelize = instance.getSQL();

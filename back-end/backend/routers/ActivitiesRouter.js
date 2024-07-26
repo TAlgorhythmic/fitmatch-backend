@@ -1,9 +1,8 @@
 import express from 'express';
 import { DataTypes } from "sequelize";
-import Fitmatch from "./api/Fitmatch.js";
+import fitmatch from "../../api/Fitmatch.js";
 
-const instance = new Fitmatch();
-const sequelize = instance.getSQL();
+const sequelize = fitmatch.getSql();
 
 //DEFINICION DEL MODELO
 const Activities = sequelize.define(
@@ -98,9 +97,9 @@ router.delete('/:id', function (req, res, next) {
 
 // GET activities that user not joined
 router.get('/notjoined/:userId'), function (req, res, next) {
-    Activities.findAll({where: { userId: req.params.userId }})
-    .then((data) => res.json({ ok: true, data }))
-    .catch((error) => res.json({ ok: false, error }))
+    Activities.findAll({ where: { userId: req.params.userId } })
+        .then((data) => res.json({ ok: true, data }))
+        .catch((error) => res.json({ ok: false, error }))
 }
 
 
