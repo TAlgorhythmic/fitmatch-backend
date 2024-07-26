@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS days_of_week(
     saturday BOOLEAN NOT NULL,
     sunday BOOLEAN NOT NULL,
     userId INT NOT NULL,
-    timetable ENUM("6:00-7:00","7:00-8:00", "8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00")
+    timetable ENUM("6:00-7:00","7:00-8:00", "8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00"),
     FOREIGN KEY(userId) REFERENCES users(id),
     PRIMARY KEY(id)
 );
@@ -40,14 +40,16 @@ CREATE TABLE IF NOT EXISTS friends(
 );
 ///
 -- Trigger to avoid logic duplicates.
+
 CREATE TRIGGER IF NOT EXISTS friends_insert_listener
 BEFORE INSERT ON friends
 FOR EACH ROW
 BEGIN
+    DECLARE tmp INT;
     IF NEW.userId1 > NEW.userId2 THEN
-        SET @tmp = NEW.userId1;
+        SET tmp = NEW.userId1;
         SET NEW.userId1 = NEW.userId2;
-        SET NEW.userId2 = @tmp;
+        SET NEW.userId2 = tmp;
     END IF;
 END;
 ///
