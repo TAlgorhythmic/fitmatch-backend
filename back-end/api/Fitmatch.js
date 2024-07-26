@@ -1,9 +1,22 @@
 import express from "express";
-import config from "../config/configServer.json";
 import { Sequelize } from "sequelize";
+import fs from "fs";
+
+const defaultConfig = {
+    username: "root",
+    password: "1234",
+    database: "fitmatch",
+    host: "127.0.0.1",
+    dialect: "mysql"
+}
 
 class Fitmatch {
     constructor() {
+        if (!fs.existsSync("./config.json")) {
+            fs.writeFileSync("./config.json", JSON.stringify(defaultConfig))
+            console.log("Config created with default values, you may want to edit it!");
+        };
+        const config = JSON.parse(fs.readFileSync("./config.json"));
         this.sql = new Sequelize(
             config.database,
             config.username,
@@ -11,11 +24,8 @@ class Fitmatch {
             {
                 host: config.host,
                 dialect: config.dialect,
-                dialectOptions: {
-                    multipleStatements: true
-                }
             }
-        ); // TODO
+        );
         this.server = express();
         this.server.use(express.json());
     }
