@@ -6,7 +6,7 @@
   "type": "module",
   "module": "",
   "scripts": {
-    "start": "node ./main.js",
+    "start": "nodemon main.js",
     "test": "node ./test.js"
   },
   "author": "Yang, Inti",
