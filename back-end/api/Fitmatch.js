@@ -54,4 +54,5 @@ class Fitmatch {
     }
 }
 
-export default Fitmatch;
+const instance = new Fitmatch();
+export default instance;
