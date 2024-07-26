@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS users(
     tableVersion INT NOT NULL DEFAULT 0,
     PRIMARY KEY(id)
 );
-
+///
 -- Relational table for friends handling. users to users, N to M.
 CREATE TABLE IF NOT EXISTS friends(
     userId1 INT NOT NULL,
@@ -23,9 +23,9 @@ CREATE TABLE IF NOT EXISTS friends(
     FOREIGN KEY(userId1) REFERENCES users(id),
     FOREIGN KEY(userId2) REFERENCES users(id)
 );
-
+///
 -- Trigger to avoid logic duplicates.
-CREATE TRIGGER friends_insert_listener
+CREATE TRIGGER IF NOT EXISTS friends_insert_listener
 BEFORE INSERT ON friends
 FOR EACH ROW
 BEGIN
@@ -35,7 +35,7 @@ BEGIN
         SET NEW.userId2 = @tmp;
     END IF;
 END;
-
+///
 -- Independent table, 1 to m relation with users, plus another relation n to m for activity joins
 CREATE TABLE IF NOT EXISTS posts(
     id INT NOT NULL AUTO_INCREMENT,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS posts(
     tableVersion INT NOT NULL DEFAULT 0,
     PRIMARY KEY(id)
 );
-
+///
 -- Relational table to handle activity joins, posts to users, n to m.
 CREATE TABLE IF NOT EXISTS joins_posts(
     userId INT NOT NULL,

@@ -6,7 +6,9 @@ function run() {
     const instance = new Fitmatch();
     
     const sqlInit = fs.readFileSync("./schema.sql", { encoding: "utf8" });
-    instance.sql.query(sqlInit);
+    sqlInit.split("///").forEach(query => {
+        instance.sql.query(query);
+    })
 }
 
 run();
