@@ -6,33 +6,30 @@ const instance = new Fitmatch();
 const sequelize = instance.getSQL();
 
 //DEFINICION DEL MODELO
-const Activities = sequelize.define(
-    'Activities',
+const JoinedActivities = sequelize.define(
+    'JoinedActivities',
     {
-        title: DataTypes.STRING,
-        description: DataTypes.STRING,
-        postDate: DataTypes.DATE,
-        expires: DataTypes.DATE,
-        userId: DataTypes.INTEGER,
-        tableVersion: DataTypes.INTEGER
+        nom: DataTypes.STRING,
+        email: DataTypes.INTEGER
     },
-    { tableName: 'Activitiess', timestamps: false }
+    { tableName: 'JoinedActivitiess', timestamps: false }
 );
+
 
 
 const router = express.Router();
 
-// GET lista de todos los Activitiess
-// vinculamos la ruta /api/Activitiess a la función declarada
+// GET lista de todos los JoinedActivitiess
+// vinculamos la ruta /api/JoinedActivitiess a la función declarada
 // si todo ok devolveremos un objeto tipo:
-//     {ok: true, data: [lista_de_objetos_Activities...]}
+//     {ok: true, data: [lista_de_objetos_JoinedActivities...]}
 // si se produce un error:
 //     {ok: false, error: mensaje_de_error}
 
 router.get('/', function (req, res, next) {
 
-    Activities.findAll()
-        .then(Activitiess => res.json(Activitiess))
+    JoinedActivities.findAll()
+        .then(JoinedActivitiess => res.json(JoinedActivitiess))
         .catch(error => res.json({
             ok: false,
             error: error
@@ -40,12 +37,12 @@ router.get('/', function (req, res, next) {
 
 });
 
-// GET de un solo Activities
+// GET de un solo JoinedActivities
 router.get('/:id', function (req, res, next) {
-    Activities.findOne({ where: { id: req.params.id } })
-        .then(Activities => res.json({
+    JoinedActivities.findOne({ where: { id: req.params.id } })
+        .then(JoinedActivities => res.json({
             ok: true,
-            data: Activities
+            data: JoinedActivities
         }))
         .catch(error => res.json({
             ok: false,
@@ -55,10 +52,10 @@ router.get('/:id', function (req, res, next) {
 
 
 
-// POST, creació d'un nou Activities
+// POST, creació d'un nou JoinedActivities
 router.post('/create', function (req, res, next) {
     console.log(req.body)
-    Activities.create(req.body)
+    JoinedActivities.create(req.body)
         .then((item) => item.save())
         .then((item) => res.json({ ok: true, data: item }))
         .catch((error) => res.json({ ok: false, error }))
@@ -66,9 +63,9 @@ router.post('/create', function (req, res, next) {
 });
 
 
-// put modificació d'un Activities
+// put modificació d'un JoinedActivities
 router.put('/edit/:id', function (req, res, next) {
-    Activities.findOne({ where: { id: req.params.id } })
+    JoinedActivities.findOne({ where: { id: req.params.id } })
         .then((al) =>
             al.update(req.body)
         )
@@ -86,19 +83,19 @@ router.put('/edit/:id', function (req, res, next) {
 
 
 
-// DELETE elimina l'Activities id
+// DELETE elimina l'JoinedActivities id
 router.delete('/:id', function (req, res, next) {
 
-    Activities.destroy({ where: { id: req.params.id } })
+    JoinedActivities.destroy({ where: { id: req.params.id } })
         .then((data) => res.json({ ok: true, data }))
         .catch((error) => res.json({ ok: false, error }))
 
 });
 
 
-// GET activities that user not joined
+// GET JoinedActivities that user not joined
 router.get('/notjoined/:userId'), function (req, res, next) {
-    Activities.findAll({where: { userId: req.params.userId }})
+    JoinedActivities.findAll({where: { userId: req.params.userId }})
     .then((data) => res.json({ ok: true, data }))
     .catch((error) => res.json({ ok: false, error }))
 }
