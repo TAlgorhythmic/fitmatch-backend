@@ -8,10 +8,25 @@ CREATE TABLE IF NOT EXISTS users(
     email VARCHAR(40) NOT NULL,
     phone VARCHAR(20),
     description VARCHAR(250),
-    schedules VARCHAR(40),
-    proficiency INT,
+    proficiency ENUM("Principiante", "Intermedio", "Avanzado"),
     trainingPreferences VARCHAR(500),
+    img VARCHAR(60),
     tableVersion INT NOT NULL DEFAULT 0,
+    PRIMARY KEY(id)
+);
+///
+CREATE TABLE IF NOT EXISTS days_of_week(
+    id INT NOT NULL AUTO_INCREMENT,
+    monday BOOLEAN NOT NULL,
+    tuesday BOOLEAN NOT NULL,
+    wednesday BOOLEAN NOT NULL,
+    thursday BOOLEAN NOT NULL,
+    friday BOOLEAN NOT NULL,
+    saturday BOOLEAN NOT NULL,
+    sunday BOOLEAN NOT NULL,
+    userId INT NOT NULL,
+    timetable ENUM("6:00-7:00","7:00-8:00", "8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00")
+    FOREIGN KEY(userId) REFERENCES users(id),
     PRIMARY KEY(id)
 );
 ///
@@ -37,7 +52,7 @@ BEGIN
 END;
 ///
 -- Independent table, 1 to m relation with users, plus another relation n to m for activity joins
-CREATE TABLE IF NOT EXISTS posts(
+CREATE TABLE IF NOT EXISTS activities(
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(40) NOT NULL,
     description VARCHAR(250),
@@ -45,14 +60,15 @@ CREATE TABLE IF NOT EXISTS posts(
     expires DATE NOT NULL,
     userId INT NOT NULL,
     tableVersion INT NOT NULL DEFAULT 0,
+    FOREIGN KEY(userId) REFERENCES users(id),
     PRIMARY KEY(id)
 );
 ///
 -- Relational table to handle activity joins, posts to users, n to m.
-CREATE TABLE IF NOT EXISTS joins_posts(
+CREATE TABLE IF NOT EXISTS joins_activities(
     userId INT NOT NULL,
     postId INT NOT NULL,
     PRIMARY KEY(userId, postId),
     FOREIGN KEY(userId) REFERENCES users(id),
-    FOREIGN KEY(postId) REFERENCES posts(id)
+    FOREIGN KEY(postId) REFERENCES activities(id)
 );
