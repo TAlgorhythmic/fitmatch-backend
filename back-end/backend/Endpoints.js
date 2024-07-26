@@ -1,5 +1,3 @@
-
-
-export function startEndpoints() {
-
+export function startEndpoints(instance) {
+    instance.getServer()
 }
