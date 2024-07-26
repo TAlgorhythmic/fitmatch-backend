@@ -1,4 +1,3 @@
-import { QueryTypes } from "sequelize";
 import Fitmatch from "./api/Fitmatch.js";
 import fs from "fs";
 
