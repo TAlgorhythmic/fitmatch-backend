@@ -1,5 +1,5 @@
 import express from "express";
-import config from "../config/configServer.js";
+import config from "../config/configServer.json";
 import { Sequelize } from "sequelize";
 
 class Fitmatch {
@@ -10,7 +10,10 @@ class Fitmatch {
             config.password,
             {
                 host: config.host,
-                dialect: config.dialect
+                dialect: config.dialect,
+                dialectOptions: {
+                    multipleStatements: true
+                }
             }
         ); // TODO
         this.server = express();
