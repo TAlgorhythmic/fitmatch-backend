@@ -15,7 +15,7 @@ const Activities = sequelize.define(
         userId: DataTypes.INTEGER,
         tableVersion: DataTypes.INTEGER
     },
-    { tableName: 'Activitiess', timestamps: false }
+    { tableName: 'activities', timestamps: false }
 );
 
 
