@@ -20,7 +20,7 @@ router.post("/login", (request, response, next) => {
  *      "headers": {...},
  *      "body": {
  *          name,
- *          lastname,
+ *          lastname (optional, nullable),
  *          email,
  *          phone (optional, nullable),
  *          password (plain password text)
