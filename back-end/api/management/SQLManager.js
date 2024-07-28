@@ -3,19 +3,42 @@ import fitmatch from "./../Fitmatch.js";
 class SQLManager {
     constructor() {}
 
+    /**
+     * @returns a promise
+     */
     getAllUsers() {
-        fitmatch.getSql().query("SELECT * FROM users;");
+        return fitmatch.getSql().query("SELECT * FROM users;");
     }
 
+    /**
+     * @returns a promise
+     */
     getUserFromId(id) {
-        fitmatch.getSql().query("");
+        return fitmatch.getSql().query("SELECT * FROM users WHERE id = " + id + ";");
     }
 
+    /**
+     * @returns a promise
+     */
     getUserFromEmail(email) {
-
+        return fitmatch.getSql().query("SELECT * FROM users WHERE id = " + email + ";");
     }
 
+    /**
+     * @returns a promise
+     */
     getUserFromNumber(number) {
+        return fitmatch.getSql().query("SELECT * FROM users WHERE id = " + number + ";");
+    }
 
+    createNewUser(name, lastname, email, phone, salt, hash) {
+        return fitmatch.getSql().query(`INSERT INTO users(name, lastname, email, phone, salt, pwhash) VALUES(${name}, ${lastname}, ${email}, ${phone}, ${salt}, ${hash});`)
+    }
+
+    updateUser(user) {
+        return fitmatch.getSql().query(`UPDATE users SET name = "${user.name}", lastname = ${user.lastname}, phone = ${user.phone}, description = ${user.description}, proficiency = ${user.proficiency}, trainingPreferences = ${user.trainingPreferences}, img = ${user.img}, location = ${user.city}||${user.coordinates}, isSetup = ${user.isSetup} WHERE id = ${user.id}`)
     }
 }
+
+const sqlManager = new SQLManager();
+export default sqlManager;

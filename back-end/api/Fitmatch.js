@@ -1,5 +1,7 @@
 import express from "express";
 import { Sequelize } from "sequelize";
+import UserManager from "./management/UserManager.js";
+import queryManager from "./management/SQLManager.js";
 import fs from "fs";
 
 const defaultConfig = {
@@ -7,7 +9,8 @@ const defaultConfig = {
     password: "1234",
     database: "fitmatch",
     host: "127.0.0.1",
-    dialect: "mysql"
+    dialect: "mysql",
+    tokenSecretKey: "secret-key"
 }
 
 class Fitmatch {
@@ -27,8 +30,11 @@ class Fitmatch {
                 dialect: config.dialect,
             }
         );
+        this.config = config;
         this.server = express();
         this.server.use(express.json());
+        this.sqlManager = queryManager;
+        this.userManager = new UserManager();
     }
 
     /**
@@ -37,6 +43,10 @@ class Fitmatch {
      */
     genUUID() {
         return crypto.randomUUID();
+    }
+
+    getSqlManager() {
+        return this.sqlManager;
     }
 
     /**
@@ -51,6 +61,20 @@ class Fitmatch {
      */
     getSql() {
         return this.sql;
+    }
+
+    /**
+     * @returns la instancia json de config.
+     */
+    getConfig() {
+        return this.config;
+    }
+
+    /**
+     * @returns la instancia de UserManager.
+     */
+    getUserManager() {
+        return this.userManager;
     }
 }
 
