@@ -3,6 +3,7 @@ import cors from "cors";
 import fs from "fs";
 import activitiesRouter from "./backend/routers/ActivitiesRouter.js";
 import usersRouter from "./backend/routers/UsersRouter.js";
+import e from "express";
 
 function run() {
     // App instance.
@@ -22,10 +23,11 @@ function run() {
     app.use('/api/users', usersRouter);
 
     //npm run buil  y luego se puede  app.use(express.static('FRONT/dist'));
+    fitmatch.server.use(e.static("./../front/dist"));
 
     //arranque del servidor
-    const port = 3001
-    app.listen(port, () => console.log(`API listening on port ${port}!`))
+    const port = 3001;
+    app.listen(port, () => console.log(`API listening on port ${port}!`));
 
 }
 
