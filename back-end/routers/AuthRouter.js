@@ -31,6 +31,18 @@ router.post("/login", (request, response, next) => {
     }
     promise.then(e => {
         const data = e[0];
+        if (data.length < 1) {
+            response.json(buildInvalidPacket("The data introduced is incorrect."));
+            return;
+        }
+        if (data.length > 1) {
+            response.json(buildInternalErrorPacket("Internal error, this field is duplicated."));
+            return;
+        }
+        const user = data[0];
+        const salt = user.salt;
+        const hash = user.pwhash;
+        bcrypt.compare(password + salt, hash);
     });
 });
 
