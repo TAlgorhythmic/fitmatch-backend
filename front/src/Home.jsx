@@ -7,7 +7,8 @@ import ActividadMain from './components/ActividadMain.jsx'
 
 function Home() {
 
-    const [activities, setActivities] = useState([]);
+    let array = [];
+    const [activities, setActivities] = useState(array);
     const tableName = "activities";
 
     const BaseController = new BaseController(tableName);
