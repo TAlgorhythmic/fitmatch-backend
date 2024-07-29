@@ -1,19 +1,27 @@
 import fitmatch from "../api/Fitmatch.js";
+import fs from "fs";
 
 function run() {
     
+    let i = 0;
+    function executeQueriesRecursively(queries) {
+        if (queries.length > 0) {
+            fitmatch.sql.query(queries[i])
+            .then(e => console.log("Success!"))
+            .catch(err => console.log("An error ocurred trying to initialize the database schema. Error: " + err))
+            .finally(e => {
+                i++;
+                if (i < queries.length) {
+                    executeQueriesRecursively(queries);
+                }
+            })
+        }
+    }
 
-    fitmatch.getServer().get("/", (req, res) => {
-        fitmatch.sql.query("SELECT * FROM users;")
-        .then(e => res.json({ok: true, data: e[0]}))
-        .catch(err => {console.log(err)});
-    });
-    fitmatch.getServer().get("/xd", (req, res) => {
-        fitmatch.sql.query("INSERT INTO users(salt, pwhash, name, email, trainingPreferences) VALUES('asad', 1234, 'inti', 'intivioli@gmail.com', 'test');")
-        .then(e => res.json({ok: true, data: e[0]}))
-        .catch(err => {console.log(err)});
-    });
-    fitmatch.getServer().listen(3000, "localhost", {});
+    const sqlInit = fs.readFileSync("./testFiles/testusers.sql", { encoding: "utf8" });
+    const split = sqlInit.split("///");
+    
+    executeQueriesRecursively(split);
 }
 
 run();
