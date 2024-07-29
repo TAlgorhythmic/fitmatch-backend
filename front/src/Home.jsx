@@ -9,14 +9,13 @@ function Home() {
 
     let array = [];
     const [activities, setActivities] = useState(array);
-    const tableName = "users";
+    const tableName = "activities";
 
     const baseController = new BaseController(tableName);
 
     useEffect(() => {
         async function getActivities() {
             const activitiesData = await baseController.getAll();
-            console.log(activitiesData);
             if (activitiesData.length) {
                 setActivities(activitiesData);
               } else {
@@ -31,7 +30,11 @@ function Home() {
     return (
         <>
             <Container>
-
+                {activities.map(activity => {
+                    <Row>
+                        <ActividadMain data={activity} />
+                    </Row>
+                })}
             </Container>
         </>
     )
