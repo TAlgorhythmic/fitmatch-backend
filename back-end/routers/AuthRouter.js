@@ -42,28 +42,28 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
             }
             const salt = fitmatch.genUUID();
             bcrypt.hash(password + salt)
-            .then(e => {
-                fitmatch.sqlManager.createNewUser(name, lastname ? lastname : null, email, phone ? phone : null, salt, e)
                 .then(e => {
-                    fitmatch.getUserFromEmail(email)
-                    .then(e => {
-                        const data = e[0][0];
-                        const locationSplit = data.location.split("||");
-                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, locationSplit[0], locationSplit[1], data.isSetup);
-                        fitmatch.userManager.put(user.id, user);
-                        const token = createToken(request.ip, user.id);
-                        response.json(buildTokenPacket(token));
-                    })
-                    .catch(err => {
-                        console.log("An error ocurred trying to send a query. Error: " + err);
-                        response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."))
-                    });
+                    fitmatch.sqlManager.createNewUser(name, lastname ? lastname : null, email, phone ? phone : null, salt, e)
+                        .then(e => {
+                            fitmatch.getUserFromEmail(email)
+                                .then(e => {
+                                    const data = e[0][0];
+                                    const locationSplit = data.location.split("||");
+                                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, locationSplit[0], locationSplit[1], data.isSetup);
+                                    fitmatch.userManager.put(user.id, user);
+                                    const token = createToken(request.ip, user.id);
+                                    response.json(buildTokenPacket(token));
+                                })
+                                .catch(err => {
+                                    console.log("An error ocurred trying to send a query. Error: " + err);
+                                    response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."))
+                                });
+                        })
+                        .catch(err => {
+                            console.log("An error ocurred trying to send a query. Error: " + err);
+                            response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
+                        })
                 })
-                .catch(err => {
-                    console.log("An error ocurred trying to send a query. Error: " + err);
-                    response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
-                })
-            })
         })
         .catch(err => {
             console.log("An error ocurred trying to send a query. Error: " + err);

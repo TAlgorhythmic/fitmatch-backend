@@ -2,7 +2,7 @@
  * Aquest és per evitar haver d'importar molts arxius.
  */
 
-import { NO_PERMISSION, INVALID, INTERNAL_ERROR, OK } from "../StatusCodes.js"
+import { NO_PERMISSION, INVALID, INTERNAL_ERROR, OK } from "./StatusCodes.js"
 
 class PacketNoPermission {
     constructor(message) {
