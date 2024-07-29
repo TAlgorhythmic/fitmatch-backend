@@ -1,4 +1,5 @@
-import { Row, Col, Image } from 'react-bootstrap';
+import { Alert, Row, Col, Image } from 'react-bootstrap';
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function ActividadMain(props) {
@@ -9,7 +10,14 @@ function ActividadMain(props) {
         <>
             <div className="activity-container">
                 <Alert variant="info">
-                    {activity.description}
+                    <Alert.Heading>{activity.title}</Alert.Heading>
+                    <p>
+                        {activity.description}
+                    </p>
+                    <hr />
+                    <p className="mb-0">
+                        {activity.expires}
+                    </p>
                 </Alert>
             </div>
         </>
