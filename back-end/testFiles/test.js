@@ -1,4 +1,4 @@
-import fitmatch from "./api/Fitmatch.js";
+import fitmatch from "../api/Fitmatch.js";
 
 function run() {
     

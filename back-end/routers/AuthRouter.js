@@ -2,9 +2,9 @@ import fitmatch from "./../api/Fitmatch.js";
 import bcrypt from "bcrypt";
 import express from "express";
 import jwt from "jsonwebtoken";
-import User from "../../api/User.js";
-import { validateRegisterCredentials, isValidEmail } from "../../api/utils/Validate.js";
-import { buildInternalErrorPacket, buildInvalidPacket, buildTokenPacket } from "../../api/packets/PacketBuilder.js";
+import User from "./../api/User.js";
+import { validateRegisterCredentials, isValidEmail } from "./../api/utils/Validate.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
 
 const router = express.Router();
 
@@ -31,6 +31,18 @@ router.post("/login", (request, response, next) => {
     }
     promise.then(e => {
         const data = e[0];
+        if (data.length < 1) {
+            response.json(buildInvalidPacket("The data introduced is incorrect."));
+            return;
+        }
+        if (data.length > 1) {
+            response.json(buildInternalErrorPacket("Internal error, this field is duplicated."));
+            return;
+        }
+        const user = data[0];
+        const salt = user.salt;
+        const hash = user.pwhash;
+        bcrypt.compare(password + salt, hash);
     });
 });
 
