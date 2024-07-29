@@ -49,6 +49,7 @@ export function tokenRequired(req, res, next) {
 
     if (!token) {
         res.json(buildNoPermissionPacket("A token is required."));
+        return;
     }
     const split = token.split(" ");
     token = split[split.length - 1];
