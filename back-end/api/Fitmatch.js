@@ -1,6 +1,6 @@
 import express from "express";
 import { Sequelize } from "sequelize";
-import UserManager from "./management/UserManager.js";
+import userManager from "./management/UserManager.js";
 import queryManager from "./management/SQLManager.js";
 import fs from "fs";
 
@@ -34,7 +34,7 @@ class Fitmatch {
         this.server = express();
         this.server.use(express.json());
         this.sqlManager = queryManager;
-        this.userManager = new UserManager();
+        this.userManager = userManager;
     }
 
     /**
