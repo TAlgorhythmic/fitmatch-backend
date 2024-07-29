@@ -1,6 +1,7 @@
 import express from 'express';
 import { DataTypes } from "sequelize";
 import fitmatch from "../../api/Fitmatch.js";
+import {tokenRequired} from "../../api/utils/Validate.js";
 
 const sequelize = fitmatch.getSql();
 
@@ -28,8 +29,7 @@ const router = express.Router();
 // si se produce un error:
 //     {ok: false, error: mensaje_de_error}
 
-router.get('/', function (req, res, next) {
-
+router.get('/', tokenRequired, function (req, res, next) {
     Activities.findAll()
         .then(Activitiess => res.json(Activitiess))
         .catch(error => res.json({
@@ -40,7 +40,7 @@ router.get('/', function (req, res, next) {
 });
 
 // GET de un solo Activities
-router.get('/:id', function (req, res, next) {
+router.get('/:id', tokenRequired, function (req, res, next) {
     Activities.findOne({ where: { id: req.params.id } })
         .then(Activities => res.json({
             ok: true,
@@ -55,7 +55,7 @@ router.get('/:id', function (req, res, next) {
 
 
 // POST, creació d'un nou Activities
-router.post('/create', function (req, res, next) {
+router.post('/create', tokenRequired, function (req, res, next) {
     console.log(req.body)
     Activities.create(req.body)
         .then((item) => item.save())
@@ -66,7 +66,7 @@ router.post('/create', function (req, res, next) {
 
 
 // put modificació d'un Activities
-router.put('/edit/:id', function (req, res, next) {
+router.put('/edit/:id', tokenRequired, function (req, res, next) {
     Activities.findOne({ where: { id: req.params.id } })
         .then((al) =>
             al.update(req.body)
@@ -86,7 +86,7 @@ router.put('/edit/:id', function (req, res, next) {
 
 
 // DELETE elimina l'Activities id
-router.delete('/:id', function (req, res, next) {
+router.delete('/:id', tokenRequired, function (req, res, next) {
 
     Activities.destroy({ where: { id: req.params.id } })
         .then((data) => res.json({ ok: true, data }))
@@ -96,7 +96,7 @@ router.delete('/:id', function (req, res, next) {
 
 
 // GET activities that user not joined
-router.get('/notjoined/:userId'), function (req, res, next) {
+router.get('/notjoined/:userId'), tokenRequired, function (req, res, next) {
     Activities.findAll({ where: { userId: req.params.userId } })
         .then((data) => res.json({ ok: true, data }))
         .catch((error) => res.json({ ok: false, error }))
