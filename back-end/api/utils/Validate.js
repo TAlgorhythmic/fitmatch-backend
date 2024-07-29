@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import fitmatch from "./../Fitmatch.js";
-import { buildNoPermissionPacket, buildInvalidPacket } from "../packets/PacketBuilder.js";
+import { buildNoPermissionPacket, buildInvalidPacket, buildInternalErrorPacket } from "../packets/PacketBuilder.js";
 
 const numberRegex = /\d/;
 
@@ -54,7 +54,7 @@ export function tokenRequired(req, res, next) {
 
     jwt.verify(token, fitmatch.getConfig().tokenSecretKey, (err, decoded) => {
         if (err) {
-            // TODO
+            res.json(buildInternalErrorPacket("Internal error when trying to verify token."));
         } else {
             const expiredAt = decoded.expiredAt;
             if (expiredAt > new Date().getTime()) {

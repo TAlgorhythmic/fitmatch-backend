@@ -1,17 +1,37 @@
-import fitmatch from "./../../api/Fitmatch.js";
+import fitmatch from "./../api/Fitmatch.js";
 import bcrypt from "bcrypt";
 import express from "express";
 import jwt from "jsonwebtoken";
 import User from "../../api/User.js";
-import { validateRegisterCredentials } from "../../api/utils/Validate.js";
+import { validateRegisterCredentials, isValidEmail } from "../../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildTokenPacket } from "../../api/packets/PacketBuilder.js";
 
 const router = express.Router();
 
 const TOKEN_EXPIRE_TIME = 48 * 60 * 60 * 1000;
 
+/**
+ * Data this endpoint expects:
+ * {
+ *      "headers": {...}
+ *      "body": {
+ *          email or phone (field),
+ *          password
+ *      }
+ * }
+ */
 router.post("/login", (request, response, next) => {
-
+    const field = request.body.field;
+    const password = request.body.password;
+    let promise;
+    if (isValidEmail(field)) {
+        promise = fitmatch.getSqlManager().getUserFromEmail(field);
+    } else {
+        promise = fitmatch.getSqlManager().getUserFromNumber(field);
+    }
+    promise.then(e => {
+        const data = e[0];
+    });
 });
 
 /**
