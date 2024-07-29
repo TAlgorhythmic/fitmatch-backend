@@ -1,10 +1,10 @@
-import Header from './components/Header/Header'
+import Header from './components/Header.jsx'
 function App() {
   
   return (
     <>
-     <Header/>
-     
+     <Header />
+     <Outlet />
     </>
   )
 }
