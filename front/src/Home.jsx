@@ -9,13 +9,13 @@ function Home() {
 
     let array = [];
     const [activities, setActivities] = useState(array);
-    const tableName = "activities";
+    const tableName = "users";
 
-    const BaseController = new BaseController(tableName);
+    const baseController = new BaseController(tableName);
 
     useEffect(() => {
         async function getActivities() {
-            const activitiesData = BaseController.getAll();
+            const activitiesData = baseController.getAll();
             if (activitiesData.length) {
                 setActivities(activitiesData);
               } else {

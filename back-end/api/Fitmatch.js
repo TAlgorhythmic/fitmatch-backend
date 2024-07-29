@@ -3,6 +3,7 @@ import { Sequelize } from "sequelize";
 import userManager from "./management/UserManager.js";
 import queryManager from "./management/SQLManager.js";
 import fs from "fs";
+import cors from "cors";
 
 const defaultConfig = {
     username: "root",
@@ -33,6 +34,7 @@ class Fitmatch {
         this.config = config;
         this.server = express();
         this.server.use(express.json());
+        this.server.use(cors());
         this.sqlManager = queryManager;
         this.userManager = userManager;
     }

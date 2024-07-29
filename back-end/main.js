@@ -40,7 +40,7 @@ function run() {
     
 
     //npm run build y luego se puede  app.use(express.static('FRONT/dist'));
-    app.use(e.static("./../front/dist"));
+    app.use(e.static("../front/dist"));
 
     //arranque del servidor
     const port = 3001;
