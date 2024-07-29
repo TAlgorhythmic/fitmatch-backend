@@ -35,7 +35,10 @@ const Users = sequelize.define(
 router.get('/', function (req, res, next) {
 
     Users.findAll()
-        .then(Userss => res.json(Userss))
+        .then(Userss => {
+            res.json(Userss)
+            console.log(Userss);
+        })
         .catch(error => res.json({
             ok: false,
             error: error
