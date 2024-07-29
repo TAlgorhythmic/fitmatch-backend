@@ -43,7 +43,14 @@ router.post("/login", (request, response, next) => {
         const salt = user.salt;
         const hash = user.pwhash;
         bcrypt.compare(password + salt, hash).then(e => {
-            
+            if (e) {
+                fitmatch.getUserManager().put(user.id, user);
+                response.json(buildTokenPacket(createToken(request.ip, user.id)));
+                return;
+            } else {
+                response.json(buildInvalidPacket("The data introduced is incorrect."));
+                return;
+            }
         })
     });
 });
