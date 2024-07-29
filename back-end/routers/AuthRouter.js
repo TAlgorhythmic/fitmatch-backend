@@ -42,7 +42,9 @@ router.post("/login", (request, response, next) => {
         const user = data[0];
         const salt = user.salt;
         const hash = user.pwhash;
-        bcrypt.compare(password + salt, hash);
+        bcrypt.compare(password + salt, hash).then(e => {
+            
+        })
     });
 });
 
