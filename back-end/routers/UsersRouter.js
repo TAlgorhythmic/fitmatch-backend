@@ -1,12 +1,11 @@
-import fitmatch from "./../../api/Fitmatch.js";
-import { tokenRequired } from "../../api/utils/Validate.js";
+import fitmatch from "./../api/Fitmatch.js";
+import { tokenRequired } from "./../api/utils/Validate.js";
 import express from "express";
 import { DataTypes, STRING } from "sequelize";
 
 const router = express.Router();
 
-const instance = new Fitmatch();
-const sequelize = instance.getSQL();
+const sequelize = fitmatch.getSql();
 
 //DEFINICION DEL MODELO
 const Users = sequelize.define(
@@ -17,7 +16,7 @@ const Users = sequelize.define(
         email: DataTypes.STRING,
         phone: DataTypes.INTEGER,
         description: DataTypes.STRING,
-        proficiency: DataTypes,STRING,
+        proficiency: DataTypes.STRING,
         trainingPreferences: DataTypes.STRING,
         location: DataTypes.STRING,
         isSetup: DataTypes.BOOLEAN,

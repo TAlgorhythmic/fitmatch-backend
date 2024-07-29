@@ -1,9 +1,9 @@
 import fitmatch from "./api/Fitmatch.js";
 import cors from "cors";
 import fs from "fs";
-import activitiesRouter from "./backend/routers/ActivitiesRouter.js";
-import usersRouter from "./backend/routers/UsersRouter.js";
-import authRouter from "./backend/routers/AuthRouter.js";
+import activitiesRouter from "./routers/ActivitiesRouter.js";
+import usersRouter from "./routers/UsersRouter.js";
+import authRouter from "./routers/AuthRouter.js";
 import e from "express";
 
 let i = 0;
@@ -12,7 +12,7 @@ function executeQueriesRecursively(queries) {
     if (queries.length > 0) {
         fitmatch.sql.query(queries[i])
         .then(e => console.log("Success!"))
-        .catch(e => console.log("An error ocurred trying to initialize the database schema. Error: " + err))
+        .catch(err => console.log("An error ocurred trying to initialize the database schema. Error: " + err))
         .finally(e => {
             i++;
             if (i < queries.length) {

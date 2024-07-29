@@ -7,7 +7,7 @@
   "module": "",
   "scripts": {
     "start": "nodemon main.js",
-    "test": "node ./test.js"
+    "test": "node ./testFiles/test.js"
   },
   "author": "Yang, Inti",
   "license": "ISC",
