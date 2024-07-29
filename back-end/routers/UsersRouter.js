@@ -59,6 +59,40 @@ router.get('/:id', function (req, res, next) {
         }))
 });
 
+// GET users compability
+router.get('/connect/:id', async function (req, res, next) {
+    try {
+        // Encuentra el usuario con el ID especificado
+        const user = await Users.findOne({ where: { id: req.params.id } });
+
+        if (!user) {
+            return res.json({
+                ok: false,
+                error: 'User not found'
+            });
+        }
+
+        // Encuentra los usuarios del 10 al 15
+        const usersInRange = await Users.findAll({
+            offset: 0,  // El offset es 9 para empezar desde el usuario 10 (índice basado en 0)
+            limit: 4    // Limitamos a 6 usuarios para incluir del 10 al 15
+        });
+
+        res.json({
+            ok: true,
+            data: {
+                user,
+                usersInRange
+            }
+        });
+
+    } catch (error) {
+        res.json({
+            ok: false,
+            error: error.message || error
+        });
+    }
+});
 
 
 // POST, creació d'un nou Users
@@ -104,9 +138,9 @@ router.delete('/:id', function (req, res, next) {
 
 // GET Users that user not joined
 router.get('/notjoined/:userId'), function (req, res, next) {
-    Users.findAll({where: { userId: req.params.userId }})
-    .then((data) => res.json({ ok: true, data }))
-    .catch((error) => res.json({ ok: false, error }))
+    Users.findAll({ where: { userId: req.params.userId } })
+        .then((data) => res.json({ ok: true, data }))
+        .catch((error) => res.json({ ok: false, error }))
 }
 
 export default router;
