@@ -15,7 +15,8 @@ function Home() {
 
     useEffect(() => {
         async function getActivities() {
-            const activitiesData = baseController.getAll();
+            const activitiesData = await baseController.getAll();
+            console.log(activitiesData);
             if (activitiesData.length) {
                 setActivities(activitiesData);
               } else {
