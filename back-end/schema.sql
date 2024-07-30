@@ -1,15 +1,14 @@
 -- Independent table
 CREATE TABLE IF NOT EXISTS users(
     id INT NOT NULL AUTO_INCREMENT,
-    salt CHAR(36) NOT NULL,
-    pwhash INT NOT NULL,
+    pwhash VARCHAR(400) NOT NULL,
     name VARCHAR(32) NOT NULL,
     lastname VARCHAR(36),
     email VARCHAR(40) NOT NULL,
     phone VARCHAR(20),
     description VARCHAR(250),
     proficiency ENUM("Principiante", "Intermedio", "Avanzado"),
-    trainingPreferences VARCHAR(500) NOT NULL,
+    trainingPreferences VARCHAR(500),
     img VARCHAR(60),
     location VARCHAR(100),
     isSetup BOOLEAN NOT NULL DEFAULT FALSE,
