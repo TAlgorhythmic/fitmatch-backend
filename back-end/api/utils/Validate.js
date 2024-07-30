@@ -41,7 +41,19 @@ export function validateRegisterCredentials(req, res, next) {
         res.json("The password must include: numbers, special characters, uppercase and lowercase charachters.");
         return;
     }
-    next();
+    fitmatch.sqlManager.getUserFromEmail(email)
+    .then(e => {
+        const data = e[0];
+        if (data.length) {
+            res.json(buildInvalidPacket("This email is already in use."));
+            return;
+        }
+        next();
+    })
+    .catch(err => {
+        console.log("An error ocurred trying to send a query. Error: " + err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
+    })
 }
 
 // Middleware

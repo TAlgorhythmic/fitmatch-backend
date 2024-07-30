@@ -21,14 +21,14 @@ class SQLManager {
      * @returns a promise
      */
     getUserFromEmail(email) {
-        return fitmatch.getSql().query(`SELECT * FROM users WHERE id = "${email}";`);
+        return fitmatch.getSql().query(`SELECT * FROM users WHERE email = "${email}";`);
     }
 
     /**
      * @returns a promise
      */
     getUserFromNumber(number) {
-        return fitmatch.getSql().query(`SELECT * FROM users WHERE id = "${number}";`);
+        return fitmatch.getSql().query(`SELECT * FROM users WHERE phone = "${number}";`);
     }
 
     createNewUser(name, lastname, email, phone, hash) {
