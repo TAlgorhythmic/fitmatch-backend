@@ -2,37 +2,39 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import BaseController from './controllers/BaseController';
 import { Container, Row, Col } from 'react-bootstrap';
-import ActividadMain from './components/ActividadMain.jsx'
+import ActividadMain from './components/ActividadMain.jsx';
 
 
 function Home() {
 
-    let array = [];
-    const [activities, setActivities] = useState(array);
-    const tableName = "users";
+    const [activities, setActivities] = useState([]);
+    const tableName = "activities";
 
-    const baseController = new BaseController(tableName);
+    const ActivitiesController = new BaseController(tableName);
 
     useEffect(() => {
         async function getActivities() {
-            const activitiesData = await baseController.getAll();
-            console.log(activitiesData);
+            const activitiesData = await ActivitiesController.getAll();
             if (activitiesData.length) {
                 setActivities(activitiesData);
-              } else {
+            } else {
                 console.log('No data found:', activitiesData);
-              }
+            }
         }
         getActivities();
     }, [])
 
-    console.log(activities);
+    console.log(activities)
 
     return (
         <>
-            <Container>
-
-            </Container>
+            <Row>
+            </Row>
+            {activities.map(activity => (
+                <Row>
+                    <ActividadMain data={activity} />
+                </Row>
+            ))}
         </>
     )
 }
