@@ -82,7 +82,7 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
     fitmatch.sqlManager.getUserFromEmail(email)
         .then(e => {
             const data = e[0];
-            if (data.length > 0) {
+            if (data.length) {
                 response.json(buildInvalidPacket("This email is already in use."));
                 return;
             }
