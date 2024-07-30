@@ -25,32 +25,37 @@ router.post("/login", (request, response, next) => {
     const password = request.body.password;
     let promise;
     if (isValidEmail(field)) {
+        console.log("és un email")
         promise = fitmatch.getSqlManager().getUserFromEmail(field);
     } else {
+        console.log("és un numero")
         promise = fitmatch.getSqlManager().getUserFromNumber(field);
     }
     promise.then(e => {
-        const data = e[0];
-        if (data.length < 1) {
-            response.json(buildInvalidPacket("The data introduced is incorrect."));
+        const user = e[0];
+        if (!user) {
+            response.json(buildInvalidPacket("The data introduced is incorrect. 1"));
             return;
         }
-        if (data.length > 1) {
+        if (user.length > 1) {
             response.json(buildInternalErrorPacket("Internal error, this field is duplicated."));
             return;
         }
-        const user = data[0];
-        const salt = user.salt;
         const hash = user.pwhash;
-        bcrypt.compare(password + salt, hash).then(e => {
+        bcrypt.compare(password, hash).then(e => {
+            console.log(e);
             if (e) {
                 fitmatch.getUserManager().put(user.id, user);
                 response.json(buildTokenPacket(createToken(request.ip, user.id)));
                 return;
             } else {
-                response.json(buildInvalidPacket("The data introduced is incorrect."));
+                response.json(buildInvalidPacket("The data introduced is incorrect. 2"));
                 return;
             }
+        }).catch(err => {
+            response.json(buildInternalErrorPacket("Internal error, could not compare passwords."));
+            console.log(err);
+            return;
         })
     });
 });
@@ -81,16 +86,14 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
                 response.json(buildInvalidPacket("This email is already in use."));
                 return;
             }
-            const salt = fitmatch.genUUID();
-            bcrypt.hash(password + salt)
+            bcrypt.hash(password, 10)
                 .then(e => {
-                    fitmatch.sqlManager.createNewUser(name, lastname ? lastname : null, email, phone ? phone : null, salt, e)
+                    fitmatch.sqlManager.createNewUser(name, lastname ? lastname : null, email, phone ? phone : null, e)
                         .then(e => {
-                            fitmatch.getUserFromEmail(email)
+                            fitmatch.sqlManager.getUserFromEmail(email)
                                 .then(e => {
-                                    const data = e[0][0];
-                                    const locationSplit = data.location.split("||");
-                                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, locationSplit[0], locationSplit[1], data.isSetup);
+                                    const data = e[0];
+                                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, null, null, data.isSetup);
                                     fitmatch.userManager.put(user.id, user);
                                     const token = createToken(request.ip, user.id);
                                     response.json(buildTokenPacket(token));

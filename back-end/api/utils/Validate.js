@@ -12,7 +12,7 @@ export function isValidEmail(email) {
 
 // Validación de contraseña: caracter especial, número y mayúscula
 export function isValidPassword(password) {
-    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    const specialCharRegex = /[!@#$%^&*(),.?_=/\\":{}|<>]/;
     const uppercaseRegex = /[A-Z]/;
     return specialCharRegex.test(password) && numberRegex.test(password) && uppercaseRegex.test(password);
 }
@@ -27,7 +27,9 @@ export function validateRegisterCredentials(req, res, next) {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
+    console.log(req.body)
     if (!name) {
+        console.log(name);
         res.json(buildInvalidPacket("A name must be specified."));
         return;
     }
@@ -44,9 +46,8 @@ export function validateRegisterCredentials(req, res, next) {
 
 // Middleware
 export function tokenRequired(req, res, next) {
-    next();
-    return;
-    let token = req.headers.authorization || "";
+    
+    let token = req.headers.Authorization || "";
 
     if (!token) {
         res.json(buildNoPermissionPacket("A token is required."));
