@@ -32,7 +32,7 @@ const Users = sequelize.define(
 // si se produce un error:
 //     {ok: false, error: mensaje_de_error}
 
-router.get('/', function (req, res, next) {
+router.get('/', tokenRequired, function (req, res, next) {
 
     Users.findAll()
         .then(Userss => {
