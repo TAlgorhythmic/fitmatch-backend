@@ -1,10 +1,10 @@
 -- Insertar datos en la tabla 'users'
-INSERT INTO users (salt, pwhash, name, lastname, email, phone, description, proficiency, trainingPreferences, img, location, isSetup, tableVersion) VALUES
-('123e4567-e89b-12d3-a456-426614174000', 123456, 'John', 'Doe', 'john.doe@example.com', '123-456-7890', 'Description for John Doe', 'Intermedio', 'Training preferences for John Doe', 'img1.jpg', 'New York, USA', TRUE, 1),
-('223e4567-e89b-12d3-a456-426614174001', 654321, 'Jane', 'Smith', 'jane.smith@example.com', '321-654-0987', 'Description for Jane Smith', 'Avanzado', 'Training preferences for Jane Smith', 'img2.jpg', 'Los Angeles, USA', TRUE, 1),
-('323e4567-e89b-12d3-a456-426614174002', 112233, 'Alice', 'Johnson', 'alice.johnson@example.com', '456-789-0123', 'Description for Alice Johnson', 'Principiante', 'Training preferences for Alice Johnson', 'img3.jpg', 'Chicago, USA', FALSE, 1),
-('423e4567-e89b-12d3-a456-426614174003', 332211, 'Bob', 'Brown', 'bob.brown@example.com', '789-012-3456', 'Description for Bob Brown', 'Intermedio', 'Training preferences for Bob Brown', 'img4.jpg', 'Houston, USA', FALSE, 1),
-('523e4567-e89b-12d3-a456-426614174004', 445566, 'Charlie', 'Davis', 'charlie.davis@example.com', '012-345-6789', 'Description for Charlie Davis', 'Avanzado', 'Training preferences for Charlie Davis', 'img5.jpg', 'Phoenix, USA', TRUE, 1);
+INSERT INTO users (pwhash, name, lastname, email, phone, description, proficiency, trainingPreferences, img, location, isSetup, tableVersion) VALUES
+(123456, 'John', 'Doe', 'john.doe@example.com', '123-456-7890', 'Description for John Doe', 'Intermedio', 'Training preferences for John Doe', 'img1.jpg', 'New York, USA', TRUE, 1),
+(654321, 'Jane', 'Smith', 'jane.smith@example.com', '321-654-0987', 'Description for Jane Smith', 'Avanzado', 'Training preferences for Jane Smith', 'img2.jpg', 'Los Angeles, USA', TRUE, 1),
+(112233, 'Alice', 'Johnson', 'alice.johnson@example.com', '456-789-0123', 'Description for Alice Johnson', 'Principiante', 'Training preferences for Alice Johnson', 'img3.jpg', 'Chicago, USA', FALSE, 1),
+(332211, 'Bob', 'Brown', 'bob.brown@example.com', '789-012-3456', 'Description for Bob Brown', 'Intermedio', 'Training preferences for Bob Brown', 'img4.jpg', 'Houston, USA', FALSE, 1),
+(445566, 'Charlie', 'Davis', 'charlie.davis@example.com', '012-345-6789', 'Description for Charlie Davis', 'Avanzado', 'Training preferences for Charlie Davis', 'img5.jpg', 'Phoenix, USA', TRUE, 1);
 
 -- Insertar datos en la tabla 'days_of_week'
 INSERT INTO days_of_week (monday, tuesday, wednesday, thursday, friday, saturday, sunday, userId, timetable) VALUES

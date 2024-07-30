@@ -15,7 +15,7 @@ export default class User {
         this.proficiency = proficiency;
         this.trainingPreferences = trainingPreferences;
         this.img = img;
-        this.location = city + "||" + coordinates;
+        this.location = city && coordinates ? city + "||" + coordinates : null;
         this.isSetup = isSetup;
     }
 

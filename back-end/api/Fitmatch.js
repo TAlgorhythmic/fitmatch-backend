@@ -35,6 +35,7 @@ class Fitmatch {
         this.server = express();
         this.server.use(express.json());
         this.server.use(cors());
+        this.server.use()
         this.sqlManager = queryManager;
         this.userManager = userManager;
     }

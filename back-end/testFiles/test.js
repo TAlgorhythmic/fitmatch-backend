@@ -1,7 +1,9 @@
 import fitmatch from "../api/Fitmatch.js";
 import fs from "fs";
+import bcrypt from "bcrypt";
+import { isValidPassword } from "../api/utils/Validate.js";
 
-function run() {
+function createTestUsers() {
     
     let i = 0;
     function executeQueriesRecursively(queries) {
@@ -24,4 +26,15 @@ function run() {
     executeQueriesRecursively(split);
 }
 
-run();
+function test1() {
+    const testPassword = "adsadsADad_12";
+    if (isValidPassword(testPassword)) {
+        console.log("Password vàlida.");
+    } else {
+        console.log("Password invalid.");
+    }
+    const hash = bcrypt.hashSync(testPassword, 10);
+    console.log(hash);
+    console.log(bcrypt.compareSync(testPassword, hash));
+}
+test1();
