@@ -2,6 +2,8 @@ import fitmatch from "../api/Fitmatch.js";
 import fs from "fs";
 import bcrypt from "bcrypt";
 import { isValidPassword } from "../api/utils/Validate.js";
+import { areCompatible } from "../api/utils/Algoritms.js";
+import User from "../api/User.js";
 
 function createTestUsers() {
     
@@ -37,4 +39,20 @@ function test1() {
     console.log(hash);
     console.log(bcrypt.compareSync(testPassword, hash));
 }
-test1();
+
+function testAlgorithm() {
+    fitmatch.getSqlManager().getAllUsers()
+    .then(e => {
+        const data = e[0];
+        data.forEach(item => {
+            data.forEach(item2 => {
+                const user1 = new User(item.id, item.name, item.lastname, item.email, item.phone, item.description, item.proficiency, item.trainingPreferences, item.img, item.location, item.isSetup);
+                const user2 = new User(item2.id, item2.name, item2.lastname, item2.email, item2.phone, item2.description, item2.proficiency, item2.trainingPreferences, item2.img, item2.location, item2.isSetup);
+                console.log(`${user1.name} ${user1.lastname} ~ ${user2.name} ${user2.lastname} ==> ${areCompatible(user1, user2)}`);
+            })
+        })
+    })
+}
+// test1();
+// createTestUsers();
+testAlgorithm();
