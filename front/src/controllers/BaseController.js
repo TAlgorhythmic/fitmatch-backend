@@ -22,7 +22,19 @@ class BaseController {
             }
         });
         const data = await response.json();
-        console.log(data);
+        return data;
+    }
+
+    async getItemById(id) {
+        const response = await fetch(`${this.apiUrl}/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'xc-token': this.token
+            }
+        });
+
+        const data = await response.json();
         return data;
     }
 
