@@ -1,27 +1,17 @@
-import { Alert, Row, Col, Image } from 'react-bootstrap';
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Alert } from 'react-bootstrap';
 
 function ActividadMain(props) {
-
-    const activity = props.data;
-
+    const { data } = props;
     return (
-        <>
-            <div className="activity-container">
-                <Alert variant="info">
-                    <Alert.Heading>{activity.title}</Alert.Heading>
-                    <p>
-                        {activity.description}
-                    </p>
-                    <hr />
-                    <p className="mb-0">
-                        {activity.expires}
-                    </p>
-                </Alert>
-            </div>
-        </>
-    )
+        <div className="activity-container">
+            <Alert variant="info">
+                <Alert.Heading>{data.title}</Alert.Heading>
+                <p>{data.description}</p>
+                <hr />
+                <p className="mb-0">{data.expires}</p>
+            </Alert>
+        </div>
+    );
 }
 
 export default ActividadMain;
