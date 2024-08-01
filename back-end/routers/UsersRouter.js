@@ -1,7 +1,7 @@
 import fitmatch from "./../api/Fitmatch.js";
 import { tokenRequired } from "./../api/utils/Validate.js";
 import express from "express";
-import { DataTypes, STRING } from "sequelize";
+import { DataTypes } from "sequelize";
 import multer from "multer";
 import path from "path";
 import slugify from "slugify";
@@ -122,7 +122,7 @@ router.get('/connect', tokenRequired, function (req, res, next) {
  */
 router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
-    const preferences = req.body.preferences.length ? req.body.preferences.join(";") : null;
+    const preferences = req.body.preferences.length ? req.body.preferences : null;
     if (!preferences) {
         res.json(buildInvalidPacket("Preferences is empty."));
         return;
@@ -149,10 +149,24 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         res.json(buildInvalidPacket("You must include a longitude."));
         return;
     }
+    if (fitmatch.getUserManager().containsKey(req.token.id)) {
+        const user = fitmatch.getUserManager().get(req.token.id);
+        user.setIsSetup(true);
+        user.setTrainingPreferences(preferences);
+        user.setDescription(description);
+        user.setImg(img);
+        user.setProficiency(proficiency);
+    }
     fitmatch.getSqlManager().getUserFromId(id)
     .then(e => {
-        const data = e[0];
-        const user = new User(data.id, ) // TODO
+        const data = e[0][0];
+        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup);
+        fitmatch.userManager.put(user.id, user);
+        user.setIsSetup(true);
+        user.setTrainingPreferences(preferences);
+        user.setDescription(description);
+        user.setImg(img);
+        user.setProficiency(proficiency);
     });
 })
 

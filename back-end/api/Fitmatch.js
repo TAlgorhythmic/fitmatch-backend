@@ -4,7 +4,6 @@ import userManager from "./management/UserManager.js";
 import queryManager from "./management/SQLManager.js";
 import fs from "fs";
 import cors from "cors";
-import { removeGarbage } from "../routers/ActivitiesRouter.js";
 
 const defaultConfig = {
     username: "root",
@@ -40,7 +39,6 @@ class Fitmatch {
         this.server.use('/uploads', express.static("uploads"));
         this.sqlManager = queryManager;
         this.userManager = userManager;
-        removeGarbage(60000);
     }
 
     /**
@@ -84,7 +82,7 @@ class Fitmatch {
     }
 
     decodeToken(token) {
-        
+        // TODO
     }
 }
 

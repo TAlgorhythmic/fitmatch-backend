@@ -26,7 +26,7 @@ class UserManager {
             fitmatch.sqlManager.getUserFromId(id)
             .then(e => {
                 const data = e[0];
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.location, data.isSetup);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup);
                 this.put(user.id, new Ref(user, this.map));
                 return user;
             })

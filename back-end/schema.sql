@@ -10,7 +10,9 @@ CREATE TABLE IF NOT EXISTS users(
     proficiency ENUM("Principiante", "Intermedio", "Avanzado"),
     trainingPreferences VARCHAR(500),
     img VARCHAR(60) NOT NULL DEFAULT "img1.jpg",
-    location VARCHAR(100),
+    city VARCHAR(45),
+    latitude DOUBLE(10, 10),
+    longitude DOUBLE(10, 10),
     isSetup BOOLEAN NOT NULL DEFAULT FALSE,
     tableVersion INT NOT NULL DEFAULT 0,
     PRIMARY KEY(id)
