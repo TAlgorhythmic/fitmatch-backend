@@ -28,14 +28,14 @@ const MakeFriends = () => {
           <TinderCard
             className="swipe"
             key={p.id}
-            preventSwipe={['up', 'down']}
+            preventSwipe={['up', 'down']} //swipe no permitido para arriba-abajo
           >
             <div
-              className="tarjeta"
+              className="tarjeta" //lo que se ve
               style={{ backgroundImage: `url(${p.img})` }}
             >
               <h2>{p.name}</h2>
-              
+
             </div>
           </TinderCard>
         ))}
