@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Router, Route, Routes } from 'react-router-dom';
 import App from './App.jsx'
 import Home from './Home.jsx'
+import MakeFriends from './MakeFriends.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -10,6 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
+          <Route path="/friends" element={<MakeFriends />} />
         </Route>
       </Routes>
     </BrowserRouter>
