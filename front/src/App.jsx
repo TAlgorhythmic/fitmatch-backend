@@ -1,5 +1,7 @@
-import Header from './components/Header/Header'
-import MisPublis from './components/Main/Lateral/MisPublis';
+import Header from './components/Header.jsx';
+import { Outlet } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 function App() {
 
   return (
