@@ -26,16 +26,14 @@ function Home() {
 
     return (
         <>
-            <Container>
-                <Row>
-                    <Col xs={4}>
-                        <HomeLateral  activitiesData={activities}/>
-                    </Col>
-                    <Col xs={8}>
-                        <HomeView activitiesData={activities}/>
-                    </Col>
-                </Row>
-            </Container>
+            <Row>
+                <Col xs={4}>
+                    <HomeLateral activitiesData={activities} />
+                </Col>
+                <Col xs={8}>
+                    <HomeView activitiesData={activities} />
+                </Col>
+            </Row>
         </>
     );
 }
