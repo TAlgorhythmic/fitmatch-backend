@@ -2,6 +2,7 @@ import express from 'express';
 import { DataTypes } from "sequelize";
 import f from "./../api/Fitmatch.js";
 import { tokenRequired } from '../api/utils/Validate.js';
+import { buildInternalErrorPacket, buildSendDataPacket } from '../api/packets/PacketBuilder.js';
 
 const router = express.Router();
 
@@ -15,11 +16,29 @@ const router = express.Router();
 router.get('/', tokenRequired, function (req, res, next) {
     const id = req.token.id;
     f.getSqlManager().getJoinedActivities(id)
+    .then(e => {
+        const data = e[0];
+        data.filter(item => {
+            const date = new Date(item.expires.replace(" ", "T"));
+            return Date.now <= date.getTime();
+        })
+        data.sort((a, b) => {
+            const date = new Date(a.expires.replace(" ", "T"));
+            const date2 = new Date(b.expires.replace(" ", "T"));
+            return date.getTime() - date2.getTime();
+        });
+        res.json(buildSendDataPacket(data));
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error."));
+    })
 });
 
 // POST, creació d'un nou JoinedActivities
 router.post('/:id', function (req, res, next) {
     const id = parseInt(req.params.id);
+
     console.log(req.body)
     JoinedActivities.create(req.body)
         .then((item) => item.save())
