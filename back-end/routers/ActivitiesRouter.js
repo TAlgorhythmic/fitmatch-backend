@@ -1,9 +1,10 @@
 import express from 'express';
 import { DataTypes } from "sequelize";
 import fitmatch from "./../api/Fitmatch.js";
-import {tokenRequired} from "./../api/utils/Validate.js";
+import { tokenRequired } from "./../api/utils/Validate.js";
 
 const sequelize = fitmatch.getSql();
+const sqlManager = fitmatch.getSqlManager();
 
 //DEFINICION DEL MODELO
 const Activities = sequelize.define(
@@ -19,6 +20,55 @@ const Activities = sequelize.define(
     { tableName: 'activities', timestamps: false }
 );
 
+const Friends = sequelize.define(
+    'Friends',
+    {
+        userId1: DataTypes.INTEGER,
+        userId2: DataTypes.INTEGER,
+    },
+    { tableName: 'friends', timestamps: false }
+);
+
+export function isActivityExpired(activity) {
+    const date = new Date(activity.expires.replace(" ", "T"));
+    return Date.now <= date.getTime();
+}
+
+export function filterActivities(array) {
+    array.filter(item => {
+        const isExpired = isActivityExpired(item);
+        if (isExpired) {
+            garbage.push(item);
+        }
+        return isExpired;
+    })
+}
+
+export const garbage = [];
+
+export function removeGarbage(millis) {
+    setTimeout(() => {
+        function recursive() {
+            const itemToRemove = garbage.pop();
+            if (!itemToRemove) {
+                console.log("Activities table is now clean.");
+                return;
+            }
+            try {
+                fitmatch.getSqlManager().removeActivityCompletely(itemToRemove.id)
+                    .then(e => {
+                        console.log("Success!");
+                        recursive();
+                        return;
+                    });
+            } catch (err) {
+                console.log(err);
+                recursive();
+            }
+        }
+        recursive();
+    }, millis);
+}
 
 const router = express.Router();
 
@@ -29,15 +79,70 @@ const router = express.Router();
 // si se produce un error:
 //     {ok: false, error: mensaje_de_error}
 
-router.get('/', tokenRequired, function (req, res, next) {
-    Activities.findAll()
-        .then(Activitiess => res.json(Activitiess))
-        .catch(error => res.json({
+router.get('/', tokenRequired, async function (req, res, next) {
+    const listToReturn = sqlManager.getAllActivitiesWhitUserInfo()
+        .then(activities => {
+            const data = activities[0];
+            data.filter()
+            res.json(
+                {
+                    ok: true,
+                    data: data
+                }
+            )
+        })
+        .catch(error => res.json(
+            {
+                ok: false,
+                error: error
+            }
+        ));
+});
+
+
+// GET lista de todos los Activitiess de amigos de un usuario
+router.get('/foruser', tokenRequired, async function (req, res, next) {
+    try {
+        const userId = req.token.id;
+
+        // Obtener los IDs de los amigos del usuario
+        const friends = await Friends.findAll({
+            where: {
+                userId1: userId
+            }
+        });
+
+        const friends2 = await Friends.findAll({
+            where: {
+                userId2: userId
+            }
+        });
+
+
+        const friendIds = friends.map(friend => friend.friendId);
+        friendIds.push(friends2.map(friend => friend.userId1));
+
+        // Buscar las actividades de los amigos
+        const activities = await Activities.findAll({
+            where: {
+                userId: {
+                    [Op.in]: friendIds
+                }
+            }
+        });
+
+        res.json({
+            ok: true,
+            data: activities
+        });
+    } catch (error) {
+        res.json({
             ok: false,
             error: error
-        }))
-
+        });
+    }
 });
+
 
 // GET de un solo Activities
 router.get('/:id', tokenRequired, function (req, res, next) {
@@ -56,7 +161,6 @@ router.get('/:id', tokenRequired, function (req, res, next) {
 
 // POST, creació d'un nou Activities
 router.post('/create', tokenRequired, function (req, res, next) {
-    console.log(req.body)
     Activities.create(req.body)
         .then((item) => item.save())
         .then((item) => res.json({ ok: true, data: item }))
@@ -66,8 +170,8 @@ router.post('/create', tokenRequired, function (req, res, next) {
 
 
 // put modificació d'un Activities
-router.put('/edit/:id', tokenRequired, function (req, res, next) {
-    Activities.findOne({ where: { id: req.params.id } })
+router.put('/edit', tokenRequired, function (req, res, next) {
+    Activities.findOne({ where: { id: req.token.id } })
         .then((al) =>
             al.update(req.body)
         )
@@ -93,14 +197,5 @@ router.delete('/:id', tokenRequired, function (req, res, next) {
         .catch((error) => res.json({ ok: false, error }))
 
 });
-
-
-// GET activities that user not joined
-router.get('/notjoined/:userId'), tokenRequired, function (req, res, next) {
-    Activities.findAll({ where: { userId: req.params.userId } })
-        .then((data) => res.json({ ok: true, data }))
-        .catch((error) => res.json({ ok: false, error }))
-}
-
 
 export default router;

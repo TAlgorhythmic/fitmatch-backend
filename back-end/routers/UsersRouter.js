@@ -2,12 +2,28 @@ import fitmatch from "./../api/Fitmatch.js";
 import { tokenRequired } from "./../api/utils/Validate.js";
 import express from "express";
 import { DataTypes, STRING } from "sequelize";
+import multer from "multer";
+import path from "path";
+import slugify from "slugify";
+import { buildInvalidPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
+import ConnectSession, { sessions } from "../api/utils/ConnectSession.js";
+import User from "../api/User.js";
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "./../uploads/");
+    },
+    filename: (req, file, cb) => {
+        const slug = slugify(path.basename(file.originalname, path.extname(file.originalname)), { lower: true, strict: true });
+        cb(null, `${Date.now}_${slug}${path.extname(file.originalname)}`);
+    }
+});
 
 const router = express.Router();
-
 const sequelize = fitmatch.getSql();
+const upload = multer({ storage: storage });
 
-//DEFINICION DEL MODELO
+//DEFINICION DEL MODELOuser
 const Users = sequelize.define(
     'Users',
     {
@@ -15,6 +31,7 @@ const Users = sequelize.define(
         lastname: DataTypes.INTEGER,
         email: DataTypes.STRING,
         phone: DataTypes.INTEGER,
+        img: DataTypes.STRING,
         description: DataTypes.STRING,
         proficiency: DataTypes.STRING,
         trainingPreferences: DataTypes.STRING,
@@ -46,6 +63,14 @@ router.get('/', tokenRequired, function (req, res, next) {
 
 });
 
+router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, next) => {
+    if (!req.file) {
+        res.json(buildInvalidPacket("Image is empty."));
+        return;
+    }
+    res.json(buildSimpleOkPacket());
+});
+
 // GET de un solo Users
 router.get('/:id', function (req, res, next) {
     Users.findOne({ where: { id: req.params.id } })
@@ -59,56 +84,81 @@ router.get('/:id', function (req, res, next) {
         }))
 });
 
-// GET users compability
-router.get('/connect/:id', async function (req, res, next) {
-    try {
-        // Encuentra el usuario con el ID especificado
-        const user = await Users.findOne({ where: { id: req.params.id } });
+function sketchyOrder(map) {
 
-        if (!user) {
-            return res.json({
-                ok: false,
-                error: 'User not found'
-            });
-        }
+}
 
-        // Encuentra los usuarios del 10 al 15
-        const usersInRange = await Users.findAll({
-            offset: 0,  // El offset es 9 para empezar desde el usuario 10 (índice basado en 0)
-            limit: 4    // Limitamos a 6 usuarios para incluir del 10 al 15
-        });
 
-        res.json({
-            ok: true,
-            data: {
-                user,
-                usersInRange
-            }
-        });
 
-    } catch (error) {
-        res.json({
+// GET compatible users
+router.get('/connect', tokenRequired, function (req, res, next) {
+    const token = req.token;
+
+    if (!sessions.has(token.id)) {
+        sessions.set(token.id, new ConnectSession())
+    }
+    else {
+        return res.json({
             ok: false,
-            error: error.message || error
+            error: 'User not found'
         });
     }
+    
+    sessions.get(token.id).sendMore(res);
 });
 
-
-// POST, creació d'un nou Users
-router.post('/create', function (req, res, next) {
-    console.log(req.body)
-    Users.create(req.body)
-        .then((item) => item.save())
-        .then((item) => res.json({ ok: true, data: item }))
-        .catch((error) => res.json({ ok: false, error }))
-
-});
-
+/**
+ * Data expected:
+ * token
+ * body: {
+ *      preferencesArray,
+ *      description,
+ *      img, (optional)
+ *      proficiency, 
+ *      city,
+ *      latitude,
+ *      longitude
+ * }
+ */
+router.post("/setup", tokenRequired, (req, res, next) => {
+    const id = req.token.id;
+    const preferences = req.body.preferences.length ? req.body.preferences.join(";") : null;
+    if (!preferences) {
+        res.json(buildInvalidPacket("Preferences is empty."));
+        return;
+    }
+    const description = req.body.description ? req.body.description : null;
+    const img = req.body.img ? req.body.img : null;
+    const proficiency = req.body.proficiency;
+    if (!proficiency) {
+        res.json(buildInvalidPacket("You must select your proficiency level!"));
+        return;
+    }
+    const city = req.body.city;
+    if (!city) {
+        res.json(buildInvalidPacket("City is empty."));
+        return;
+    }
+    const latitude = req.body.latitude;
+    if (!latitude) {
+        res.json(buildInvalidPacket("You must include a latitude."));
+        return;
+    }
+    const longitude = req.body.longitude;
+    if (!longitude) {
+        res.json(buildInvalidPacket("You must include a longitude."));
+        return;
+    }
+    fitmatch.getSqlManager().getUserFromId(id)
+    .then(e => {
+        const data = e[0];
+        const user = new User(data.id, ) // TODO
+    });
+})
 
 // put modificació d'un Users
-router.put('/edit/:id', function (req, res, next) {
-    Users.findOne({ where: { id: req.params.id } })
+router.put('/edit', tokenRequired, function (req, res, next) {
+    Users.findOne({ where: { id: req.token.id } })
         .then((al) =>
             al.update(req.body)
         )
@@ -142,5 +192,23 @@ router.get('/notjoined/:userId'), function (req, res, next) {
         .then((data) => res.json({ ok: true, data }))
         .catch((error) => res.json({ ok: false, error }))
 }
+
+
+// Modificacio de contraseña
+router.put('/changepasswd', tokenRequired, function (req, res, next) {
+    Users.findOne({ where: { id: req.token.id } })
+        .then(user => {
+            if (!user) {
+                return res.send({ message: 'User not found' });
+            }
+            return user.update({ password: req.body.password });
+        })
+        .then(updatedUser => {
+            res.send({ message: 'Password updated successfully' });
+        })
+        .catch(error => {
+            next(error); // Pasa el error al manejador de errores de Express
+        });
+});
 
 export default router;

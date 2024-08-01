@@ -26,9 +26,23 @@ class PacketInternalError {
 }
 
 class PacketToken {
-    constructor(token) {
+    constructor(token, isSetup) {
         this.status = OK,
         this.token = token;
+        this.isSetup = isSetup;
+    }
+}
+
+class PacketSimpleOk {
+    constructor() {
+        this.status = OK;
+    }
+}
+
+class PacketSendData {
+    constructor(data) {
+        this.status = OK;
+        this.data = data;
     }
 }
 
@@ -46,4 +60,12 @@ export function buildInternalErrorPacket(message) {
 
 export function buildTokenPacket(token) {
     return new PacketToken(token);
+}
+
+export function buildSimpleOkPacket() {
+    return new PacketSimpleOk();
+}
+
+export function buildSendDataPacket(data) {
+    return new PacketSendData(data);
 }
