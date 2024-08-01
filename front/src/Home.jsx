@@ -5,6 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import ActividadMain from './components/ActividadMain';
 import HomeLateral from './components/HomeLateral';
 import HomeView from './components/HomeView';
+import BarraLateral from './components/BarraLateral';
 
 function Home() {
     const [activities, setActivities] = useState([]);
@@ -27,11 +28,14 @@ function Home() {
     return (
         <>
             <Row>
+                <Col xs={2}>
+                    <BarraLateral/>
+                </Col>
+                <Col xs={6}>
+                    <HomeView activitiesData={activities} />
+                </Col>
                 <Col xs={4}>
                     <HomeLateral activitiesData={activities} />
-                </Col>
-                <Col xs={8}>
-                    <HomeView activitiesData={activities} />
                 </Col>
             </Row>
         </>
