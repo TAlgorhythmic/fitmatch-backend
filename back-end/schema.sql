@@ -39,6 +39,16 @@ CREATE TABLE IF NOT EXISTS friends(
     FOREIGN KEY(userId1) REFERENCES users(id),
     FOREIGN KEY(userId2) REFERENCES users(id)
 );
+
+-- Table for pending friend requests.
+///
+CREATE TABLE IF NOT EXISTS pending(
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    PRIMARY KEY(sender_id, receiver_id),
+    FOREIGN KEY(sender_id) REFERENCES users(id),
+    FOREIGN KEY(receiver_id) REFERENCES users(id)
+);
 ///
 CREATE TABLE IF NOT EXISTS rejects(
     issuer INT NOT NULL,
