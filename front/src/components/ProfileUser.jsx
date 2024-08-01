@@ -1,17 +1,17 @@
 import { Alert } from 'react-bootstrap';
 
-function ActividadMain(props) {
+function ProfileUser(props) {
     const { data } = props;
     return (
         <div className="activity-container">
             <Alert variant="info">
-                <Alert.Heading>{data.title}</Alert.Heading>
+                <Alert.Heading>{data.name}</Alert.Heading>
                 <p>{data.description}</p>
                 <hr />
-                <p className="mb-0">{data.expires}</p>
+                <p className="mb-0">{data.lastname}</p>
             </Alert>
         </div>
     );
 }
 
-export default ActividadMain;
+export default ProfileUser;

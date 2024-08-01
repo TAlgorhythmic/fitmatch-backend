@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import BaseController from './controllers/BaseController';
-import { Container, Row, Col } from 'react-bootstrap';
-import ActividadMain from './components/ActividadMain.jsx';
-
+import { Container, Row } from 'react-bootstrap';
+import ActividadMain from './components/ActividadMain';
 
 function Home() {
-
     const [activities, setActivities] = useState([]);
     const tableName = "activities";
 
@@ -22,21 +20,17 @@ function Home() {
             }
         }
         getActivities();
-    }, [])
-
-    console.log(activities)
+    }, []);
 
     return (
-        <>
-            <Row>
-            </Row>
-            {activities.map(activity => (
-                <Row>
+        <Container>
+            {activities.map((activity, index) => (
+                <Row key={index}>
                     <ActividadMain data={activity} />
                 </Row>
             ))}
-        </>
-    )
+        </Container>
+    );
 }
 
 export default Home;
