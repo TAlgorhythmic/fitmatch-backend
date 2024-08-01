@@ -27,7 +27,7 @@
 
 /*Navbar*/
 .customNavbar {
-    margin: 30px;
+    margin: 30px 30px 0 30px;
     border-radius: 8px;
     background-color: var(--color-fondo-principal) !important;
     box-shadow: 0px 0px 12px 0px var(--color-fondo-secundario);
@@ -47,4 +47,28 @@
 .customNav {
     display: flex;
     justify-content: end;
+}
+
+/*HomeView*/
+.contenedorHome {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-fondo-principal);
+    margin: 30px 0 30px 0;
+    border-radius: 8px;
+    padding: 30px;
+    background-color: var(--color-fondo-principal) !important;
+    box-shadow: 0px 0px 12px 0px var(--color-terciario);
+}
+
+/*HomeLateral*/
+.contenedorLateral {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-fondo-principal);
+    margin: 30px 0 30px 0;
+    border-radius: 8px;
+    padding: 30px;
+    background-color: var(--color-fondo-principal) !important;
+    box-shadow: 0px 0px 12px 0px var(--color-terciario);
 }
