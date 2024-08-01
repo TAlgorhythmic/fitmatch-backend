@@ -74,6 +74,13 @@ class SQLManager {
     putRejection(issuer, rejected) {
         return fitmatch.getSql().query(`INSERT INTO rejects(issuer, rejected, expires) VALUES(${issuer.id}, ${rejected.id}, ${new Date((new Date().getTime() + TIME_BEFORE_EXPIRES)).toISOString().slice(0, 19).replace("T", " ")});`);
     }
+
+    /**
+     * 
+     */
+    getAllActivitiesWhitUserInfo() {
+        return fitmatch.getSql().query(`SELECT activities.*, users.name, users.img FROM activities INNER JOIN users ON activities.userId = users.id;`);
+    }
 }
 
 const sqlManager = new SQLManager();
