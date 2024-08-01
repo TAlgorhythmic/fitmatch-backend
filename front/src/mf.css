@@ -1,0 +1,38 @@
+.TargetasUser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    overflow: hidden; /* Asegura que las tarjetas no se salgan del contenedor */
+  }
+  
+  .TargetasUser_contenedor {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: 600px;
+  }
+  
+  .swipe {
+    position: absolute;
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+  }
+  
+  .tarjeta {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    border-radius: 10px; /* Opcional: para esquinas redondeadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Opcional: para sombra */
+  }
+  
