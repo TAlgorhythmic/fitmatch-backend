@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users(
     description VARCHAR(250),
     proficiency ENUM("Principiante", "Intermedio", "Avanzado"),
     trainingPreferences VARCHAR(500),
-    img VARCHAR(60),
+    img VARCHAR(60) NOT NULL DEFAULT "img1.jpg",
     location VARCHAR(100),
     isSetup BOOLEAN NOT NULL DEFAULT FALSE,
     tableVersion INT NOT NULL DEFAULT 0,

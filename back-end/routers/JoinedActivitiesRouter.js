@@ -1,21 +1,7 @@
-    import express from 'express';
+import express from 'express';
 import { DataTypes } from "sequelize";
-import Fitmatch from "../../api/Fitmatch.js";
-
-const instance = new Fitmatch();
-const sequelize = instance.getSQL();
-
-//DEFINICION DEL MODELO
-const JoinedActivities = sequelize.define(
-    'JoinedActivities',
-    {
-        nom: DataTypes.STRING,
-        email: DataTypes.INTEGER
-    },
-    { tableName: 'JoinedActivitiess', timestamps: false }
-);
-
-
+import f from "./../api/Fitmatch.js";
+import { tokenRequired } from '../api/utils/Validate.js';
 
 const router = express.Router();
 
@@ -26,34 +12,14 @@ const router = express.Router();
 // si se produce un error:
 //     {ok: false, error: mensaje_de_error}
 
-router.get('/', function (req, res, next) {
-
-    JoinedActivities.findAll()
-        .then(JoinedActivitiess => res.json(JoinedActivitiess))
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }))
-
+router.get('/', tokenRequired, function (req, res, next) {
+    const id = req.token.id;
+    f.getSqlManager().getJoinedActivities(id)
 });
-
-// GET de un solo JoinedActivities
-router.get('/:id', function (req, res, next) {
-    JoinedActivities.findOne({ where: { id: req.params.id } })
-        .then(JoinedActivities => res.json({
-            ok: true,
-            data: JoinedActivities
-        }))
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }))
-});
-
-
 
 // POST, creació d'un nou JoinedActivities
-router.post('/create', function (req, res, next) {
+router.post('/:id', function (req, res, next) {
+    const id = parseInt(req.params.id);
     console.log(req.body)
     JoinedActivities.create(req.body)
         .then((item) => item.save())
