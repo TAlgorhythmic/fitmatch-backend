@@ -1,6 +1,6 @@
 import express from 'express';
 import { DataTypes } from "sequelize";
-import f from "./../api/Fitmatch.js";
+import fitmatch from "./../api/Fitmatch.js";
 import { tokenRequired } from '../api/utils/Validate.js';
 
 const router = express.Router();
