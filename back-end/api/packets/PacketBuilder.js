@@ -38,6 +38,13 @@ class PacketSimpleOk {
     }
 }
 
+class PacketSendData {
+    constructor(data) {
+        this.status = OK;
+        this.data = data;
+    }
+}
+
 export function buildNoPermissionPacket(message) {
     return new PacketNoPermission(message);
 }
@@ -56,4 +63,8 @@ export function buildTokenPacket(token) {
 
 export function buildSimpleOkPacket() {
     return new PacketSimpleOk();
+}
+
+export function buildSendDataPacket(data) {
+    return new PacketSendData(data);
 }
