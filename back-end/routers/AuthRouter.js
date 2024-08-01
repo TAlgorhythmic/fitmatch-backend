@@ -48,7 +48,7 @@ router.post("/login", (request, response, next) => {
             console.log(e);
             if (e) {
                 fitmatch.getUserManager().put(user.id, user);
-                response.json(buildTokenPacket(createToken(request.ip, user.id)));
+                response.json(buildTokenPacket(createToken(request.ip, user.id), user.isSetup));
                 return;
             } else {
                 response.json(buildInvalidPacket("The data introduced is incorrect. 2"));
@@ -92,7 +92,7 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
                             const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, null, null, data.isSetup);
                             fitmatch.userManager.put(user.id, user);
                             const token = createToken(request.ip, user.id);
-                            response.json(buildTokenPacket(token));
+                            response.json(buildTokenPacket(token, false));
                         })
                         .catch(err => {
                             console.log("An error ocurred trying to send a query. Error: " + err);
