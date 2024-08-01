@@ -6,8 +6,10 @@ function App() {
 
   return (
     <>
-      <Header />
-      <Outlet />
+      <div className="contenedorPrincipal">
+        <Header />
+        <Outlet />
+      </div>
     </>
   )
 }
