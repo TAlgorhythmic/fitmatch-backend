@@ -25,10 +25,11 @@ router.get('/', tokenRequired, function (req, res, next) {
     })
 });
 
-// POST, join an activity
 router.post('/join/:id', tokenRequired, function (req, res, next) {
-    const id = parseInt(req.token.id);
+    const userId = parseInt(req.token.id);
+    const activityId = parseInt(req.params.id);
     
+    // TODO
 });
 
 // GET JoinedActivities that user not joined
