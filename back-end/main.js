@@ -12,7 +12,10 @@ function executeQueriesRecursively(queries) {
     if (queries.length > 0) {
         fitmatch.sql.query(queries[i])
         .then(e => console.log("Success!"))
-        .catch(err => console.log("An error ocurred trying to initialize the database schema. Error: " + err))
+        .catch(err => {
+            console.log("Your SQL configuration is wrong. Check config.json. Error: " + err)
+            process.exit(-1);
+        })
         .finally(e => {
             i++;
             if (i < queries.length) {

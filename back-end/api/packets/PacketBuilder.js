@@ -32,6 +32,12 @@ class PacketToken {
     }
 }
 
+class PacketSimpleOk {
+    constructor() {
+        this.status = OK;
+    }
+}
+
 export function buildNoPermissionPacket(message) {
     return new PacketNoPermission(message);
 }
@@ -46,4 +52,8 @@ export function buildInternalErrorPacket(message) {
 
 export function buildTokenPacket(token) {
     return new PacketToken(token);
+}
+
+export function buildSimpleOkPacket() {
+    return new PacketSimpleOk();
 }

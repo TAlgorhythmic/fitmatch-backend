@@ -40,6 +40,15 @@ CREATE TABLE IF NOT EXISTS friends(
     FOREIGN KEY(userId2) REFERENCES users(id)
 );
 ///
+CREATE TABLE IF NOT EXISTS rejects(
+    issuer INT NOT NULL,
+    rejected INT NOT NULL,
+    expires DATE NOT NULL,
+    PRIMARY KEY(issuer, rejected),
+    FOREIGN KEY(issuer) REFERENCES users(id),
+    FOREIGN KEY(rejected) REFERENCES users(id)
+);
+///
 -- Trigger to avoid logic duplicates.
 
 CREATE TRIGGER IF NOT EXISTS friends_insert_listener

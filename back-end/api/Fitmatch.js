@@ -35,7 +35,8 @@ class Fitmatch {
         this.server = express();
         this.server.use(express.json());
         this.server.use(cors());
-        this.server.use(express.urlencoded({ extended: true }))
+        this.server.use(express.urlencoded({ extended: true }));
+        this.server.use('/uploads', express.static("uploads"));
         this.sqlManager = queryManager;
         this.userManager = userManager;
     }
@@ -78,6 +79,10 @@ class Fitmatch {
      */
     getUserManager() {
         return this.userManager;
+    }
+
+    decodeToken(token) {
+        
     }
 }
 

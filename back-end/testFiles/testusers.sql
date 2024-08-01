@@ -1,10 +1,10 @@
 -- Insertar datos en la tabla 'users'
 INSERT INTO users (pwhash, name, lastname, email, phone, description, proficiency, trainingPreferences, img, location, isSetup, tableVersion) VALUES
 (123456, 'John', 'Doe', 'john.doe@example.com', '123-456-7890', 'Description for John Doe', 'Intermedio', 'Training', 'img1.jpg', 'New York||40.725645742022785;-73.99724594200337', TRUE, 1),
-(654321, 'Jane', 'Smith', 'jane.smith@example.com', '321-654-0987', 'Description for Jane Smith', 'Avanzado', 'Training;', 'img2.jpg', 'Los Angeles||34.0562920113132;-118.24347273008911', TRUE, 1),
-(112233, 'Alice', 'Johnson', 'alice.johnson@example.com', '456-789-0123', 'Description for Alice Johnson', 'Principiante', 'Training preferences for Alice Johnson', 'img3.jpg', 'Chicago||41.87884878163715;-87.62890483582278', FALSE, 1),
-(332211, 'Bob', 'Brown', 'bob.brown@example.com', '789-012-3456', 'Description for Bob Brown', 'Intermedio', 'Training preferences for Bob Brown', 'img4.jpg', 'Houston||29.76536359382001;-95.37057169558145', FALSE, 1),
-(445566, 'Charlie', 'Davis', 'charlie.davis@example.com', '012-345-6789', 'Description for Charlie Davis', 'Avanzado', 'Training preferences for Charlie Davis', 'img5.jpg', 'Phoenix||33.45446603511938;-112.07627835443186', TRUE, 1);
+(654321, 'Jane', 'Smith', 'jane.smith@example.com', '321-654-0987', 'Description for Jane Smith', 'Avanzado', 'Training;', 'img1.jpg', 'Los Angeles||34.0562920113132;-118.24347273008911', TRUE, 1),
+(112233, 'Alice', 'Johnson', 'alice.johnson@example.com', '456-789-0123', 'Description for Alice Johnson', 'Principiante', 'Training preferences for Alice Johnson', 'img1.jpg', 'Chicago||41.87884878163715;-87.62890483582278', FALSE, 1),
+(332211, 'Bob', 'Brown', 'bob.brown@example.com', '789-012-3456', 'Description for Bob Brown', 'Intermedio', 'Training preferences for Bob Brown', 'img1.jpg', 'Houston||29.76536359382001;-95.37057169558145', FALSE, 1),
+(445566, 'Charlie', 'Davis', 'charlie.davis@example.com', '012-345-6789', 'Description for Charlie Davis', 'Avanzado', 'Training preferences for Charlie Davis', 'img1.jpg', 'Phoenix||33.45446603511938;-112.07627835443186', TRUE, 1);
 ///
 -- Insertar datos en la tabla 'days_of_week'
 INSERT INTO days_of_week (monday, tuesday, wednesday, thursday, friday, saturday, sunday, userId, timetable) VALUES
