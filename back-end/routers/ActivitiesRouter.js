@@ -29,7 +29,31 @@ const Friends = sequelize.define(
     { tableName: 'friends', timestamps: false }
 );
 
+export const garbage = [];
 
+export function removeGarbage(millis) {
+    setTimeout(() => {
+        function recursive() {
+            const itemToRemove = garbage.pop();
+            if (!itemToRemove) {
+                console.log("Activities table is now clean.");
+                return;
+            }
+            try {
+                fitmatch.getSqlManager().removeActivityCompletely(itemToRemove.id)
+                .then(e => {
+                    console.log("Success!");
+                    recursive();
+                    return;
+                });
+            } catch (err) {
+                console.log(err);
+                recursive();
+            }
+        }
+        recursive();
+    }, millis);
+}
 
 const router = express.Router();
 

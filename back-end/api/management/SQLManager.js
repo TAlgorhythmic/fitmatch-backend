@@ -14,6 +14,13 @@ class SQLManager {
         return fitmatch.sql.query(`SELECT joins_activities.* FROM joins_activities INNER JOIN activities ON joins_activities.postId = activities.id WHERE joins_activities.userId = ${id};`);
     }
 
+    removeActivityCompletely(id) {
+        fitmatch.sql.query(`DELETE FROM activities WHERE id = ${id};`)
+        .then(e => {
+            return fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ${id}`);
+        })
+    }
+
     /**
      * @returns a promise
      */
