@@ -18,8 +18,8 @@ router.get('/', tokenRequired, function (req, res, next) {
 });
 
 // POST, creació d'un nou JoinedActivities
-router.post('/:id', function (req, res, next) {
-    const id = parseInt(req.params.id);
+router.post('/join',tokenRequired, function (req, res, next) {
+    const id = parseInt(req.token.id);
     console.log(req.body)
     JoinedActivities.create(req.body)
         .then((item) => item.save())

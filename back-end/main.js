@@ -40,7 +40,6 @@ function run() {
     //las rutas que empiecen por /api/alumnes se dirigirán a alumnesRouter
     app.use("/api/auth", authRouter);
     app.use('/api/activities', activitiesRouter);
-    app.use("/api/activities/joins");
     app.use('/api/users', usersRouter);
     app.use('/api/joinedactivities', joinedActivitiesRouter);
     
