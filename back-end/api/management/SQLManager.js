@@ -1,9 +1,29 @@
 import fitmatch from "./../Fitmatch.js";
 
 const TABLES_VERSION = 0;
+const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
 
 class SQLManager {
     constructor() {}
+
+    getAllActivities() {
+        return fitmatch.getSql().query("SELECT * FROM activities;")
+    }
+
+    getJoinedActivities(id) {
+        return fitmatch.sql.query(`SELECT joins_activities.* FROM joins_activities INNER JOIN activities ON joins_activities.postId = activities.id WHERE joins_activities.userId = ${id};`);
+    }
+
+    removeActivityCompletely(id) {
+        fitmatch.sql.query(`DELETE FROM activities WHERE id = ${id};`)
+        .then(e => {
+            return fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ${id}`);
+        })
+    }
+
+    getActivityFromId(id) {
+        return fitmatch.getSql().query("SELECT * FROM activities WHERE id = " + id + ";");
+    }
 
     /**
      * @returns a promise
@@ -12,11 +32,19 @@ class SQLManager {
         return fitmatch.getSql().query("SELECT * FROM users;");
     }
 
+    getAllUsersWithLimitOffset(limit, offset) {
+        return fitmatch.getSql().query("Select * FROM users LIMIT " + limit + " OFFSET " + offset + ";");
+    }
+
     /**
      * @returns a promise
      */
     getUserFromId(id) {
         return fitmatch.getSql().query(`SELECT * FROM users WHERE id = "${id}";`);
+    }
+
+    setUserImage(id, image) {
+        return fitmatch.getSql().query(`UPDATE users SET img = "${image}" WHERE id = ${id};`);
     }
 
     /**
@@ -52,6 +80,17 @@ class SQLManager {
             i++;
         });
         return fitmatch.getSql().query(`UPDATE user SET ${str} WHERE id = ${user.id}`);
+    }
+
+    putRejection(issuer, rejected) {
+        return fitmatch.getSql().query(`INSERT INTO rejects(issuer, rejected, expires) VALUES(${issuer.id}, ${rejected.id}, ${new Date((new Date().getTime() + TIME_BEFORE_EXPIRES)).toISOString().slice(0, 19).replace("T", " ")});`);
+    }
+
+    /**
+     * 
+     */
+    getAllActivitiesWhitUserInfo() {
+        return fitmatch.getSql().query(`SELECT activities.*, users.name, users.img FROM activities INNER JOIN users ON activities.userId = users.id;`);
     }
 }
 
