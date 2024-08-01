@@ -26,9 +26,10 @@ class PacketInternalError {
 }
 
 class PacketToken {
-    constructor(token) {
+    constructor(token, isSetup) {
         this.status = OK,
         this.token = token;
+        this.isSetup = isSetup;
     }
 }
 
