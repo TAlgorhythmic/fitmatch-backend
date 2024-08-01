@@ -30,6 +30,7 @@ const Users = sequelize.define(
         lastname: DataTypes.INTEGER,
         email: DataTypes.STRING,
         phone: DataTypes.INTEGER,
+        img: DataTypes.STRING,
         description: DataTypes.STRING,
         proficiency: DataTypes.STRING,
         trainingPreferences: DataTypes.STRING,

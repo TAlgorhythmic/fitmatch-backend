@@ -32,7 +32,7 @@ const MakeFriends = () => {
           >
             <div
               className="tarjeta"
-              style={{ backgroundImage: `url(${p.img})` }}
+              style={{ backgroundImage: `url(http://localhost:3001/uploads/${p.img})` }}
             >
               <h2>{p.name}</h2>
               
