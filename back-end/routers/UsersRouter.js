@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 
 const router = express.Router();
 const sequelize = fitmatch.getSql();
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 
 //DEFINICION DEL MODELOuser
 const Users = sequelize.define(
@@ -92,30 +92,22 @@ function sketchyOrder(map) {
 // GET compatible users
 router.get('/connect', tokenRequired, function (req, res, next) {
     const token = req.token;
-    const session = sessions.get(token.id);
-    
+
     if (!sessions.has(token.id)) {
         sessions.set(token.id, new ConnectSession())
     }
-    if (!user) {
+    else {
         return res.json({
             ok: false,
             error: 'User not found'
         });
     }
 
-    // Encuentra los usuarios del 10 al 15
-    const usersInRange = Users.findAll({
-        offset: 0,  // El offset es 9 para empezar desde el usuario 10 (índice basado en 0)
-        limit: 4    // Limitamos a 6 usuarios para incluir del 10 al 15
-    });
+    const listOfMatches = sessions.get(token.id).sendMore(res);
 
     res.json({
         ok: true,
-        data: {
-            user,
-            usersInRange
-        }
+        data: listOfMatches
     });
 });
 
@@ -132,8 +124,8 @@ router.post('/create', function (req, res, next) {
 
 
 // put modificació d'un Users
-router.put('/edit/:id', function (req, res, next) {
-    Users.findOne({ where: { id: req.params.id } })
+router.put('/edit', tokenRequired, function (req, res, next) {
+    Users.findOne({ where: { id: req.token.id } })
         .then((al) =>
             al.update(req.body)
         )
@@ -167,5 +159,23 @@ router.get('/notjoined/:userId'), function (req, res, next) {
         .then((data) => res.json({ ok: true, data }))
         .catch((error) => res.json({ ok: false, error }))
 }
+
+
+// Modificacio de contraseña
+router.put('/changepasswd', tokenRequired, function (req, res, next) {
+    Users.findOne({ where: { id: req.token.id } })
+        .then(user => {
+            if (!user) {
+                return res.send({ message: 'User not found' });
+            }
+            return user.update({ password: req.body.password });
+        })
+        .then(updatedUser => {
+            res.send({ message: 'Password updated successfully' });
+        })
+        .catch(error => {
+            next(error); // Pasa el error al manejador de errores de Express
+        });
+});
 
 export default router;
