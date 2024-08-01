@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import BaseController from './controllers/BaseController';
-import { Container, Row } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import ActividadMain from './components/ActividadMain';
+import HomeLateral from './components/HomeLateral';
+import HomeView from './components/HomeView';
+import BarraLateral from './components/BarraLateral';
 
 function Home() {
     const [activities, setActivities] = useState([]);
@@ -23,13 +26,19 @@ function Home() {
     }, []);
 
     return (
-        <Container>
-            {activities.map((activity, index) => (
-                <Row key={index}>
-                    <ActividadMain data={activity} />
-                </Row>
-            ))}
-        </Container>
+        <>
+            <Row>
+                <Col xs={2}>
+                    <BarraLateral/>
+                </Col>
+                <Col xs={6}>
+                    <HomeView activitiesData={activities} />
+                </Col>
+                <Col xs={4}>
+                    <HomeLateral activitiesData={activities} />
+                </Col>
+            </Row>
+        </>
     );
 }
 
