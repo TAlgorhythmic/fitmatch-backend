@@ -29,6 +29,17 @@ const Friends = sequelize.define(
     { tableName: 'friends', timestamps: false }
 );
 
+export function filterActivities(array) {
+    array.filter(item => {
+        const date = new Date(item.expires.replace(" ", "T"));
+        const isExpired = Date.now <= date.getTime();
+        if (isExpired) {
+            garbage.push(item);
+        }
+        return isExpired;
+    })
+}
+
 export const garbage = [];
 
 export function removeGarbage(millis) {
@@ -66,12 +77,15 @@ const router = express.Router();
 
 router.get('/', tokenRequired, async function (req, res, next) {
     const listToReturn = sqlManager.getAllActivitiesWhitUserInfo()
-        .then(activities => res.json(
+        .then(activities => {
+            const data = activities[0];
+            data.filter()
+            res.json(
             {
                 ok: true,
-                data: activities[0]
+                data: data
             }
-        ))
+        )})
         .catch(error => res.json(
             {
                 ok: false,
