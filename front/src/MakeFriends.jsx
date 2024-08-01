@@ -56,11 +56,16 @@ const MakeFriends = () => {
           <TinderCard
             className="swipe"
             key={p.id}
-            preventSwipe={['up', 'down']}
+            preventSwipe={['up', 'down']} //swipe no permitido para arriba-abajo
           >
             <div
+<<<<<<< HEAD
+              className="tarjeta" //lo que se ve
+              style={{ backgroundImage: `url(${p.img})` }}
+=======
               className="tarjeta"
               style={{ backgroundImage: `url(http://localhost:3001/uploads/${p.img})` }}
+>>>>>>> 1c61d83b054f66ba057cb8099fc9fe07cb3ca195
             >
               <h2>{p.name}</h2>
 

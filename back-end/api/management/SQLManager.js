@@ -21,6 +21,10 @@ class SQLManager {
         })
     }
 
+    getActivityFromId(id) {
+        return fitmatch.getSql().query("SELECT * FROM activities WHERE id = " + id + ";");
+    }
+
     /**
      * @returns a promise
      */

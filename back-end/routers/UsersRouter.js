@@ -7,6 +7,7 @@ import path from "path";
 import slugify from "slugify";
 import { buildInvalidPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
 import ConnectSession, { sessions } from "../api/utils/ConnectSession.js";
+import User from "../api/User.js";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -102,26 +103,58 @@ router.get('/connect', tokenRequired, function (req, res, next) {
             error: 'User not found'
         });
     }
+    
+    sessions.get(token.id).sendMore(res);
+});
 
-    const listOfMatches = sessions.get(token.id).sendMore(res);
-
-    res.json({
-        ok: true,
-        data: listOfMatches
+/**
+ * Data expected:
+ * token
+ * body: {
+ *      preferencesArray,
+ *      description,
+ *      img, (optional)
+ *      proficiency, 
+ *      city,
+ *      latitude,
+ *      longitude
+ * }
+ */
+router.post("/setup", tokenRequired, (req, res, next) => {
+    const id = req.token.id;
+    const preferences = req.body.preferences.length ? req.body.preferences.join(";") : null;
+    if (!preferences) {
+        res.json(buildInvalidPacket("Preferences is empty."));
+        return;
+    }
+    const description = req.body.description ? req.body.description : null;
+    const img = req.body.img ? req.body.img : null;
+    const proficiency = req.body.proficiency;
+    if (!proficiency) {
+        res.json(buildInvalidPacket("You must select your proficiency level!"));
+        return;
+    }
+    const city = req.body.city;
+    if (!city) {
+        res.json(buildInvalidPacket("City is empty."));
+        return;
+    }
+    const latitude = req.body.latitude;
+    if (!latitude) {
+        res.json(buildInvalidPacket("You must include a latitude."));
+        return;
+    }
+    const longitude = req.body.longitude;
+    if (!longitude) {
+        res.json(buildInvalidPacket("You must include a longitude."));
+        return;
+    }
+    fitmatch.getSqlManager().getUserFromId(id)
+    .then(e => {
+        const data = e[0];
+        const user = new User(data.id, ) // TODO
     });
-});
-
-
-// POST, creació d'un nou Users
-router.post('/create', function (req, res, next) {
-    console.log(req.body)
-    Users.create(req.body)
-        .then((item) => item.save())
-        .then((item) => res.json({ ok: true, data: item }))
-        .catch((error) => res.json({ ok: false, error }))
-
-});
-
+})
 
 // put modificació d'un Users
 router.put('/edit', tokenRequired, function (req, res, next) {

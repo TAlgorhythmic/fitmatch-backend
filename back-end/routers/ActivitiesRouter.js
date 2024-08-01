@@ -29,10 +29,14 @@ const Friends = sequelize.define(
     { tableName: 'friends', timestamps: false }
 );
 
+export function isActivityExpired(activity) {
+    const date = new Date(activity.expires.replace(" ", "T"));
+    return Date.now <= date.getTime();
+}
+
 export function filterActivities(array) {
     array.filter(item => {
-        const date = new Date(item.expires.replace(" ", "T"));
-        const isExpired = Date.now <= date.getTime();
+        const isExpired = isActivityExpired(item);
         if (isExpired) {
             garbage.push(item);
         }
@@ -52,11 +56,11 @@ export function removeGarbage(millis) {
             }
             try {
                 fitmatch.getSqlManager().removeActivityCompletely(itemToRemove.id)
-                .then(e => {
-                    console.log("Success!");
-                    recursive();
-                    return;
-                });
+                    .then(e => {
+                        console.log("Success!");
+                        recursive();
+                        return;
+                    });
             } catch (err) {
                 console.log(err);
                 recursive();
@@ -81,11 +85,12 @@ router.get('/', tokenRequired, async function (req, res, next) {
             const data = activities[0];
             data.filter()
             res.json(
-            {
-                ok: true,
-                data: data
-            }
-        )})
+                {
+                    ok: true,
+                    data: data
+                }
+            )
+        })
         .catch(error => res.json(
             {
                 ok: false,
