@@ -1,6 +1,7 @@
 import fitmatch from "./../Fitmatch.js";
 
 const TABLES_VERSION = 0;
+const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
 
 class SQLManager {
     constructor() {}
@@ -12,11 +13,19 @@ class SQLManager {
         return fitmatch.getSql().query("SELECT * FROM users;");
     }
 
+    getAllUsersWithLimitOffset(limit, offset) {
+        return fitmatch.getSql().query("Select * FROM users LIMIT " + limit + " OFFSET " + offset + ";");
+    }
+
     /**
      * @returns a promise
      */
     getUserFromId(id) {
         return fitmatch.getSql().query(`SELECT * FROM users WHERE id = "${id}";`);
+    }
+
+    setUserImage(id, image) {
+        return fitmatch.getSql().query(`UPDATE users SET img = "${image}" WHERE id = ${id};`);
     }
 
     /**
@@ -52,6 +61,10 @@ class SQLManager {
             i++;
         });
         return fitmatch.getSql().query(`UPDATE user SET ${str} WHERE id = ${user.id}`);
+    }
+
+    putRejection(issuer, rejected) {
+        return fitmatch.getSql().query(`INSERT INTO rejects(issuer, rejected, expires) VALUES(${issuer.id}, ${rejected.id}, ${new Date((new Date().getTime() + TIME_BEFORE_EXPIRES)).toISOString().slice(0, 19).replace("T", " ")});`);
     }
 }
 

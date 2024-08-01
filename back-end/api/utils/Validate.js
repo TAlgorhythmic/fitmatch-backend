@@ -58,8 +58,6 @@ export function validateRegisterCredentials(req, res, next) {
 
 // Middleware
 export function tokenRequired(req, res, next) {
-    next();
-    return
     let token = req.headers.Authorization || "";
 
     if (!token) {
@@ -74,10 +72,11 @@ export function tokenRequired(req, res, next) {
             res.json(buildInternalErrorPacket("Internal error when trying to verify token."));
         } else {
             const expiredAt = decoded.expiredAt;
-            if (expiredAt > new Date().getTime()) {
+            if (expiredAt > new Date().getTime() && decoded.ip === req.ip) {
+                req.token = decoded;
                 next();
             } else {
-                res.json(buildNoPermissionPacket("This token has expired!"))
+                res.json(buildNoPermissionPacket("This token is expired/invalid!"))
             }
         }
     })

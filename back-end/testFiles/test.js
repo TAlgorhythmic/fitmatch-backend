@@ -40,6 +40,13 @@ function test1() {
     console.log(bcrypt.compareSync(testPassword, hash));
 }
 
+function test2() {
+    fitmatch.sqlManager.getAllUsersWithLimitOffset(3, 1)
+    .then(e => {
+        console.log(e[0]);
+    })
+}
+
 function testAlgorithm() {
     fitmatch.getSqlManager().getAllUsers()
     .then(e => {
@@ -54,5 +61,6 @@ function testAlgorithm() {
     })
 }
 // test1();
-// createTestUsers();
-testAlgorithm();
+// test2();
+createTestUsers();
+// testAlgorithm();

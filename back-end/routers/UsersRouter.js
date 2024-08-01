@@ -2,12 +2,27 @@ import fitmatch from "./../api/Fitmatch.js";
 import { tokenRequired } from "./../api/utils/Validate.js";
 import express from "express";
 import { DataTypes, STRING } from "sequelize";
+import multer from "multer";
+import path from "path";
+import slugify from "slugify";
+import { buildInvalidPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
+import ConnectSession, { sessions } from "../api/utils/ConnectSession.js";
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "./../uploads/");
+    },
+    filename: (req, file, cb) => {
+        const slug = slugify(path.basename(file.originalname, path.extname(file.originalname)), { lower: true, strict: true });
+        cb(null, `${Date.now}_${slug}${path.extname(file.originalname)}`);
+    }
+});
 
 const router = express.Router();
-
 const sequelize = fitmatch.getSql();
+const upload = multer({storage: storage});
 
-//DEFINICION DEL MODELO
+//DEFINICION DEL MODELOuser
 const Users = sequelize.define(
     'Users',
     {
@@ -46,6 +61,14 @@ router.get('/', tokenRequired, function (req, res, next) {
 
 });
 
+router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, next) => {
+    if (!req.file) {
+        res.json(buildInvalidPacket("Image is empty."));
+        return;
+    }
+    res.json(buildSimpleOkPacket());
+});
+
 // GET de un solo Users
 router.get('/:id', function (req, res, next) {
     Users.findOne({ where: { id: req.params.id } })
@@ -59,39 +82,40 @@ router.get('/:id', function (req, res, next) {
         }))
 });
 
-// GET users compability
-router.get('/connect/:id', async function (req, res, next) {
-    try {
-        // Encuentra el usuario con el ID especificado
-        const user = await Users.findOne({ where: { id: req.params.id } });
+function sketchyOrder(map) {
 
-        if (!user) {
-            return res.json({
-                ok: false,
-                error: 'User not found'
-            });
-        }
+}
 
-        // Encuentra los usuarios del 10 al 15
-        const usersInRange = await Users.findAll({
-            offset: 0,  // El offset es 9 para empezar desde el usuario 10 (índice basado en 0)
-            limit: 4    // Limitamos a 6 usuarios para incluir del 10 al 15
-        });
 
-        res.json({
-            ok: true,
-            data: {
-                user,
-                usersInRange
-            }
-        });
 
-    } catch (error) {
-        res.json({
+// GET compatible users
+router.get('/connect', tokenRequired, function (req, res, next) {
+    const token = req.token;
+    const session = sessions.get(token.id);
+    
+    if (!sessions.has(token.id)) {
+        sessions.set(token.id, new ConnectSession())
+    }
+    if (!user) {
+        return res.json({
             ok: false,
-            error: error.message || error
+            error: 'User not found'
         });
     }
+
+    // Encuentra los usuarios del 10 al 15
+    const usersInRange = Users.findAll({
+        offset: 0,  // El offset es 9 para empezar desde el usuario 10 (índice basado en 0)
+        limit: 4    // Limitamos a 6 usuarios para incluir del 10 al 15
+    });
+
+    res.json({
+        ok: true,
+        data: {
+            user,
+            usersInRange
+        }
+    });
 });
 
 
