@@ -2,12 +2,12 @@ import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 
 function Header() {
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
+        <Navbar expand="lg" className="bg-body-tertiary customNavbar">
             <Container>
-                <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                <Navbar.Brand href="#home" className="customBrand">Fitmatch</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
+                <Navbar.Collapse id="basic-navbar-nav" className='customCollapse'>
+                    <Nav className="me-auto customNav">
                         <Nav.Link href="#home">Home</Nav.Link>
                         <Nav.Link href="#link">Link</Nav.Link>
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
