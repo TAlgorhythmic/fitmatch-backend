@@ -1,6 +1,6 @@
+import fitmatch from "./../api/Fitmatch.js";
 import express from 'express';
 import { DataTypes } from "sequelize";
-import fitmatch from "./../api/Fitmatch.js";
 import { tokenRequired } from "./../api/utils/Validate.js";
 
 const sequelize = fitmatch.getSql();

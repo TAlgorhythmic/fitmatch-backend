@@ -1,7 +1,7 @@
 import fitmatch from "./api/Fitmatch.js";
 import cors from "cors";
 import fs from "fs";
-import activitiesRouter from "./routers/ActivitiesRouter.js";
+import activitiesRouter, { removeGarbage } from "./routers/ActivitiesRouter.js";
 import usersRouter from "./routers/UsersRouter.js";
 import authRouter from "./routers/AuthRouter.js";
 import joinedActivitiesRouter from "./routers/JoinedActivitiesRouter.js";
@@ -47,6 +47,8 @@ function run() {
 
     //npm run build y luego se puede  app.use(express.static('FRONT/dist'));
     app.use(e.static("../front/dist"));
+
+    removeGarbage(60000);
 
     //arranque del servidor
     const port = 3001;
