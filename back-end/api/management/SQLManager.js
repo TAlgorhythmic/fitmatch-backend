@@ -11,7 +11,7 @@ class SQLManager {
     }
 
     getJoinedActivities(id) {
-        return fitmatch.sql.query("SELECT * FROM activities INNER JOIN users ON activities.userId = users.id;");
+        return fitmatch.sql.query(`SELECT joins_activities.* FROM joins_activities INNER JOIN activities ON joins_activities.postId = activities.id WHERE joins_activities.userId = ${id};`);
     }
 
     /**
