@@ -155,13 +155,4 @@ router.delete('/:id', tokenRequired, function (req, res, next) {
 
 });
 
-
-// GET activities that user not joined
-router.get('/notjoined'), tokenRequired, function (req, res, next) {
-    Activities.findAll({ where: { userId: req.token.id } })
-        .then((data) => res.json({ ok: true, data }))
-        .catch((error) => res.json({ ok: false, error }))
-}
-
-
 export default router;
