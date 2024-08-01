@@ -6,6 +6,14 @@ const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
 class SQLManager {
     constructor() {}
 
+    getAllActivities() {
+        return fitmatch.getSql().query("SELECT * FROM activities;")
+    }
+
+    getJoinedActivities(id) {
+        return fitmatch.sql.query("SELECT * FROM activities INNER JOIN users ON activities.userId = users.id;");
+    }
+
     /**
      * @returns a promise
      */
