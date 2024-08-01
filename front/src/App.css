@@ -1,0 +1,101 @@
+/*Tipografías*/
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+/*Colores*/
+:root {
+    --color-principal: #5922ff;
+    --color-secundario: #4CAF50;
+    --color-terciario: #e4e4e4;
+
+    --color-fondo-principal: #ffffff;
+    --color-fondo-secundario: #76c1ff;
+
+    --color-texto-principal: #afbadf;
+    --color-texto-secundario: #757575;
+
+    --color-error: #F44336;
+    --color-éxito: #8BC34A;
+    --color-info: #03A9F4;
+}
+
+/*Principales*/
+.contenedorPrincipal {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-fondo-principal);
+}
+
+/*Navbar*/
+.customNavbar {
+    margin: 30px;
+    border-radius: 8px;
+    background-color: var(--color-fondo-principal) !important;
+    border: 1px solid var(--color-terciario);
+    box-shadow: 0px 0px 12px 0px var(--color-terciario);
+}
+
+.customBrand {
+    color: var(--color-principal) !important;
+    font-family: 'Pacifico', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 2em;
+}
+
+.customCollapse {
+    justify-content: right;
+    text-align: right !important;
+}
+
+.customNav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.customNav > * {
+    margin: 0 10px;
+}
+
+.customNavDropdown {
+    left: 50px !important;
+}
+
+/*HomeView*/
+.contenedorHome {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-fondo-principal);
+    margin: 0 30px 30px 0;
+    border-radius: 8px;
+    padding: 30px;
+    background-color: var(--color-fondo-principal) !important;
+    box-shadow: 0px 0px 12px 0px var(--color-terciario);
+}
+
+/*HomeLateral*/
+.contenedorLateral {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    overflow-y: auto;
+    max-height: 75vh;
+    background-color: var(--color-fondo-principal);
+    margin: 0 0 30px 0;
+    border-radius: 8px;
+    padding: 30px;
+    background-color: var(--color-fondo-principal) !important;
+    box-shadow: 0px 0px 12px 0px var(--color-terciario);
+}
+
+/*Barra lateral*/
+.barraLateral {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    overflow-y: auto;
+    height: 75vh;
+    margin: 0 0 30px 30px;
+    background-color: var(--color-fondo-principal);
+    border-radius: 8px;
+    padding: 30px;
+    background-color: var(--color-fondo-principal) !important;
+    box-shadow: 0px 0px 12px 0px var(--color-terciario);
+}
