@@ -4,6 +4,7 @@ import fs from "fs";
 import activitiesRouter from "./routers/ActivitiesRouter.js";
 import usersRouter from "./routers/UsersRouter.js";
 import authRouter from "./routers/AuthRouter.js";
+import joinedActivitiesRouter from "./routers/JoinedActivitiesRouter.js";
 import e from "express";
 
 let i = 0;
@@ -40,6 +41,7 @@ function run() {
     app.use("/api/auth", authRouter);
     app.use('/api/activities', activitiesRouter);
     app.use('/api/users', usersRouter);
+    app.use('/api/joinedactivities', joinedActivitiesRouter);
     
 
     //npm run build y luego se puede  app.use(express.static('FRONT/dist'));
