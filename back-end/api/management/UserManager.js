@@ -9,7 +9,8 @@ class UserManager {
     }
 
     put(id, user) {
-        this.map.set(id, user);
+        const ref = new Ref(user, this.map);
+        this.map.set(id, ref);
     }
 
     containsKey(id) {
@@ -27,10 +28,14 @@ class UserManager {
                 const data = e[0];
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.location, data.isSetup);
                 this.put(user.id, new Ref(user, this.map));
+                return user;
             })
             .catch(err => {
-    
+                console.log(err);
+                throw err;
             });
+        } else {
+            return this.get(id).user;
         }
     }
 }
