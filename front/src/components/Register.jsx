@@ -83,7 +83,7 @@ const Register = () => {
                                 <button type="submit" className="register-button">Sign Up</button>
                                 {error && <p className="error-message">{error}</p>}
                             </form>
-                            <a href="http://localhost:3001/auth/google" className="google-signin-button">
+                            <a href="http://localhost:3001/api/auth/google" className="google-b">
                                 Sign up with Google
                             </a>
                         </div>
