@@ -48,7 +48,6 @@ router.get("/google", async (req, res, next) => {
     const email = payload.email;
     const phone = null;
 
-
     register(userId, name, lastname, GOOGLE, email, phone, null, req, res);
 });
 
@@ -111,42 +110,44 @@ router.post("/login", (request, response, next) => {
 
 function register(id, name, lastname, provider, email, phone, password, request, response) {
     fitmatch.sqlManager.getUserFromEmail(email)
-    .then(e => {
-        const data = e[0];
-        if (data.length) {
-            response.json(buildInvalidPacket("This email is already in use."));
-            return;
-        }
-        next();
-    })
-    .catch(err => {
-        console.log("An error ocurred trying to send a query. Error: " + err);
-        response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
-    })
-
-    bcrypt.hash(password, 10)
         .then(e => {
-            let promise;
+            const data = e[0];
+            if (data.length) {
+                response.json(buildInvalidPacket("This email is already in use."));
+                return;
+            }
+            next();
+        })
+        .catch(err => {
+            console.log("An error ocurred trying to send a query. Error: " + err);
+            response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
+        });
+    
+    let promise;
+    if (provider === GOOGLE && id) {
+        promise = fitmatch.sqlManager.createNewUserWithId(id, name, lastname ? lastname : null, provider, email, phone ? phone : null, e);
+    } else if (provider === LOCAL && password) {
+        bcrypt.hash(password, 10)
+        .then(e => {
             if (id) {
                 promise = fitmatch.sqlManager.createNewUserWithId(id, name, lastname ? lastname : null, provider, email, phone ? phone : null, e)
             } else {
-                promise = fitmatch.sqlManager.createNewUser(name, lastname ? lastname : null, provider, email, phone ? phone : null, e);
+                promise = fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e);
             }
-            
-                promise.then(e => {
-                    fitmatch.sqlManager.getUserFromEmail(email)
-                        .then(e => {
-                            const data = e[0];
-                            const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, null, null, data.isSetup);
-                            fitmatch.userManager.put(user.id, user);
-                            const token = createToken(request.ip, user.id);
-                            response.json(buildTokenPacket(token, false));
-                        })
-                        .catch(err => {
-                            console.log("An error ocurred trying to send a query. Error: " + err);
-                            response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."))
-                        });
-                })
+            promise.then(e => {
+                fitmatch.sqlManager.getUserFromEmail(email)
+                    .then(e => {
+                        const data = e[0];
+                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, null, null, data.isSetup);
+                        fitmatch.userManager.put(user.id, user);
+                        const token = createToken(request.ip, user.id);
+                        response.json(buildTokenPacket(token, false));
+                    })
+                    .catch(err => {
+                        console.log("An error ocurred trying to send a query. Error: " + err);
+                        response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."))
+                    });
+            })
                 .catch(err => {
                     console.log("An error ocurred trying to send a query. Error: " + err);
                     response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
