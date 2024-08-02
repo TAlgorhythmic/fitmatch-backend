@@ -9,7 +9,6 @@
 }
 
 .login-box {
-    background-color: #1F1D36; /* Fondo del cuadro */
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -19,7 +18,7 @@
 
 .logo-text {
     font-size: 36px;
-    color: #FFFFFF; /* Color del texto de la marca */
+    color: black; /* Color del texto de la marca */
     margin-bottom: 30px;
 }
 

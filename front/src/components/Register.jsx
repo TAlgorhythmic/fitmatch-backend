@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import BaseController from './../controllers/BaseController';
 import './Register.css';
 
@@ -11,38 +11,7 @@ const Register = () => {
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
-
     const authController = new BaseController('auth/register');
-
-    useEffect(() => {
-        // Inicializa Google Identity Services
-        window.google.accounts.id.initialize({
-            client_id: "913371404323-ngqfki68d7olj5dq9osqtv1ig493iab8.apps.googleusercontent.com", // Reemplaza con tu Google Client ID
-            callback: handleGoogleSignIn
-        });
-
-        window.google.accounts.id.renderButton(
-            document.getElementById("googleSignInButton"),
-            { theme: "outline", size: "large" }
-        );
-    }, []);
-
-    const handleGoogleSignIn = async (response) => {
-        console.log('Google ID token:', response.credential);
-        try {
-            // Envía el token de ID a tu backend para registrarlo o autenticarlo
-            const googleResponse = await authController.createItem({
-                token: response.credential,
-                provider: 'google'
-            });
-            console.log('User registered with Google:', googleResponse);
-            setSuccess(true);
-            setError('');
-        } catch (err) {
-            console.error('Error during Google registration:', err);
-            setError('Failed to register with Google. Please try again.');
-        }
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -114,15 +83,16 @@ const Register = () => {
                                 <button type="submit" className="register-button">Sign Up</button>
                                 {error && <p className="error-message">{error}</p>}
                             </form>
-                            <div id="googleSignInButton"></div> {/* Botón de Google */}
+                            <a href="http://localhost:3001/auth/google" className="google-signin-button">
+                                Sign up with Google
+                            </a>
                         </div>
                     )}
                 </div>
             </div>
             <div className="slogan-container">
                 <p className="slogan-text">
-                    Encuentra a tu compañero ideal para alcanzar nuevas metas juntos. Ya sea en el gimnasio o en cualquier deporte, tu gymbro perfecto está a solo un clic de distancia.
-                </p>
+                    Encuentra a tu compañero ideal...  </p>
             </div>
         </div>
     );
