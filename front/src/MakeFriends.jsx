@@ -8,8 +8,7 @@ const MakeFriends = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const cardRefs = useRef([]);
   const tableName = "users";
-
-    const UsersController = new BaseController(tableName);
+  const UsersController = new BaseController(tableName);
 
   // Obtener usuarios desde la base de datos al cargar el componente
   useEffect(() => {
