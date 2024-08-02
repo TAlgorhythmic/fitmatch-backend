@@ -41,6 +41,7 @@ function App() {
     <>
       <div className="contenedorPrincipal">
         <Header />
+        <Navigate to="/login" />
         <Outlet />
       </div>
     </>
