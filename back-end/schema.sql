@@ -1,7 +1,8 @@
 -- Independent table
 CREATE TABLE IF NOT EXISTS users(
     id INT NOT NULL AUTO_INCREMENT,
-    pwhash VARCHAR(400) NOT NULL,
+    pwhash VARCHAR(400),
+    provider ENUM("local", "google"),
     name VARCHAR(32) NOT NULL,
     lastname VARCHAR(36),
     email VARCHAR(40) NOT NULL,
