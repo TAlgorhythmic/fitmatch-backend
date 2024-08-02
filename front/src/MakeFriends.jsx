@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TinderCard from 'react-tinder-card';
-import './mf.css'
+import './mf.css';
 import BaseController from './controllers/BaseController';
-
 
 const MakeFriends = () => {
   const [persona, setPersona] = useState([]);
@@ -10,8 +9,6 @@ const MakeFriends = () => {
   const tableName = "users";
   const childRefs = useRef([]);
   const UsersController = new BaseController(tableName);
-
-
 
   useEffect(() => {
     async function getUsers() {
@@ -52,31 +49,24 @@ const MakeFriends = () => {
   return (
     <div className="TargetasUser">
       <div className="TargetasUser_contenedor">
-        {persona.map((p) => (
+        {persona.map((p, index) => (
           <TinderCard
+            ref={childRefs.current[index]}
             className="swipe"
             key={p.id}
             preventSwipe={['up', 'down']} //swipe no permitido para arriba-abajo
           >
             <div
-<<<<<<< HEAD
-              className="tarjeta" //lo que se ve
-              style={{ backgroundImage: `url(${p.img})` }}
-=======
               className="tarjeta"
               style={{ backgroundImage: `url(http://localhost:3001/uploads/${p.img})` }}
->>>>>>> 1c61d83b054f66ba057cb8099fc9fe07cb3ca195
             >
               <h2>{p.name}</h2>
-
             </div>
           </TinderCard>
-
         ))}
       </div>
     </div>
   );
-}
-
+};
 
 export default MakeFriends;
