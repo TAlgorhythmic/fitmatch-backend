@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BaseController from './../controllers/BaseController';
 import './Register.css';
 
@@ -13,6 +13,36 @@ const Register = () => {
     const [success, setSuccess] = useState(false);
 
     const authController = new BaseController('auth/register');
+
+    useEffect(() => {
+        // Inicializa Google Identity Services
+        window.google.accounts.id.initialize({
+            client_id: `"913371404323-ngqfki68d7olj5dq9osqtv1ig493iab8.apps.googleusercontent.com"`, // Reemplaza con tu Google Client ID
+            callback: handleGoogleSignIn
+        });
+
+        window.google.accounts.id.renderButton(
+            document.getElementById("googleSignInButton"),
+            { theme: "outline", size: "large" }
+        );
+    }, []);
+
+    const handleGoogleSignIn = async (response) => {
+        console.log('Google ID token:', response.credential);
+        try {
+            // Envía el token de ID a tu backend para registrarlo o autenticarlo
+            const googleResponse = await authController.createItem({
+                token: response.credential,
+                provider: 'google'
+            });
+            console.log('User registered with Google:', googleResponse);
+            setSuccess(true);
+            setError('');
+        } catch (err) {
+            console.error('Error during Google registration:', err);
+            setError('Failed to register with Google. Please try again.');
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -36,58 +66,66 @@ const Register = () => {
     };
 
     return (
-        <div className="register-container">
-            <div className="register-card">
-                <h2>Sign Up</h2>
-                {success ? (
-                    <p className="success-message">Registration successful!</p>
-                ) : (
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="email">Gmail Address</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                                placeholder="Enter your Gmail"
-                            />
+        <div className="page-container">
+            <div className="register-container">
+                <div className="register-card">
+                    <h2>Sign Up</h2>
+                    {success ? (
+                        <p className="success-message">Registration successful!</p>
+                    ) : (
+                        <div>
+                            <form onSubmit={handleSubmit}>
+                                <div className="form-group">
+                                    <label htmlFor="email">Gmail Address</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder="Enter your Gmail"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="password">Password</label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder="Enter your password"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="name">Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder="Enter your name"
+                                    />
+                                </div>
+                                <button type="submit" className="register-button">Sign Up</button>
+                                {error && <p className="error-message">{error}</p>}
+                            </form>
+                            <div id="googleSignInButton"></div> {/* Botón de Google */}
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                                placeholder="Enter your password"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="name">Name</label>
-                            <input
-                                type="name"
-                                id="name"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                required
-                                placeholder="Enter your name"
-                            />
-                        </div>
-                        <button type="submit" className="register-button">Sign Up</button>
-                        {error && <p className="error-message">{error}</p>}
-                    </form>
-                )}
+                    )}
+                </div>
+            </div>
+            <div className="slogan-container">
+                <p className="slogan-text">
+                    Encuentra a tu compañero ideal para alcanzar nuevas metas juntos. Ya sea en el gimnasio o en cualquier deporte, tu gymbro perfecto está a solo un clic de distancia.
+                </p>
             </div>
         </div>
     );
 };
 
 export default Register;
-
-
