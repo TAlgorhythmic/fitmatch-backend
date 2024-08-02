@@ -1,4 +1,4 @@
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import ActividadMain from './ActividadMain';
 
 function HomeView(props) {
@@ -7,7 +7,7 @@ function HomeView(props) {
 
     return (
         <>
-            <div className="contenedorHome">
+            <div className="contenedorHome ">
                 {activities.map((activity, index) => (
                     <Row key={index}>
                         <ActividadMain data={activity} />
