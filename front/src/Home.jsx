@@ -28,13 +28,13 @@ function Home() {
     return (
         <>
             <Row>
-                <Col xs={1}>
+                <Col xs={2}>
                     <BarraLateral />
                 </Col>
                 <Col xs={7} className="d-flex flex-column">
                     <HomeView activitiesData={activities} />
                 </Col>
-                <Col xs={4} className="d-flex flex-column">
+                <Col xs={3} className="d-flex flex-column">
                     <HomeLateral activitiesData={activities} />
                 </Col>
             </Row>
