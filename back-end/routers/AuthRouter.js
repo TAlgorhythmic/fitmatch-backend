@@ -153,6 +153,10 @@ function register(id, name, lastname, provider, email, phone, password, request,
                     response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
                 })
         })
+    } else {
+        response.json(buildInvalidPacket("Credentials are not correct."));
+        console.log(request);
+    }
 }
 
 /**
