@@ -32,7 +32,6 @@ input[type="email"], input[type="password"] {
     padding: 12px;
     border-radius: 8px;
     border: 1px solid #333;
-    background-color: #2A2A42; /* Fondo de los inputs */
     color: #FFF; /* Color del texto */
     font-size: 14px;
 }

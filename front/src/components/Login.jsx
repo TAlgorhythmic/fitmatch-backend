@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css'; // Asegúrate de crear este archivo con los estilos
+import './Login.css'; 
 
 
 const Login = () => {
@@ -12,22 +12,21 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Aquí puedes manejar la lógica de autenticación
         const loginData = {
             field: email,
             password: password
         };
 
         const requestOptions = {
-            method: 'POST', // Cambiando a POST para enviar credenciales
+            method: 'POST', 
             headers: { 
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(loginData)
         };
 
-        fetch("http://localhost:3001/api" + "/auth/login", requestOptions) // Asegúrate de que este sea el endpoint correcto para login
-            .then(response => response.json())
+        fetch("http://localhost:3001/api" + "/auth/login", requestOptions)
+         .then(response => response.json())
             .then(response => {
                 if (response.status===0) {
                     setResposta('Login successful');
@@ -70,7 +69,7 @@ const Login = () => {
                     <button type="submit" className="login-button">Log In</button>
                 </form>
                 <a href="#" className="forgot-password">Forgot your password?</a>
-                <h3>{resposta}</h3> {/* Mostrar respuesta de la API */}
+                <h3>{resposta}</h3> 
             </div>
         </div>
     );
