@@ -3,6 +3,9 @@ import fitmatch from "./../Fitmatch.js";
 
 const TIMEOUT = 512000;
 
+/**
+ * Important! Use setters for updating values.
+ */
 class UserManager {
     constructor() {
         this.map = new Map();
@@ -46,10 +49,31 @@ class Ref {
         this.modified = new Date();;
         this.map = map;
         this.checkOrDelete();
+        this.saveList = new Map();
     }
 
-    onModify() {
+    onModify(field, value) {
         this.modified = new Date();
+        this.pushChange(field, value);
+    }
+
+    pushChange(field, value) {
+        this.saveList.set(field, value);
+    }
+
+    periodicallySave() {
+        setTimeout(() => {
+            this.save();
+            if (this.map.has(user.id)) {
+                this.periodicallySave();
+            } else return;
+        }, 60000);
+    }
+
+    save() {
+        if (this.saveList.size) {
+            fitmatch.getSqlManager().selectivelyUpdateUser(this.user, this.saveList);
+        }
     }
 
     checkOrDelete() {

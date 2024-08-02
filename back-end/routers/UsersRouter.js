@@ -85,7 +85,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 function sketchyOrder(map) {
-
+    // TODO
 }
 
 
