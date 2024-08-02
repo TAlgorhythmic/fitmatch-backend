@@ -1,74 +1,42 @@
-.TargetasUser {
+.swipe-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     height: 100vh;
     background-color: #f5f5f5;
-    overflow: hidden; /* Asegura que las tarjetas no se salgan del contenedor */
-  }
-  
-  .TargetasUser_contenedor {
+    overflow: hidden;
     position: relative;
-    width: 100%;
-    max-width: 400px;
-    height: 70%;
-  }
-  
-  .swipe {
-    position: absolute;
-    width: 100%;
-    height: 100%;
   }
   
   .tarjeta {
-    position: relative;
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    width: 90%;
+    max-width: 400px;
+    height: 70%;
     background-size: cover;
     background-position: center;
-    border-radius: 20px; /* Esquinas redondeadas para parecerse a Tinder */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Sombra para dar efecto de elevación */
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     display: flex;
-    flex-direction: column;
     justify-content: flex-end;
-    align-items: center;
+    align-items: flex-end;
+    padding: 20px;
     color: white;
-    text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.8); /* Sombras para mejor legibilidad del texto */
-    overflow: hidden; /* Asegura que el contenido no se salga de la tarjeta */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease;
   }
   
-  .tarjeta h2 {
+  .tarjeta h3 {
     margin: 0;
-    padding: 10px;
     font-size: 24px;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo negro semi-transparente detrás del texto */
-    width: 100%;
-    text-align: center;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
   }
   
-  .tarjeta-info {
-    background-color: white;
-    width: 100%;
-    padding: 10px 20px;
-    text-align: center;
-    box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.1);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    color: #333;
-  }
   
-  .tarjeta-info p {
-    margin: 5px 0;
-    font-size: 18px;
-  }
   
-  .tarjeta-info small {
-    color: #999;
-    font-size: 14px;
-  }
+  
   
   
   
