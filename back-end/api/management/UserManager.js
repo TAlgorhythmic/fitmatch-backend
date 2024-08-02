@@ -21,7 +21,9 @@ class UserManager {
     }
 
     get(id) {
-        return this.map.get(id);
+        const user = this.map.get(id);
+        if (user) user.onRead();
+        return user;
     }
 
     async getOrLoad(id) {
@@ -50,6 +52,10 @@ class Ref {
         this.map = map;
         this.checkOrDelete();
         this.saveList = new Map();
+    }
+
+    onRead() {
+        this.modified = new Date();
     }
 
     onModify(field, value) {
