@@ -1,6 +1,4 @@
 import fitmatch from "./api/Fitmatch.js";
-import g from ('passport-google-oauth20');
-import passport from "passport";
 import cors from "cors";
 import fs from "fs";
 import activitiesRouter, { removeGarbage } from "./routers/ActivitiesRouter.js";
