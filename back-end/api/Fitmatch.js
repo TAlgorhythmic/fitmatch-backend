@@ -11,7 +11,10 @@ const defaultConfig = {
     database: "fitmatch",
     host: "127.0.0.1",
     dialect: "mysql",
-    tokenSecretKey: "secret-key"
+    tokenSecretKey: "secret-key",
+    google_client_id: "clientid",
+    client_secret: "clientsecret",
+    callbackURL: "url"
 }
 
 class Fitmatch {
