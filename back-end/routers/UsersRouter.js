@@ -5,7 +5,7 @@ import { DataTypes } from "sequelize";
 import multer from "multer";
 import path from "path";
 import slugify from "slugify";
-import { buildInvalidPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
 import ConnectSession, { sessions } from "../api/utils/ConnectSession.js";
 import User from "../api/User.js";
 
@@ -60,10 +60,7 @@ router.get('/', tokenRequired, function (req, res, next) {
         })
         .catch(error => {
             console.log(error);
-            res.json({
-            ok: false,
-            error: error
-        })
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs if you're an admin."));
     })
 
 });
@@ -101,12 +98,6 @@ router.get('/connect', tokenRequired, function (req, res, next) {
 
     if (!sessions.has(token.id)) {
         sessions.set(token.id, new ConnectSession())
-    }
-    else {
-        return res.json({
-            ok: false,
-            error: 'User not found'
-        });
     }
     
     sessions.get(token.id).sendMore(res);
