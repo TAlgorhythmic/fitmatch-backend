@@ -24,11 +24,11 @@ INSERT INTO friends (userId1, userId2) VALUES
 ///
 -- Insertar datos en la tabla 'activities'
 INSERT INTO activities (title, description, postDate, expires, userId, tableVersion) VALUES
-('Morning Yoga', 'A relaxing morning yoga session', '2024-07-01 08:00:00', 1, '2024-07-31 08:00:00', 1),
-('Evening Run', 'Join us for an evening run in the park', '2024-07-02 18:00:00', 2, '2024-08-02 18:00:00', 1),
-('Weekend Hike', 'Exploring the trails on a weekend hike', '2024-07-03 10:00:00', 3, '2024-07-30 10:00:00', 1),
-('Swimming Session', 'Swimming session at the local pool', '2024-07-04 15:00:00', 4, '2024-07-29 15:00:00', 1),
-('Cycling Event', 'Join us for a cycling event around the city', '2024-07-05 07:00:00', 5, '2024-07-28 07:00:00', 1);
+('Morning Yoga', 'A relaxing morning yoga session', '2024-07-01 08:00:00', '2024-07-31 08:00:00', 1, 1),
+('Evening Run', 'Join us for an evening run in the park', '2024-07-02 18:00:00', '2024-08-02 18:00:00', 2, 1),
+('Weekend Hike', 'Exploring the trails on a weekend hike', '2024-07-03 10:00:00', '2024-07-30 10:00:00', 3, 1),
+('Swimming Session', 'Swimming session at the local pool', '2024-07-04 15:00:00', '2024-07-29 15:00:00', 4, 1),
+('Cycling Event', 'Join us for a cycling event around the city', '2024-07-05 07:00:00', '2024-07-28 07:00:00', 5, 1);
 ///
 -- Insertar datos en la tabla 'joins_activities'
 INSERT INTO joins_activities (userId, postId) VALUES
