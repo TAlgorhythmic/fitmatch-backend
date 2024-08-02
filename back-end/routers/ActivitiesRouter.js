@@ -30,7 +30,6 @@ const Friends = sequelize.define(
 );
 
 export function isActivityExpired(activity) {
-    console.log(activity);
     const date = new Date(activity.expires);
     return Date.now <= date.getTime();
 }
