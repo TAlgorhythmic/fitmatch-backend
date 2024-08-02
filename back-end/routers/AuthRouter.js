@@ -5,10 +5,32 @@ import jwt from "jsonwebtoken";
 import User from "./../api/User.js";
 import { validateRegisterCredentials, isValidEmail } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
+import passport from "passport";
 
 const router = express.Router();
 
 const TOKEN_EXPIRE_TIME = 48 * 60 * 60 * 1000;
+
+const GoogleStrategy = g.Strategy;
+
+passport.use(new GoogleStrategy({
+    clientID: fitmatch.config.google_client_id,
+    clientSecret: fitmatch.config.client_secret,
+    callbackURL: fitmatch.config.callbackURL
+},
+    function (accessToken, refreshToken, profile, cb) {
+        User.findOrCreate({ googleId: profile.id }, function (err, user) {
+            return cb(err, user);
+        });
+    }
+));
+
+router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
+
+router.get("/google/callback", passport.authenticate("google", { failureRedirect: "/login" }), (req, res, next) => {
+    console.log(req);
+    res.redirect("/");
+})
 
 /**
  * Data this endpoint expects:
@@ -81,7 +103,7 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
     const email = request.body.email;
     const phone = request.body.phone;
     const password = request.body.password;
-    
+
     bcrypt.hash(password, 10)
         .then(e => {
             fitmatch.sqlManager.createNewUser(name, lastname ? lastname : null, email, phone ? phone : null, e)
