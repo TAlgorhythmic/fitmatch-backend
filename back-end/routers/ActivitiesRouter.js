@@ -2,6 +2,7 @@ import fitmatch from "./../api/Fitmatch.js";
 import express from 'express';
 import { DataTypes } from "sequelize";
 import { tokenRequired } from "./../api/utils/Validate.js";
+import { buildInvalidPacket, buildSendDataPacket } from "../api/packets/PacketBuilder.js";
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -85,19 +86,13 @@ router.get('/', tokenRequired, async function (req, res, next) {
             const data = activities[0];
             filterActivities(data);
             res.json(
-                {
-                    ok: true,
-                    data: data
-                }
+                buildSendDataPacket(data)
             )
         })
         .catch(error => {
             console.log(error);
             res.json(
-            {
-                ok: false,
-                error: error
-            }
+            buildInvalidPacket("Backend internal error.")
         )
     });
 });
