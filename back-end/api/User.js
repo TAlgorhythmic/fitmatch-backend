@@ -18,37 +18,55 @@ export default class User {
         this.isSetup = isSetup;
     }
 
+    indexChange(field, value) {
+        if (f.getUserManager().containsKey(this.id)) {
+            f.getUserManager().get(this.id).onModify(field, value);
+        }
+    }
+
     setName(name) {
         this.name = name;
-        this.saveChangesToDatabase();
+        this.indexChange("name", name);
     }
     setLastName(lastname) {
         this.lastname = lastname;
-        this.saveChangesToDatabase();
+        this.indexChange("lastname", lastname);
     }
     setEmail(email) {
         this.email = email;
-        this.saveChangesToDatabase();
+        this.indexChange("email", email);
     }
     setPhone(phone) {
         this.phone = phone;
-        this.saveChangesToDatabase();
+        this.indexChange("phone", phone);
     }
     setDescription(description) {
         this.description = description;
-        this.saveChangesToDatabase();
+        this.indexChange("description", description);
     }
     setProficiency(proficiency) {
         this.proficiency = proficiency;
-        this.saveChangesToDatabase();
+        this.indexChange("proficiency", proficiency);
     }
     setTrainingPreferences(trainingPreferences) {
         this.trainingPreferences = trainingPreferences;
-        this.saveChangesToDatabase();
+        this.indexChange("trainingPreferences", trainingPreferences);
     }
     setImg(img) {
         this.img = img ? img : "img1.jpg";
-        this.saveChangesToDatabase();
+        this.indexChange("img", this.img);
+    }
+    setCity(city) {
+        this.city = city;
+        this.indexChange("city", city);
+    }
+    setLatitude(lat) {
+        this.latitude = lat;
+        this.indexChange("latitude", lat);
+    }
+    setLongitude(long) {
+        this.longitude = long;
+        this.indexChange("longitude", long);
     }
     setLocation(city, latitude, longitude) {
         this.city = city;
@@ -59,10 +77,5 @@ export default class User {
     setIsSetup(isSetup) {
         this.isSetup = isSetup;
         this.saveChangesToDatabase();
-    }
-    saveChangesToDatabase() {
-        f.getSqlManager().updateUser(this)
-        .then(e => console.log(`${this.id};${this.email};${this.name} ${this.lastname ? this.lastname : ""}'s information updated!`))
-        .catch(e => console.log(`An error ocurred when updating ${this.id};${this.email};${this.name} ${this.lastname ? this.lastname : ""}'s information. Error message: ${e}`));
     }
 }

@@ -80,10 +80,6 @@ class Fitmatch {
     getUserManager() {
         return this.userManager;
     }
-
-    decodeToken(token) {
-        // TODO
-    }
 }
 
 const instance = new Fitmatch();
