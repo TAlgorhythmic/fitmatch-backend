@@ -9,13 +9,18 @@ const MakeFriends = () => {
   const cardRefs = useRef([]);
   const tableName = "users";
   const UsersController = new BaseController(tableName);
+  //const currentUserProficiency = 'Intermedio'; //pilla el id del usuario accede a su proficiency
 
-  useEffect(() => {
+  useEffect(() => { 
+    //llama a todos los usuarios
     async function getUsers() {
       const data = await UsersController.getAll();
       if (data.length) {
+        // Filtrar los usuarios por el mismo nivel de proficiency
+        //const filteredData = data.filter(user => user.proficiency === currentUserProficiency);
+
         setPersona(data);
-        setCurrentIndex(data.length - 1); // Inicia en la última tarjeta
+        setCurrentIndex(data.length - 1); 
         cardRefs.current = Array(data.length).fill(0).map(() => React.createRef());
       } else {
         console.log('No data found:', data);
@@ -63,6 +68,7 @@ const MakeFriends = () => {
     window.addEventListener('touchmove', handleMouseMove);
     window.addEventListener('touchend', handleMouseUp);
   };
+  //AÑADIR LOS LISTENES PARA EL TECLADO DE WINDOWS
 
   return (
     <div className="swipe-container">
