@@ -48,7 +48,6 @@ router.get("/google", async (req, res, next) => {
     const email = payload.email;
     const phone = null;
 
-
     register(userId, name, lastname, GOOGLE, email, phone, null, req, res);
 });
 
@@ -126,13 +125,11 @@ function register(id, name, lastname, provider, email, phone, password, request,
 
     bcrypt.hash(password, 10)
         .then(e => {
-            let promise;
             if (id) {
                 promise = fitmatch.sqlManager.createNewUserWithId(id, name, lastname ? lastname : null, provider, email, phone ? phone : null, e)
             } else {
-                promise = fitmatch.sqlManager.createNewUser(name, lastname ? lastname : null, provider, email, phone ? phone : null, e);
+                promise = fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e);
             }
-
             promise.then(e => {
                 fitmatch.sqlManager.getUserFromEmail(email)
                     .then(e => {
@@ -152,7 +149,8 @@ function register(id, name, lastname, provider, email, phone, password, request,
                     response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
                 })
         })
-}
+};
+
 
 /**
  * Data this endpoint expects:
