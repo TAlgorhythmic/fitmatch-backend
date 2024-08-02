@@ -17,7 +17,7 @@ const Register = () => {
     useEffect(() => {
         // Inicializa Google Identity Services
         window.google.accounts.id.initialize({
-            client_id: `"913371404323-ngqfki68d7olj5dq9osqtv1ig493iab8.apps.googleusercontent.com"`, // Reemplaza con tu Google Client ID
+            client_id: "913371404323-ngqfki68d7olj5dq9osqtv1ig493iab8.apps.googleusercontent.com", // Reemplaza con tu Google Client ID
             callback: handleGoogleSignIn
         });
 
