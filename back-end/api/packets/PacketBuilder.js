@@ -58,8 +58,8 @@ export function buildInternalErrorPacket(message) {
     return new PacketInternalError(message);
 }
 
-export function buildTokenPacket(token) {
-    return new PacketToken(token);
+export function buildTokenPacket(token, isSetup) {
+    return new PacketToken(token, isSetup);
 }
 
 export function buildSimpleOkPacket() {

@@ -4,7 +4,6 @@ import userManager from "./management/UserManager.js";
 import queryManager from "./management/SQLManager.js";
 import fs from "fs";
 import cors from "cors";
-import { removeGarbage } from "../routers/ActivitiesRouter.js";
 
 const defaultConfig = {
     username: "root",
@@ -12,7 +11,10 @@ const defaultConfig = {
     database: "fitmatch",
     host: "127.0.0.1",
     dialect: "mysql",
-    tokenSecretKey: "secret-key"
+    tokenSecretKey: "secret-key",
+    google_client_id: "clientid",
+    client_secret: "clientsecret",
+    callbackURL: "url"
 }
 
 class Fitmatch {
@@ -40,7 +42,6 @@ class Fitmatch {
         this.server.use('/uploads', express.static("uploads"));
         this.sqlManager = queryManager;
         this.userManager = userManager;
-        removeGarbage(60000);
     }
 
     /**
@@ -81,10 +82,6 @@ class Fitmatch {
      */
     getUserManager() {
         return this.userManager;
-    }
-
-    decodeToken(token) {
-        
     }
 }
 

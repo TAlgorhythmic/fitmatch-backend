@@ -5,6 +5,7 @@ import App from './App.jsx'
 import Home from './Home.jsx'
 import MakeFriends from './MakeFriends.jsx'
 import Register from './components/Register.jsx'
+import Login from './components/Login.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -12,8 +13,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
-          <Route path="/friends" element={<MakeFriends />} />
+          <Route path="friends" element={<MakeFriends />} />
           <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>

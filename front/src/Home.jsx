@@ -16,8 +16,8 @@ function Home() {
     useEffect(() => {
         async function getActivities() {
             const activitiesData = await ActivitiesController.getAll();
-            if (activitiesData.length) {
-                setActivities(activitiesData);
+            if (activitiesData.data.length) {
+                setActivities(activitiesData.data);
             } else {
                 console.log('No data found:', activitiesData);
             }
