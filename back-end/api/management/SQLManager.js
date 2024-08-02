@@ -62,11 +62,11 @@ class SQLManager {
     }
 
     createNewUser(name, lastname, provider, email, phone, hash) {
-        return fitmatch.getSql().query(`INSERT INTO users(name, lastname, provider, email, phone, pwhash, tableVersion) VALUES("${name}", "${lastname}", "${email}", "${phone}", "${hash}", ${TABLES_VERSION});`)
+        return fitmatch.getSql().query(`INSERT INTO users(name, lastname, provider, email, phone, pwhash, tableVersion) VALUES("${name}", "${lastname}", "${provider}", "${email}", "${phone}", "${hash}", ${TABLES_VERSION});`)
     }
 
     createNewUserWithId(id, name, lastname, provider, email, phone, hash) {
-        return fitmatch.getSql().query(`INSERT INTO users(id, name, lastname, provider, email, phone, pwhash, tableVersion) VALUES("${id}", "${name}", "${lastname}", "${email}", "${phone}", "${hash}")`);
+        return fitmatch.getSql().query(`INSERT INTO users(id, name, lastname, provider, email, phone, pwhash, tableVersion) VALUES("${id}", "${name}", "${lastname}", "${provider}", "${email}", "${phone}", "${hash}", ${TABLES_VERSION})`);
     }
 
     updateUser(user) {

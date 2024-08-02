@@ -97,27 +97,26 @@ router.post("/login", (request, response, next) => {
 });
 
 function register(id, name, lastname, provider, email, phone, password, request, response) {
+    let cancel = false;
     fitmatch.sqlManager.getUserFromEmail(email)
         .then(e => {
             const data = e[0];
             if (data.length) {
                 response.json(buildInvalidPacket("This email is already in use."));
+                cancel = true;
                 return;
             }
-            next();
+            
         })
         .catch(err => {
             console.log("An error ocurred trying to send a query. Error: " + err);
             response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
-        })
-
+        });
+        if (cancel) return;
+        let promise;
     bcrypt.hash(password, 10)
         .then(e => {
-            if (id) {
-                promise = fitmatch.sqlManager.createNewUserWithId(id, name, lastname ? lastname : null, provider, email, phone ? phone : null, e)
-            } else {
-                promise = fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e);
-            }
+            promise = fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e);
             promise.then(e => {
                 fitmatch.sqlManager.getUserFromEmail(email)
                     .then(e => {
