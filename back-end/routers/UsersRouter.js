@@ -85,7 +85,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 function sketchyOrder(map) {
-
+    // TODO
 }
 
 
@@ -150,7 +150,7 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         return;
     }
     if (fitmatch.getUserManager().containsKey(req.token.id)) {
-        const user = fitmatch.getUserManager().get(req.token.id);
+        const user = fitmatch.getUserManager().get(req.token.id).user;
         user.setIsSetup(true);
         user.setTrainingPreferences(preferences);
         user.setDescription(description);
