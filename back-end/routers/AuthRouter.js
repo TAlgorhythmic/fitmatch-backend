@@ -111,18 +111,18 @@ router.post("/login", (request, response, next) => {
 
 function register(id, name, lastname, provider, email, phone, password, request, response) {
     fitmatch.sqlManager.getUserFromEmail(email)
-    .then(e => {
-        const data = e[0];
-        if (data.length) {
-            response.json(buildInvalidPacket("This email is already in use."));
-            return;
-        }
-        next();
-    })
-    .catch(err => {
-        console.log("An error ocurred trying to send a query. Error: " + err);
-        response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
-    })
+        .then(e => {
+            const data = e[0];
+            if (data.length) {
+                response.json(buildInvalidPacket("This email is already in use."));
+                return;
+            }
+            next();
+        })
+        .catch(err => {
+            console.log("An error ocurred trying to send a query. Error: " + err);
+            response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
+        })
 
     bcrypt.hash(password, 10)
         .then(e => {
@@ -132,21 +132,21 @@ function register(id, name, lastname, provider, email, phone, password, request,
             } else {
                 promise = fitmatch.sqlManager.createNewUser(name, lastname ? lastname : null, provider, email, phone ? phone : null, e);
             }
-            
-                promise.then(e => {
-                    fitmatch.sqlManager.getUserFromEmail(email)
-                        .then(e => {
-                            const data = e[0];
-                            const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, null, null, data.isSetup);
-                            fitmatch.userManager.put(user.id, user);
-                            const token = createToken(request.ip, user.id);
-                            response.json(buildTokenPacket(token, false));
-                        })
-                        .catch(err => {
-                            console.log("An error ocurred trying to send a query. Error: " + err);
-                            response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."))
-                        });
-                })
+
+            promise.then(e => {
+                fitmatch.sqlManager.getUserFromEmail(email)
+                    .then(e => {
+                        const data = e[0];
+                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, null, null, data.isSetup);
+                        fitmatch.userManager.put(user.id, user);
+                        const token = createToken(request.ip, user.id);
+                        response.json(buildTokenPacket(token, false));
+                    })
+                    .catch(err => {
+                        console.log("An error ocurred trying to send a query. Error: " + err);
+                        response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."))
+                    });
+            })
                 .catch(err => {
                     console.log("An error ocurred trying to send a query. Error: " + err);
                     response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
@@ -175,6 +175,20 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
     const password = request.body.password;
 
     register(undefined, name, lastname, LOCAL, email, phone, password, request, response);
+});
+
+router.get("/validate-token", function (request, response, next) {
+    const token = request.headers['authorization'].split(' ')[1];
+
+    jwt.verify(token, fitmatch.getConfig().tokenSecretKey, (err, decoded) => {
+        if (err) {
+            return response.status(401).json({ valid: false, message: 'Invalid token.' });
+        }
+        if (decoded.expiredAt < new Date().getTime()) {
+            return response.status(401).json({ valid: false, message: 'Token expired.' });
+        }
+        response.json({ valid: true });
+    });
 });
 
 function createToken(ip, userId) {
