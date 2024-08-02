@@ -35,7 +35,9 @@ const Users = sequelize.define(
         description: DataTypes.STRING,
         proficiency: DataTypes.STRING,
         trainingPreferences: DataTypes.STRING,
-        location: DataTypes.STRING,
+        city: DataTypes.STRING,
+        latitude: DataTypes.STRING,
+        longitude: DataTypes.STRING,
         isSetup: DataTypes.BOOLEAN,
         tableVersion: DataTypes.INTEGER
     },
@@ -56,10 +58,13 @@ router.get('/', tokenRequired, function (req, res, next) {
             res.json(Userss)
             console.log(Userss);
         })
-        .catch(error => res.json({
+        .catch(error => {
+            console.log(error);
+            res.json({
             ok: false,
             error: error
-        }))
+        })
+    })
 
 });
 
