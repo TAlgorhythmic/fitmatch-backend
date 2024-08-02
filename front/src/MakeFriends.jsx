@@ -10,7 +10,6 @@ const MakeFriends = () => {
   const tableName = "users";
   const UsersController = new BaseController(tableName);
 
-  // Obtener usuarios desde la base de datos al cargar el componente
   useEffect(() => {
     async function getUsers() {
       const data = await UsersController.getAll();
