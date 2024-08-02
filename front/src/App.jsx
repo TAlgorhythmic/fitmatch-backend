@@ -29,7 +29,7 @@ function App() {
     } else {
       setIsValidToken(false);
     }
-  }, [token]);
+  }, [token]); // El token está en la lista de dependencias para que el efecto se ejecute cada vez que cambie el token
 
   if (isValidToken === null) {
     // Renderizar un indicador de carga mientras se valida el token
@@ -37,7 +37,13 @@ function App() {
   }
 
   if (isValidToken === false) {
-    return <Navigate to="/login" />;
+    //return <Navigate to="/login" />;ç
+    <>
+      <div className="contenedorPrincipal">
+        <Header />
+        <Outlet />
+      </div>
+    </>
   }
 
   return (
