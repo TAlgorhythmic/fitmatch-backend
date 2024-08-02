@@ -30,7 +30,8 @@ const Friends = sequelize.define(
 );
 
 export function isActivityExpired(activity) {
-    const date = new Date(activity.expires.replace(" ", "T"));
+    console.log(activity);
+    const date = new Date(activity.expires);
     return Date.now <= date.getTime();
 }
 
@@ -80,10 +81,10 @@ const router = express.Router();
 //     {ok: false, error: mensaje_de_error}
 
 router.get('/', tokenRequired, async function (req, res, next) {
-    const listToReturn = sqlManager.getAllActivitiesWhitUserInfo()
+    sqlManager.getAllActivitiesWhitUserInfo()
         .then(activities => {
             const data = activities[0];
-            data.filter()
+            filterActivities(data);
             res.json(
                 {
                     ok: true,
@@ -91,12 +92,15 @@ router.get('/', tokenRequired, async function (req, res, next) {
                 }
             )
         })
-        .catch(error => res.json(
+        .catch(error => {
+            console.log(error);
+            res.json(
             {
                 ok: false,
                 error: error
             }
-        ));
+        )
+    });
 });
 
 
