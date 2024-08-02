@@ -1,11 +1,11 @@
 import fitmatch from "./../api/Fitmatch.js";
 import { tokenRequired } from "./../api/utils/Validate.js";
 import express from "express";
-import { DataTypes, STRING } from "sequelize";
+import { DataTypes } from "sequelize";
 import multer from "multer";
 import path from "path";
 import slugify from "slugify";
-import { buildInvalidPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
 import ConnectSession, { sessions } from "../api/utils/ConnectSession.js";
 import User from "../api/User.js";
 
@@ -35,7 +35,9 @@ const Users = sequelize.define(
         description: DataTypes.STRING,
         proficiency: DataTypes.STRING,
         trainingPreferences: DataTypes.STRING,
-        location: DataTypes.STRING,
+        city: DataTypes.STRING,
+        latitude: DataTypes.STRING,
+        longitude: DataTypes.STRING,
         isSetup: DataTypes.BOOLEAN,
         tableVersion: DataTypes.INTEGER
     },
@@ -56,10 +58,10 @@ router.get('/', tokenRequired, function (req, res, next) {
             res.json(Userss)
             console.log(Userss);
         })
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }))
+        .catch(error => {
+            console.log(error);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs if you're an admin."));
+    })
 
 });
 
@@ -85,7 +87,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 function sketchyOrder(map) {
-
+    // TODO
 }
 
 
@@ -96,12 +98,6 @@ router.get('/connect', tokenRequired, function (req, res, next) {
 
     if (!sessions.has(token.id)) {
         sessions.set(token.id, new ConnectSession())
-    }
-    else {
-        return res.json({
-            ok: false,
-            error: 'User not found'
-        });
     }
     
     sessions.get(token.id).sendMore(res);
@@ -122,7 +118,7 @@ router.get('/connect', tokenRequired, function (req, res, next) {
  */
 router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
-    const preferences = req.body.preferences.length ? req.body.preferences.join(";") : null;
+    const preferences = req.body.preferences.length ? req.body.preferences : null;
     if (!preferences) {
         res.json(buildInvalidPacket("Preferences is empty."));
         return;
@@ -149,10 +145,24 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         res.json(buildInvalidPacket("You must include a longitude."));
         return;
     }
+    if (fitmatch.getUserManager().containsKey(req.token.id)) {
+        const user = fitmatch.getUserManager().get(req.token.id).user;
+        user.setIsSetup(true);
+        user.setTrainingPreferences(preferences);
+        user.setDescription(description);
+        user.setImg(img);
+        user.setProficiency(proficiency);
+    }
     fitmatch.getSqlManager().getUserFromId(id)
     .then(e => {
-        const data = e[0];
-        const user = new User(data.id, ) // TODO
+        const data = e[0][0];
+        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup);
+        fitmatch.userManager.put(user.id, user);
+        user.setIsSetup(true);
+        user.setTrainingPreferences(preferences);
+        user.setDescription(description);
+        user.setImg(img);
+        user.setProficiency(proficiency);
     });
 })
 

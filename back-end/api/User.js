@@ -1,28 +1,6 @@
 import f from "./Fitmatch.js";
-import express from "express";
 
 export default class User {
-    /**
-     * Mirror users instance for caching purposes.
-     * Warning!!! Use setters for updating information, so it gets saved to database!
-     */
-    constructor(id, name, lastname, email, phone, description, proficiency, trainingPreferences, img, location, isSetup) {
-        this.id = id;
-        this.name = name;
-        this.lastname = lastname;
-        this.email = email;
-        this.phone = phone;
-        this.description = description;
-        this.proficiency = proficiency;
-        this.trainingPreferences = trainingPreferences;
-        this.img = img;
-        const locationSplit = location ? location.split("||") : null;
-        this.city = locationSplit ? location[0] : null;
-        const coords = locationSplit ? locationSplit[1].split(";") : null;
-        this.latitude = coords ? parseFloat(coords[0]) : null;
-        this.longitude = coords ? parseFloat(coords[1]) : null;
-        this.isSetup = isSetup;
-    }
 
     constructor(id, name, lastname, email, phone, description, proficiency, trainingPreferences, img, city, lat, long, isSetup) {
         this.id = id;
@@ -40,37 +18,55 @@ export default class User {
         this.isSetup = isSetup;
     }
 
+    indexChange(field, value) {
+        if (f.getUserManager().containsKey(this.id)) {
+            f.getUserManager().get(this.id).onModify(field, value);
+        }
+    }
+
     setName(name) {
         this.name = name;
-        this.saveChangesToDatabase();
+        this.indexChange("name", name);
     }
     setLastName(lastname) {
         this.lastname = lastname;
-        this.saveChangesToDatabase();
+        this.indexChange("lastname", lastname);
     }
     setEmail(email) {
         this.email = email;
-        this.saveChangesToDatabase();
+        this.indexChange("email", email);
     }
     setPhone(phone) {
         this.phone = phone;
-        this.saveChangesToDatabase();
+        this.indexChange("phone", phone);
     }
     setDescription(description) {
         this.description = description;
-        this.saveChangesToDatabase();
+        this.indexChange("description", description);
     }
     setProficiency(proficiency) {
         this.proficiency = proficiency;
-        this.saveChangesToDatabase();
+        this.indexChange("proficiency", proficiency);
     }
     setTrainingPreferences(trainingPreferences) {
         this.trainingPreferences = trainingPreferences;
-        this.saveChangesToDatabase();
+        this.indexChange("trainingPreferences", trainingPreferences);
     }
     setImg(img) {
-        this.img = img;
-        this.saveChangesToDatabase();
+        this.img = img ? img : "img1.jpg";
+        this.indexChange("img", this.img);
+    }
+    setCity(city) {
+        this.city = city;
+        this.indexChange("city", city);
+    }
+    setLatitude(lat) {
+        this.latitude = lat;
+        this.indexChange("latitude", lat);
+    }
+    setLongitude(long) {
+        this.longitude = long;
+        this.indexChange("longitude", long);
     }
     setLocation(city, latitude, longitude) {
         this.city = city;
@@ -81,10 +77,5 @@ export default class User {
     setIsSetup(isSetup) {
         this.isSetup = isSetup;
         this.saveChangesToDatabase();
-    }
-    saveChangesToDatabase() {
-        f.getSqlManager().updateUser(this)
-        .then(e => console.log(`${this.id};${this.email};${this.name} ${this.lastname ? this.lastname : ""}'s information updated!`))
-        .catch(e => console.log(`An error ocurred when updating ${this.id};${this.email};${this.name} ${this.lastname ? this.lastname : ""}'s information. Error message: ${e}`));
     }
 }

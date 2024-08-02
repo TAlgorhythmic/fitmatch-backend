@@ -1,7 +1,8 @@
+import fitmatch from "./../api/Fitmatch.js";
 import express from 'express';
 import { DataTypes } from "sequelize";
-import fitmatch from "./../api/Fitmatch.js";
 import { tokenRequired } from "./../api/utils/Validate.js";
+import { buildInvalidPacket, buildSendDataPacket } from "../api/packets/PacketBuilder.js";
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -30,7 +31,7 @@ const Friends = sequelize.define(
 );
 
 export function isActivityExpired(activity) {
-    const date = new Date(activity.expires.replace(" ", "T"));
+    const date = new Date(activity.expires);
     return Date.now <= date.getTime();
 }
 
@@ -80,23 +81,20 @@ const router = express.Router();
 //     {ok: false, error: mensaje_de_error}
 
 router.get('/', tokenRequired, async function (req, res, next) {
-    const listToReturn = sqlManager.getAllActivitiesWhitUserInfo()
+    sqlManager.getAllActivitiesWhitUserInfo()
         .then(activities => {
             const data = activities[0];
-            data.filter()
+            filterActivities(data);
             res.json(
-                {
-                    ok: true,
-                    data: data
-                }
+                buildSendDataPacket(data)
             )
         })
-        .catch(error => res.json(
-            {
-                ok: false,
-                error: error
-            }
-        ));
+        .catch(error => {
+            console.log(error);
+            res.json(
+            buildInvalidPacket("Backend internal error.")
+        )
+    });
 });
 
 

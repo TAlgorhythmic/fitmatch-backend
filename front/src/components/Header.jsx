@@ -6,11 +6,11 @@ function Header() {
     return (
         <Navbar expand="lg" className="bg-body-tertiary customNavbar">
             <Container>
-                <Navbar.Brand href="#home" className="customBrand">Fitmatch</Navbar.Brand>
+                <Navbar.Brand href="/" className="customBrand">Fitmatch</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" className='customCollapse'>
                     <Nav className="customNav">
-                        <Link to="/notifications"><PeopleFill size={32} /></Link>
+                        <Link to="/friends"><PeopleFill size={32} /></Link>
                         <Link to="/notifications"><Bell size={32} /></Link>
                         <Link to="/user/profile"><PersonCircle size={32} /></Link>
 

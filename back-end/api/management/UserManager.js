@@ -3,6 +3,9 @@ import fitmatch from "./../Fitmatch.js";
 
 const TIMEOUT = 512000;
 
+/**
+ * Important! Use setters for updating values.
+ */
 class UserManager {
     constructor() {
         this.map = new Map();
@@ -18,7 +21,9 @@ class UserManager {
     }
 
     get(id) {
-        return this.map.get(id);
+        const ref = this.map.get(id);
+        if (red) user.onRead();
+        return ref;
     }
 
     async getOrLoad(id) {
@@ -26,7 +31,7 @@ class UserManager {
             fitmatch.sqlManager.getUserFromId(id)
             .then(e => {
                 const data = e[0];
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.location, data.isSetup);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup);
                 this.put(user.id, new Ref(user, this.map));
                 return user;
             })
@@ -46,10 +51,35 @@ class Ref {
         this.modified = new Date();;
         this.map = map;
         this.checkOrDelete();
+        this.saveList = new Map();
     }
 
-    onModify() {
+    onRead() {
         this.modified = new Date();
+    }
+
+    onModify(field, value) {
+        this.modified = new Date();
+        this.pushChange(field, value);
+    }
+
+    pushChange(field, value) {
+        this.saveList.set(field, value);
+    }
+
+    periodicallySave() {
+        setTimeout(() => {
+            this.save();
+            if (this.map.has(user.id)) {
+                this.periodicallySave();
+            } else return;
+        }, 60000);
+    }
+
+    save() {
+        if (this.saveList.size) {
+            fitmatch.getSqlManager().selectivelyUpdateUser(this.user, this.saveList);
+        }
     }
 
     checkOrDelete() {
