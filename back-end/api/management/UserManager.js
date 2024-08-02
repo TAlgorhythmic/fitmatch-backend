@@ -21,9 +21,9 @@ class UserManager {
     }
 
     get(id) {
-        const user = this.map.get(id);
-        if (user) user.onRead();
-        return user;
+        const ref = this.map.get(id);
+        if (red) user.onRead();
+        return ref;
     }
 
     async getOrLoad(id) {
