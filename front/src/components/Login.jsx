@@ -6,7 +6,7 @@ import './Login.css';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [resposta, setResposta] = useState('...');
+    const [resposta, setResposta] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
