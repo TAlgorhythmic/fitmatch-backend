@@ -33,8 +33,12 @@ passport.use(new GoogleStrategy({
     }
 ));
 
-router.get("/google", async (req, res, next) => {
-    console.log(req);
+router.post("/google", async (req, res, next) => {
+    if (!req.body.token) {
+        console.log(req);
+        res.json(buildInvalidPacket("A token is required."));
+    }
+    
     const token = req.body.token;
     const ticket = await client.verifyIdToken({
         idToken: token,
