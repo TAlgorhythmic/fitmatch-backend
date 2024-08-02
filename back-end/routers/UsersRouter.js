@@ -86,8 +86,30 @@ router.get('/:id', function (req, res, next) {
         }))
 });
 
-function sketchyOrder(map) {
-    // TODO
+export function sketchyOrder(array) {
+    // Sort to extract the 25% of the most likely matches users.
+    array.sort((a, b) => {
+        return b.matchPercent - a.matchPercent;
+    })
+
+    // Get the amount of items the 25% is.
+    const amount = Math.floor((array.length * 25) / 100);
+    const likelyMatch = [];
+
+    // Push likely matches.
+    for (let i = 0; i < amount; i++) {
+        likelyMatch.push(array.pop());
+    }
+
+    const feed = [];
+    // Sketchy sort.
+    feed.push(likelyMatch.pop());
+    let i = 0;
+    while (array.length || likelyMatch.length) {
+        if (i % 4 === 0 && likelyMatch.length) feed.push(likelyMatch.pop());
+        else feed.push(array.pop());
+    }
+    return feed;
 }
 
 

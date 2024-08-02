@@ -1,4 +1,5 @@
-import { buildInternalErrorPacket, buildInvalidPacket } from "../packets/PacketBuilder.js";
+import { sketchyOrder } from "../../routers/UsersRouter.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket } from "../packets/PacketBuilder.js";
 import fitmatch from "./../Fitmatch.js";
 import {areCompatible} from './Algoritms.js';
 
@@ -35,10 +36,9 @@ class ConnectSession {
                         return b.matchPercent - a.matchPercent;
                     });
 
-                    response.json({
-                        ok: true,
-                        data: listUsersData
-                    });
+                    const sketchyOrdered = sketchyOrder(listUsersData);
+
+                    response.json(buildSendDataPacket(sketchyOrdered));
                 }
             })
             .catch(err => {
