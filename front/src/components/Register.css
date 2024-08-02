@@ -3,9 +3,10 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: calc(100vh - 60px); /* Ajuste para la altura de la navbar */
-    padding-top: 60px; /* Considerando la altura de la navbar */
+    height: calc(100vh - 60px);
+    padding-top: 60px;
     box-sizing: border-box;
+    background-color: #f9f9f9;
 }
 
 .register-container {
@@ -26,42 +27,45 @@
 }
 
 .slogan-text {
-    font-size: 24px;
-    font-weight: 300; /* Poppins Light */
-    color: #1a73e8; /* Azul brillante */
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: #333; /* Color principal */
     text-align: center;
-    line-height: 1.5;
-    max-width: 500px; /* Limitar el ancho del texto para mejor legibilidad */
+    line-height: 1.6;
+    max-width: 600px;
+    letter-spacing: 0.5px; /* Espaciado de letras para un aspecto más estilizado */
+    margin: 0 auto;
 }
 
-/* Estilos para la tarjeta de registro */
 .register-card {
     background-color: #ffffff;
     padding: 40px;
-    border-radius: 15px;
+    border-radius: 20px;
     width: 100%;
-    max-width: 400px; /* Hacer la tarjeta ligeramente más grande */
+    max-width: 400px;
     text-align: center;
-    color: #212121; /* Texto principal en gris oscuro */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    color: #212121;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .register-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilo de los encabezados */
 h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: #1a73e8;
+    font-weight: 700;
     margin-bottom: 20px;
-    font-size: 28px;
-    color: #1a73e8; /* Título en azul */
-    font-weight: 700; /* Poppins Bold */
+    letter-spacing: 1px; /* Espaciado de letras en el título */
+    text-transform: uppercase;
 }
 
-/* Estilo para el grupo de formularios */
 .form-group {
     margin-bottom: 20px;
     text-align: left;
@@ -70,9 +74,10 @@ h2 {
 label {
     display: block;
     margin-bottom: 5px;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
-    color: #1a73e8; /* Etiquetas en azul */
-    font-weight: 500; /* Poppins Semi-Bold */
+    color: #1a73e8;
+    font-weight: 500;
 }
 
 input[type="text"],
@@ -85,9 +90,8 @@ input[type="password"] {
     box-sizing: border-box;
     margin-bottom: 15px;
     background-color: #f1f3f4;
-    color: #212121; /* Texto principal en gris oscuro */
+    color: #212121;
     font-family: 'Roboto', sans-serif;
-    font-weight: 400;
     font-size: 16px;
     transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
@@ -96,26 +100,26 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
     border-color: #1a73e8;
-    box-shadow: 0 0 5px rgba(26, 115, 232, 0.5);
+    box-shadow: 0 0 8px rgba(26, 115, 232, 0.6);
 }
 
 input::placeholder {
-    color: #757575; /* Texto placeholder en gris claro */
+    color: #757575;
 }
 
-/* Estilo para el botón de registro */
 button.register-button {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     margin-top: 20px;
-    background-color: #1a73e8; /* Botón azul */
+    background-color: #1a73e8;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 18px;
-    font-weight: 700; /* Poppins Bold */
-    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
@@ -124,14 +128,18 @@ button.register-button:hover {
     transform: translateY(-2px);
 }
 
-/* Mensajes de éxito y error */
 .success-message {
     color: #4CAF50;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
 }
 
 .error-message {
     color: #f44336;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
 }
+
 
 
 
