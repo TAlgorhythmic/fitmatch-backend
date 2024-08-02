@@ -17,20 +17,6 @@ const router = express.Router();
 
 const TOKEN_EXPIRE_TIME = 48 * 60 * 60 * 1000;
 
-const GoogleStrategy = g.Strategy;
-
-passport.use(new GoogleStrategy({
-    clientID: fitmatch.config.google_client_id,
-    clientSecret: fitmatch.config.client_secret,
-    callbackURL: fitmatch.config.callbackURL
-},
-    function (accessToken, refreshToken, profile, cb) {
-        User.findOrCreate({ googleId: profile.id }, function (err, user) {
-            return cb(err, user);
-        });
-    }
-));
-
 router.post("/google", async (req, res, next) => {
     if (!req.body.token) {
         console.log(req);
@@ -53,7 +39,7 @@ router.post("/google", async (req, res, next) => {
     register(userId, name, lastname, GOOGLE, email, phone, null, req, res);
 });
 
-router.get("/google/callback", passport.authenticate("google", { failureRedirect: "/login" }), (req, res, next) => {
+router.get("/google/callback", (req, res, next) => {
     console.log(req);
     res.redirect("/");
 })
