@@ -7,7 +7,6 @@ import passport from "passport";
 import g from "passport-google-oauth";
 import { validateRegisterCredentials, isValidEmail } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
-import passport from "passport";
 
 const router = express.Router();
 
