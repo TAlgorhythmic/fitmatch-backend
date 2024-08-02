@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import express from "express";
 import jwt from "jsonwebtoken";
 import User from "./../api/User.js";
+import passport from "passport";
+import g from "passport-google-oauth";
 import { validateRegisterCredentials, isValidEmail } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
 import passport from "passport";
