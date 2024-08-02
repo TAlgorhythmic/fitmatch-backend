@@ -2,6 +2,7 @@ import express from "express";
 import { Sequelize } from "sequelize";
 import userManager from "./management/UserManager.js";
 import queryManager from "./management/SQLManager.js";
+import helmet from "helmet";
 import fs from "fs";
 import cors from "cors";
 
@@ -40,6 +41,13 @@ class Fitmatch {
         this.server.use(cors());
         this.server.use(express.urlencoded({ extended: true }));
         this.server.use('/uploads', express.static("uploads"));
+        this.server.use(helmet.contentSecurityPolicy({
+            directives: {
+                "default-src": ["'self'"],
+                "script-src": ["'self'", "https://accounts.google.com"],
+                "style-src": ["'self'", "'unsafe-inline'"]
+            },
+        }))
         this.sqlManager = queryManager;
         this.userManager = userManager;
     }
