@@ -29,11 +29,7 @@ class ConnectSession {
                 } else {
                     const listUsersData = json(e[0]);
                     listUsersData.forEach(user => {
-                        user.matchPercent = areCompatible(this.user,user);
-                    });
-
-                    listUsersData.sort((a, b) => {
-                        return b.matchPercent - a.matchPercent;
+                        user.matchPercent = areCompatible(this.user, user);
                     });
 
                     const sketchyOrdered = sketchyOrder(listUsersData);
