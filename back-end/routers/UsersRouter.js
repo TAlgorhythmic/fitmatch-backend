@@ -89,7 +89,7 @@ router.get('/:id', function (req, res, next) {
 export function sketchyOrder(array) {
     // Sort to extract the 25% of the most likely matches users.
     array.sort((a, b) => {
-        return b.matchPercent - a.matchPercent;
+        return a.matchPercent - b.matchPercent;
     })
 
     // Get the amount of items the 25% is.
