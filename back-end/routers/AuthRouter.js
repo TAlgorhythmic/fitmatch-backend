@@ -36,7 +36,7 @@ router.post("/google", async (req, res, next) => {
     const email = payload.email;
     const phone = null;
 
-    register(userId, name, lastname, GOOGLE, email, phone, null, req, res);
+    register(name, lastname, GOOGLE, email, phone, null, req, res);
 });
 
 router.get("/google/callback", (req, res, next) => {
@@ -113,10 +113,10 @@ function register(id, name, lastname, provider, email, phone, password, request,
         });
     if (cancel) return;
     let promise;
-    if (provider === GOOGLE && id) {
-        promise = fitmatch.getSqlManager().createNewUserWithId(id, name, lastname, provider, email, phone, password);
+    if (provider === GOOGLE) {
+        promise = fitmatch.getSqlManager().createNewUser(name, lastname, provider, email, phone, password);
         promise.then(e => {
-            fitmatch.getSqlManager().getUserFromId(id)
+            fitmatch.getSqlManager().getUserFromEmail(email)
             .then(e => {
                 const data = e[0][0];
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences.split(";"), data.img, data.city, parseFloat(data.latitude), parseFloat(data.longitude), data.isSetup);
@@ -177,7 +177,7 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
     const phone = request.body.phone;
     const password = request.body.password;
 
-    register(undefined, name, lastname, LOCAL, email, phone, password, request, response);
+    register(name, lastname, LOCAL, email, phone, password, request, response);
 });
 
 router.get("/validate-token", function (request, response, next) {
