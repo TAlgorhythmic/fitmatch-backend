@@ -1,7 +1,7 @@
 import Header from './components/Header.jsx';
 import { Container } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
     return (
       <div className="contenedorPrincipal">
         <Header />
-         {/* Redirige a la página de login si el token no es válido, <Navigate to="/" />  */}
+        <Navigate to="/login" />
         <Outlet />
       </div>
     );
