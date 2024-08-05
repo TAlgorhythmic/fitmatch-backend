@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App.jsx'
 import Home from './Home.jsx'
 import MakeFriends from './MakeFriends.jsx'
@@ -8,6 +8,7 @@ import Register from './components/Register.jsx'
 import Login from './components/Login.jsx'
 import UserProfile from './components/ProfileUser.jsx'
 import ChangePassword from './components/CambioContra.jsx'
+import CompletarFormulario from './components/CompletarRegistro.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="login" element={<Login />} />
           <Route path="nuevaContra" element={<ChangePassword />} />
           <Route path="user/profile" element={<UserProfile />} />
+          <Route path="formulario" element={<CompletarFormulario />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -44,13 +44,16 @@ export function validateRegisterCredentials(req, res, next) {
     next();
 }
 
+export function passwordRequired(req, res, next) {
+    
+}
+
 // Middleware
 export function tokenRequired(req, res, next) {
-    next();
-    return;
-    let token = req.headers.Authorization || "";
+    let token = req.headers.authorization;
 
     if (!token) {
+        console.log(token);
         res.json(buildNoPermissionPacket("A token is required."));
         return;
     }
