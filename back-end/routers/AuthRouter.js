@@ -19,7 +19,6 @@ const TOKEN_EXPIRE_TIME = 48 * 60 * 60 * 1000;
 
 router.post("/google", async (req, res, next) => {
     if (!req.body.token) {
-        console.log(req);
         res.json(buildInvalidPacket("A token is required."));
     }
     
@@ -29,14 +28,12 @@ router.post("/google", async (req, res, next) => {
         audience: fitmatch.config.google_client_id
     });
     const payload = ticket.getPayload();
-    const userId = payload['sub'];
 
     const name = payload.name;
     const lastname = payload.family_name;
     const email = payload.email;
-    const phone = null;
 
-    register(name, lastname, GOOGLE, email, phone, null, req, res);
+    register(name, lastname, GOOGLE, email, null, null, req, res);
 });
 
 router.get("/google/callback", (req, res, next) => {
@@ -69,14 +66,12 @@ router.post("/login", (request, response, next) => {
             return;
         }
         if (e.length > 1) {
-            console.log(e);
             response.json(buildInternalErrorPacket("Internal error, this field is duplicated."));
             return;
         }
         const user = e[0];
         const hash = user.pwhash;
         bcrypt.compare(password, hash).then(e => {
-            console.log(e);
             if (e) {
                 fitmatch.getUserManager().put(user.id, user);
                 response.json(buildTokenPacket(createToken(request.ip, user.id), user.isSetup));

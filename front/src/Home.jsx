@@ -12,7 +12,7 @@ function Home() {
     const [isValidToken, setIsValidToken] = useState(null);
     const token = localStorage.getItem('authToken');
     const tableName = "activities";
-    const ActivitiesController = new BaseController(tableName);
+    const ActivitiesController = new BaseController(tableName, token);
 
     useEffect(() => {
         const validateToken = async () => {
@@ -20,6 +20,7 @@ function Home() {
                 const response = await fetch('http://localhost:3001/api/auth/validate-token', {
                     method: 'GET',
                     headers: {
+                        'Content-Type': "application/json",
                         'Authorization': `Bearer ${token}`  // Enviar el token en los headers
                     }
                 });
@@ -49,10 +50,11 @@ function Home() {
     useEffect(() => {
         async function getActivities() {
             const activitiesData = await ActivitiesController.getAll();
-            if (activitiesData.data.length) {
-                setActivities(activitiesData.data);
+            if (activitiesData.status === 0) {
+                if (activitiesData.data.length) setActivities(activitiesData.data);
+                else console.log("No data found (array empty).");
             } else {
-                console.log('No data found:', activitiesData);
+                console.log('Error: ', activitiesData);
             }
         }
 

@@ -28,14 +28,12 @@ class ConnectSession {
                     response.json(buildInvalidPacket())
                 } else {
                     const listUsersData = e;
-                    console.log(this.user);
+
                     listUsersData.forEach(user => {
                         user.matchPercent = areCompatible(this.user, user);
                     });
 
                     const sketchyOrdered = sketchyOrder(listUsersData);
-
-                    console.log(sketchyOrdered);
 
                     response.json(buildSendDataPacket(sketchyOrdered));
                 }

@@ -27,9 +27,7 @@ export function validateRegisterCredentials(req, res, next) {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    console.log(req.body)
     if (!name) {
-        console.log(name);
         res.json(buildInvalidPacket("A name must be specified."));
         return;
     }
@@ -53,7 +51,6 @@ export function tokenRequired(req, res, next) {
     let token = req.headers.authorization;
 
     if (!token) {
-        console.log(token);
         res.json(buildNoPermissionPacket("A token is required."));
         return;
     }

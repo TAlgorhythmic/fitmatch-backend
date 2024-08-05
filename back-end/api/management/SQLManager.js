@@ -66,7 +66,6 @@ class SQLManager {
      * @returns a promise
      */
     getUserFromEmail(email) {
-        console.log(email);
         return fitmatch.getSql().query("SELECT * FROM users WHERE email = ?;", { replacements: [email], type: QueryTypes.SELECT });
     }
 
