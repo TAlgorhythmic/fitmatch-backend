@@ -10,8 +10,8 @@ const sqlManager = fitmatch.getSqlManager();
 const Pending = sequelize.define(
     'Pending',
     {
-        sender_id: DataTypes.INTEGER,
-        reciver_id: DataTypes.INTEGER
+        sender: DataTypes.STRING,
+        receiver: DataTypes.STRING
     },
     { tableName: 'pending', timestamps: false }
 );
@@ -70,7 +70,7 @@ router.post('/accept/:other_id', tokenRequired, function (req, res, next) {
 });
 
 // GET de un solo Pending
-router.get('/:id', tokenRequired, function (req, res, next) {
+router.get('/pendings/:id', tokenRequired, function (req, res, next) {
     Pending.findOne({ where: { id: req.params.id } })
         .then(Pending => res.json({
             ok: true,
@@ -82,6 +82,22 @@ router.get('/:id', tokenRequired, function (req, res, next) {
         }))
 });
 
+// GET de Pendings de un usuario
+router.get('/pendings', tokenRequired, function (req, res, next) {
+    console.log(req.token.id);
+    sqlManager.getAllPendings(req.token.id)
+        .then(response => {
+            console.log(response);
+            res.json({
+                ok: true,
+                data: response
+            });
+        })
+        .catch(error => res.json({
+            ok: false,
+            error: error
+        }))
+});
 
 
 // POST, creació d'un nou Pending
