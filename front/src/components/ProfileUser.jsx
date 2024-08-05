@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({
@@ -13,12 +13,34 @@ const UserProfile = () => {
         city: ''
     });
 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     useEffect(() => {
-        // falta implementar
-        fetch('http://localhost:3001/api/profile')
-            .then(response => response.json())
-            .then(data => setUserData(data))
-            .catch(error => console.log('Error loading user data:', error));
+        const token = localStorage.getItem('authToken');
+
+        fetch('http://localhost:3001/api/profile', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch user profile');
+            }
+            return response.json();
+        })
+        .then(data => {
+            setUserData(data);
+            setLoading(false);
+        })
+        .catch(error => {
+            console.log('Error loading user data:', error);
+            setError('Failed to load profile. Please try again later.');
+            setLoading(false);
+        });
     }, []);
 
     const handleChange = (e) => {
@@ -40,7 +62,12 @@ const UserProfile = () => {
         };
 
         fetch('http://localhost:3001/api/edit', requestOptions)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update profile');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.ok) {
                     alert('Profile updated successfully');
@@ -54,8 +81,12 @@ const UserProfile = () => {
             });
     };
 
-    if (!userData || !userData.name) {
-        return <div>No puede acceder api</div>;
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
     }
 
     return (
@@ -113,13 +144,6 @@ const UserProfile = () => {
                 />
                 <input
                     type="text"
-                    name="img"
-                    value={userData.img}
-                    onChange={handleChange}
-                    placeholder="Image URL"
-                />
-                <input
-                    type="text"
                     name="city"
                     value={userData.city}
                     onChange={handleChange}
@@ -133,5 +157,4 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
 
