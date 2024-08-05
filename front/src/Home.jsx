@@ -6,6 +6,7 @@ import ActividadMain from './components/ActividadMain';
 import HomeLateral from './components/HomeLateral';
 import HomeView from './components/HomeView';
 import BarraLateral from './components/BarraLateral';
+import { Navigate } from 'react-router-dom';
 
 function Home() {
     const [activities, setActivities] = useState([]);
