@@ -19,7 +19,7 @@ const UserProfile = () => {
     useEffect(() => {
         const token = localStorage.getItem('authToken');
 
-        fetch('http://localhost:3001/api/profile', {
+        fetch('http://localhost:3001/api/users/profile', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
