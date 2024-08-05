@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css'; 
 
@@ -33,7 +33,7 @@ const Login = () => {
                     localStorage.setItem('authToken', token);
                     navigate('/');
                 } else {
-                    setResposta('error: ' + response.message);
+                    setResposta('error: ');
                 }
             })
             .catch(error => {
