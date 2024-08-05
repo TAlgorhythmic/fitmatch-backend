@@ -11,7 +11,7 @@ function App() {
   useEffect(() => {
     const validateToken = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/auth/validate-token', {  // Ruta completa aquí
+        const response = await fetch('http://localhost:3001/api/auth/validate-token', {  
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`  // Enviar el token en los headers
