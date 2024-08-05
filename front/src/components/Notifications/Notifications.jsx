@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './Notifications.css';
 import { Bell } from 'react-bootstrap-icons';
 
@@ -18,7 +18,7 @@ function Notifications() {
             .then(response => response.json())
             .then(data => {
                 console.log(data); // Esto te permitirá ver los datos en la consola
-                setNotifications(data);
+                setNotifications(data.data);
             })
             .catch(error => console.error(error));
     }, []);

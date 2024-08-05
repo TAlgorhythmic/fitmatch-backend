@@ -84,7 +84,6 @@ router.get('/pendings/:id', tokenRequired, function (req, res, next) {
 
 // GET de Pendings de un usuario
 router.get('/pendings', tokenRequired, function (req, res, next) {
-    console.log(req.token.id);
     sqlManager.getAllPendings(req.token.id)
         .then(response => {
             console.log(response);
