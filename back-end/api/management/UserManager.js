@@ -22,7 +22,7 @@ class UserManager {
 
     get(id) {
         const ref = this.map.get(id);
-        if (ref) this.user.onRead();
+        if (ref) ref.onRead();
         return ref;
     }
 

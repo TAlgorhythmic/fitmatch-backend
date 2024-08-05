@@ -120,18 +120,7 @@ class SQLManager {
 
 
     async getAllPendings(id) {
-        return await fitmatch.getSql().query(`
-            SELECT 
-                u.*
-            FROM 
-                pending p
-            JOIN 
-                users u
-            ON 
-                p.sender_id = u.id
-            WHERE 
-                p.receiver_id = ?;
-        `, { replacements: [id], type: QueryTypes.SELECT });
+        return await fitmatch.getSql().query(`SELECT u.* FROM pending p JOIN users u ON p.sender_id = u.id WHERE p.receiver_id = ?;`, { replacements: [id], type: QueryTypes.SELECT });
     }
 }
 
