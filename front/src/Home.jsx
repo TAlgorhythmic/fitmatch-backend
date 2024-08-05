@@ -11,6 +11,7 @@ function Home() {
     const [activities, setActivities] = useState([]);
     const [isValidToken, setIsValidToken] = useState(null);
     const token = localStorage.getItem('authToken');
+    if (!token) return <Navigate to="/register" />;
     const tableName = "activities";
     const ActivitiesController = new BaseController(tableName, token);
 
