@@ -8,7 +8,7 @@ import Register from './components/Register.jsx'
 import Login from './components/Login.jsx'
 import UserProfile from './components/ProfileUser.jsx'
 import ChangePassword from './components/CambioContra.jsx'
-import CompletarFormulario from './components/CompletarRegistro.jsx'
+import CompletarRegistro from './components/CompletarRegistro.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -21,7 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="login" element={<Login />} />
           <Route path="nuevaContra" element={<ChangePassword />} />
           <Route path="user/profile" element={<UserProfile />} />
-          <Route path="formulario" element={<CompletarFormulario />} />
+          <Route path="formulario" element={<CompletarRegistro />} />
         </Route>
       </Routes>
     </BrowserRouter>
