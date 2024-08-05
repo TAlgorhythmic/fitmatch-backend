@@ -57,11 +57,7 @@ function Home() {
 
     if (isValidToken === false) {
         return (
-            <div className="contenedorPrincipal">
-                <Header />
-                <Navigate to="/login" />
-                <Outlet />
-            </div>
+            <Navigate to="/login" />
         );
     } else if(isValidToken == true){
         useEffect(() => {
