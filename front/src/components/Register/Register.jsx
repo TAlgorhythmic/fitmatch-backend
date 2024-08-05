@@ -32,8 +32,8 @@ const Register = () => {
                 body: JSON.stringify(formData)
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to register');
+            if (response.status !== 0) {
+                throw new Error('Failed to register: ' + response.error);
             }
 
             const data = await response.json();
