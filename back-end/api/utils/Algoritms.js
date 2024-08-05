@@ -1,6 +1,22 @@
 export function areCompatible(user1, user2) {
-    const profComp = areProficienciesCompatible(user1.proficiency, user2.proficiency);
-    const prefComp = haveCommonPreferences(user1.trainingPreferences, user2.trainingPreferences);
+    let profComp;
+    if (user1.proficiency && user2.proficiency) {
+        profComp = areProficienciesCompatible(user1.proficiency, user2.proficiency);
+    } else if (!user1.proficiency && !user2.proficiency) {
+        profComp = 50;
+    } else {
+        profComp = 0;
+    }
+    
+    let prefComp;
+    if ((user1.trainingPreferences && user2.trainingPreferences) && (user1.trainingPreferences.length && user2.trainingPreferences.length)) {
+        prefComp = haveCommonPreferences(user1.trainingPreferences, user2.trainingPreferences);
+    } else if ((!user1.trainingPreferences && !user2.trainingPreferences) || (!user1.trainingPreferences.length && !user2.trainingPreferences.length)) {
+        prefComp = 50;
+    } else {
+        prefComp = 0;
+    }
+    
     const locComp = areLocationsCompatible(user1, user2, 10); // Umbral en km
 
     // Calcular promedio de compatibilidad en porcentaje
@@ -54,7 +70,13 @@ function areLocationsCompatible(user1, user2, thresholdKm) {
             return 0;
         }
 
-        if (isNaN(user1.latitude) || isNaN(user1.longitude) || isNaN(user2.latitude) || isNaN(user2.longitude)) {
+        const lat1 = parseFloat(user1.latitude);
+        const long1 = parseFloat(user1.longitude);
+
+        const lat2 = parseFloat(user2.latitude);
+        const long2 = parseFloat(user2.longitude);
+
+        if (isNaN(lat1) || isNaN(long1) || isNaN(lat2) || isNaN(long2)) {
             console.error('Coordenadas no válidas:', loc1, loc2);
             return 0;
         }

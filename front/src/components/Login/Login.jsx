@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css'; 
-
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -25,22 +24,28 @@ const Login = () => {
             body: JSON.stringify(loginData)
         };
 
-        fetch("http://localhost:3001/api" + "/auth/login", requestOptions)
+        fetch("http://localhost:3001/api/auth/login", requestOptions)
          .then(response => response.json())
             .then(response => {
-                if (response.status===0) {
+                if (response.status === 0) {
                     setResposta('Login successful');
                     const token = response.token;
                     localStorage.setItem('authToken', token);
                     navigate('/');
                 } else {
-                    setResposta('Login failed: ' + response.message);
+                    setResposta('error: ');
                 }
             })
             .catch(error => {
                 setResposta('Error connecting to API');
                 console.log(error);
             });
+    };
+
+    // Función para manejar la navegación cuando se hace clic en "Forgot your password?"
+    const handleForgotPasswordClick = (e) => {
+        e.preventDefault();
+        navigate('/nuevaContra');
     };
 
     return (
@@ -68,7 +73,10 @@ const Login = () => {
                     </div>
                     <button type="submit" className="login-button">Log In</button>
                 </form>
-                <a href="#" className="forgot-password">Forgot your password?</a>
+                {/* Aquí cambiamos el botón por un enlace */}
+                <a href="#" onClick={handleForgotPasswordClick} className="forgot-password-link">
+                    Forgot your password?
+                </a>
                 <h3>{resposta}</h3> 
             </div>
         </div>
@@ -76,4 +84,5 @@ const Login = () => {
 };
 
 export default Login;
+
 
