@@ -74,10 +74,7 @@ router.post("/login", (request, response, next) => {
             return;
         }
         const user = e[0];
-        console.log(user);
         const hash = user.pwhash;
-        console.log(password);
-        console.log(hash);
         bcrypt.compare(password, hash).then(e => {
             console.log(e);
             if (e) {
@@ -102,8 +99,8 @@ function register(name, lastname, provider, email, phone, password, request, res
         .then(e => {
             const data = e;
             if (data.length) {
-                response.json(buildInvalidPacket("This email is already in use."));
                 cancel = true;
+                response.json(buildInvalidPacket("This email is already in use."));
             }
         })
         .catch(err => {
