@@ -58,12 +58,12 @@ export function removeGarbage(millis) {
             try {
                 fitmatch.getSqlManager().removeActivityCompletely(itemToRemove.id)
                     .then(e => {
-                        console.log("Success!");
-                        recursive();
+                        console.log(`Unused/expired activity: ${itemToRemove.id} removed successfully!`);
                         return;
                     });
             } catch (err) {
                 console.log(err);
+            } finally {
                 recursive();
             }
         }
@@ -141,22 +141,6 @@ router.get('/foruser', tokenRequired, async function (req, res, next) {
     }
 });
 
-
-// GET de un solo Activities
-router.get('/:id', tokenRequired, function (req, res, next) {
-    Activities.findOne({ where: { id: req.params.id } })
-        .then(Activities => res.json({
-            ok: true,
-            data: Activities
-        }))
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }))
-});
-
-
-
 // POST, creació d'un nou Activities
 router.post('/create', tokenRequired, function (req, res, next) {
     Activities.create(req.body)
@@ -188,6 +172,7 @@ router.put('/edit', tokenRequired, function (req, res, next) {
 
 
 // DELETE elimina l'Activities id
+// TODO
 router.delete('/:id', tokenRequired, function (req, res, next) {
 
     Activities.destroy({ where: { id: req.params.id } })
