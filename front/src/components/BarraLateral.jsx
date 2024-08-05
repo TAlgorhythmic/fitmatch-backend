@@ -4,8 +4,6 @@ import { ArrowRight, HandThumbsUp, PeopleFill } from 'react-bootstrap-icons';
 
 function BarraLateral() {
 
-    
-
     return (
         <>
             <div className="barraLateral">
