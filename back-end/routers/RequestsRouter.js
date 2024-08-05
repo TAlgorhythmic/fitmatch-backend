@@ -2,6 +2,7 @@ import express from 'express';
 import { DataTypes } from "sequelize";
 import fitmatch from "../api/Fitmatch.js";
 import { tokenRequired } from "../api/utils/Validate.js";
+import { buildInternalErrorPacket, buildSendDataPacket } from '../api/packets/PacketBuilder.js';
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -85,15 +86,12 @@ router.get('/pendings/:id', tokenRequired, function (req, res, next) {
 router.get('/pendings', tokenRequired, function (req, res, next) {
     sqlManager.getAllPendings(req.token.id)
         .then(response => {
-            res.json({
-                ok: true,
-                data: response
-            });
+            res.json(buildSendDataPacket(response));
         })
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }))
+        .catch(error => {
+            console.log(error);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+        })
 });
 
 

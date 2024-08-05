@@ -59,7 +59,7 @@ export function tokenRequired(req, res, next) {
 
     jwt.verify(token, fitmatch.getConfig().tokenSecretKey, (err, decoded) => {
         if (err) {
-            res.json(buildInternalErrorPacket("Internal error when trying to verify token."));
+            res.json(buildInternalErrorPacket("Internal error when trying to verify token: " + err));
         } else {
             const expiredAt = decoded.expiredAt;
             if (expiredAt > new Date().getTime() && decoded.ip === req.ip) {
