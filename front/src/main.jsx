@@ -6,6 +6,7 @@ import Home from './Home.jsx'
 import MakeFriends from './MakeFriends.jsx'
 import Register from './components/Register.jsx'
 import Login from './components/Login.jsx'
+import Notification from './components/Notifications/Notifications.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="friends" element={<MakeFriends />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
+          <Route path="notifications" element={<Notification />} />
         </Route>
       </Routes>
     </BrowserRouter>
