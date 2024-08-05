@@ -13,7 +13,7 @@ function Header() {
                 <Navbar.Collapse id="basic-navbar-nav" className='customCollapse'>
                     <Nav className="customNav">
                         <Link to="/friends"><PeopleFill size={32} /></Link>
-                        <Notifications/>
+                        
                         <Nav >
                         <Link to="/user/profile"><PersonCircle size={32} /></Link>
                         <NavDropdown title="" id="basic-nav-dropdown" className='customNavDropdown'>

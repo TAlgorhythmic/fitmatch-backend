@@ -3,7 +3,7 @@ import HeroSection from './HeroSection';
 import AboutUs from './AboutUs';
 import AppExplain from './AppExplain';
 import Register from '../Register/Register';
-import './Principal.css';
+
 
 const Principal = () => {
   const [showLogin, setShowLogin] = useState(false);

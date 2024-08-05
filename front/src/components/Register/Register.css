@@ -1,59 +1,23 @@
-.page-container {
+/* Register.css */
+
+.page-container-custom {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%;
-    height: calc(100vh - 60px);
-    padding-top: 60px;
-    box-sizing: border-box;
-    background-color: #f9f9f9;
+    height: 100%;
 }
 
-.register-container {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.register-container-custom {
+    width: 100%;
+    max-width: 80%;
     padding: 20px;
 }
 
-.slogan-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50%;
-    padding: 20px;
-}
-
-.slogan-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 500;
-    color: #333; /* Color principal */
-    text-align: center;
-    line-height: 1.6;
-    max-width: 600px;
-    letter-spacing: 0.5px; /* Espaciado de letras para un aspecto más estilizado */
-    margin: 0 auto;
-}
-
-.register-card {
-    background-color: #ffffff;
-    padding: 40px;
+.register-card-custom {
+    padding: 10%;
     border-radius: 20px;
-    width: 100%;
-    max-width: 400px;
     text-align: center;
-    color: #212121;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.register-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 h2 {
@@ -61,34 +25,15 @@ h2 {
     font-size: 32px;
     color: #1a73e8;
     font-weight: 700;
-    margin-bottom: 20px;
-    letter-spacing: 1px; /* Espaciado de letras en el título */
+    margin-bottom: 30px;
     text-transform: uppercase;
 }
 
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    color: #1a73e8;
-    font-weight: 500;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+.form-control {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box;
-    margin-bottom: 15px;
     background-color: #f1f3f4;
     color: #212121;
     font-family: 'Roboto', sans-serif;
@@ -96,18 +41,12 @@ input[type="password"] {
     transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
+.form-control:focus {
     border-color: #1a73e8;
     box-shadow: 0 0 8px rgba(26, 115, 232, 0.6);
 }
 
-input::placeholder {
-    color: #757575;
-}
-
-button.register-button {
+button.register-button-custom {
     width: 100%;
     padding: 14px;
     margin-top: 20px;
@@ -116,28 +55,35 @@ button.register-button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 100%;
+    font-weight: 780;
     font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-button.register-button:hover {
+button.register-button-custom:hover {
     background-color: #1669c1;
     transform: translateY(-2px);
 }
 
-.success-message {
+.success-message-custom {
     color: #4CAF50;
     font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
+    font-size: 16%;
 }
 
-.error-message {
+.error-message-custom {
     color: #f44336;
     font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
+    font-size: 16%;
+}
+
+button.btn-outline-secondary {
+    align-items: center;
+    border: none;
+    background: none;
+    padding: 6px;
 }
 
 

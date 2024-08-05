@@ -8,6 +8,7 @@ import Login from './components/Login/Login.jsx'
 import UserProfile from './components/Header/ProfileUser.jsx'
 import ChangePassword from './components/Login/CambioContra.jsx'
 import CompletarRegistro from './components/Register/CompletarRegistro.jsx'
+import Principal from './components/Principal/Principal.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="friends" element={<MakeFriends />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
+          <Route path="principal" element={<Principal />} />
           <Route path="nuevaContra" element={<ChangePassword />} />
           <Route path="user/profile" element={<UserProfile />} />
           <Route path="formulario" element={<CompletarRegistro />} />

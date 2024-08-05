@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { InputGroup, FormControl, Button } from 'react-bootstrap';
+import { EyeFill, EyeSlashFill, LockFill, EnvelopeFill } from 'react-bootstrap-icons';
 import './Register.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +10,7 @@ const Register = () => {
         password: '',
         name: ''
     });
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const [error, setError] = useState('');
@@ -50,18 +53,18 @@ const Register = () => {
     };
 
     return (
-        <div className="page-container">
-            <div className="register-container">
-                <div className="register-card">
+        <div className="page-container-custom">
+            <div className="register-container-custom">
+                <div className="register-card-custom">
                     <h2>Sign Up</h2>
                     {success ? (
-                        <p className="success-message">Registration successful!</p>
+                        <p className="success-message-custom">Registration successful!</p>
                     ) : (
-                        <div>
-                            <form onSubmit={handleSubmit}>
-                                <div className="form-group">
-                                    <label htmlFor="email">Gmail</label>
-                                    <input
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group-custom">
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Text><EnvelopeFill /></InputGroup.Text>
+                                    <FormControl
                                         type="email"
                                         id="email"
                                         name="email"
@@ -70,11 +73,13 @@ const Register = () => {
                                         required
                                         placeholder="Enter your Gmail"
                                     />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="password">Password</label>
-                                    <input
-                                        type="password"
+                                </InputGroup>
+                            </div>
+                            <div className="form-group-custom">
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Text><LockFill /></InputGroup.Text>
+                                    <FormControl
+                                        type={showPassword ? "text" : "password"}
                                         id="password"
                                         name="password"
                                         value={formData.password}
@@ -82,35 +87,36 @@ const Register = () => {
                                         required
                                         placeholder="Enter your password"
                                     />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="name">Name</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        required
-                                        placeholder="Enter your name"
-                                    />
-                                </div>
-                                <button type="submit" className="register-button">Sign Up</button>
-                                {error && <p className="error-message">{error}</p>}
-                            </form>
-                        </div>
+                                    <Button
+                                        variant="outline-secondary"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? <EyeSlashFill /> : <EyeFill />}
+                                    </Button>
+                                </InputGroup>
+                            </div>
+                            <div className="form-group-custom">
+                                <FormControl
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="Enter your name"
+                                />
+                            </div>
+                            <Button type="submit" className="register-button-custom">Sign Up</Button>
+                            {error && <p className="error-message-custom">{error}</p>}
+                        </form>
                     )}
                 </div>
-            </div>
-            <div className="slogan-container">
-                <p className="slogan-text">
-                    Encuentra a tu compañero ideal...
-                </p>
             </div>
         </div>
     );
 };
 
 export default Register;
+
 
 
