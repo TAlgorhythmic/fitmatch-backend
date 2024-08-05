@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './Register.css';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ const Register = () => {
         password: '',
         name: ''
     });
+    const navigate = useNavigate();
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
@@ -36,8 +38,11 @@ const Register = () => {
 
             const data = await response.json();
             console.log('User registered:', data);
+            const token = response.token;
+            localStorage.setItem('authToken', token);
             setSuccess(true);
             setError('');
+            navigate('/formulario');
         } catch (err) {
             console.error('Error during registration:', err);
             setError('Error during registration. Please try again.');
