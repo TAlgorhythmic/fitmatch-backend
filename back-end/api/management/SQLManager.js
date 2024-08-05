@@ -15,11 +15,25 @@ class SQLManager {
         return await fitmatch.sql.query(`SELECT joins_activities.* FROM joins_activities INNER JOIN activities ON joins_activities.postId = activities.id WHERE joins_activities.userId = ?;`, { replacements: [id], type: QueryTypes.SELECT });
     }
 
+    async destroyUserCompletely(id) {
+        await fitmatch.getSql().query("DELETE FROM users WHERE id = ?;", { replacements: [id], type: QueryTypes.DELETE })
+            .then(e => {
+                fitmatch.getSql().query("DELETE FROM days_of_week WHERE userId = ?;", { replacements: [id], type: QueryTypes.DELETE })
+                .then(e => {
+                    fitmatch.getSql()
+                })
+            })
+            .catch(e => {
+                console.log("Operation destroy user failed. Error: " + e);
+            });
+    }
+
     async removeActivityCompletely(id) {
         await fitmatch.sql.query(`DELETE FROM activities WHERE id = ?;`, { replacements: [id], type: QueryTypes.DELETE })
         .then(e => {
             return fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?`, { replacements: [id], type: QueryTypes.DELETE });
         })
+        .catch(err => console.log("Operation remove activity completely failed. Error: " + err));
     }
 
     async getActivityFromId(id) {

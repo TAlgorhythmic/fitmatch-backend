@@ -5,7 +5,7 @@ import { DataTypes } from "sequelize";
 import multer from "multer";
 import path from "path";
 import slugify from "slugify";
-import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildSendDataPacket } from "../api/packets/PacketBuilder.js";
 import ConnectSession, { sessions } from "../api/utils/ConnectSession.js";
 import User from "../api/User.js";
 
@@ -74,7 +74,7 @@ router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, nex
 });
 
 // GET de un solo Users
-router.get('/:id', function (req, res, next) {
+router.get('/:id', tokenRequired, function (req, res, next) {
     Users.findOne({ where: { id: req.params.id } })
         .then(Users => res.json({
             ok: true,
@@ -87,12 +87,12 @@ router.get('/:id', function (req, res, next) {
 });
 
 export function sketchyOrder(array) {
-    // Sort to extract the 25% of the most likely matches users.
+    // inverse sort to extract the 25% of the most likely matches users.
     array.sort((a, b) => {
-        return a.matchPercent - b.matchPercent;
+        return b.matchPercent - a.matchPercent;
     })
 
-    // Get the amount of items the 25% is.
+    // Get the amount of items the 25% actually is.
     const amount = Math.floor((array.length * 25) / 100);
     const likelyMatch = [];
 
@@ -119,7 +119,7 @@ router.get('/connect', tokenRequired, function (req, res, next) {
     const token = req.token;
 
     if (!sessions.has(token.id)) {
-        sessions.set(token.id, new ConnectSession())
+        sessions.set(token.id, new ConnectSession());
     }
     
     sessions.get(token.id).sendMore(res);
@@ -206,17 +206,13 @@ router.put('/edit', tokenRequired, function (req, res, next) {
 
 });
 
-
-
 // DELETE elimina l'Users id
-router.delete('/:id', function (req, res, next) {
-
+router.delete('/removeacc', tokenRequired, function (req, res, next) {
     Users.destroy({ where: { id: req.params.id } })
         .then((data) => res.json({ ok: true, data }))
         .catch((error) => res.json({ ok: false, error }))
-
+// TODO
 });
-
 
 // GET Users that user not joined
 router.get('/notjoined/:userId'), function (req, res, next) {
@@ -243,4 +239,20 @@ router.put('/changepasswd', tokenRequired, function (req, res, next) {
         });
 });
 
+router.get("/profile", tokenRequired, (req, res, next) => {
+    const id = req.token.id;
+    if (fitmatch.getUserManager().containsKey(id)) {
+        res.json(buildSendDataPacket(fitmatch.getUserManager().get(id).user));
+    } else {
+        fitmatch.getSqlManager().getUserFromId(id)
+        .then(e => {
+            const data = e[0];
+            res.json(data);
+        })
+        .catch(err => {
+            console.log(err);
+            res.json("Backend internal error. Check logs.");
+        })
+    }
+})
 export default router;
