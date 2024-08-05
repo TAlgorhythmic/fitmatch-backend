@@ -16,10 +16,18 @@ function Notifications() {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data); // Esto te permitirá ver los datos en la consola
-                setNotifications(data.data);
+            .then(response => {
+                response.json()
+                .then(data => {
+                    // TODO yang
+                    if (data.status !== 0) {
+                        console.log("Fatal error fetching pendings.");
+                        console.log(data);
+                        return;
+                    }
+                    setNotifications(data.data);
+                })
+
             })
             .catch(error => console.error(error));
     }, []);
