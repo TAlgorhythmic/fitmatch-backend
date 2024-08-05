@@ -117,6 +117,22 @@ class SQLManager {
     getAllActivitiesWhitUserInfo() {
         return fitmatch.getSql().query(`SELECT activities.*, users.name, users.img FROM activities INNER JOIN users ON activities.userId = users.id;`);
     }
+
+
+    async getAllPendings(id) {
+        return await fitmatch.getSql().query(`
+            SELECT 
+                u.*
+            FROM 
+                pending p
+            JOIN 
+                users u
+            ON 
+                p.sender_id = u.id
+            WHERE 
+                p.receiver_id = ?;
+        `, { replacements: [id], type: QueryTypes.SELECT });
+    }
 }
 
 const sqlManager = new SQLManager();
