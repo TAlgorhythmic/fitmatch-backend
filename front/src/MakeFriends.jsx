@@ -1,27 +1,41 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './mf.css'; // Archivo CSS para los estilos
-import BaseController from './controllers/BaseController';
 
 const MakeFriends = () => {
   const [persona, setPersona] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const cardRefs = useRef([]);
   const swipeContainerRef = useRef(null);
-  const tableName = "users";
-  const UsersController = new BaseController(tableName);
 
   useEffect(() => {
-    // Llama a todos los usuarios
+    // Llama al endpoint /connect para obtener los usuarios
     async function getUsers() {
-      const data = await UsersController.getAll();
-      if (data.length) {
-        setPersona(data);
-        setCurrentIndex(data.length - 1);
-        cardRefs.current = Array(data.length).fill(0).map(() => React.createRef());
-      } else {
-        console.log('No data found:', data);
+      try {
+        const response = await fetch('http://localhost:3001/api/users/connect', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching users');
+        }
+
+        const data = await response.json();
+        if (data.length) {
+          setPersona(data);
+          setCurrentIndex(data.length - 1);
+          cardRefs.current = Array(data.length).fill(0).map(() => React.createRef());
+        } else {
+          console.log('No data found:', data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch users:', error);
       }
     }
+
     getUsers();
 
     // Agrega event listener para teclas
