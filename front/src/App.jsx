@@ -9,6 +9,7 @@ function App() {
     <div className="contenedorPrincipal">
       <Container fluid="lg">
         <Header />
+        <SubHeader/>
         <Outlet />
       </Container>
     </div>
