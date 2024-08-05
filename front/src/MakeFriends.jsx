@@ -2,59 +2,80 @@ import React, { useState, useEffect, useRef } from 'react';
 import './mf.css'; // Archivo CSS para los estilos
 import BaseController from './controllers/BaseController';
 
-
 const MakeFriends = () => {
   const [persona, setPersona] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const cardRefs = useRef([]);
+  const swipeContainerRef = useRef(null);
   const tableName = "users";
   const UsersController = new BaseController(tableName);
-  //const currentUserProficiency = 'Intermedio'; //pilla el id del usuario accede a su proficiency
 
-  useEffect(() => { 
-    //llama a todos los usuarios
+  useEffect(() => {
+    // Llama a todos los usuarios
     async function getUsers() {
       const data = await UsersController.getAll();
       if (data.length) {
-        // Filtrar los usuarios por el mismo nivel de proficiency
-        //const filteredData = data.filter(user => user.proficiency === currentUserProficiency);
-
         setPersona(data);
-        setCurrentIndex(data.length - 1); 
+        setCurrentIndex(data.length - 1);
         cardRefs.current = Array(data.length).fill(0).map(() => React.createRef());
       } else {
         console.log('No data found:', data);
       }
     }
     getUsers();
+
+    // Agrega event listener para teclas
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Elimina el listener cuando el componente se desmonte
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
-  // Manejo del evento de swipe
+  // Manejo del evento de teclado
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowRight') {
+      swipeCard('right');
+    } else if (e.key === 'ArrowLeft') {
+      swipeCard('left');
+    }
+  };
+
+  const swipeCard = (direction) => {
+    const card = cardRefs.current[currentIndex].current;
+
+    if (!card) return;
+
+    card.style.transition = 'transform 0.2s ease-out';
+    card.style.transform = `translateX(${direction === 'right' ? 1000 : -1000}px)`;
+
+    setTimeout(() => {
+      setCurrentIndex((prevIndex) => prevIndex - 1);
+      card.style.transition = '';
+      card.style.transform = '';
+    }, 200);
+  };
+
+  // Manejo del evento de swipe con mouse o touch
   const handleMouseDown = (e, index) => {
     const card = cardRefs.current[index].current;
     let startX = e.clientX || e.touches[0].clientX;
-    let shiftX;
+    let shiftX = 0;
 
     const handleMouseMove = (e) => {
       let currentX = e.clientX || e.touches[0].clientX;
       shiftX = currentX - startX;
-      card.style.transform = `translateX(${shiftX}px) rotate(${shiftX / 10}deg)`;
+      card.style.transform = `translateX(${shiftX}px)`; // Eliminamos la rotación
     };
 
     const handleMouseUp = () => {
       if (Math.abs(shiftX) > 100) {
-        // Swipe out card
-        card.style.transition = 'transform 0.2s ease-out';
-        card.style.transform = `translateX(${shiftX > 0 ? 1000 : -1000}px) rotate(${shiftX / 10}deg)`;
-        setTimeout(() => {
-          setCurrentIndex((prevIndex) => prevIndex - 1);
-          card.style.transition = '';
-          card.style.transform = '';
-        }, 200);
+        swipeCard(shiftX > 0 ? 'right' : 'left');
       } else {
         // Snap back
         card.style.transition = 'transform 0.2s ease-out';
-        card.style.transform = 'translateX(0px) rotate(0deg)';
+        card.style.transform = 'translateX(0px)';
       }
 
       window.removeEventListener('mousemove', handleMouseMove);
@@ -68,21 +89,30 @@ const MakeFriends = () => {
     window.addEventListener('touchmove', handleMouseMove);
     window.addEventListener('touchend', handleMouseUp);
   };
-  //AÑADIR LOS LISTENES PARA EL TECLADO DE WINDOWS
 
   return (
-    <div className="swipe-container">
+    <div
+      className="swipe-container"
+      ref={swipeContainerRef}
+      tabIndex="0" // Permite que el contenedor reciba el foco
+    >
       {persona.map((p, index) => (
         index === currentIndex && (
           <div
             key={p.id}
             ref={cardRefs.current[index]}
             className="tarjeta"
-            style={{ backgroundImage: `url(http://localhost:3001/uploads/${p.img})` }}
             onMouseDown={(e) => handleMouseDown(e, index)}
             onTouchStart={(e) => handleMouseDown(e, index)}
           >
-            <h3>{p.name}</h3>
+            <img src={`http://localhost:3001/uploads/${p.img}`} alt={p.name} />
+            <div className="user-info">
+              <h2>{p.name} {p.lastname}</h2>
+              <p>{p.city}</p>
+              <p><strong>Proficiency:</strong> {p.proficiency}</p>
+              <p><strong>Preferences:</strong> {p.trainingPreferences}</p>
+              <p>{p.description}</p>
+            </div>
           </div>
         )
       ))}
@@ -91,5 +121,9 @@ const MakeFriends = () => {
 };
 
 export default MakeFriends;
+
+
+
+
 
 

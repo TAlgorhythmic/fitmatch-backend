@@ -12,8 +12,8 @@ function Header() {
                     <Nav className="customNav">
                         <Link to="/friends"><PeopleFill size={32} /></Link>
                         <Link to="/notifications"><Bell size={32} /></Link>
+                        <Nav >
                         <Link to="/user/profile"><PersonCircle size={32} /></Link>
-
                         <NavDropdown title="" id="basic-nav-dropdown" className='customNavDropdown'>
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -21,6 +21,8 @@ function Header() {
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                         </NavDropdown>
+                        </Nav>
+                        
                     </Nav>
                 </Navbar.Collapse>
             </Container>
