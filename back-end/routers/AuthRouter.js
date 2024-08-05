@@ -193,7 +193,7 @@ router.get("/validate-token", function (request, response, next) {
 function createToken(ip, userId) {
     return jwt.sign({
         ip: ip,
-        userId: userId,
+        id: userId,
         expiredAt: new Date().getTime() + TOKEN_EXPIRE_TIME
     }, fitmatch.config.tokenSecretKey);
 }
