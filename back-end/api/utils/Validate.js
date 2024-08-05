@@ -44,6 +44,10 @@ export function validateRegisterCredentials(req, res, next) {
     next();
 }
 
+export function passwordRequired(req, res, next) {
+    
+}
+
 // Middleware
 export function tokenRequired(req, res, next) {
     next();

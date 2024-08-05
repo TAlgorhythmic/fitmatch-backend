@@ -208,6 +208,8 @@ router.put('/edit', tokenRequired, function (req, res, next) {
 
 // DELETE elimina l'Users id
 router.delete('/removeacc', tokenRequired, function (req, res, next) {
+    const password = req.body.password;
+    
     Users.destroy({ where: { id: req.params.id } })
         .then((data) => res.json({ ok: true, data }))
         .catch((error) => res.json({ ok: false, error }))
