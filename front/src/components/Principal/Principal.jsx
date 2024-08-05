@@ -1,12 +1,9 @@
 import  { useState } from 'react';
 import HeroSection from './HeroSection';
 import AboutUs from './AboutUs';
-import Programs from './Programs';
-import Trainers from './Trainers';
-import Amenities from './Amenities';
-import ContactUs from './ContactUs';
+import AppExplain from './AppExplain';
 import Register from '../Register/Register';
-import './Home.css';
+import './Principal.css';
 
 const Principal = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -21,10 +18,7 @@ const Principal = () => {
         <>
           <HeroSection onGetStarted={handleGetStarted} />
           <AboutUs />
-          <Programs />
-          <Trainers />
-          <Amenities />
-          <ContactUs />
+          <AppExplain />
         </>
       ) : (
         <Register />
