@@ -64,16 +64,16 @@ router.post("/login", (request, response, next) => {
         promise = fitmatch.getSqlManager().getUserFromNumber(field);
     }
     promise.then(e => {
-        const data = e[0];
-        if (!data.length) {
+        if (!e.length) {
             response.json(buildInvalidPacket("The data introduced is incorrect."));
             return;
         }
-        if (data.length > 1) {
+        if (e.length > 1) {
+            console.log(e);
             response.json(buildInternalErrorPacket("Internal error, this field is duplicated."));
             return;
         }
-        const user = data[0];
+        const user = e[0];
         console.log(user);
         const hash = user.pwhash;
         console.log(password);
