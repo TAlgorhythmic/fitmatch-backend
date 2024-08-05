@@ -5,55 +5,6 @@ import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 function App() {
-  const [isValidToken, setIsValidToken] = useState(null);
-  const token = localStorage.getItem('authToken');
-
-  useEffect(() => {
-    const validateToken = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/auth/validate-token', {  
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`  // Enviar el token en los headers
-          }
-        });
-
-        // Verifica si la respuesta es JSON
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const data = await response.json();
-          setIsValidToken(data.valid);
-        } else {
-          console.error('Expected JSON, but got:', contentType);
-          setIsValidToken(false);
-        }
-      } catch (error) {
-        console.error('Error validating token', error);
-        setIsValidToken(false);
-      }
-    };
-
-    if (token) {
-      validateToken();
-    } else {
-      setIsValidToken(false);
-    }
-  }, [token]);  // El token está en la lista de dependencias para que el efecto se ejecute cada vez que cambie el token
-
-  if (isValidToken === null) {
-    // Renderizar un indicador de carga mientras se valida el token
-    return <div>Loading...</div>;
-  }
-
-  if (isValidToken === false) {
-    return (
-      <div className="contenedorPrincipal">
-        <Header />
-        <Navigate to="/login" />
-        <Outlet />
-      </div>
-    );
-  }
 
   return (
     <div className="contenedorPrincipal">
