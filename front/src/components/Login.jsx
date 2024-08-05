@@ -33,7 +33,7 @@ const Login = () => {
                     localStorage.setItem('authToken', token);
                     navigate('/');
                 } else {
-                    setResposta('error: ' + response.error);
+                    setResposta('error: ');
                 }
             })
             .catch(error => {
