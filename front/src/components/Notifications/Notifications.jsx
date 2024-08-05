@@ -10,8 +10,9 @@ function Notifications() {
     useEffect(() => {
         const token = localStorage.getItem('authToken');
         fetch('http://localhost:3001/api/requests/pendings', {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': "application/json",
                 'Authorization': `Bearer ${token}`
             }
         })

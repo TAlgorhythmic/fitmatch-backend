@@ -40,7 +40,6 @@ router.get('/friends', tokenRequired, function (req, res, next) {
     Friends.findAll({ where: { userId1: req.token.id } })
         .then(Userss => {
             res.json(Userss)
-            console.log(Userss);
         })
         .catch(error => res.json({
             ok: false,
@@ -86,7 +85,6 @@ router.get('/pendings/:id', tokenRequired, function (req, res, next) {
 router.get('/pendings', tokenRequired, function (req, res, next) {
     sqlManager.getAllPendings(req.token.id)
         .then(response => {
-            console.log(response);
             res.json({
                 ok: true,
                 data: response

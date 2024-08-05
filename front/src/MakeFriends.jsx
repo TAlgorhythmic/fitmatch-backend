@@ -19,12 +19,6 @@ const MakeFriends = () => {
           }
         });
         const data = await response.json();
-        if(data.status===0){
-          console.log('todo bien')
-        }else{
-          console.log('todo mal')
-        }
-
         if (data.length) {
           setPersona(data);
           setCurrentIndex(data.length - 1);
@@ -32,6 +26,7 @@ const MakeFriends = () => {
         } else {
           console.log('No data found:', data);
         }
+
       } catch (error) {
         console.error('Failed to fetch users:', error);
       }

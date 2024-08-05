@@ -56,7 +56,6 @@ router.get('/', tokenRequired, function (req, res, next) {
     Users.findAll()
         .then(Userss => {
             res.json(Userss)
-            console.log(Userss);
         })
         .catch(error => {
             console.log(error);
@@ -94,7 +93,7 @@ export function sketchyOrder(array) {
 
     // Get the amount of items the 25% actually is.
     const amount = Math.floor((array.length * 25) / 100);
-    console.log(amount);
+    
     const likelyMatch = [];
 
     // Push likely matches.
@@ -104,21 +103,21 @@ export function sketchyOrder(array) {
 
     const feed = [];
     // Sketchy sort.
+
+    if (!array.length && !likelyMatch.length) return feed;
+
     feed.push(likelyMatch.pop());
     let i = 0;
     while (array.length || likelyMatch.length) {
         if (i % 4 === 0 && likelyMatch.length) {
             const pop = likelyMatch.pop();
-            console.log(pop);
             feed.push(pop);
         }
         else {
             const pop = array.pop();
-            console.log(pop);
             feed.push(pop);
         }
         i++;
-        console.log(i + "  aa " + feed)
     }
     return feed;
 }
@@ -128,8 +127,6 @@ export function sketchyOrder(array) {
 // GET compatible users
 router.get('/connect', tokenRequired, function (req, res, next) {
     const token = req.token;
-
-    console.log(token)
 
     if (fitmatch.userManager.containsKey(token.id)) {
         const user = fitmatch.userManager.get(token.id);

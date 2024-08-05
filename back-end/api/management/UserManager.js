@@ -85,6 +85,7 @@ class Ref {
     checkOrDelete() {
         setTimeout(() => {
             if (this.modified.getTime() + TIMEOUT <= Date.now) {
+                this.save();
                 this.map.delete(this.user.id);
                 return;
             }
