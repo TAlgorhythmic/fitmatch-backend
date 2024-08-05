@@ -1,7 +1,7 @@
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { PersonCircle, PeopleFill } from 'react-bootstrap-icons';
-import Notifications from './Notifications/Notifications.jsx';
+import Notifications from '../Notifications/Notifications.jsx';
 
 function Header() {
     
