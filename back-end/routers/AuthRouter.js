@@ -100,16 +100,16 @@ function register(name, lastname, provider, email, phone, password, request, res
     let cancel = false;
     fitmatch.sqlManager.getUserFromEmail(email)
         .then(e => {
-            const data = e[0];
+            const data = e;
             if (data.length) {
                 response.json(buildInvalidPacket("This email is already in use."));
                 cancel = true;
-                return;
             }
         })
         .catch(err => {
             console.log("An error ocurred trying to send a query. Error: " + err);
             response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
+            return;
         });
     if (cancel) return;
     if (provider === GOOGLE) {
@@ -122,23 +122,21 @@ function register(name, lastname, provider, email, phone, password, request, res
                 fitmatch.userManager.put(user.id, user);
                 const token = createToken(request.ip, user.id);
                 response.json(buildTokenPacket(token, false));
+                return;
             })
         })
         .catch(err => {
             console.log(err);
             response.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+            return;
         });
     } else {
-        console.log("else arriba");
         bcrypt.hash(password, 10)
         .then(e => {
-            console.log("fa el hash");
             fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e)
             .then(e => {
-                console.log("fa el create user");
                 fitmatch.sqlManager.getUserFromEmail(email)
                 .then(e => {
-                    console.log("fa l'ultim get");
                     const data = e[0];
                     const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, null, null, data.isSetup);
                     fitmatch.userManager.put(user.id, user);
@@ -149,6 +147,7 @@ function register(name, lastname, provider, email, phone, password, request, res
             .catch(err => {
                 console.log("An error ocurred trying to send a query. Error: " + err);
                 response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
+                return;
             })
         })
     }
@@ -170,6 +169,7 @@ function register(name, lastname, provider, email, phone, password, request, res
  * }
  */
 router.post("/register", validateRegisterCredentials, (request, response, next) => {
+    // TODO fix double email error.
     const name = request.body.name;
     const lastname = request.body.lastname;
     const email = request.body.email;
