@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
-import './registerf.css'; // Archivo CSS para los estilos
+import  { useState, useEffect } from 'react';
+import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
+import { Camera, Phone, Person } from 'react-bootstrap-icons';
+import './registerf.css';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
+    phone: '', // Prefijo fijo para España
     city: '',
-    state: '',
-    postcode: '',
     country: '',
     proficiency: '',
     description: '',
@@ -18,6 +18,14 @@ const RegisterForm = () => {
   });
 
   const [imageFile, setImageFile] = useState(null);
+
+  const sportsInterests = [
+    'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running', 
+    'CrossFit', 'Bodybuilding', 'Pilates', 'Boxing', 'HIIT',
+    'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'
+  ];
+
+  const [selectedInterests, setSelectedInterests] = useState([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -44,11 +52,29 @@ const RegisterForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name === 'phone') {
+      const phoneValue = value.replace(/\D/g, ''); // Remove non-numeric characters
+      if (phoneValue.length <= 9) { // Limit to 9 digits after +34
+        setFormData({ ...formData, phone: phoneValue });
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
+  };
+
+  const handleInterestClick = (interest) => {
+    let newSelectedInterests;
+    if (selectedInterests.includes(interest)) {
+      newSelectedInterests = selectedInterests.filter(i => i !== interest);
+    } else {
+      newSelectedInterests = [...selectedInterests, interest];
+    }
+    setSelectedInterests(newSelectedInterests);
+    setFormData({ ...formData, preferences: newSelectedInterests.join(', ') });
   };
 
   const handleSubmit = async (e) => {
@@ -74,7 +100,6 @@ const RegisterForm = () => {
         return;
       }
 
-      // Assuming the API returns the URL or some identifier of the uploaded image
       setFormData({ ...formData, img: imageResult.imageUrl });
     }
 
@@ -96,93 +121,118 @@ const RegisterForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="register-form">
-      <div className="form-group">
-        <label>First Name</label>
-        <input
-          type="text"
-          name="firstName"
-          value={formData.firstName}
-          readOnly
-        />
-      </div>
-      <div className="form-group">
-        <label>Last Name</label>
-        <input
-          type="text"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label>Email Address</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          readOnly
-        />
-      </div>
-      <div className="form-group">
-        <label>Phone Number</label>
-        <input
-          type="tel"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label>Country</label>
-        <select
-          name="country"
-          value={formData.country}
-          onChange={handleChange}
-        >
-          <option value="Spain">Spain</option>
-          <option value="Europe">Europe</option>
-          {/* Añadir más países según sea necesario */}
-        </select>
-      </div>
-      <div className="form-group">
-        <label>Proficiency</label>
-        <input
-          type="text"
-          name="proficiency"
-          value={formData.proficiency}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label>Description</label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="form-group">
-        <label>Image Upload</label>
-        <input
-          type="file"
-          name="img"
-          onChange={handleImageChange}
-        />
-      </div>
-
-      <div className="form-group">
-        <label>Preferences</label>
-        <input
-          type="text"
-          name="preferences"
-          value={formData.preferences}
-          onChange={handleChange}
-        />
-      </div>
-      <button type="submit" className="update-button">Update</button>
-    </form>
+    <Container className="custom-register-form">
+      <Form onSubmit={handleSubmit}>
+        <Row>
+          <Col md={6}>
+            <Form.Group className="mb-3">
+              <Form.Label><Person /> First Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                readOnly
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group className="mb-3">
+              <Form.Label><Person /> Last Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Form.Group className="mb-3">
+          <Form.Label>Email Address</Form.Label>
+          <Form.Control
+            type="email"
+            name="email"
+            value={formData.email}
+            readOnly
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label><Phone /> Phone Number</Form.Label>
+          <InputGroup>
+            <InputGroup.Text>+34</InputGroup.Text>
+            <Form.Control
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              maxLength={9} // Limit to 9 digits
+              placeholder="Introduce your phone number"
+            />
+          </InputGroup>
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Country</Form.Label>
+          <Form.Select
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+          >
+            <option value="Spain">Spain</option>
+            <option value="Europe">Europe</option>
+            {/* Añadir más países según sea necesario */}
+          </Form.Select>
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Proficiency</Form.Label>
+          <Form.Control
+            type="text"
+            name="proficiency"
+            value={formData.proficiency}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label><Camera /> Image Upload</Form.Label>
+          <Form.Control
+            type="file"
+            name="img"
+            onChange={handleImageChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3 custom-preferences">
+          <Form.Label>Preferences</Form.Label>
+          <div className="d-flex flex-wrap justify-content-center">
+            {sportsInterests.map((interest) => (
+              <Button
+                key={interest}
+                variant={selectedInterests.includes(interest) ? 'primary' : 'outline-primary'}
+                className="me-2 mb-2 custom-preferences-btn"
+                onClick={() => handleInterestClick(interest)}
+              >
+                {interest}
+              </Button>
+            ))}
+          </div>
+        </Form.Group>
+        <div className="d-flex justify-content-center mt-4">
+          <Button variant="success" type="submit" className="custom-submit-btn">
+            Complete
+          </Button>
+        </div>
+      </Form>
+    </Container>
   );
 };
 
 export default RegisterForm;
+
+

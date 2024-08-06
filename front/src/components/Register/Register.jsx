@@ -102,11 +102,6 @@ const Register = () => {
                     )}
                 </div>
             </div>
-            <div className="slogan-container">
-                <p className="slogan-text">
-                    Encuentra a tu compañero ideal...
-                </p>
-            </div>
         </div>
     );
 };
