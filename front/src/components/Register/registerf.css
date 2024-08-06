@@ -1,22 +1,21 @@
-/* Estilo general para la página */
-.page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #f7f7f7;
-}
-
-/* Contenedor principal del formulario */
-.register-container {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 600px;
-    width: 100%;
-}
+.custom-register-form {
+    margin-top: 20px;
+  }
+  
+  .custom-preferences {
+    margin-top: 30px;
+  }
+  
+  .custom-preferences-btn {
+    min-width: 100px;
+    font-size: 0.9rem;
+  }
+  
+  .custom-submit-btn {
+    width: 150px;
+  }
+  
+  
 
 /* Tarjeta de registro */
 .register-card {
