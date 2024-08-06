@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './mf.css'; // Archivo CSS para los estilos
+import './MakeFriends.css'; // Archivo CSS para los estilos
 
 const MakeFriends = () => {
   const [persona, setPersona] = useState([]);
