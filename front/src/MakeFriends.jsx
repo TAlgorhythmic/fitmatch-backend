@@ -18,7 +18,8 @@ const MakeFriends = () => {
             'Content-Type': 'application/json'
           }
         });
-        const data = await response.json();
+        const res = await response.json();
+        const data = res.data;
         if (data.length) {
           setPersona(data);
           setCurrentIndex(data.length - 1);
