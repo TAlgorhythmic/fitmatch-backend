@@ -23,6 +23,8 @@ export default class User {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
+        this.timetable1 = timetable1;
+        this.timetable2 = timetable2;
     }
 
     indexChange(field, value) {

@@ -19,12 +19,78 @@ export function areCompatible(user1, user2) {
     
     const locComp = areLocationsCompatible(user1, user2, 10); // Umbral en km
 
-    const timetablesComp = 0;
+    const timetablesComp = getScheduleCompatibility(user1, user2);
 
     // Calcular promedio de compatibilidad en porcentaje
     const totalCompatibility = ((profComp + prefComp + locComp + timetablesComp) * 100) / 400;
 
     return totalCompatibility; // Retornar compatibilidad
+}
+
+function getScheduleCompatibility(user1, user2) {
+    const daysOfWeek = getCommonDaysOfAWeek(user1, user2);
+    const multiplier = (daysOfWeek * 4) / 100;
+    const timetable = getTimetableCompatibility(user1, user2) * multiplier;
+
+    return (daysOfWeek + timetable) / 2;
+}
+
+function getTimetableCompatibility(user1, user2) {
+
+    const user1Hour1 = Math.floor(user1.timetable1 / 60);
+    const user1Hour2 = Math.floor(user1.timetable2 / 60);
+
+    const user2Hour1 = Math.floor(user2.timetable1 / 60);
+    const user2Hour2 = Math.floor(user2.timetable2 / 60);
+
+    const rest1 = user1Hour2 - user1Hour1;
+    const rest2 = user2Hour2 - user2Hour1
+
+    const max = Math.max(rest1, rest2);
+
+    let totalCompatibility = 0;
+
+    if (rest1 < rest2) {
+        for (let i = 0; i < rest1; i++) {
+            const index = rest1 + i;
+            if (index >= user2Hour1 && index <= user2Hour2) totalCompatibility += 1;
+        }
+    } else {
+        for (let i = 0; i < rest2; i++) {
+            const index = rest2 + i;
+            if (index >= user1Hour1 && index <= user1Hour2) totalCompatibility += 1;
+        }
+    }
+
+    if (totalCompatibility === 0) return totalCompatibility;
+    return (25 * totalCompatibility) / max;
+}
+
+function getCommonDaysOfAWeek(user1, user2) {
+    let daysCompatible = 0;
+
+    if (user1.monday && user2.monday) daysCompatible += 100;
+    else if (!user1.monday && !user2.monday) daysCompatible += 20;
+
+    if (user1.tuesday && user2.tuesday) daysCompatible += 100;
+    else if (!user1.tuesday && !user2.tuesday) daysCompatible += 20;
+
+    if (user1.wednesday && user2.wednesday) daysCompatible += 100;
+    else if (!user1.wednesday && !user2.wednesday) daysCompatible += 20;
+
+    if (user1.thursday && user2.thursday) daysCompatible += 100;
+    else if (!user1.thursday && !user2.thursday) daysCompatible += 20;
+
+    if (user1.friday && user2.friday) daysCompatible += 100;
+    else if (!user1.friday && !user2.friday) daysCompatible += 20;
+
+    if (user1.saturday && user2.saturday) daysCompatible += 100;
+    else if (!user1.saturday && !user2.saturday) daysCompatible += 20;
+
+    if (user1.sunday && user2.sunday) daysCompatible += 100;
+    else if (!user1.sunday && !user2.sunday) daysCompatible += 20;
+
+    return daysCompatible / 7;
 }
 
 const p = {
@@ -63,10 +129,6 @@ function haveCommonPreferences(preferences1, preferences2) {
     const compatibilidad = (coincidencias * 100) / max;
 
     return compatibilidad;
-}
-
-function getCommonDaysOfAWeek(user1, user2) {
-    
 }
 
 function areLocationsCompatible(user1, user2, thresholdKm) {

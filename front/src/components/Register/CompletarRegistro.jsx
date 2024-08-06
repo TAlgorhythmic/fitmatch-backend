@@ -1,6 +1,6 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
-import { Camera, Phone, Person } from 'react-bootstrap-icons';
+import { Camera, Phone, Person, Envelope, GeoAlt } from 'react-bootstrap-icons';
 import './registerf.css';
 
 const RegisterForm = () => {
@@ -8,17 +8,18 @@ const RegisterForm = () => {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '', // Prefijo fijo para España
+    phone: '',
     city: '',
-    country: '',
+    country: 'Spain',
     proficiency: '',
     description: '',
     img: '',
     preferences: '',
+    latitude: '',
+    longitude: ''
   });
 
   const [imageFile, setImageFile] = useState(null);
-
   const sportsInterests = [
     'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running', 
     'CrossFit', 'Bodybuilding', 'Pilates', 'Boxing', 'HIIT',
@@ -39,6 +40,7 @@ const RegisterForm = () => {
       });
 
       const userData = await response.json();
+      console.log(userData)
 
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -113,10 +115,10 @@ const RegisterForm = () => {
     });
 
     const result = await response.json();
-    if (result.error) {
-      alert(result.error);
+    if (result.status==0) {
+      alert('Formulario successful!');
     } else {
-      alert('Registration successful!');
+      alert('todo mal!');
     }
   };
 
@@ -127,34 +129,43 @@ const RegisterForm = () => {
           <Col md={6}>
             <Form.Group className="mb-3">
               <Form.Label><Person /> First Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                readOnly
-              />
+              <InputGroup>
+                <InputGroup.Text><Person /></InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  readOnly
+                />
+              </InputGroup>
             </Form.Group>
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
               <Form.Label><Person /> Last Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-              />
+              <InputGroup>
+                <InputGroup.Text><Person /></InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                />
+              </InputGroup>
             </Form.Group>
           </Col>
         </Row>
         <Form.Group className="mb-3">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            value={formData.email}
-            readOnly
-          />
+          <Form.Label><Envelope /> Email Address</Form.Label>
+          <InputGroup>
+            <InputGroup.Text><Envelope /></InputGroup.Text>
+            <Form.Control
+              type="email"
+              name="email"
+              value={formData.email}
+              readOnly
+            />
+          </InputGroup>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label><Phone /> Phone Number</Form.Label>
@@ -170,6 +181,49 @@ const RegisterForm = () => {
             />
           </InputGroup>
         </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label><GeoAlt /> City</Form.Label>
+          <InputGroup>
+            <InputGroup.Text><GeoAlt /></InputGroup.Text>
+            <Form.Control
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              placeholder="Enter your city"
+            />
+          </InputGroup>
+        </Form.Group>
+        <Row>
+          <Col md={6}>
+            <Form.Group className="mb-3">
+              <Form.Label>Latitude</Form.Label>
+              <InputGroup>
+                <Form.Control
+                  type="text"
+                  name="latitude"
+                  value={formData.latitude}
+                  onChange={handleChange}
+                  placeholder="Enter latitude"
+                />
+              </InputGroup>
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group className="mb-3">
+              <Form.Label>Longitude</Form.Label>
+              <InputGroup>
+                <Form.Control
+                  type="text"
+                  name="longitude"
+                  value={formData.longitude}
+                  onChange={handleChange}
+                  placeholder="Enter longitude"
+                />
+              </InputGroup>
+            </Form.Group>
+          </Col>
+        </Row>
         <Form.Group className="mb-3">
           <Form.Label>Country</Form.Label>
           <Form.Select

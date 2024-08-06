@@ -3,6 +3,7 @@ import express from 'express';
 import { DataTypes } from "sequelize";
 import { tokenRequired } from "./../api/utils/Validate.js";
 import { buildInvalidPacket, buildSendDataPacket } from "../api/packets/PacketBuilder.js";
+import User from "../api/User.js";
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -43,10 +44,23 @@ router.get('/', tokenRequired, async function (req, res, next) {
     sqlManager.getAllActivitiesWhitUserInfo()
         .then(activities => {
             const data = activities[0];
-            sqlManager.filterActivities(data);
-            res.json(
-                buildSendDataPacket(data)
-            )
+            const filtered = sqlManager.filterActivities(data);
+            let i = 0;
+            function recursive() {
+                if (!filtered[i]) {
+                    res.json(buildSendDataPacket(filtered));
+                    return;
+                }
+                fitmatch.getSqlManager().getUserFromId(filtered[i].userId)
+                .then(e => {
+                    const data = e[0];
+                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                    filtered[i].user = user;
+                    i++;
+                    recursive();
+                })
+            }
+            recursive();
         })
         .catch(error => {
             console.log(error);
