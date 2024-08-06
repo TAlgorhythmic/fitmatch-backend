@@ -8,10 +8,12 @@ function App() {
 
   return (
     <div className="contenedorPrincipal">
-      <Container fluid="lg">
+      <Container>
         <Header />
-        <SubHeader/>
-        <Outlet />
+        <SubHeader />
+        <div className="mainContent">
+          <Outlet />
+        </div>
       </Container>
     </div>
   );
