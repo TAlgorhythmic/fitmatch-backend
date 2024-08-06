@@ -4,6 +4,7 @@ import BaseController from './controllers/BaseController';
 import { Row, Col } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
 import ActivityPostHome from './components/Home/ActivityPostHome';
+import './Home.css';
 
 function Home() {
     const [activities, setActivities] = useState([]);
@@ -73,17 +74,13 @@ function Home() {
     }
 
     return (
-        <Row>
-            <Col className="d-flex flex-column">
-                <div className="contenedorHome ">
-                    {activities.map((activity, index) => (
-                        <Row key={index}>
-                            <ActivityPostHome data={activity} />
-                        </Row>
-                    ))}
-                </div>
-            </Col>
-        </Row>
+        <div className="contenedorHome">
+            {activities.map((activity, index) => (
+                <Row key={index}>
+                    <ActivityPostHome data={activity} />
+                </Row>
+            ))}
+        </div>
     );
 }
 
