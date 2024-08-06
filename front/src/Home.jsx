@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import BaseController from './controllers/BaseController';
 import { Row, Col } from 'react-bootstrap';
-import HomeLateral from './components/HomeLateral';
-import HomeView from './components/HomeView';
-import BarraLateral from './components/BarraLateral';
 import { Navigate } from 'react-router-dom';
+import ActivityPostHome from './components/Home/ActivityPostHome';
 
 function Home() {
     const [activities, setActivities] = useState([]);
@@ -75,14 +73,14 @@ function Home() {
 
     return (
         <Row>
-            <Col xs={1}>
-                <BarraLateral />
-            </Col>
-            <Col xs={7} className="d-flex flex-column">
-                <HomeView activitiesData={activities} />
-            </Col>
-            <Col xs={4} className="d-flex flex-column">
-                <HomeLateral activitiesData={activities} />
+            <Col className="d-flex flex-column">
+                <div className="contenedorHome ">
+                    {activities.map((activity, index) => (
+                        <Row key={index}>
+                            <ActivityPostHome data={activity} />
+                        </Row>
+                    ))}
+                </div>
             </Col>
         </Row>
     );
