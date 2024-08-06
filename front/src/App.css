@@ -18,5 +18,8 @@
 /*Principales*/
 .contenedorPrincipal {
     background-color: var(--color-fondo-principal);
-    margin: 30px;
+}
+
+.mainContent {
+    margin-top: 130px;
 }
