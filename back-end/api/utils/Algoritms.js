@@ -9,8 +9,6 @@ export function areCompatible(user1, user2) {
     }
     
     let prefComp;
-    console.log(user1.trainingPreferences);
-    console.log(user2.trainingPreferences);
     if ((user1.trainingPreferences && user2.trainingPreferences) && (user1.trainingPreferences.length && user2.trainingPreferences.length)) {
         prefComp = haveCommonPreferences(user1.trainingPreferences, user2.trainingPreferences);
     } else if ((user1.trainingPreferences == null && !user2.trainingPreferences == null)) {
@@ -22,7 +20,7 @@ export function areCompatible(user1, user2) {
     const locComp = areLocationsCompatible(user1, user2, 10); // Umbral en km
 
     // Calcular promedio de compatibilidad en porcentaje
-    const totalCompatibility = ((profComp + prefComp + locComp) * 100) / 300;
+    const totalCompatibility = ((profComp + prefComp + locComp) * 100) / 400;
 
     return totalCompatibility; // Retornar compatibilidad
 }
@@ -63,6 +61,10 @@ function haveCommonPreferences(preferences1, preferences2) {
     const compatibilidad = (coincidencias * 100) / max;
 
     return compatibilidad;
+}
+
+function getCommonDaysOfAWeek(user1, user2) {
+    
 }
 
 function areLocationsCompatible(user1, user2, thresholdKm) {
