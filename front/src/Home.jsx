@@ -11,7 +11,6 @@ function Home() {
     const [activities, setActivities] = useState([]);
     const [isValidToken, setIsValidToken] = useState(null);
     const token = localStorage.getItem('authToken');
-    if (!token) return <Navigate to="/register" />;
     const tableName = "activities";
     const ActivitiesController = new BaseController(tableName, token);
 
@@ -50,6 +49,7 @@ function Home() {
 
     useEffect(() => {
         async function getActivities() {
+            console.log("kls")
             const activitiesData = await ActivitiesController.getAll();
             if (activitiesData.status === 0) {
                 if (activitiesData.data.length) setActivities(activitiesData.data);
@@ -59,12 +59,14 @@ function Home() {
             }
         }
 
+        getActivities();
+
         if (isValidToken) {
             getActivities();
         }
     }, [isValidToken]); // Dependencia añadida
 
-    if (isValidToken === null) {
+    if (!isValidToken === null) {
         // Renderizar un indicador de carga mientras se valida el token
         return <div>Loading...</div>;
     }
