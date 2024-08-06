@@ -49,7 +49,6 @@ function Home() {
 
     useEffect(() => {
         async function getActivities() {
-            console.log("kls")
             const activitiesData = await ActivitiesController.getAll();
             if (activitiesData.status === 0) {
                 if (activitiesData.data.length) setActivities(activitiesData.data);
