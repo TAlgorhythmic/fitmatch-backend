@@ -30,23 +30,6 @@ const Friends = sequelize.define(
     { tableName: 'friends', timestamps: false }
 );
 
-export function isActivityExpired(activity) {
-    const date = new Date(activity.expires);
-    return Date.now <= date.getTime();
-}
-
-export function filterActivities(array) {
-    array.filter(item => {
-        const isExpired = isActivityExpired(item);
-        if (isExpired) {
-            garbage.push(item);
-        }
-        return isExpired;
-    })
-}
-
-export const garbage = [];
-
 export function removeGarbage(millis) {
     setTimeout(() => {
         function recursive() {
@@ -84,7 +67,7 @@ router.get('/', tokenRequired, async function (req, res, next) {
     sqlManager.getAllActivitiesWhitUserInfo()
         .then(activities => {
             const data = activities[0];
-            filterActivities(data);
+            sqlManager.filterActivities(data);
             res.json(
                 buildSendDataPacket(data)
             )
@@ -97,6 +80,9 @@ router.get('/', tokenRequired, async function (req, res, next) {
     });
 });
 
+router.get("/feed", tokenRequired, (req, res, next) => {
+    sqlManager.getActivitiesFeed(req.token.id, res);
+})
 
 // GET lista de todos los Activitiess de amigos de un usuario
 router.get('/foruser', tokenRequired, async function (req, res, next) {
