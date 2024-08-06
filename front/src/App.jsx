@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="contenedorPrincipal">
-      <Container fluid>
+      <Container>
         <Header />
         <SubHeader />
         <div className="mainContent">

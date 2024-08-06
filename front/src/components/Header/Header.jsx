@@ -8,7 +8,7 @@ function Header() {
 
     return (
         <>
-            <Navbar expand="lg" className="bg-body-tertiary customNavbar fixed-top">
+            <Navbar expand="lg" className="bg-body-tertiary customNavbar fixed-top">    
                 <Container>
                     <Navbar.Brand href="/" className="customBrand">Fitmatch</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
