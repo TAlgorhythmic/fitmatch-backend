@@ -1,10 +1,15 @@
-import { Alert } from 'react-bootstrap';
+import { Alert, Row, Col } from 'react-bootstrap';
+import './ActivityPostHome.css';
 
 function ActivityPostHome(props) {
     const { data } = props;
     return (
-        <div className="activity-container">
-            <Alert variant="info">
+        <div className="activityContainer">
+            <Alert variant="info" className='customAlert'>
+                <Row>
+                    <Col md={3}>
+                    </Col>
+                </Row>
                 <Alert.Heading>{data.title}</Alert.Heading>
                 <p>{data.description}</p>
                 <hr />
