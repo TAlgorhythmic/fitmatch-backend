@@ -19,8 +19,10 @@ export function areCompatible(user1, user2) {
     
     const locComp = areLocationsCompatible(user1, user2, 10); // Umbral en km
 
+    const timetablesComp = 0;
+
     // Calcular promedio de compatibilidad en porcentaje
-    const totalCompatibility = ((profComp + prefComp + locComp) * 100) / 400;
+    const totalCompatibility = ((profComp + prefComp + locComp + timetablesComp) * 100) / 400;
 
     return totalCompatibility; // Retornar compatibilidad
 }
