@@ -40,6 +40,7 @@ const RegisterForm = () => {
       });
 
       const userData = await response.json();
+      console.log(userData)
 
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -115,7 +116,7 @@ const RegisterForm = () => {
 
     const result = await response.json();
     if (result.status==0) {
-      alert('Registration successful!');
+      alert('Formulario successful!');
     } else {
       alert('todo mal!');
     }
