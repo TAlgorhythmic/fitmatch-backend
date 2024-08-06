@@ -27,12 +27,13 @@ const UserProfile = () => {
             }
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch user profile');
-            }
             return response.json();
         })
         .then(data => {
+            if (!data.status === 0) {
+                throw new Error('Failed to fetch user profile');
+            }
+            console.log(data);
             setUserData(data);
             setLoading(false);
         })
@@ -53,7 +54,7 @@ const UserProfile = () => {
 
         const token = localStorage.getItem('authToken');
         const requestOptions = {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -63,9 +64,6 @@ const UserProfile = () => {
 
         fetch('http://localhost:3001/api/edit', requestOptions)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to update profile');
-                }
                 return response.json();
             })
             .then(data => {
