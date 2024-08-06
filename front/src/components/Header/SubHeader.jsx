@@ -19,7 +19,6 @@ function SubHeader() {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <div></div>
         </>
     );
 }
