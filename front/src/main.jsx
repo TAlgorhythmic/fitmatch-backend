@@ -5,7 +5,7 @@ import Home from './Home.jsx'
 import MakeFriends from './MakeFriends.jsx'
 import Register from './components/Register/Register.jsx'
 import Login from './components/Login/Login.jsx'
-import UserProfile from './components/Header/ProfileUser.jsx'
+import UserProfile from './UserProfile.jsx'
 import ChangePassword from './components/Login/CambioContra.jsx'
 import CompletarRegistro from './components/Register/CompletarRegistro.jsx'
 
