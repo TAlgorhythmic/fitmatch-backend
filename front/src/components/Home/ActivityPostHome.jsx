@@ -1,6 +1,6 @@
 import { Alert } from 'react-bootstrap';
 
-function ActividadMain(props) {
+function ActivityPostHome(props) {
     const { data } = props;
     return (
         <div className="activity-container">
@@ -14,4 +14,4 @@ function ActividadMain(props) {
     );
 }
 
-export default ActividadMain;
+export default ActivityPostHome;
