@@ -91,7 +91,6 @@ const UserProfile = () => {
 
     return (
         <div>
-            <h1>Edit Profile</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"

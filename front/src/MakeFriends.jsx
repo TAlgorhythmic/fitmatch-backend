@@ -11,14 +11,15 @@ const MakeFriends = () => {
     // Llama al endpoint /connect para obtener los usuarios
     async function getUsers() {
       try {
-        const response = await fetch('http://localhost:3001/api/users', {
+        const response = await fetch('http://localhost:3001/api/users/connect', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
             'Content-Type': 'application/json'
           }
         });
-        const data = await response.json();
+        const res = await response.json();
+        const data = res.data;
         if (data.length) {
           setPersona(data);
           setCurrentIndex(data.length - 1);
