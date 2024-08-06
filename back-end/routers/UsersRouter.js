@@ -217,7 +217,7 @@ router.post("/setup", tokenRequired, (req, res, next) => {
 })
 
 // put modificació d'un Users
-router.put('/edit', tokenRequired, function (req, res, next) {
+router.post('/edit', tokenRequired, function (req, res, next) {
     Users.findOne({ where: { id: req.token.id } })
         .then((al) =>
             al.update(req.body)
@@ -277,7 +277,8 @@ router.get("/profile", tokenRequired, (req, res, next) => {
         fitmatch.getSqlManager().getUserFromId(id)
             .then(e => {
                 const data = e[0];
-                res.json(data);
+                
+                res.json(buildSendDataPacket(data));
             })
             .catch(err => {
                 console.log(err);
