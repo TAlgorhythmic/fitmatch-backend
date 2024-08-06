@@ -27,6 +27,54 @@ export function areCompatible(user1, user2) {
     return totalCompatibility; // Retornar compatibilidad
 }
 
+function getScheduleCompatibility(user1, user2) {
+    const daysOfWeek = getCommonDaysOfAWeek(user1, user2);
+    const timetable = getTimetableCompatibility(user1, user2);
+}
+
+function getTimetableCompatibility(user1, user2) {
+
+    const hour11 = Math.floor(user1.timetable1 / 60);
+    const hour12 = Math.floor(user1.timetable2 / 60);
+    const hour21 = Math.floor(user2.timetable1 / 60);
+    const hour22 = Math.floor(user2.timetable2 / 60);
+
+    const max = Math.max((hour12 - hour11), (hour22 - hour21));
+    const min = Math.min((hour12 - hour11), (hour22 - hour21));
+    let totalHoursCompatible = 0;
+
+    for (let i = min; min <= max; i++) {
+        //if ()
+    } 
+}
+
+function getCommonDaysOfAWeek(user1, user2) {
+    let daysCompatible = 0;
+
+    if (user1.monday && user2.monday) daysCompatible += 100;
+    else if (!user1.monday && !user2.monday) daysCompatible += 20;
+
+    if (user1.tuesday && user2.tuesday) daysCompatible += 100;
+    else if (!user1.tuesday && !user2.tuesday) daysCompatible += 20;
+
+    if (user1.wednesday && user2.wednesday) daysCompatible += 100;
+    else if (!user1.wednesday && !user2.wednesday) daysCompatible += 20;
+
+    if (user1.thursday && user2.thursday) daysCompatible += 100;
+    else if (!user1.thursday && !user2.thursday) daysCompatible += 20;
+
+    if (user1.friday && user2.friday) daysCompatible += 100;
+    else if (!user1.friday && !user2.friday) daysCompatible += 20;
+
+    if (user1.saturday && user2.saturday) daysCompatible += 100;
+    else if (!user1.saturday && !user2.saturday) daysCompatible += 20;
+
+    if (user1.sunday && user2.sunday) daysCompatible += 100;
+    else if (!user1.sunday && !user2.sunday) daysCompatible += 20;
+
+    return daysCompatible / 7;
+}
+
 const p = {
     Principiante: 0,
     Intermedio: 1,
@@ -63,10 +111,6 @@ function haveCommonPreferences(preferences1, preferences2) {
     const compatibilidad = (coincidencias * 100) / max;
 
     return compatibilidad;
-}
-
-function getCommonDaysOfAWeek(user1, user2) {
-    
 }
 
 function areLocationsCompatible(user1, user2, thresholdKm) {
