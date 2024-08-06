@@ -62,7 +62,7 @@ const UserProfile = () => {
             body: JSON.stringify(userData)
         };
 
-        fetch('http://localhost:3001/api/edit', requestOptions)
+        fetch('http://localhost:3001/api/users/edit', requestOptions)
             .then(response => {
                 return response.json();
             })
@@ -74,7 +74,6 @@ const UserProfile = () => {
                 }
             })
             .catch(error => {
-                console.log('Error:', error);
                 alert('Error updating profile');
             });
     };
