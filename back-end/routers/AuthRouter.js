@@ -160,9 +160,9 @@ function register(name, lastname, provider, email, phone, password, request, res
 router.post("/register", validateRegisterCredentials, (request, response, next) => {
     // TODO fix double email error.
     const name = request.body.name;
-    const lastname = request.body.lastname;
+    const lastname = request.body.lastname ? request.body.lastname : null;
     const email = request.body.email;
-    const phone = request.body.phone;
+    const phone = request.body.phone ? request.body.phone : null;
     const password = request.body.password;
 
     register(name, lastname, LOCAL, email, phone, password, request, response);
