@@ -4,24 +4,16 @@
     background-color: var(--color-fondo-principal) !important;
     border: 1px solid var(--color-terciario);
     box-shadow: 0px 0px 12px 0px var(--color-terciario);
+    padding: 20px 0;
+    margin-bottom: 20px;
 }
 
 .customBrand {
     color: var(--color-principal) !important;
     font-family: 'Pacifico', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 2em;
+    font-size: 2em !important;
 }
 
-.customCollapse {
-    justify-content: right;
-    text-align: right !important;
-}
-
-.customNav {
-    display: flex;
-    justify-content: space-between;
-}
-
-.customNav>* {
-    margin: 0 10px;
+.subHeaderCustom {
+    margin-top: 60px;
 }
