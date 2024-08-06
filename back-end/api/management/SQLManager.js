@@ -10,6 +10,30 @@ export function isActivityExpired(activity) {
     return Date.now <= date.getTime();
 }
 
+export function removeGarbage(millis) {
+    setTimeout(() => {
+        function recursive() {
+            const itemToRemove = garbage.pop();
+            if (!itemToRemove) {
+                console.log("Activities table is now clean.");
+                return;
+            }
+            try {
+                fitmatch.getSqlManager().removeActivityCompletely(itemToRemove.id)
+                    .then(e => {
+                        console.log(`Unused/expired activity: ${itemToRemove.id} removed successfully!`);
+                        return;
+                    });
+            } catch (err) {
+                console.log(err);
+            } finally {
+                recursive();
+            }
+        }
+        recursive();
+    }, millis);
+}
+
 export const garbage = [];
 
 class SQLManager {
