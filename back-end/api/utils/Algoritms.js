@@ -9,9 +9,11 @@ export function areCompatible(user1, user2) {
     }
     
     let prefComp;
+    console.log(user1.trainingPreferences);
+    console.log(user2.trainingPreferences);
     if ((user1.trainingPreferences && user2.trainingPreferences) && (user1.trainingPreferences.length && user2.trainingPreferences.length)) {
         prefComp = haveCommonPreferences(user1.trainingPreferences, user2.trainingPreferences);
-    } else if ((!user1.trainingPreferences && !user2.trainingPreferences) || (!user1.trainingPreferences.length && !user2.trainingPreferences.length)) {
+    } else if ((user1.trainingPreferences == null && !user2.trainingPreferences == null)) {
         prefComp = 50;
     } else {
         prefComp = 0;
@@ -66,7 +68,7 @@ function haveCommonPreferences(preferences1, preferences2) {
 function areLocationsCompatible(user1, user2, thresholdKm) {
     try {
         if (!user1.latitude || !user1.longitude || !user2.latitude || !user2.longitude) {
-            console.error('Ubicación no válida:', location1, location2);
+            console.log('La ubicación no está bien definida.');
             return 0;
         }
 
