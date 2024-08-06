@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './registerf.css'; // Archivo CSS para los estilos
 
 const RegisterForm = () => {
@@ -14,25 +14,75 @@ const RegisterForm = () => {
     proficiency: '',
     description: '',
     img: '',
-    latitude: '',
-    longitude: '',
     preferences: '',
   });
+
+  const [imageFile, setImageFile] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('authToken');
+
+      const response = await fetch('http://localhost:3001/api/users/profile', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const userData = await response.json();
+
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        firstName: userData.firstName || '',
+        email: userData.email || '',
+      }));
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('authToken');
+
+    if (imageFile) {
+      const formDataImage = new FormData();
+      formDataImage.append('img', imageFile);
+
+      const imageUploadResponse = await fetch('http://localhost:3001/api/users/upload/image', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formDataImage,
+      });
+
+      const imageResult = await imageUploadResponse.json();
+
+      if (imageResult.error) {
+        alert(imageResult.error);
+        return;
+      }
+
+      // Assuming the API returns the URL or some identifier of the uploaded image
+      setFormData({ ...formData, img: imageResult.imageUrl });
+    }
 
     const response = await fetch('http://localhost:3001/api/users/setup', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
     });
@@ -62,7 +112,7 @@ const RegisterForm = () => {
           type="text"
           name="lastName"
           value={formData.lastName}
-          readOnly
+          onChange={handleChange}
         />
       </div>
       <div className="form-group">
@@ -90,8 +140,8 @@ const RegisterForm = () => {
           value={formData.country}
           onChange={handleChange}
         >
-          <option value="United States">Spain</option>
-          <option value="United States">Europe</option>
+          <option value="Spain">Spain</option>
+          <option value="Europe">Europe</option>
           {/* Añadir más países según sea necesario */}
         </select>
       </div>
@@ -113,12 +163,11 @@ const RegisterForm = () => {
         />
       </div>
       <div className="form-group">
-        <label>Image URL</label>
+        <label>Image Upload</label>
         <input
-          type="text"
+          type="file"
           name="img"
-          value={formData.img}
-          onChange={handleChange}
+          onChange={handleImageChange}
         />
       </div>
 
