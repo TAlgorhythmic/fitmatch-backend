@@ -1,10 +1,11 @@
 import fitmatch from "./../api/Fitmatch.js";
-import { tokenRequired } from "./../api/utils/Validate.js";
+import { isValidTimetable, tokenRequired } from "./../api/utils/Validate.js";
 import express from "express";
 import { DataTypes } from "sequelize";
 import multer from "multer";
 import path from "path";
 import slugify from "slugify";
+import fs from "fs";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildSendDataPacket } from "../api/packets/PacketBuilder.js";
 import ConnectSession, { sessions } from "../api/utils/ConnectSession.js";
 import User from "../api/User.js";
@@ -69,6 +70,25 @@ router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, nex
         res.json(buildInvalidPacket("Image is empty."));
         return;
     }
+    const id = req.token.id;
+    if (fitmatch.userManager.containsKey(id)) {
+        const user = fitmatch.userManager.get(id).user;
+        if (user.img && user.img !== "img1.jpg") {
+            if (fs.existsSync("./uploads/" + user.img)) fs.rmSync("./uploads/" + user.img);
+        }
+        user.setImg(req.file.filename);
+    } else {
+        fitmatch.sqlManager.getUserFromId(id)
+        .then(e => {
+            const data = e[0];
+            const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+            if (user.img && user.img !== "img1.jpg") {
+                if (fs.existsSync("./uploads/" + user.img)) fs.rmSync("./uploads/" + user.img);
+            }
+            user.setImg(req.file.filename);
+            fitmatch.userManager.put(id, user);
+        })
+    }
     res.json(buildSimpleOkPacket());
 });
 
@@ -93,7 +113,7 @@ export function sketchyOrder(array) {
 
     // Get the amount of items the 25% actually is.
     const amount = Math.floor((array.length * 25) / 100);
-    
+
     const likelyMatch = [];
 
     // Push likely matches.
@@ -195,6 +215,22 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         res.json(buildInvalidPacket("You must include a longitude."));
         return;
     }
+    const monday = req.body.monday;
+    const tuesday = req.body.tuesday;
+    const wednesday = req.body.wednesday;
+    const thursday = req.body.thursday;
+    const friday = req.body.friday;
+    const saturday = req.body.saturday;
+    const sunday = req.body.sunday;
+    const timetable1 = req.body.timetable1;
+    const timetable2 = req.body.timetable2;
+
+    if (!isValidTimetable(timetable1) || !isValidTimetable(timetable2)) {
+        console.log(`${timetable1} - ${timetable2}`);
+        res.json(buildInvalidPacket("Timetable is not valid."));
+        return;
+    }
+
     if (fitmatch.getUserManager().containsKey(req.token.id)) {
         const user = fitmatch.getUserManager().get(req.token.id).user;
         user.setIsSetup(true);
@@ -202,6 +238,15 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         user.setDescription(description);
         user.setImg(img);
         user.setProficiency(proficiency);
+        user.setMonday(monday);
+        user.setTuesday(tuesday);
+        user.setWednesday(wednesday);
+        user.setThursday(thursday);
+        user.setFriday(friday);
+        user.setSaturday(saturday);
+        user.setSunday(sunday);
+        user.setTimetable1(timetable1);
+        user.setTimetable2(timetable2);
     }
     fitmatch.getSqlManager().getUserFromId(id)
         .then(e => {
@@ -213,6 +258,15 @@ router.post("/setup", tokenRequired, (req, res, next) => {
             user.setDescription(description);
             user.setImg(img);
             user.setProficiency(proficiency);
+            user.setMonday(monday);
+            user.setTuesday(tuesday);
+            user.setWednesday(wednesday);
+            user.setThursday(thursday);
+            user.setFriday(friday);
+            user.setSaturday(saturday);
+            user.setSunday(sunday);
+            user.setTimetable1(timetable1);
+            user.setTimetable2(timetable2);
         });
 })
 
