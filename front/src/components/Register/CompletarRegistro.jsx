@@ -55,8 +55,8 @@ const RegisterForm = () => {
       if(userData.status==0){
         setFormData((prevFormData) => ({
           ...prevFormData,
-          firstName: userData.firstName,
-          email: userData.email,
+          firstName: userData.data.name,
+          email: userData.data.email,
         }));
       }
     };
@@ -127,7 +127,7 @@ const RegisterForm = () => {
 
     const result = await response.json();
     console.log(result);
-    if (result.data) {
+    if (result.status === 0) {
       console.log('Usuario registrado con éxito');
       navigate('/'); 
     } else {

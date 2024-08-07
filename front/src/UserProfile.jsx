@@ -33,7 +33,7 @@ const UserProfile = () => {
             if (!data.status === 0) {
                 throw new Error('Failed to fetch user profile');
             }
-            setUserData(data);
+            setUserData(data.data);
             setLoading(false);
         })
         .catch(error => {
