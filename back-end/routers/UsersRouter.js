@@ -11,11 +11,11 @@ import User from "../api/User.js";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "./../uploads/");
+        cb(null, "uploads/");
     },
     filename: (req, file, cb) => {
         const slug = slugify(path.basename(file.originalname, path.extname(file.originalname)), { lower: true, strict: true });
-        cb(null, `${Date.now}_${slug}${path.extname(file.originalname)}`);
+        cb(null, `${Date.now()}_${slug}${path.extname(file.originalname)}`);
     }
 });
 
@@ -56,12 +56,11 @@ router.get('/', tokenRequired, function (req, res, next) {
     Users.findAll()
         .then(Userss => {
             res.json(Userss)
-            console.log(Userss);
         })
         .catch(error => {
             console.log(error);
             res.json(buildInternalErrorPacket("Backend internal error. Check logs if you're an admin."));
-    })
+        })
 
 });
 
@@ -74,7 +73,7 @@ router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, nex
 });
 
 // GET de un solo Users
-router.get('/:id', tokenRequired, function (req, res, next) {
+/*router.get('/:id', tokenRequired, function (req, res, next) {
     Users.findOne({ where: { id: req.params.id } })
         .then(Users => res.json({
             ok: true,
@@ -84,16 +83,17 @@ router.get('/:id', tokenRequired, function (req, res, next) {
             ok: false,
             error: error
         }))
-});
+});*/
 
 export function sketchyOrder(array) {
     // inverse sort to extract the 25% of the most likely matches users.
     array.sort((a, b) => {
         return b.matchPercent - a.matchPercent;
-    })
+    });
 
     // Get the amount of items the 25% actually is.
     const amount = Math.floor((array.length * 25) / 100);
+    
     const likelyMatch = [];
 
     // Push likely matches.
@@ -103,11 +103,21 @@ export function sketchyOrder(array) {
 
     const feed = [];
     // Sketchy sort.
+
+    if (!array.length && !likelyMatch.length) return feed;
+
     feed.push(likelyMatch.pop());
     let i = 0;
     while (array.length || likelyMatch.length) {
-        if (i % 4 === 0 && likelyMatch.length) feed.push(likelyMatch.pop());
-        else feed.push(array.pop());
+        if (i % 4 === 0 && likelyMatch.length) {
+            const pop = likelyMatch.pop();
+            feed.push(pop);
+        }
+        else {
+            const pop = array.pop();
+            feed.push(pop);
+        }
+        i++;
     }
     return feed;
 }
@@ -118,13 +128,29 @@ export function sketchyOrder(array) {
 router.get('/connect', tokenRequired, function (req, res, next) {
     const token = req.token;
 
-    console.log("s'executa skjfhskjdfhkjsdfhkjsdfkjshdkjfsdkjfsdkjfhskjd");
+    if (fitmatch.userManager.containsKey(token.id)) {
+        const user = fitmatch.userManager.get(token.id);
 
-    if (!sessions.has(token.id)) {
-        sessions.set(token.id, new ConnectSession());
+        if (!sessions.has(token.id)) {
+            sessions.set(token.id, new ConnectSession(user));
+        }
+
+        sessions.get(token.id).sendMore(res);
+    } else {
+        fitmatch.getSqlManager().getUserFromId(token.id)
+            .then(e => {
+                const data = e[0];
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                fitmatch.getUserManager().put(user.id, user);
+
+
+                if (!sessions.has(token.id)) {
+                    sessions.set(token.id, new ConnectSession(user));
+                }
+
+                sessions.get(token.id).sendMore(res);
+            })
     }
-    
-    sessions.get(token.id).sendMore(res);
 });
 
 /**
@@ -178,20 +204,20 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         user.setProficiency(proficiency);
     }
     fitmatch.getSqlManager().getUserFromId(id)
-    .then(e => {
-        const data = e[0][0];
-        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup);
-        fitmatch.userManager.put(user.id, user);
-        user.setIsSetup(true);
-        user.setTrainingPreferences(preferences);
-        user.setDescription(description);
-        user.setImg(img);
-        user.setProficiency(proficiency);
-    });
+        .then(e => {
+            const data = e[0];
+            const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+            fitmatch.userManager.put(user.id, user);
+            user.setIsSetup(true);
+            user.setTrainingPreferences(preferences);
+            user.setDescription(description);
+            user.setImg(img);
+            user.setProficiency(proficiency);
+        });
 })
 
 // put modificació d'un Users
-router.put('/edit', tokenRequired, function (req, res, next) {
+router.post('/edit', tokenRequired, function (req, res, next) {
     Users.findOne({ where: { id: req.token.id } })
         .then((al) =>
             al.update(req.body)
@@ -215,7 +241,7 @@ router.delete('/removeacc', tokenRequired, function (req, res, next) {
     Users.destroy({ where: { id: req.params.id } })
         .then((data) => res.json({ ok: true, data }))
         .catch((error) => res.json({ ok: false, error }))
-// TODO
+    // TODO
 });
 
 // GET Users that user not joined
@@ -249,14 +275,16 @@ router.get("/profile", tokenRequired, (req, res, next) => {
         res.json(buildSendDataPacket(fitmatch.getUserManager().get(id).user));
     } else {
         fitmatch.getSqlManager().getUserFromId(id)
-        .then(e => {
-            const data = e[0];
-            res.json(data);
-        })
-        .catch(err => {
-            console.log(err);
-            res.json("Backend internal error. Check logs.");
-        })
+            .then(e => {
+                const data = e[0];
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                fitmatch.getUserManager().put(user.id, user);
+                res.json(buildSendDataPacket(user));
+            })
+            .catch(err => {
+                console.log(err);
+                res.json("Backend internal error. Check logs.");
+            })
     }
 })
 export default router;

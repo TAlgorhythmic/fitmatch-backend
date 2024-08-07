@@ -1,8 +1,9 @@
 const API_URL = "http://localhost:3001/api";
 
 class BaseController {
-    constructor(tableName) {
+    constructor(tableName, token) {
         this.apiUrl = API_URL + "/" + tableName;
+        this.token = token;
         this.tableName = tableName;
     }
 
@@ -18,6 +19,7 @@ class BaseController {
         const response = await fetch(this.apiUrl, {
             method: 'GET',
             headers: {
+                "Authorization": "Bearer " + this.token,
                 'Content-Type': 'application/json'
             }
         });
@@ -30,7 +32,7 @@ class BaseController {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'xc-token': this.token
+                'Authorization': "Bearer " + this.token
             }
         });
 

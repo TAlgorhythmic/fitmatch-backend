@@ -1,12 +1,13 @@
 import fitmatch from "./api/Fitmatch.js";
 import cors from "cors";
 import fs from "fs";
-import activitiesRouter, { removeGarbage } from "./routers/ActivitiesRouter.js";
+import activitiesRouter from "./routers/ActivitiesRouter.js";
 import usersRouter from "./routers/UsersRouter.js";
 import authRouter from "./routers/AuthRouter.js";
 import joinedActivitiesRouter from "./routers/JoinedActivitiesRouter.js";
 import requestRouter from "./routers/RequestsRouter.js";
 import e from "express";
+import { removeGarbage } from "./api/management/SQLManager.js";
 
 let i = 0;
 
