@@ -216,15 +216,15 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         res.json(buildInvalidPacket("You must include a longitude."));
         return;
     }
-    const monday = req.body.monday;
-    const tuesday = req.body.tuesday;
-    const wednesday = req.body.wednesday;
-    const thursday = req.body.thursday;
-    const friday = req.body.friday;
-    const saturday = req.body.saturday;
-    const sunday = req.body.sunday;
-    const timetable1 = req.body.timetable1;
-    const timetable2 = req.body.timetable2;
+    const monday = req.body.monday ? true : false;
+    const tuesday = req.body.tuesday ? true : false;
+    const wednesday = req.body.wednesday ? true : false;
+    const thursday = req.body.thursday ? true : false;
+    const friday = req.body.friday ? true : false;
+    const saturday = req.body.saturday ? true : false;
+    const sunday = req.body.sunday ? true : false;
+    const timetable1 = req.body.timetable1 ? true : false;
+    const timetable2 = req.body.timetable2 ? true : false;
 
     if (!isValidTimetable(timetable1) || !isValidTimetable(timetable2)) {
         console.log(`${timetable1} - ${timetable2}`);

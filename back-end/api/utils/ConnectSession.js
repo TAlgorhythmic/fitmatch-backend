@@ -1,7 +1,7 @@
 import { sketchyOrder } from "../../routers/UsersRouter.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket } from "../packets/PacketBuilder.js";
 import fitmatch from "./../Fitmatch.js";
-import { areCompatible } from './Algoritms.js';
+import { areCompatible } from './Algorithms.js';
 
 const USERS_PER_REQUEST = 15;
 const TIMEOUT = 360000;
@@ -29,6 +29,8 @@ class ConnectSession {
                 } else {
                     const listUsersData = e;
 
+                    if (!listUsersData) return null;
+
                     listUsersData.forEach(user => {
                         user.matchPercent = areCompatible(this.user, user);
                     });
@@ -36,6 +38,12 @@ class ConnectSession {
                     const sketchyOrdered = sketchyOrder(listUsersData);
 
                     response.json(buildSendDataPacket(sketchyOrdered));
+                }
+            })
+            .then(e => {
+                if (e === null) {
+                    this.position = 0;
+                    this.sendMore(response);
                 }
             })
             .catch(err => {
