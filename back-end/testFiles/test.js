@@ -2,7 +2,7 @@ import fitmatch from "../api/Fitmatch.js";
 import fs from "fs";
 import bcrypt from "bcrypt";
 import { isValidPassword } from "../api/utils/Validate.js";
-import { areCompatible } from "../api/utils/Algoritms.js";
+import { areCompatible } from "../api/utils/Algorithms.js";
 import User from "../api/User.js";
 
 function createTestUsers() {
@@ -47,7 +47,7 @@ function test2() {
     })
 }
 
-function testAlgorithm() {
+function testAlgoritm() {
     fitmatch.getSqlManager().getAllUsers()
     .then(e => {
         const data = e[0];

@@ -1,7 +1,7 @@
 import { sketchyOrder } from "../../routers/UsersRouter.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket } from "../packets/PacketBuilder.js";
 import fitmatch from "./../Fitmatch.js";
-import { areCompatible } from './Algoritms.js';
+import { areCompatible } from './Algorithms.js';
 
 const USERS_PER_REQUEST = 15;
 const TIMEOUT = 360000;
