@@ -222,8 +222,8 @@ router.post("/setup", tokenRequired, (req, res, next) => {
     const friday = req.body.friday ? true : false;
     const saturday = req.body.saturday ? true : false;
     const sunday = req.body.sunday ? true : false;
-    const timetable1 = req.body.timetable1 ? true : false;
-    const timetable2 = req.body.timetable2 ? true : false;
+    const timetable1 = req.body.timetable1;
+    const timetable2 = req.body.timetable2;
 
     if (!isValidTimetable(timetable1) || !isValidTimetable(timetable2)) {
         console.log(`${timetable1} - ${timetable2}`);
