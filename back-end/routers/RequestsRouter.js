@@ -92,7 +92,8 @@ router.get('/pendings', tokenRequired, function (req, res, next) {
                 list_of_users.push({
                     name: element.name,
                     lastName: element.lastname, 
-                    img: element.img
+                    img: element.img,
+                    description: element.description
                 });
             });
             res.json(buildSendDataPacket(list_of_users));
