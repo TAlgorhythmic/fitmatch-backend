@@ -25,6 +25,7 @@ function Notifications() {
                         console.log(data);
                         return;
                     }
+                    console.log(data.data);
                     setNotifications(data.data);
                 })
 
@@ -55,11 +56,14 @@ function Notifications() {
             <div className="notifi-box" id="box" ref={boxRef}>
                 <h2>Notifications <span>{notifications.length}</span></h2>
                 {
-                    Array.isArray(notifications) && notifications.length > 0 ? (
+                    Array.isArray(notifications) && notifications.length >= 0 ? (
                         notifications.map((notification, index) => (
                             <div className="notifi-item" key={index}>
+                                <div className="notifi-item-img">
+                                    <img src={`http://localhost:3001/uploads/${notification.img}`} />
+                                </div>
                                 <div className="notifi-item-text">
-                                    <p>{notification.message}</p>
+                                    <p>{notification.name} <span>{notification.lastName}</span></p>
                                 </div>
                                 <div className="notifi-item-buttons">
                                     <button className="accept-button">Accept</button>
