@@ -126,15 +126,15 @@ class SQLManager {
         const injects = [];
         let i = 0;
         map.forEach((value, key) => {
-            str += `? = ?`;
-            injects.push(key, value);
-            if (i !== 0 && i + 1 !== map.size) {
+            str += `${key} = ?`;
+            injects.push(value);
+            if (i + 1 < map.size) {
                 str += ", ";
             }
             i++;
         });
         injects.push(user.id);
-        return fitmatch.getSql().query(`UPDATE user SET ${str} WHERE id = ?`, { replacements: injects, type: QueryTypes.UPDATE });
+        return fitmatch.getSql().query(`UPDATE users SET ${str} WHERE id = ?`, { replacements: injects, type: QueryTypes.UPDATE });
     }
 
     putRejection(issuer, rejected) {
