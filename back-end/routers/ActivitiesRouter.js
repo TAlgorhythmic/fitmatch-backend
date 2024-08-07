@@ -3,6 +3,7 @@ import express from 'express';
 import { DataTypes } from "sequelize";
 import { tokenRequired } from "./../api/utils/Validate.js";
 import { buildInvalidPacket, buildSendDataPacket } from "../api/packets/PacketBuilder.js";
+import User from "../api/User.js";
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -30,47 +31,6 @@ const Friends = sequelize.define(
     { tableName: 'friends', timestamps: false }
 );
 
-export function isActivityExpired(activity) {
-    const date = new Date(activity.expires);
-    return Date.now <= date.getTime();
-}
-
-export function filterActivities(array) {
-    array.filter(item => {
-        const isExpired = isActivityExpired(item);
-        if (isExpired) {
-            garbage.push(item);
-        }
-        return isExpired;
-    })
-}
-
-export const garbage = [];
-
-export function removeGarbage(millis) {
-    setTimeout(() => {
-        function recursive() {
-            const itemToRemove = garbage.pop();
-            if (!itemToRemove) {
-                console.log("Activities table is now clean.");
-                return;
-            }
-            try {
-                fitmatch.getSqlManager().removeActivityCompletely(itemToRemove.id)
-                    .then(e => {
-                        console.log("Success!");
-                        recursive();
-                        return;
-                    });
-            } catch (err) {
-                console.log(err);
-                recursive();
-            }
-        }
-        recursive();
-    }, millis);
-}
-
 const router = express.Router();
 
 // GET lista de todos los Activitiess
@@ -81,13 +41,26 @@ const router = express.Router();
 //     {ok: false, error: mensaje_de_error}
 
 router.get('/', tokenRequired, async function (req, res, next) {
-    sqlManager.getAllActivitiesWhitUserInfo()
+    sqlManager.getAllActivities()
         .then(activities => {
             const data = activities[0];
-            filterActivities(data);
-            res.json(
-                buildSendDataPacket(data)
-            )
+            const filtered = sqlManager.filterActivities(data);
+            let i = 0;
+            function recursive() {
+                if (!filtered[i]) {
+                    res.json(buildSendDataPacket(filtered));
+                    return;
+                }
+                fitmatch.getSqlManager().getUserFromId(filtered[i].userId)
+                .then(e => {
+                    const data = e[0];
+                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                    filtered[i].user = user;
+                    i++;
+                    recursive();
+                })
+            }
+            recursive();
         })
         .catch(error => {
             console.log(error);
@@ -97,6 +70,9 @@ router.get('/', tokenRequired, async function (req, res, next) {
     });
 });
 
+router.get("/feed", tokenRequired, (req, res, next) => {
+    sqlManager.getActivitiesFeed(req.token.id, res);
+})
 
 // GET lista de todos los Activitiess de amigos de un usuario
 router.get('/foruser', tokenRequired, async function (req, res, next) {
@@ -141,22 +117,6 @@ router.get('/foruser', tokenRequired, async function (req, res, next) {
     }
 });
 
-
-// GET de un solo Activities
-router.get('/:id', tokenRequired, function (req, res, next) {
-    Activities.findOne({ where: { id: req.params.id } })
-        .then(Activities => res.json({
-            ok: true,
-            data: Activities
-        }))
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }))
-});
-
-
-
 // POST, creació d'un nou Activities
 router.post('/create', tokenRequired, function (req, res, next) {
     Activities.create(req.body)
@@ -188,6 +148,7 @@ router.put('/edit', tokenRequired, function (req, res, next) {
 
 
 // DELETE elimina l'Activities id
+// TODO
 router.delete('/:id', tokenRequired, function (req, res, next) {
 
     Activities.destroy({ where: { id: req.params.id } })

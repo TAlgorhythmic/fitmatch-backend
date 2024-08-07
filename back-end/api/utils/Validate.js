@@ -27,9 +27,7 @@ export function validateRegisterCredentials(req, res, next) {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    console.log(req.body)
     if (!name) {
-        console.log(name);
         res.json(buildInvalidPacket("A name must be specified."));
         return;
     }
@@ -53,7 +51,6 @@ export function tokenRequired(req, res, next) {
     let token = req.headers.authorization;
 
     if (!token) {
-        console.log(token);
         res.json(buildNoPermissionPacket("A token is required."));
         return;
     }
@@ -62,7 +59,7 @@ export function tokenRequired(req, res, next) {
 
     jwt.verify(token, fitmatch.getConfig().tokenSecretKey, (err, decoded) => {
         if (err) {
-            res.json(buildInternalErrorPacket("Internal error when trying to verify token."));
+            res.json(buildInternalErrorPacket("Internal error when trying to verify token: " + err));
         } else {
             const expiredAt = decoded.expiredAt;
             if (expiredAt > new Date().getTime() && decoded.ip === req.ip) {

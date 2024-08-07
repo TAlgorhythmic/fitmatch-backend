@@ -32,17 +32,16 @@ const Register = () => {
                 body: JSON.stringify(formData)
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to register');
-            }
-
             const data = await response.json();
-            console.log('User registered:', data);
-            const token = response.token;
-            localStorage.setItem('authToken', token);
-            setSuccess(true);
-            setError('');
-            navigate('/formulario');
+            if (data.status == 0) {
+                console.log('User registered:', data);
+                const token = data.token;
+                localStorage.setItem('authToken', token);
+                setSuccess(true);
+                setError('');
+                navigate('/formulario');   
+            }
+            
         } catch (err) {
             console.error('Error during registration:', err);
             setError('Error during registration. Please try again.');
@@ -101,11 +100,6 @@ const Register = () => {
                         </div>
                     )}
                 </div>
-            </div>
-            <div className="slogan-container">
-                <p className="slogan-text">
-                    Encuentra a tu compañero ideal...
-                </p>
             </div>
         </div>
     );

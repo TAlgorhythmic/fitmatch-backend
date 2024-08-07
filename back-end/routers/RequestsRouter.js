@@ -2,6 +2,7 @@ import express from 'express';
 import { DataTypes } from "sequelize";
 import fitmatch from "../api/Fitmatch.js";
 import { tokenRequired } from "../api/utils/Validate.js";
+import { buildInternalErrorPacket, buildSendDataPacket } from '../api/packets/PacketBuilder.js';
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -40,7 +41,6 @@ router.get('/friends', tokenRequired, function (req, res, next) {
     Friends.findAll({ where: { userId1: req.token.id } })
         .then(Userss => {
             res.json(Userss)
-            console.log(Userss);
         })
         .catch(error => res.json({
             ok: false,
@@ -84,19 +84,14 @@ router.get('/pendings/:id', tokenRequired, function (req, res, next) {
 
 // GET de Pendings de un usuario
 router.get('/pendings', tokenRequired, function (req, res, next) {
-    console.log(req.token.id);
     sqlManager.getAllPendings(req.token.id)
         .then(response => {
-            console.log(response);
-            res.json({
-                ok: true,
-                data: response
-            });
+            res.json(buildSendDataPacket(response));
         })
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }))
+        .catch(error => {
+            console.log(error);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+        })
 });
 
 

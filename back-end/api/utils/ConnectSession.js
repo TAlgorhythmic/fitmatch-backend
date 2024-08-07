@@ -1,7 +1,7 @@
 import { sketchyOrder } from "../../routers/UsersRouter.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket } from "../packets/PacketBuilder.js";
 import fitmatch from "./../Fitmatch.js";
-import {areCompatible} from './Algoritms.js';
+import { areCompatible } from './Algoritms.js';
 
 const USERS_PER_REQUEST = 15;
 const TIMEOUT = 360000;
@@ -27,47 +27,48 @@ class ConnectSession {
                 if (this.isCancelled) {
                     response.json(buildInvalidPacket())
                 } else {
-                    const listUsersData = json(e[0]);
+                    const listUsersData = e;
+
                     listUsersData.forEach(user => {
                         user.matchPercent = areCompatible(this.user, user);
                     });
 
                     const sketchyOrdered = sketchyOrder(listUsersData);
 
-                    console.log(sketchyOrdered);
-
                     response.json(buildSendDataPacket(sketchyOrdered));
                 }
             })
             .catch(err => {
+                console.log(err);
                 response.json(buildInternalErrorPacket(err));
             });
     }
 
     async postRejects(millis) {
-        new Promise(setTimeout(() => {
-            this.rejects.forEach(reject => {
-                fitmatch.sqlManager.putRejection(this.user, reject)
-                    .then(e => {
-                        console.log("Rejects updated for " + this.user.email);
-                        console.log("Output: " + e[0]);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
-            })
-        }, millis))
-            .catch(err => {
+        setTimeout(async () => {
+            try {
+                this.rejects.forEach(reject => {
+                    fitmatch.sqlManager.putRejection(this.user, reject)
+                        .then(e => {
+                            console.log("Rejects updated for " + this.user.email);
+                            console.log("Output: " + e[0]);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                        .finally(() => {
+                            this.isCancelled = (this.modified.getTime() + TIMEOUT) <= Date.now();
+                            if (!this.isCancelled) {
+                                this.postRejects(millis);
+                            } else {
+                                sessions.delete(this.user.id);
+                            }
+                        })
+                });
+            } catch (err) {
                 console.log(err);
-            })
-            .finally(() => {
-                this.isCancelled = (this.modified.getTime() + TIMEOUT) <= Date.now;
-                if (!this.isCancelled) {
-                    this.postRejects(millis);
-                } else {
-                    sessions.delete(this.user.id);
-                }
-            });
+            }
+        }, millis);
     }
 }
 

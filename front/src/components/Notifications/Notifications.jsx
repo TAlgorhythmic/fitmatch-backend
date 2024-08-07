@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './Notifications.css';
 import { Bell } from 'react-bootstrap-icons';
 
@@ -10,15 +10,24 @@ function Notifications() {
     useEffect(() => {
         const token = localStorage.getItem('authToken');
         fetch('http://localhost:3001/api/requests/pendings', {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token}`
             }
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.data); // Esto te permitirá ver los datos en la consola
-                setNotifications(data);
+            .then(response => {
+                response.json()
+                .then(data => {
+                    // TODO yang
+                    if (data.status !== 0) {
+                        console.log("Fatal error fetching pendings.");
+                        console.log(data);
+                        return;
+                    }
+                    setNotifications(data.data);
+                })
+
             })
             .catch(error => console.error(error));
     }, []);

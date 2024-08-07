@@ -1,0 +1,116 @@
+/* General styles */
+
+.container {
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form group spacing */
+.custom-register-form .form-group {
+    margin-bottom: 20px;
+}
+
+/* Input and select styles */
+.custom-register-form .form-control, 
+.custom-register-form .form-select {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    transition: border-color 0.3s;
+}
+
+.custom-register-form .form-control:focus, 
+.custom-register-form .form-select:focus {
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+.custom-register-form .input-group-text {
+    background-color: #f7f9fc;
+    border: 1px solid #ced4da;
+    border-right: 0;
+    border-radius: 5px 0 0 5px;
+}
+
+.custom-register-form .input-group-text .form-control {
+    border-left: 0;
+}
+
+/* Label styles */
+.custom-register-form .form-label {
+    font-weight: bold;
+    color: #495057;
+}
+
+/* Button styles */
+.custom-submit-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.custom-submit-btn:hover {
+    background-color: #218838;
+}
+
+/* Preferences buttons */
+.custom-preferences-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-preferences-btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.custom-preferences-btn.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .custom-register-form .form-group {
+        margin-bottom: 15px;
+    }
+
+    .custom-register-form .form-control, 
+    .custom-register-form .form-select {
+        padding: 8px;
+    }
+
+    .custom-submit-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .custom-register-form .form-group {
+        margin-bottom: 10px;
+    }
+
+    .custom-register-form .form-control, 
+    .custom-register-form .form-select {
+        padding: 6px;
+    }
+
+    .custom-submit-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}

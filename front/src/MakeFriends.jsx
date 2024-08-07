@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './mf.css'; // Archivo CSS para los estilos
+import './MakeFriends.css'; // Archivo CSS para los estilos
 
 const MakeFriends = () => {
   const [persona, setPersona] = useState([]);
@@ -18,12 +18,8 @@ const MakeFriends = () => {
             'Content-Type': 'application/json'
           }
         });
-
-        if (!response.ok) {
-          throw new Error('Error fetching users');
-        }
-
-        const data = await response.json();
+        const res = await response.json();
+        const data = res.data;
         if (data.length) {
           setPersona(data);
           setCurrentIndex(data.length - 1);
@@ -31,6 +27,7 @@ const MakeFriends = () => {
         } else {
           console.log('No data found:', data);
         }
+
       } catch (error) {
         console.error('Failed to fetch users:', error);
       }

@@ -2,17 +2,15 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import BaseController from './controllers/BaseController';
 import { Row, Col } from 'react-bootstrap';
-import HomeLateral from './components/HomeLateral';
-import HomeView from './components/HomeView';
-import BarraLateral from './components/BarraLateral';
 import { Navigate } from 'react-router-dom';
+import ActivityPostHome from './components/Home/ActivityPostHome';
 
 function Home() {
     const [activities, setActivities] = useState([]);
     const [isValidToken, setIsValidToken] = useState(null);
     const token = localStorage.getItem('authToken');
     const tableName = "activities";
-    const ActivitiesController = new BaseController(tableName);
+    const ActivitiesController = new BaseController(tableName, token);
 
     useEffect(() => {
         const validateToken = async () => {
@@ -20,6 +18,7 @@ function Home() {
                 const response = await fetch('http://localhost:3001/api/auth/validate-token', {
                     method: 'GET',
                     headers: {
+                        'Content-Type': "application/json",
                         'Authorization': `Bearer ${token}`  // Enviar el token en los headers
                     }
                 });
@@ -49,19 +48,22 @@ function Home() {
     useEffect(() => {
         async function getActivities() {
             const activitiesData = await ActivitiesController.getAll();
-            if (activitiesData.data.length) {
-                setActivities(activitiesData.data);
+            if (activitiesData.status === 0) {
+                if (activitiesData.data.length) setActivities(activitiesData.data);
+                else console.log("No data found (array empty).");
             } else {
-                console.log('No data found:', activitiesData);
+                console.log('Error: ', activitiesData);
             }
         }
+
+        getActivities();
 
         if (isValidToken) {
             getActivities();
         }
     }, [isValidToken]); // Dependencia añadida
 
-    if (isValidToken === null) {
+    if (!isValidToken === null) {
         // Renderizar un indicador de carga mientras se valida el token
         return <div>Loading...</div>;
     }
@@ -72,14 +74,14 @@ function Home() {
 
     return (
         <Row>
-            <Col xs={1}>
-                <BarraLateral />
-            </Col>
-            <Col xs={7} className="d-flex flex-column">
-                <HomeView activitiesData={activities} />
-            </Col>
-            <Col xs={4} className="d-flex flex-column">
-                <HomeLateral activitiesData={activities} />
+            <Col className="d-flex flex-column">
+                <div className="contenedorHome ">
+                    {activities.map((activity, index) => (
+                        <Row key={index}>
+                            <ActivityPostHome data={activity} />
+                        </Row>
+                    ))}
+                </div>
             </Col>
         </Row>
     );

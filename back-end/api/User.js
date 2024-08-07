@@ -2,7 +2,7 @@ import f from "./Fitmatch.js";
 
 export default class User {
 
-    constructor(id, name, lastname, email, phone, description, proficiency, trainingPreferences, img, city, lat, long, isSetup) {
+    constructor(id, name, lastname, email, phone, description, proficiency, trainingPreferences, img, city, lat, long, isSetup, monday, tuesday, wednesday, thursday, friday, saturday, sunday, timetable1, timetable2) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -16,6 +16,15 @@ export default class User {
         this.latitude = lat;
         this.longitude = long;
         this.isSetup = isSetup;
+        this.monday = monday;
+        this.tuesday = tuesday;
+        this.wednesday = wednesday;
+        this.thursday = thursday;
+        this.friday = friday;
+        this.saturday = saturday;
+        this.sunday = sunday;
+        this.timetable1 = timetable1;
+        this.timetable2 = timetable2;
     }
 
     indexChange(field, value) {
@@ -72,10 +81,48 @@ export default class User {
         this.city = city;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.saveChangesToDatabase();
+        this.indexChange("city", city);
+        this.indexChange("latitude", latitude);
+        this.indexChange("longitude", longitude);
     }
     setIsSetup(isSetup) {
         this.isSetup = isSetup;
-        this.saveChangesToDatabase();
+        this.indexChange("isSetup", isSetup);
+    }
+    setMonday(bool) {
+        this.monday = bool;
+        this.indexChange("monday", bool);
+    }
+    setTuesday(bool) {
+        this.tuesday = bool;
+        this.indexChange("tuesday", bool);
+    }
+    setWednesday(bool) {
+        this.wednesday = bool;
+        this.indexChange("wednesday", bool);
+    }
+    setThursday(bool) {
+        this.thursday = bool;
+        this.indexChange("thursday", bool);
+    }
+    setFriday(bool) {
+        this.friday = bool;
+        this.indexChange("friday", bool);
+    }
+    setSaturday(bool) {
+        this.saturday = bool;
+        this.indexChange("saturday", bool);
+    }
+    setSunday(bool) {
+        this.sunday = bool;
+        this.indexChange("sunday", bool);
+    }
+    setTimetable1(int) {
+        this.timetable1 = int;
+        this.indexChange("timetable1", int);
+    }
+    setTimetable2(int) {
+        this.timetable2 = int;
+        this.indexChange("timetable2", int);
     }
 }

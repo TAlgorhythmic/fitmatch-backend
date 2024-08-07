@@ -4,8 +4,8 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import User from "./../api/User.js";
 import { OAuth2Client } from "google-auth-library";
-import { validateRegisterCredentials, isValidEmail } from "./../api/utils/Validate.js";
-import { buildInternalErrorPacket, buildInvalidPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
+import { validateRegisterCredentials, isValidEmail, tokenRequired } from "./../api/utils/Validate.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
 
 // Providers
 const GOOGLE = "google";
@@ -19,7 +19,6 @@ const TOKEN_EXPIRE_TIME = 48 * 60 * 60 * 1000;
 
 router.post("/google", async (req, res, next) => {
     if (!req.body.token) {
-        console.log(req);
         res.json(buildInvalidPacket("A token is required."));
     }
     
@@ -29,14 +28,12 @@ router.post("/google", async (req, res, next) => {
         audience: fitmatch.config.google_client_id
     });
     const payload = ticket.getPayload();
-    const userId = payload['sub'];
 
     const name = payload.name;
     const lastname = payload.family_name;
     const email = payload.email;
-    const phone = null;
 
-    register(name, lastname, GOOGLE, email, phone, null, req, res);
+    register(name, lastname, GOOGLE, email, null, null, req, res);
 });
 
 router.get("/google/callback", (req, res, next) => {
@@ -69,14 +66,12 @@ router.post("/login", (request, response, next) => {
             return;
         }
         if (e.length > 1) {
-            console.log(e);
             response.json(buildInternalErrorPacket("Internal error, this field is duplicated."));
             return;
         }
         const user = e[0];
         const hash = user.pwhash;
         bcrypt.compare(password, hash).then(e => {
-            console.log(e);
             if (e) {
                 fitmatch.getUserManager().put(user.id, user);
                 response.json(buildTokenPacket(createToken(request.ip, user.id), user.isSetup));
@@ -94,13 +89,51 @@ router.post("/login", (request, response, next) => {
 });
 
 function register(name, lastname, provider, email, phone, password, request, response) {
-    let cancel = false;
     fitmatch.sqlManager.getUserFromEmail(email)
         .then(e => {
             const data = e;
             if (data.length) {
-                cancel = true;
                 response.json(buildInvalidPacket("This email is already in use."));
+                return;
+            }
+            if (provider === GOOGLE) {
+                fitmatch.getSqlManager().createNewUser(name, lastname, provider, email, phone, password)
+                .then(e => {
+                    fitmatch.getSqlManager().getUserFromEmail(email)
+                    .then(e => {
+                        const data = e[0];
+                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences.split(";"), data.img, data.city, parseFloat(data.latitude), parseFloat(data.longitude), data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                        fitmatch.userManager.put(user.id, user);
+                        const token = createToken(request.ip, user.id);
+                        response.json(buildTokenPacket(token, false));
+                        return;
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                    response.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+                    return;
+                });
+            } else {
+                bcrypt.hash(password, 10)
+                .then(e => {
+                    fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e)
+                    .then(e => {
+                        fitmatch.sqlManager.getUserFromEmail(email)
+                        .then(e => {
+                            const data = e[0];
+                            const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                            fitmatch.userManager.put(user.id, user);
+                            const token = createToken(request.ip, user.id);
+                            response.json(buildTokenPacket(token, false));
+                        })
+                    })
+                    .catch(err => {
+                        console.log("An error ocurred trying to send a query. Error: " + err);
+                        response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
+                        return;
+                    })
+                })
             }
         })
         .catch(err => {
@@ -108,47 +141,6 @@ function register(name, lastname, provider, email, phone, password, request, res
             response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
             return;
         });
-    if (cancel) return;
-    if (provider === GOOGLE) {
-        fitmatch.getSqlManager().createNewUser(name, lastname, provider, email, phone, password)
-        .then(e => {
-            fitmatch.getSqlManager().getUserFromEmail(email)
-            .then(e => {
-                const data = e[0];
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences.split(";"), data.img, data.city, parseFloat(data.latitude), parseFloat(data.longitude), data.isSetup);
-                fitmatch.userManager.put(user.id, user);
-                const token = createToken(request.ip, user.id);
-                response.json(buildTokenPacket(token, false));
-                return;
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            response.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-            return;
-        });
-    } else {
-        bcrypt.hash(password, 10)
-        .then(e => {
-            fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e)
-            .then(e => {
-                fitmatch.sqlManager.getUserFromEmail(email)
-                .then(e => {
-                    const data = e[0];
-                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, null, null, data.isSetup);
-                    fitmatch.userManager.put(user.id, user);
-                    const token = createToken(request.ip, user.id);
-                    response.json(buildTokenPacket(token, false));
-                })
-            })
-            .catch(err => {
-                console.log("An error ocurred trying to send a query. Error: " + err);
-                response.json(buildInternalErrorPacket("Backend internal error. Check logs if you are an admin."));
-                return;
-            })
-        })
-    }
-    
 };
 
 
@@ -168,32 +160,22 @@ function register(name, lastname, provider, email, phone, password, request, res
 router.post("/register", validateRegisterCredentials, (request, response, next) => {
     // TODO fix double email error.
     const name = request.body.name;
-    const lastname = request.body.lastname;
+    const lastname = request.body.lastname ? request.body.lastname : null;
     const email = request.body.email;
-    const phone = request.body.phone;
+    const phone = request.body.phone ? request.body.phone : null;
     const password = request.body.password;
 
     register(name, lastname, LOCAL, email, phone, password, request, response);
 });
 
-router.get("/validate-token", function (request, response, next) {
-    const token = request.headers['authorization'].split(' ')[1];
-
-    jwt.verify(token, fitmatch.getConfig().tokenSecretKey, (err, decoded) => {
-        if (err) {
-            return response.status(401).json({ valid: false, message: 'Invalid token.' });
-        }
-        if (decoded.expiredAt < new Date().getTime()) {
-            return response.status(401).json({ valid: false, message: 'Token expired.' });
-        }
-        response.json({ valid: true });
-    });
+router.get("/validate-token", tokenRequired, function (request, response, next) {
+    response.json(buildSimpleOkPacket());
 });
 
 function createToken(ip, userId) {
     return jwt.sign({
         ip: ip,
-        userId: userId,
+        id: userId,
         expiredAt: new Date().getTime() + TOKEN_EXPIRE_TIME
     }, fitmatch.config.tokenSecretKey);
 }

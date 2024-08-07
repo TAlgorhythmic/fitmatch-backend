@@ -16,21 +16,15 @@ CREATE TABLE IF NOT EXISTS users(
     longitude VARCHAR(50),
     isSetup BOOLEAN NOT NULL DEFAULT FALSE,
     tableVersion INT NOT NULL DEFAULT 0,
-    PRIMARY KEY(id)
-);
-///
-CREATE TABLE IF NOT EXISTS days_of_week(
-    id INT NOT NULL AUTO_INCREMENT,
-    monday BOOLEAN NOT NULL,
-    tuesday BOOLEAN NOT NULL,
-    wednesday BOOLEAN NOT NULL,
-    thursday BOOLEAN NOT NULL,
-    friday BOOLEAN NOT NULL,
-    saturday BOOLEAN NOT NULL,
-    sunday BOOLEAN NOT NULL,
-    userId INT NOT NULL,
-    timetable ENUM("6:00-7:00","7:00-8:00", "8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00"),
-    FOREIGN KEY(userId) REFERENCES users(id),
+    monday BOOLEAN NOT NULL DEFAULT FALSE,
+    tuesday BOOLEAN NOT NULL DEFAULT FALSE,
+    wednesday BOOLEAN NOT NULL DEFAULT FALSE,
+    thursday BOOLEAN NOT NULL DEFAULT FALSE,
+    friday BOOLEAN NOT NULL DEFAULT FALSE,
+    saturday BOOLEAN NOT NULL DEFAULT FALSE,
+    sunday BOOLEAN NOT NULL DEFAULT FALSE,
+    timetable1 INT,
+    timetable2 INT,
     PRIMARY KEY(id)
 );
 ///
