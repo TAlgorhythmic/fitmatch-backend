@@ -12,12 +12,12 @@ function Notifications() {
         fetch('http://localhost:3001/api/requests/pendings', {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': token
             }
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data); // Esto te permitirá ver los datos en la consola
+                console.log(data.data); // Esto te permitirá ver los datos en la consola
                 setNotifications(data);
             })
             .catch(error => console.error(error));
@@ -44,20 +44,23 @@ function Notifications() {
                 <Bell size={32} />
             </div>
             <div className="notifi-box" id="box" ref={boxRef}>
-                <h2>Notifications <span>1</span></h2>
+                <h2>Notifications <span>{notifications.length}</span></h2>
                 {
-                    
-                    notifications.map((notification, index) => (
-                        <div className="notifi-item" key={index}>
-                            <div className="notifi-item-text">
-                                <p>{notification.message}</p>
+                    Array.isArray(notifications) && notifications.length > 0 ? (
+                        notifications.map((notification, index) => (
+                            <div className="notifi-item" key={index}>
+                                <div className="notifi-item-text">
+                                    <p>{notification.message}</p>
+                                </div>
+                                <div className="notifi-item-buttons">
+                                    <button className="accept-button">Accept</button>
+                                    <button className="reject-button">Reject</button>
+                                </div>
                             </div>
-                            <div className="notifi-item-buttons">
-                                <button className="accept-button">Accept</button>
-                                <button className="reject-button">Reject</button>
-                            </div>
-                        </div>
-                    ))
+                        ))
+                    ) : (
+                        <p>No notifications available.</p> // Mensaje opcional cuando no hay notificaciones
+                    )
                 }
             </div>
         </>

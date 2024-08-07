@@ -67,6 +67,7 @@ export function tokenRequired(req, res, next) {
             const expiredAt = decoded.expiredAt;
             if (expiredAt > new Date().getTime() && decoded.ip === req.ip) {
                 req.token = decoded;
+                console.log(decoded);
                 next();
             } else {
                 res.json(buildNoPermissionPacket("This token is expired/invalid!"))
