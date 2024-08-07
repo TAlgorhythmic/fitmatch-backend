@@ -53,7 +53,10 @@ function Notifications() {
         <>
             <div onClick={toggleNotifi} className="notification-icon">
                 <Bell size={32} />
-                <div className='notifi-count'>{notifications.length}</div>
+                {
+                    notifications.length > 0 ? <div className='notifi-count'>{notifications.length}</div> : null
+                }
+
             </div>
             <div className="notifi-box" id="box" ref={boxRef}>
                 {

@@ -21,6 +21,6 @@
     margin-top: 60px;
 }
 
-.customNav * {
+.customNav > * {
     margin-left: 10px;
 }
