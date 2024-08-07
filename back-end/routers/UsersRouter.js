@@ -11,11 +11,11 @@ import User from "../api/User.js";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "./../uploads/");
+        cb(null, "uploads/");
     },
     filename: (req, file, cb) => {
         const slug = slugify(path.basename(file.originalname, path.extname(file.originalname)), { lower: true, strict: true });
-        cb(null, `${Date.now}_${slug}${path.extname(file.originalname)}`);
+        cb(null, `${Date.now()}_${slug}${path.extname(file.originalname)}`);
     }
 });
 

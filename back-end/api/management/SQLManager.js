@@ -159,6 +159,7 @@ class SQLManager {
         })
     }
 
+    // TODO todo mal
     getActivitiesFeed(id, res) {
         fitmatch.getSql().query(`SELECT CASE WHEN userId1 = ? THEN userId2 ELSE userId1 END AS friendId FROM friends WHERE userId1 = ? OR userId2 = ?;`, { replacements: [id, id, id], type: QueryTypes.SELECT })
         .then(e => {
