@@ -19,3 +19,27 @@
     flex-direction: column;
     justify-content: center;
 }
+
+.actUserName {
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.actUserName span {
+    font-weight: 400;
+    color: var(--color-texto-secundario);
+}
+
+.actExpireDate {
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-texto-secundario);
+    text-align: right;
+}
+
+.dateCheck {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+}
