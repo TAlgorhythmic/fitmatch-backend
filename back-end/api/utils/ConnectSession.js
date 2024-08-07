@@ -29,6 +29,8 @@ class ConnectSession {
                 } else {
                     const listUsersData = e;
 
+                    if (!listUsersData) return null;
+
                     listUsersData.forEach(user => {
                         user.matchPercent = areCompatible(this.user, user);
                     });
@@ -36,6 +38,12 @@ class ConnectSession {
                     const sketchyOrdered = sketchyOrder(listUsersData);
 
                     response.json(buildSendDataPacket(sketchyOrdered));
+                }
+            })
+            .then(e => {
+                if (e === null) {
+                    this.position = 0;
+                    this.sendMore(response);
                 }
             })
             .catch(err => {
