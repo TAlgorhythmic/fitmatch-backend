@@ -13,7 +13,7 @@ function Header() {
                     <Navbar.Brand href="/" className="customBrand">Fitmatch</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>
-                        <Nav>
+                        <Nav className="customNav ms-auto ">
                             <Link to="/friends"><PeopleFill size={32} /></Link>
                             <Notifications />
                             <Link to="/user/profile"><PersonCircle size={32} /></Link>

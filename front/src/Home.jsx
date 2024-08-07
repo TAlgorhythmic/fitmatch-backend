@@ -73,6 +73,8 @@ function Home() {
         return <Navigate to="/login" />;
     }
 
+    console.log("activities: ", activities);
+
     return (
         <div className="contenedorHome">
             {activities.map((activity, index) => (
