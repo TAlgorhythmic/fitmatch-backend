@@ -224,12 +224,12 @@ router.post("/setup", tokenRequired, (req, res, next) => {
     const sunday = req.body.sunday ? true : false;
     const timetable1 = req.body.timetable1 ? true : false;
     const timetable2 = req.body.timetable2 ? true : false;
-    
-    /*if (!isValidTimetable(timetable1) || !isValidTimetable(timetable2)) {
+
+    if (!isValidTimetable(timetable1) || !isValidTimetable(timetable2)) {
         console.log(`${timetable1} - ${timetable2}`);
         res.json(buildInvalidPacket("Timetable is not valid."));
         return;
-    }*/
+    }
 
     if (fitmatch.getUserManager().containsKey(req.token.id)) {
         const user = fitmatch.getUserManager().get(req.token.id).user;
