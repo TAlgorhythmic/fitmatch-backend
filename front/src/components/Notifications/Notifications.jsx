@@ -52,16 +52,14 @@ function Notifications() {
     return (
         <>
             <div onClick={toggleNotifi} className="notification-icon">
-                <Bell size={32} />
+                <Bell size={32} color='blue'/>
                 {
                     notifications.length > 0 ? <div className='notifi-count'>{notifications.length}</div> : null
                 }
 
             </div>
             <div className="notifi-box" id="box" ref={boxRef}>
-                {
-                    notifications.length > 0 ? <h2>Notifications <span>{notifications.length}</span></h2> : <h2>No notifications</h2>
-                }
+                <h2>Notifications <span>{notifications.length}</span></h2>
                 {
                     Array.isArray(notifications) && notifications.length >= 0 ? (
                         notifications.map((notification, index) => (
@@ -71,7 +69,7 @@ function Notifications() {
                                 </div>
                                 <div className='text'>
                                     <h4>{notification.name} {notification.lastName}</h4>
-                                    <p>asopdmpasodmop</p>
+                                    <p>{notification.description}</p>
                                 </div>
                                 <div className="buttons">
                                     <button className="accept-button">
