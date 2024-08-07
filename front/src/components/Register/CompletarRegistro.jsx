@@ -38,15 +38,14 @@ const RegisterForm = () => {
           'Authorization': `Bearer ${token}`,
         },
       });
-
       const userData = await response.json();
-      console.log(userData)
-
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        firstName: userData.firstName || '',
-        email: userData.email || '',
-      }));
+      if(userData.status==0){
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          firstName: userData.firstName,
+          email: userData.email,
+        }));
+      }
     };
 
     fetchUserData();
@@ -97,8 +96,8 @@ const RegisterForm = () => {
 
       const imageResult = await imageUploadResponse.json();
 
-      if (imageResult.error) {
-        alert(imageResult.error);
+      if (imageResult.status!==0) {
+        alert('HAY UN ERROR');
         return;
       }
 
@@ -124,7 +123,7 @@ const RegisterForm = () => {
 
   return (
     <Container className="custom-register-form">
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} encType='multipart/form-data'>
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
