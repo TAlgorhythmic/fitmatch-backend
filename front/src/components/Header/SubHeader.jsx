@@ -7,7 +7,7 @@ function SubHeader() {
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary subHeaderCustom fixed-top">
-                <Container>
+                <Container  >
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav" className='justify-content-center'>
                         <Nav>
@@ -19,7 +19,6 @@ function SubHeader() {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <div></div>
         </>
     );
 }
