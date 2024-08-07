@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Camera, Phone, Person, Envelope, GeoAlt } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
+import TimePicker from 'react-time-picker'; 
 import './registerf.css';
 
 
@@ -19,8 +20,8 @@ const RegisterForm = () => {
     preferences: '',
     latitude: '',
     longitude: '',
-    timetable1:'120',
-    timetable2: '100',
+    timetable1:'06:00',
+    timetable2: '23:00',
     monday:false,
     tuesday:false,
     wednesday: false,
@@ -28,6 +29,7 @@ const RegisterForm = () => {
     friday:false,
     saturday:false,
     sunday:false,
+    
   });
 
   const navigate = useNavigate();
@@ -74,6 +76,9 @@ const RegisterForm = () => {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+  };
+  const handleTimeChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleImageChange = (e) => {
@@ -269,21 +274,22 @@ const RegisterForm = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Hora1</Form.Label>
-          <Form.Control
-            type="text"
-            name="h1"
+        <TimePicker
+            onChange={(value) => handleTimeChange('timetable1', value)}
             value={formData.timetable1}
-            onChange={handleChange}
+            disableClock={true}
+            placeholder="Selecciona tu hora habitual de entrada"
+
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Hora2</Form.Label>
-          <Form.Control
-            type="text"
-            name="h2"
+          <TimePicker
+            onChange={(value) => handleTimeChange('timetable2', value)}
             value={formData.timetable2}
-            onChange={handleChange}
+            disableClock={true}
+            format="HH:mm"
+            step={30}
+            placeholder="Selecciona tu hora habitual de entrada"
           />
         </Form.Group>
         <Form.Group className="mb-3">
