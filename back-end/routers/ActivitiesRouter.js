@@ -41,7 +41,7 @@ const router = express.Router();
 //     {ok: false, error: mensaje_de_error}
 
 router.get('/', tokenRequired, async function (req, res, next) {
-    sqlManager.getAllActivitiesWhitUserInfo()
+    sqlManager.getAllActivities()
         .then(activities => {
             const data = activities[0];
             const filtered = sqlManager.filterActivities(data);
