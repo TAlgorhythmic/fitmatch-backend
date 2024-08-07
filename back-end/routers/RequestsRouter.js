@@ -3,6 +3,7 @@ import { DataTypes } from "sequelize";
 import fitmatch from "../api/Fitmatch.js";
 import { tokenRequired } from "../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildSendDataPacket } from '../api/packets/PacketBuilder.js';
+import User from '../api/User.js';
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -84,14 +85,22 @@ router.get('/pendings/:id', tokenRequired, function (req, res, next) {
 
 // GET de Pendings de un usuario
 router.get('/pendings', tokenRequired, function (req, res, next) {
+    const list_of_users = [];
     sqlManager.getAllPendings(req.token.id)
         .then(response => {
-            res.json(buildSendDataPacket(response));
+            response.forEach(element => {
+                list_of_users.push({
+                    name: element.name,
+                    lastName: element.lastname, 
+                    img: element.img
+                });
+            });
+            res.json(buildSendDataPacket(list_of_users));
         })
         .catch(error => {
             console.log(error);
-            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-        })
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+        });
 });
 
 
