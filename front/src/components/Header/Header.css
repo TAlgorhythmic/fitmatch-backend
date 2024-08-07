@@ -19,6 +19,7 @@
     border: 1px solid var(--color-terciario);
     padding: 20px 0;
     margin-top: 60px;
+    width: 600px;
 }
 
 .customNav > * {
