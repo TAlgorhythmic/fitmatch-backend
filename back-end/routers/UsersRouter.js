@@ -5,6 +5,7 @@ import { DataTypes } from "sequelize";
 import multer from "multer";
 import path from "path";
 import slugify from "slugify";
+import fs from "fs";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildSendDataPacket } from "../api/packets/PacketBuilder.js";
 import ConnectSession, { sessions } from "../api/utils/ConnectSession.js";
 import User from "../api/User.js";
@@ -72,7 +73,21 @@ router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, nex
     const id = req.token.id;
     if (fitmatch.userManager.containsKey(id)) {
         const user = fitmatch.userManager.get(id).user;
-        user
+        if (user.img && user.img !== "img1.jpg") {
+            if (fs.existsSync("./uploads/" + user.img)) fs.rmSync("./uploads/" + user.img);
+        }
+        user.setImg(req.file.filename);
+    } else {
+        fitmatch.sqlManager.getUserFromId(id)
+        .then(e => {
+            const data = e[0];
+            const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+            if (user.img && user.img !== "img1.jpg") {
+                if (fs.existsSync("./uploads/" + user.img)) fs.rmSync("./uploads/" + user.img);
+            }
+            user.setImg(req.file.filename);
+            fitmatch.userManager.put(id, user);
+        })
     }
     res.json(buildSimpleOkPacket());
 });

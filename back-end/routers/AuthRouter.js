@@ -69,10 +69,11 @@ router.post("/login", (request, response, next) => {
             response.json(buildInternalErrorPacket("Internal error, this field is duplicated."));
             return;
         }
-        const user = e[0];
-        const hash = user.pwhash;
+        const data = e[0];
+        const hash = data.pwhash;
         bcrypt.compare(password, hash).then(e => {
             if (e) {
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                 fitmatch.getUserManager().put(user.id, user);
                 response.json(buildTokenPacket(createToken(request.ip, user.id), user.isSetup));
                 return;
