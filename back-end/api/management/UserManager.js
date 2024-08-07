@@ -79,7 +79,12 @@ class Ref {
 
     save() {
         if (this.saveList.size) {
-            fitmatch.getSqlManager().selectivelyUpdateUser(this.user, this.saveList);
+            fitmatch.getSqlManager().selectivelyUpdateUser(this.user, this.saveList)
+            .then(e => {
+                this.saveList.clear();
+            }).catch(err => {
+                console.log(err);
+            });
         }
     }
 
