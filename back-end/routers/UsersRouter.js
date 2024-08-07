@@ -247,6 +247,7 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         user.setSunday(sunday);
         user.setTimetable1(timetable1);
         user.setTimetable2(timetable2);
+        res.json(buildSimpleOkPacket());
     } else {
         fitmatch.getSqlManager().getUserFromId(id)
         .then(e => {
@@ -267,6 +268,7 @@ router.post("/setup", tokenRequired, (req, res, next) => {
             user.setSunday(sunday);
             user.setTimetable1(timetable1);
             user.setTimetable2(timetable2);
+            res.json(buildSimpleOkPacket());
         });
     }
 })
