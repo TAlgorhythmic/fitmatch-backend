@@ -188,7 +188,6 @@ router.get('/connect', tokenRequired, function (req, res, next) {
  */
 router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
-    console.log(req.body);
     const preferences = req.body.preferences.length ? req.body.preferences : null;
     if (!preferences) {
         res.json(buildInvalidPacket("Preferences is empty."));
@@ -248,8 +247,8 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         user.setSunday(sunday);
         user.setTimetable1(timetable1);
         user.setTimetable2(timetable2);
-    }
-    fitmatch.getSqlManager().getUserFromId(id)
+    } else {
+        fitmatch.getSqlManager().getUserFromId(id)
         .then(e => {
             const data = e[0];
             const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
@@ -269,6 +268,7 @@ router.post("/setup", tokenRequired, (req, res, next) => {
             user.setTimetable1(timetable1);
             user.setTimetable2(timetable2);
         });
+    }
 })
 
 // put modificació d'un Users
