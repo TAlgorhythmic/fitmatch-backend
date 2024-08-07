@@ -5,7 +5,6 @@
     border: 1px solid var(--color-terciario);
     box-shadow: 0px 0px 12px 0px var(--color-terciario);
     padding: 20px 0;
-    margin-bottom: 20px;
 }
 
 .customBrand {
@@ -15,5 +14,10 @@
 }
 
 .subHeaderCustom {
+    border-radius: 8px;
+    background-color: var(--color-fondo-principal) !important;
+    border: 1px solid var(--color-terciario);
+    box-shadow: 0px 0px 12px 0px var(--color-terciario);
+    padding: 20px 0;
     margin-top: 60px;
 }
