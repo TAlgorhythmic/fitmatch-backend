@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Camera, Phone, Person, Envelope, GeoAlt } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
 import './registerf.css';
+
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -16,8 +18,19 @@ const RegisterForm = () => {
     img: '',
     preferences: '',
     latitude: '',
-    longitude: ''
+    longitude: '',
+    timetable1:'120',
+    timetable2: '100',
+    monday:false,
+    tuesday:false,
+    wednesday: false,
+    thursday:true,
+    friday:false,
+    saturday:false,
+    sunday:false,
   });
+
+  const navigate = useNavigate();
 
   const [imageFile, setImageFile] = useState(null);
   const sportsInterests = [
@@ -26,7 +39,7 @@ const RegisterForm = () => {
     'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'
   ];
 
-  const [selectedInterests, setSelectedInterests] = useState([]);
+  const [selectedInterests, setSelectedInterests] = useState(['']);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -54,8 +67,8 @@ const RegisterForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'phone') {
-      const phoneValue = value.replace(/\D/g, ''); // Remove non-numeric characters
-      if (phoneValue.length <= 9) { // Limit to 9 digits after +34
+      const phoneValue = value.replace(/\D/g, ''); 
+      if (phoneValue.length <= 9) { 
         setFormData({ ...formData, phone: phoneValue });
       }
     } else {
@@ -64,7 +77,7 @@ const RegisterForm = () => {
   };
 
   const handleImageChange = (e) => {
-    setImageFile(e.target.files[0]);
+    setImageFile(e.target.files[0]||null);
   };
 
   const handleInterestClick = (interest) => {
@@ -97,8 +110,7 @@ const RegisterForm = () => {
       const imageResult = await imageUploadResponse.json();
 
       if (imageResult.status!==0) {
-        alert('HAY UN ERROR');
-        return;
+        alert('hay error');
       }
 
       setFormData({ ...formData, img: imageResult.imageUrl });
@@ -114,10 +126,13 @@ const RegisterForm = () => {
     });
 
     const result = await response.json();
-    if (result.status==0) {
-      alert('Formulario successful!');
+    console.log(result);
+    if (result.data) {
+      console.log('Usuario registrado con éxito');
+      navigate('/'); 
     } else {
       alert('todo mal!');
+      console.log(result.error);
     }
   };
 
@@ -127,7 +142,7 @@ const RegisterForm = () => {
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label><Person /> First Name</Form.Label>
+              <Form.Label> First Name</Form.Label>
               <InputGroup>
                 <InputGroup.Text><Person /></InputGroup.Text>
                 <Form.Control
@@ -175,7 +190,7 @@ const RegisterForm = () => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              maxLength={9} // Limit to 9 digits
+              maxLength={9} 
               placeholder="Introduce your phone number"
             />
           </InputGroup>
@@ -247,12 +262,95 @@ const RegisterForm = () => {
         <Form.Group className="mb-3">
           <Form.Label>Description</Form.Label>
           <Form.Control
-            as="textarea"
+            type="text"
             name="description"
             value={formData.description}
             onChange={handleChange}
           />
         </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Hora1</Form.Label>
+          <Form.Control
+            type="text"
+            name="h1"
+            value={formData.timetable1}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Hora2</Form.Label>
+          <Form.Control
+            type="text"
+            name="h2"
+            value={formData.timetable2}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Lunes</Form.Label>
+          <Form.Control
+           type="text"
+            name="lunes"
+            value={formData.monday}
+            onChange={handleChange}
+             placeholder="Enter schedule for Monday"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Martes</Form.Label>
+          <Form.Control
+            type="text"
+            name="martes"
+            value={formData.tuesday}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Miercoles</Form.Label>
+          <Form.Control
+            type="text"
+            name="description"
+            value={formData.wednesday}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>jueves</Form.Label>
+          <Form.Control
+            type="text"
+            name="jueves"
+            value={formData.thursday}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>viernes</Form.Label>
+          <Form.Control
+            type="text"
+            name="viernes"
+            value={formData.friday}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>saturday</Form.Label>
+          <Form.Control
+            type="text"
+            name="saturday"
+            value={formData.saturday}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>sunday</Form.Label>
+          <Form.Control
+            type="text"
+            name="sunday"
+            value={formData.sunday}
+            onChange={handleChange}
+          />
+        </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label><Camera /> Image Upload</Form.Label>
           <Form.Control
