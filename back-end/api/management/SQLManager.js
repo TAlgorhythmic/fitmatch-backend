@@ -43,8 +43,20 @@ class SQLManager {
         return fitmatch.getSql().query("SELECT * FROM activities;")
     }
 
-     getJoinedActivities(id) {
-        return fitmatch.sql.query(`SELECT joins_activities.* FROM joins_activities INNER JOIN activities ON joins_activities.postId = activities.id WHERE joins_activities.userId = ?;`, { replacements: [id], type: QueryTypes.SELECT });
+    sendConnectionRequest(id, other_id) {
+        return fitmatch.sql.query("INSERT INTO pending(sender_id, receiver_id) VALUES(?, ?;", { replacements: [id, other_id], type: QueryTypes.INSERT });
+    }
+
+    getReceiverPendingsFromId(id) {
+        return fitmatch.sql.query("SELECT * FROM pending WHERE receiver_id = ?;", { replacements: [id], type: QueryTypes.SELECT });
+    }
+
+    getJoinedActivities(id) {
+        return fitmatch.sql.query(`SELECT activities.* FROM joins_activities INNER JOIN activities ON joins_activities.postId = activities.id WHERE joins_activities.userId = ?;`, { replacements: [id], type: QueryTypes.SELECT });
+    }
+
+    putFriends(id1, id2) {
+        return fitmatch.sql.query("INSERT INTO friends(userId1, userId2) VALUES(?, ?);", { replacements: [id1, id2], type: QueryTypes.INSERT });
     }
 
     destroyUserCompletely(id) {
@@ -139,7 +151,7 @@ class SQLManager {
 
     putRejection(issuer, rejected) {
         const time = new Date((new Date().getTime() + TIME_BEFORE_EXPIRES)).toISOString().slice(0, 19).replace("T", " ");
-        return fitmatch.getSql().query(`INSERT INTO rejects(issuer, rejected, expires) VALUES(?, ?, ?);`, { replacements: [ issuer.id, rejected.id, time ], type: QueryTypes.INSERT });
+        return fitmatch.getSql().query(`INSERT INTO rejects(issuer, rejected, expires) VALUES(?, ?, ?);`, { replacements: [ issuer, rejected, time ], type: QueryTypes.INSERT });
     }
 
     /**

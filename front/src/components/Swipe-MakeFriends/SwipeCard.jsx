@@ -40,13 +40,12 @@ const SwipeCard = ({ person, index, currentIndex, onSwipe }) => {
       className="tarjeta"
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
-      style={{ display: index === currentIndex ? 'block' : 'none' }}
     >
       <img src={`http://localhost:3001/uploads/${person.img}`} alt={person.name} />
       <div className="user-info">
         <h2>{person.name} {person.lastname}</h2>
         <p>{person.city}</p>
-        <p><strong>Proficiency:</strong> {person.proficiency}</p>
+        <p><strong>Level:</strong> {person.proficiency}</p>
         <p><strong>Preferences:</strong> {person.trainingPreferences}</p>
         <p>{person.description}</p>
       </div>

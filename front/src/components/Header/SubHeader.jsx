@@ -12,7 +12,7 @@ function SubHeader() {
                     <Navbar.Collapse id="basic-navbar-nav" className='justify-content-center'>
                         <Nav>
                             <Link className="nav-link" to="/">Nuevas actividades</Link>
-                            <Link className="nav-link" to="/">Agenda</Link>
+                            <Link className="nav-link" to="/agenda">Agenda</Link>
                             <Link className="nav-link" to="/">Crear actividad</Link>
                             <Link className="nav-link" to="/">Actividades propias</Link>
                         </Nav>
