@@ -2,6 +2,7 @@ import express from 'express';
 import f from "./../api/Fitmatch.js";
 import { tokenRequired } from '../api/utils/Validate.js';
 import { buildInternalErrorPacket, buildSendDataPacket } from '../api/packets/PacketBuilder.js';
+import { sanitizeDataReceivedForArrayOfObjects } from '../api/utils/Sanitizers.js';
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ router.get('/', tokenRequired, function (req, res, next) {
     const id = req.token.id;
     f.getSqlManager().getJoinedActivities(id)
     .then(e => {
-        const data = e;
+        const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
         f.sqlManager.filterActivities(data);
         data.sort((a, b) => {
             const date = new Date(a.expires);
