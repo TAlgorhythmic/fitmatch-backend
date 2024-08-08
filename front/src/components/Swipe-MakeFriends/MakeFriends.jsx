@@ -62,7 +62,7 @@ const MakeFriends = () => {
 
   const handleAccept = async (otherId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/friends/accept/${otherId}`, {
+      const response = await fetch(`http://localhost:3001/api/requests/accept/${otherId}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
@@ -70,7 +70,7 @@ const MakeFriends = () => {
         }
       });
       const res = await response.json();
-      console.log(res)
+      console.log(res.data)
       if (res.ok) {
         console.log(`User ${otherId} accepted!`);
       } else {
@@ -83,15 +83,15 @@ const MakeFriends = () => {
 
   const handleReject = async (otherId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/friends/reject/${otherId}`, {
-        method: 'POST',
+      const response = await fetch(`http://localhost:3001/api/requests/reject/${otherId}`, {
+        method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
           'Content-Type': 'application/json'
         }
       });
       const res = await response.json();
-      console.log(res)
+      console.log(res.data)
       if (res.ok) {
         console.log(`User ${otherId} rejected!`);
       } else {
