@@ -143,6 +143,7 @@ class SQLManager {
         let i = 0;
         map.forEach((value, key) => {
             str += `${key} = ?`;
+            //TODO
             if (key === "trainingPreferences") {
                 injects.push(value);
             } else {
