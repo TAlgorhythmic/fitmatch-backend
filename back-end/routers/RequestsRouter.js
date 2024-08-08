@@ -4,6 +4,7 @@ import fitmatch from "../api/Fitmatch.js";
 import { tokenRequired } from "../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildSendDataPacket, buildSimpleOkPacket } from '../api/packets/PacketBuilder.js';
 import User from '../api/User.js';
+import ConnectSession, { sessions } from '../api/utils/ConnectSession.js';
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -54,6 +55,7 @@ router.get('/friends', tokenRequired, function (req, res, next) {
 // ACEPT SOLICITUD
 
 router.post('/accept/:other_id', tokenRequired, function (req, res, next) {
+
     Friends.create(req.params.other_id, req.token.id)
         .then((item) => item.save())
         .then((item) => {
@@ -136,7 +138,13 @@ router.post("/reject/:other_id", tokenRequired, (req, res, next) => {
     const id = req.token.id;
     const other_id = req.params.other_id;
 
-    
+    if (!sessions.has(id)) {
+        sessions.set(id, new ConnectSession(id));
+    }
+
+    const session = sessions.get(id);
+    session.rejects.push(other_id);
+    res.json(buildSimpleOkPacket());
 
     fitmatch.sqlManager.putRejection(id, other_id)
     .then(e => {
