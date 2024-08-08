@@ -281,6 +281,10 @@ router.post("/setup", tokenRequired, (req, res, next) => {
 
 // put modificació d'un Users
 router.post('/edit', tokenRequired, function (req, res, next) {
+    if (fitmatch.userManager.containsKey(req.token.id)) {
+        res.json(fitmatch.userManager.get(req.token.id).user);
+        return;
+    }
     Users.findOne({ where: { id: req.token.id } })
         .then((al) =>
             al.update(req.body)
