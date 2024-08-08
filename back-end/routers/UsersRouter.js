@@ -338,7 +338,7 @@ router.get("/profile", tokenRequired, (req, res, next) => {
     } else {
         fitmatch.getSqlManager().getUserFromId(id)
             .then(e => {
-                const data = e[0];
+                const data = e;
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                 fitmatch.getUserManager().put(user.id, user);
                 res.json(buildSendDataPacket(user));
