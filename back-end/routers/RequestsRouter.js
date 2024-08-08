@@ -5,6 +5,7 @@ import { tokenRequired } from "../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from '../api/packets/PacketBuilder.js';
 import User from '../api/User.js';
 import ConnectSession, { sessions } from '../api/utils/ConnectSession.js';
+import { sanitizeDataReceivedForArrayOfObjects } from '../api/utils/Sanitizers.js';
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -76,7 +77,7 @@ router.post('/accept/:other_id', tokenRequired, function (req, res, next) {
 
     fitmatch.getSqlManager().getReceiverPendingsFromId(id)
         .then(e => {
-            const data = e;
+            const data = sanitizeDataReceivedForArrayOfObjects(e, "sender_id");
             if (data.find(item => item.receiver_id === id)) {
                 fitmatch.sqlManager.putFriends(id, other_id)
                     .then(e => {
