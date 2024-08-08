@@ -122,7 +122,7 @@ router.get("/get/:id", tokenRequired, (req, res, next) => {
     fitmatch.sqlManager.getActivityFromId(activityId)
     .then(e => {
         const data = e;
-        res.buildSendDataPacket(data);
+        res.json(buildSendDataPacket(data));
     })
 })
 
