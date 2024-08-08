@@ -6,6 +6,7 @@ import User from "./../api/User.js";
 import { OAuth2Client } from "google-auth-library";
 import { validateRegisterCredentials, isValidEmail, tokenRequired } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
+import { sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
 
 // Providers
 const GOOGLE = "google";
@@ -69,7 +70,7 @@ router.post("/login", (request, response, next) => {
             response.json(buildInternalErrorPacket("Internal error, this field is duplicated."));
             return;
         }
-        const data = e[0];
+        const data = sanitizeDataReceivedForSingleObject(e);
         const hash = data.pwhash;
         bcrypt.compare(password, hash).then(e => {
             if (e) {
@@ -92,7 +93,7 @@ router.post("/login", (request, response, next) => {
 function register(name, lastname, provider, email, phone, password, request, response) {
     fitmatch.sqlManager.getUserFromNumber(phone)
         .then(e => {
-            const data = e;
+            const data = sanitizeDataReceivedForSingleObject(e);
             if (data.length) {
                 response.json(buildInvalidPacket("This number is already in use."));
                 return;
@@ -102,7 +103,7 @@ function register(name, lastname, provider, email, phone, password, request, res
                 .then(e => {
                     fitmatch.getSqlManager().getUserFromEmail(email)
                     .then(e => {
-                        const data = e[0];
+                        const data = sanitizeDataReceivedForSingleObject(e);
                         const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences.split(";"), data.img, data.city, parseFloat(data.latitude), parseFloat(data.longitude), data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                         fitmatch.userManager.put(user.id, user);
                         const token = createToken(request.ip, user.id);
@@ -122,7 +123,7 @@ function register(name, lastname, provider, email, phone, password, request, res
                     .then(e => {
                         fitmatch.sqlManager.getUserFromEmail(email)
                         .then(e => {
-                            const data = e;
+                            const data = sanitizeDataReceivedForSingleObject(e);
                             const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                             fitmatch.userManager.put(user.id, user);
                             const token = createToken(request.ip, user.id);
