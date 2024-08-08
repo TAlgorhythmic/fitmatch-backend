@@ -78,9 +78,11 @@ nav {
 .notifi-item img {
     display: block;
     width: 50px;
-    padding-top: 7px;
-    margin: auto 10px auto auto;
+    height: 60px;
     border-radius: 50%;
+    object-fit: cover;
+    padding-top: 7px;
+    margin: auto 10px auto auto;   
 }
 
 .notifi-item .text h4 {
