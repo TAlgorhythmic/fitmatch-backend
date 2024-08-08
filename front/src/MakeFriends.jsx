@@ -20,6 +20,7 @@ const MakeFriends = () => {
         });
         const res = await response.json();
         const data = res.data;
+        console.log(data)
         if (data.length) {
           setPersona(data);
           setCurrentIndex(data.length - 1);
