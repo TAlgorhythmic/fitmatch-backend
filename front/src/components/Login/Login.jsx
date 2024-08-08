@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css'; 
 
 const Login = () => {
-    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [resposta, setResposta] = useState('');
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ const Login = () => {
         e.preventDefault();
 
         const loginData = {
-            field: email,
+            field: phone,
             password: password
         };
 
@@ -55,10 +55,10 @@ const Login = () => {
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
                         <input 
-                            type="email" 
-                            placeholder="Email Address" 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)} 
+                            type="text" 
+                            placeholder="Phone" 
+                            value={phone} 
+                            onChange={(e) => setPhone(e.target.value)} 
                             required 
                         />
                     </div>
