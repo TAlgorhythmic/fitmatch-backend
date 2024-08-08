@@ -6,7 +6,7 @@ import User from "./../api/User.js";
 import { OAuth2Client } from "google-auth-library";
 import { validateRegisterCredentials, isValidEmail, tokenRequired } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
-import { sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
+import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
 
 // Providers
 const GOOGLE = "google";
@@ -93,7 +93,7 @@ router.post("/login", (request, response, next) => {
 function register(name, lastname, provider, email, phone, password, request, response) {
     fitmatch.sqlManager.getUserFromNumber(phone)
         .then(e => {
-            const data = sanitizeDataReceivedForSingleObject(e);
+            const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
             if (data.length) {
                 response.json(buildInvalidPacket("This number is already in use."));
                 return;
