@@ -28,7 +28,7 @@ class BaseController {
     }
 
     async getItemById(id) {
-        const response = await fetch(`${this.apiUrl}/${id}`, {
+        const response = await fetch(`${this.apiUrl}/get/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
