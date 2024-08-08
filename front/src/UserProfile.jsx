@@ -14,8 +14,7 @@ const UserProfile = () => {
         img: '',
         city: ''
     });
-    
-    const [loading, setLoading] = useState(true);
+
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -34,12 +33,12 @@ const UserProfile = () => {
                 throw new Error('Failed to fetch user profile');
             }
             setUserData(data.data);
-            setLoading(false);
+            
         })
         .catch(error => {
             console.log('Error loading user data:', error);
             setError('Failed to load profile. Please try again later.');
-            setLoading(false);
+           
         });
     }, []);
 
@@ -64,7 +63,6 @@ const UserProfile = () => {
         try {
             const response = await fetch('http://localhost:3001/api/users/edit', requestOptions);
             const data = await response.json();
-
             if (data.ok) {
                 alert('Profile updated successfully');
             } else {
@@ -74,10 +72,6 @@ const UserProfile = () => {
             alert('Error updating profile');
         }
     };
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
 
     if (error) {
         return <div>{error}</div>;
@@ -119,7 +113,7 @@ const UserProfile = () => {
                     </Col>
                 </Row>
                 <Form.Group className="mb-3">
-                    <Form.Label>Email Address</Form.Label>
+                    <Form.Label>fitmatch@gmail.com</Form.Label>
                     <InputGroup>
                         <InputGroup.Text><Envelope /></InputGroup.Text>
                         <Form.Control
@@ -128,12 +122,11 @@ const UserProfile = () => {
                             value={userData.email}
                             onChange={handleChange}
                             placeholder="Email"
-                            readOnly
                         />
                     </InputGroup>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Phone Number</Form.Label>
+                    <Form.Label>+34...</Form.Label>
                     <InputGroup>
                         <InputGroup.Text><Phone /></InputGroup.Text>
                         <Form.Control
@@ -142,6 +135,7 @@ const UserProfile = () => {
                             value={userData.phone}
                             onChange={handleChange}
                             placeholder="Phone"
+                            readOnly
                         />
                     </InputGroup>
                 </Form.Group>
