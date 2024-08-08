@@ -36,10 +36,15 @@
     font-weight: 400;
     color: var(--color-texto-secundario);
     text-align: right;
+    margin-right: 20px;
 }
 
 .dateCheck {
     display: flex;
     align-items: end;
     justify-content: end;
+}
+
+.actCheckIcon {
+    cursor: pointer;
 }
