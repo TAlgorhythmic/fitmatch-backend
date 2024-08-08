@@ -2,7 +2,7 @@ import fitmatch from "./../api/Fitmatch.js";
 import express from 'express';
 import { DataTypes } from "sequelize";
 import { tokenRequired } from "./../api/utils/Validate.js";
-import { buildInvalidPacket, buildSendDataPacket } from "../api/packets/PacketBuilder.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
 import User from "../api/User.js";
 
 const sequelize = fitmatch.getSql();
@@ -72,49 +72,6 @@ router.get('/', tokenRequired, async function (req, res, next) {
 
 router.get("/feed", tokenRequired, (req, res, next) => {
     sqlManager.getActivitiesFeed(req.token.id, res);
-})
-
-// GET lista de todos los Activitiess de amigos de un usuario
-router.get('/foruser', tokenRequired, async function (req, res, next) {
-    try {
-        const userId = req.token.id;
-
-        // Obtener los IDs de los amigos del usuario
-        const friends = await Friends.findAll({
-            where: {
-                userId1: userId
-            }
-        });
-
-        const friends2 = await Friends.findAll({
-            where: {
-                userId2: userId
-            }
-        });
-
-
-        const friendIds = friends.map(friend => friend.friendId);
-        friendIds.push(friends2.map(friend => friend.userId1));
-
-        // Buscar las actividades de los amigos
-        const activities = await Activities.findAll({
-            where: {
-                userId: {
-                    [Op.in]: friendIds
-                }
-            }
-        });
-
-        res.json({
-            ok: true,
-            data: activities
-        });
-    } catch (error) {
-        res.json({
-            ok: false,
-            error: error
-        });
-    }
 });
 
 // POST, creació d'un nou Activities
@@ -127,22 +84,36 @@ router.post('/create', tokenRequired, function (req, res, next) {
 });
 
 
-// put modificació d'un Activities
-router.put('/edit', tokenRequired, function (req, res, next) {
-    Activities.findOne({ where: { id: req.token.id } })
-        .then((al) =>
-            al.update(req.body)
-        )
-        .then((ret) => res.json({
-            ok: true,
-            msg: "Record updated",
-            data: ret
-        }))
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }));
-
+/**
+ * expects: 
+ * token, activity id as params
+ * {
+ *      title,
+ *      description,
+ *      expires,
+ * }
+ */
+router.post('/edit/:id', tokenRequired, function (req, res, next) {
+    const id = req.params.id;
+    if (!id) {
+        res.json(e => buildInvalidPacket("What is this id...?"));
+        return;
+    }
+    const title = req.body.title;
+    const description = req.body.description;
+    const expires = req.body.expires;
+    
+    const prom = fitmatch.sqlManager.updateActivity(id, title, description, expires, res);
+    
+    if (prom) {
+        prom.then(e => {
+            res.json(buildSimpleOkPacket());
+        })
+        .catch(err => {
+            console.log(err);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+        });
+    }
 });
 
 

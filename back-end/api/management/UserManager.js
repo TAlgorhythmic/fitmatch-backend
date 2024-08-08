@@ -48,10 +48,11 @@ class UserManager {
 class Ref {
     constructor(user, map) {
         this.user = user;
-        this.modified = new Date();;
+        this.modified = new Date();
         this.map = map;
-        this.checkOrDelete();
         this.saveList = new Map();
+        this.checkOrDelete();
+        this.periodicallySave();
     }
 
     onRead() {
@@ -70,15 +71,20 @@ class Ref {
     periodicallySave() {
         setTimeout(() => {
             this.save();
-            if (this.map.has(user.id)) {
+            if (this.map.has(this.user.id)) {
                 this.periodicallySave();
             } else return;
-        }, 60000);
+        }, 20000);
     }
 
     save() {
         if (this.saveList.size) {
-            fitmatch.getSqlManager().selectivelyUpdateUser(this.user, this.saveList);
+            fitmatch.getSqlManager().selectivelyUpdateUser(this.user, this.saveList)
+            .then(e => {
+                this.saveList.clear();
+            }).catch(err => {
+                console.log(err);
+            });
         }
     }
 

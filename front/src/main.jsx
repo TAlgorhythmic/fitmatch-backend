@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App.jsx'
 import Home from './Home.jsx'
-import MakeFriends from './MakeFriends.jsx'
+import MakeFriends from './components/Swipe-MakeFriends/MakeFriends.jsx'
 import Register from './components/Register/Register.jsx'
 import Login from './components/Login/Login.jsx'
 import UserProfile from './UserProfile.jsx'
