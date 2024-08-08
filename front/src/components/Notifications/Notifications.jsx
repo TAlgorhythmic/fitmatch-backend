@@ -81,6 +81,7 @@ function Notifications() {
             .then(response => {
                 response.json()
                     .then(data => {
+                        console.log(data);
                         data.ok ? alert("Request accepted successfully.") : alert("Error accepting request.");
                         setUpdateList(prev => !prev);
                     })
