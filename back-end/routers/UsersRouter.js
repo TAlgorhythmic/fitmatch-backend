@@ -9,6 +9,7 @@ import fs from "fs";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildSendDataPacket } from "../api/packets/PacketBuilder.js";
 import ConnectSession, { sessions } from "../api/utils/ConnectSession.js";
 import User from "../api/User.js";
+import { sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -80,7 +81,7 @@ router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, nex
     } else {
         fitmatch.sqlManager.getUserFromId(id)
         .then(e => {
-            const data = e[0];
+            const data = sanitizeDataReceivedForSingleObject(e);
             const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
             if (user.img && user.img !== "img1.jpg") {
                 if (fs.existsSync("./uploads/" + user.img)) fs.rmSync("./uploads/" + user.img);
@@ -159,7 +160,7 @@ router.get('/connect', tokenRequired, function (req, res, next) {
     } else {
         fitmatch.getSqlManager().getUserFromId(token.id)
             .then(e => {
-                const data = e[0];
+                const data = sanitizeDataReceivedForSingleObject(e);
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                 fitmatch.getUserManager().put(user.id, user);
 
@@ -256,7 +257,7 @@ router.post("/setup", tokenRequired, (req, res, next) => {
     } else {
         fitmatch.getSqlManager().getUserFromId(id)
         .then(e => {
-            const data = e[0];
+            const data = sanitizeDataReceivedForSingleObject(e);
             const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
             fitmatch.userManager.put(user.id, user);
             user.setIsSetup(true);
@@ -339,7 +340,7 @@ router.get("/profile", tokenRequired, (req, res, next) => {
     } else {
         fitmatch.getSqlManager().getUserFromId(id)
             .then(e => {
-                const data = e;
+                const data = sanitizeDataReceivedForSingleObject(e);
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                 fitmatch.getUserManager().put(user.id, user);
                 console.log(user);
