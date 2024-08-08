@@ -58,7 +58,7 @@ const RegisterForm = () => {
         setFormData((prevFormData) => ({
           ...prevFormData,
           firstName: userData.data.name,
-          email: userData.data.email,
+          phone: userData.data.phone,
         }));
       }
     };
@@ -182,7 +182,8 @@ const RegisterForm = () => {
               type="email"
               name="email"
               value={formData.email}
-              readOnly
+              onChange={handleChange}
+              
             />
           </InputGroup>
         </Form.Group>
@@ -194,9 +195,10 @@ const RegisterForm = () => {
               type="tel"
               name="phone"
               value={formData.phone}
-              onChange={handleChange}
+             
               maxLength={9} 
               placeholder="Introduce your phone number"
+              readOnly
             />
           </InputGroup>
         </Form.Group>
@@ -252,7 +254,7 @@ const RegisterForm = () => {
           >
             <option value="Spain">Spain</option>
             <option value="Europe">Europe</option>
-            {/* Añadir más países según sea necesario */}
+          
           </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3">
