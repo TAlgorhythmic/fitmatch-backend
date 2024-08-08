@@ -142,7 +142,7 @@ router.post('/create', tokenRequired, function (req, res, next) {
         .catch((error) => res.json({ ok: false, error }))
 });
 
-
+// Likely doesn't work.
 // put modificació d'un Pending
 router.put('/edit', tokenRequired, function (req, res, next) {
     Pending.findOne({ where: { id: req.token.id } })
