@@ -15,17 +15,7 @@ function ActivityPostHome(props) {
     const icon2 = <CheckCircleFill className="checkPointer" color="green" size={28} onMouseEnter={()=>setIcon(1)} onMouseOut={()=>setIcon(2)}/>;
 
     const [icon, setIcon] = useState(1);
-
-    function changeIcon() {
-        if (icon === 1) {
-            setIcon(2);
-            console.log("Cambiado icono a: " + 2)
-        } else {
-            setIcon(1);
-            console.log("Cambiado icono a: " + 1)
-        }
-    }
-
+    
     return (
         <div className="activityContainer">
             <Alert variant="info" className='customAlert'>
