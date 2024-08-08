@@ -334,6 +334,7 @@ router.put('/changepasswd', tokenRequired, function (req, res, next) {
 router.get("/profile", tokenRequired, (req, res, next) => {
     const id = req.token.id;
     if (fitmatch.getUserManager().containsKey(id)) {
+        console.log(fitmatch.getUserManager().get(id).user);
         res.json(buildSendDataPacket(fitmatch.getUserManager().get(id).user));
     } else {
         fitmatch.getSqlManager().getUserFromId(id)
@@ -341,6 +342,7 @@ router.get("/profile", tokenRequired, (req, res, next) => {
                 const data = e;
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                 fitmatch.getUserManager().put(user.id, user);
+                console.log(user);
                 res.json(buildSendDataPacket(user));
             })
             .catch(err => {

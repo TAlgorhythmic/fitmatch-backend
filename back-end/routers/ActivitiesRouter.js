@@ -4,6 +4,7 @@ import { DataTypes } from "sequelize";
 import { tokenRequired } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
 import User from "../api/User.js";
+import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -43,7 +44,7 @@ const router = express.Router();
 router.get('/', tokenRequired, async function (req, res, next) {
     sqlManager.getAllActivities()
         .then(activities => {
-            const data = activities[0];
+            const data = sanitizeDataReceivedForArrayOfObjects(activities, "id");
             const filtered = sqlManager.filterActivities(data);
             let i = 0;
             function recursive() {
