@@ -170,6 +170,10 @@ router.get('/connect', tokenRequired, function (req, res, next) {
 
                 sessions.get(token.id).sendMore(res);
             })
+            .catch(err => {
+                console.log(err);
+                res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+            })
     }
 });
 

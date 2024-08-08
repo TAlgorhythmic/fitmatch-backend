@@ -12,8 +12,8 @@ const sqlManager = fitmatch.getSqlManager();
 const Pending = sequelize.define(
     'Pending',
     {
-        sender: DataTypes.STRING,
-        receiver: DataTypes.STRING
+        sender_id: DataTypes.STRING,
+        receiver_id: DataTypes.STRING
     },
     { tableName: 'pending', timestamps: false }
 );
@@ -62,11 +62,11 @@ router.post('/accept/:other_id', tokenRequired, function (req, res, next) {
                     res.json({ ok: true, data: item });
                 })
                 .catch((error) => {
-                    res.json({ ok: false, error });
+                    res.json({ ok: false, error: error });
                 });
         })
         .catch((error) => {
-            res.json({ ok: false, error });
+            res.json({ ok: false, error: error });
         });
 });
 
