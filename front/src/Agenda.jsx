@@ -26,12 +26,10 @@ function Agenda() {
         getJoinedActivities();
     }, []);
 
-    funtion 
-
     return (
         <>
             <div className="contenedorHome">
-                {joinedActivities}
+                
             </div>
         </>
     )
