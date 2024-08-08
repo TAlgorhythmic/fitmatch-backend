@@ -57,21 +57,21 @@ router.post('/send/:other_id', tokenRequired, function (req, res, next) {
     const other_id = req.params.other_id;
 
     fitmatch.getSqlManager().sendConnectionRequest(id, other_id)
-    .then(e => {
-        const data = e;
-        if (data.find(item => item.sender_id === id)) {
-            fitmatch.sqlManager.putFriends(id, other_id)
-            .then(e => {
-                res.json(buildSimpleOkPacket());
-            })
-            .catch(err => {
-                console.log(err);
-                res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-            })
-        } else {
-            res.json(buildInvalidPacket("This user didn't send any connection request."));
-        }
-    })
+        .then(e => {
+            const data = e;
+            if (data.find(item => item.sender_id === id)) {
+                fitmatch.sqlManager.putFriends(id, other_id)
+                    .then(e => {
+                        res.json(buildSimpleOkPacket());
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                    })
+            } else {
+                res.json(buildInvalidPacket("This user didn't send any connection request."));
+            }
+        })
 });
 
 // ACEPT SOLICITUD notifications
@@ -80,26 +80,28 @@ router.post('/accept/:other_id', tokenRequired, function (req, res, next) {
     const id = req.token.id;
     const other_id = req.params.other_id;
 
-    fitmatch.getSqlManager().getReceiverPendingsFromId(other_id)
-    .then(e => {
-        const data = e;
-        if (data.find(item => item.sender_id === id)) {
-            fitmatch.sqlManager.putFriends(id, other_id)
-            .then(e => {
-                res.json(buildSimpleOkPacket());
-            })
-            .catch(err => {
-                console.log(err);
-                res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-            })
-        } else {
-            res.json(buildInvalidPacket("This user didn't send any connection request."));
-        }
-    })
-    .catch(err => {
-        console.log(err);
-        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-    })
+    fitmatch.getSqlManager().getReceiverPendingsFromId(id)
+        .then(e => {
+            const data = e;
+            if (data.find(item => item.receiver_id === id)) {
+                fitmatch.sqlManager.putFriends(id, other_id)
+                    .then(e => {
+                        Pending.destroy({ where: { receiver_id: id, sender_id: other_id} })
+                            .then((data) => res.json({ ok: true }))
+                            .catch((error) => res.json({ ok: false, error }))
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.json(buildInternalErrorPacket("ERROR DELETING PENDING"));
+                    })
+            } else {
+                res.json(buildInvalidPacket("This user didn't recived any connection request."));
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+        })
 });
 
 // GET de un solo Pending
