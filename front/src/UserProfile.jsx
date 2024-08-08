@@ -27,8 +27,9 @@ const UserProfile = () => {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json())
+        .then(response => {return response.json()})
         .then(data => {
+            console.log('User data:', data);
             if (!data.status === 0) {
                 throw new Error('Failed to fetch user profile');
             }
@@ -62,7 +63,9 @@ const UserProfile = () => {
         try {
             const response = await fetch('http://localhost:3001/api/users/edit', requestOptions);
             const data = await response.json();
+            console.log(data);
             if (data.ok) {
+                console.log()
                 alert('Profile updated successfully');
             } else {
                 alert('Error updating profile: ' + data.error);

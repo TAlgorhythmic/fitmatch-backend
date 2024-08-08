@@ -54,7 +54,7 @@ const MakeFriends = () => {
     if (direction === 'right') {
       await handleAccept(currentUser.id);
     } else {
-      await handleReject(currentUser.id);
+      console.log('FALLO');
     }
 
     setCurrentIndex((prevIndex) => prevIndex - 1);
@@ -81,26 +81,6 @@ const MakeFriends = () => {
     }
   };
 
-  const handleReject = async (otherId) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/requests/reject/${otherId}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      const res = await response.json();
-      console.log(res.data)
-      if (res.status===0) {
-        console.log(`User ${otherId} rejected!`);
-      } else {
-        console.error(`Failed to reject user ${otherId}:`, res.error);
-      }
-    } catch (error) {
-      console.error('Error rejecting user:', error);
-    }
-  };
 
   return (
     <div className="swipe-container" ref={swipeContainerRef} tabIndex="0">
