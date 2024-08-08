@@ -1,6 +1,6 @@
 import { QueryTypes } from "sequelize";
 import fitmatch from "./../Fitmatch.js";
-import { buildSendDataPacket } from "../packets/PacketBuilder.js";
+import { buildInvalidPacket, buildSendDataPacket } from "../packets/PacketBuilder.js";
 
 const TABLES_VERSION = 0;
 const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
@@ -157,6 +157,21 @@ class SQLManager {
             }
             return !isExpired;
         })
+    }
+
+    updateActivity(id, title, description, expires, res) {
+        const validChanges = [];
+        let titl;
+        let desc;
+        let expire;
+        if (title) {titl = "title = ? "; validChanges.push(title)} else titl = "";
+        if (description) {desc = "description = ? "; validChanges.push(description)} else desc = "";
+        if (expires) {expire = "expires = ? "; validChanges.push(expires)} else expire = "";
+        if (!titl && !desc && !expire) {
+            res.json(buildInvalidPacket("Every single piece of data received is invalid. Could not effectuate query."));
+            return;
+        }
+        return fitmatch.getSql().query(`UPDATE activities SET title = ? description = ? expires = ? WHERE id = ?`, { replacements: [title, description, expires, id], type: QueryTypes.UPDATE })
     }
 
     // TODO todo mal
