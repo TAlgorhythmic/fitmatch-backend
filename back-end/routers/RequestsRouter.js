@@ -113,8 +113,6 @@ router.post('/create', tokenRequired, function (req, res, next) {
         .catch((error) => res.json({ ok: false, error }))
 });
 
-// POST, creació d'un nou Rejected peticion
-
 
 // put modificació d'un Pending
 router.put('/edit', tokenRequired, function (req, res, next) {
