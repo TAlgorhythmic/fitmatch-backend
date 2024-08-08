@@ -73,7 +73,12 @@ function Home() {
         return <Navigate to="/login" />;
     }
 
-    console.log("activities: ", activities);
+    async function getActivityById() {
+        const activity = await ActivitiesController.getItemById(activities[0].id);  
+        console.log("actividad 0: " + activity);
+    }
+
+    getActivityById();
 
     return (
         <div className="contenedorHome">
