@@ -84,7 +84,7 @@ const MakeFriends = () => {
   const handleReject = async (otherId) => {
     try {
       const response = await fetch(`http://localhost:3001/api/requests/reject/${otherId}`, {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
           'Content-Type': 'application/json'
@@ -92,7 +92,7 @@ const MakeFriends = () => {
       });
       const res = await response.json();
       console.log(res.data)
-      if (res.ok) {
+      if (res.status===0) {
         console.log(`User ${otherId} rejected!`);
       } else {
         console.error(`Failed to reject user ${otherId}:`, res.error);
