@@ -12,6 +12,7 @@ function Agenda() {
     }
 
     const [joinedActivities, setJoinedActivities] = useState([]);
+    const [activitiesDays, setActivitiesDays] = useState([]);
 
     const tableName = "joinedactivities";
 
@@ -20,16 +21,16 @@ function Agenda() {
     useEffect(() => {
         async function getJoinedActivities() {
             const data = await AgendaController.getAll();
-            console.log(data);
             setJoinedActivities(data.data);
-            
         }
         getJoinedActivities();
     }, []);
 
     return (
         <>
-        {console.log(joinedActivities)}
+            <div className="contenedorHome">
+                
+            </div>
         </>
     )
 }

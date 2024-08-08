@@ -22,10 +22,8 @@ function Notifications() {
                     .then(data => {
                         if (data.status !== 0) {
                             console.log("Fatal error fetching pendings.");
-                            console.log(data);
                             return;
                         }
-                        console.log(data.data);
                         setNotifications(data.data);
                     })
 
