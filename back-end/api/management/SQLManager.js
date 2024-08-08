@@ -145,6 +145,8 @@ class SQLManager {
             str += `${key} = ?`;
             if (key === "trainingPreferences") {
                 injects.push(value);
+            } else {
+                injects.push(value);
             }
             
             if (i + 1 < map.size) {
