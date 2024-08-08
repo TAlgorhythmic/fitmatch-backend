@@ -9,7 +9,7 @@ router.get('/', tokenRequired, function (req, res, next) {
     const id = req.token.id;
     f.getSqlManager().getJoinedActivities(id)
     .then(e => {
-        const data = e[0];
+        const data = e;
         f.sqlManager.filterActivities(data);
         data.sort((a, b) => {
             const date = new Date(a.expires.replace(" ", "T"));
