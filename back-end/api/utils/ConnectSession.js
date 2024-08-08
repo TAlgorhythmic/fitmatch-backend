@@ -51,6 +51,7 @@ class ConnectSession {
                     });
 
                     const sketchyOrdered = sketchyOrder(listUsersData);
+                    console.log(sketchyOrdered);
 
                     response.json(buildSendDataPacket(sketchyOrdered));
                 }
