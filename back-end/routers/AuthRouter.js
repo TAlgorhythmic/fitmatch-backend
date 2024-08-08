@@ -167,6 +167,7 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
     const password = request.body.password;
 
     if (!name || !phone || !password) {
+        console.log(`${name}, ${phone}`)
         response.json(buildInvalidPacket("There is invalid data."));
         return;
     }
