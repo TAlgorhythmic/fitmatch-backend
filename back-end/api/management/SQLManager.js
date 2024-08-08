@@ -59,6 +59,10 @@ class SQLManager {
         return fitmatch.sql.query("INSERT INTO friends(userId1, userId2) VALUES(?, ?);", { replacements: [id1, id2], type: QueryTypes.INSERT });
     }
 
+    getActivityFromId(id) {
+        return fitmatch.sql.query("SELECT * FROM activities WHERE id = ?;", { replacements: [id], type: QueryTypes.SELECT });
+    }
+
     destroyUserCompletely(id) {
         fitmatch.getSql().query("DELETE FROM users WHERE id = ?;", { replacements: [id], type: QueryTypes.DELETE })
             .then(e => {
