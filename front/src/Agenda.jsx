@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import BaseController from './controllers/BaseController';
 import { Row, Col, Container } from 'react-bootstrap';
+import ActivityDayDisplay from './components/Agenda/ActivityDayDisplay';
 import './Agenda.css';
 
 function Agenda() {
@@ -26,10 +27,24 @@ function Agenda() {
         getJoinedActivities();
     }, []);
 
+    //Hacer función para obtener todos los días en los que hay actividades
+
+    /*function getActivitiesDays(activities) {
+        const days = [];
+        joinedActivities.forEach(activity => (
+            days.push(activity.expires)
+        ))
+        days
+    }*/
+
     return (
         <>
             <div className="contenedorHome">
-                
+                {joinedActivities.map((activity) => (
+                    <Row>
+                        <ActivityDayDisplay data={activity} />
+                    </Row>
+                ))}
             </div>
         </>
     )
