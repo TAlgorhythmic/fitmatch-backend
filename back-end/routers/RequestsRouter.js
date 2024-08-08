@@ -51,8 +51,30 @@ router.get('/friends', tokenRequired, function (req, res, next) {
 
 });
 
+// ACCEPT SWIPE
+router.post('/send/:other_id', tokenRequired, function (req, res, next) {
+    const id = req.token.id;
+    const other_id = req.params.other_id;
 
-// ACEPT SOLICITUD
+    fitmatch.getSqlManager().sendConnectionRequest(id, other_id)
+    .then(e => {
+        const data = e;
+        if (data.find(item => item.sender_id === id)) {
+            fitmatch.sqlManager.putFriends(id, other_id)
+            .then(e => {
+                res.json(buildSimpleOkPacket());
+            })
+            .catch(err => {
+                console.log(err);
+                res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+            })
+        } else {
+            res.json(buildInvalidPacket("This user didn't send any connection request."));
+        }
+    })
+});
+
+// ACEPT SOLICITUD notifications
 
 router.post('/accept/:other_id', tokenRequired, function (req, res, next) {
     const id = req.token.id;
@@ -73,6 +95,10 @@ router.post('/accept/:other_id', tokenRequired, function (req, res, next) {
         } else {
             res.json(buildInvalidPacket("This user didn't send any connection request."));
         }
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
     })
 });
 
