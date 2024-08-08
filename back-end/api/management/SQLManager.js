@@ -43,8 +43,16 @@ class SQLManager {
         return fitmatch.getSql().query("SELECT * FROM activities;")
     }
 
-     getJoinedActivities(id) {
+    getReceiverPendingsFromId(id) {
+        return fitmatch.sql.query("SELECT * FROM pending WHERE receiver_id = ?;", { replacements: [id], type: QueryTypes.SELECT });
+    }
+
+    getJoinedActivities(id) {
         return fitmatch.sql.query(`SELECT joins_activities.* FROM joins_activities INNER JOIN activities ON joins_activities.postId = activities.id WHERE joins_activities.userId = ?;`, { replacements: [id], type: QueryTypes.SELECT });
+    }
+
+    putFriends(id1, id2) {
+        return fitmatch.sql.query("INSERT INTO friends(userId1, userId2) VALUES(?, ?);", { replacements: [id1, id2], type: QueryTypes.INSERT });
     }
 
     destroyUserCompletely(id) {

@@ -2,7 +2,7 @@ import express from 'express';
 import { DataTypes } from "sequelize";
 import fitmatch from "../api/Fitmatch.js";
 import { tokenRequired } from "../api/utils/Validate.js";
-import { buildInternalErrorPacket, buildSendDataPacket, buildSimpleOkPacket } from '../api/packets/PacketBuilder.js';
+import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from '../api/packets/PacketBuilder.js';
 import User from '../api/User.js';
 import ConnectSession, { sessions } from '../api/utils/ConnectSession.js';
 
@@ -55,21 +55,25 @@ router.get('/friends', tokenRequired, function (req, res, next) {
 // ACEPT SOLICITUD
 
 router.post('/accept/:other_id', tokenRequired, function (req, res, next) {
+    const id = req.token.id;
+    const other_id = req.params.other_id;
 
-    Friends.create(req.params.other_id, req.token.id)
-        .then((item) => item.save())
-        .then((item) => {
-            Pending.destroy({ where: { receiver_id: req.token.id, sender_id: req.params.other_id } })
-                .then((data) => {
-                    res.json({ ok: true, data: item });
-                })
-                .catch((error) => {
-                    res.json({ ok: false, error: error });
-                });
-        })
-        .catch((error) => {
-            res.json({ ok: false, error: error });
-        });
+    fitmatch.getSqlManager().getReceiverPendingsFromId(other_id)
+    .then(e => {
+        const data = e;
+        if (data.find(item => item.sender_id === id)) {
+            fitmatch.sqlManager.putFriends(id, other_id)
+            .then(e => {
+                res.json(buildSimpleOkPacket());
+            })
+            .catch(err => {
+                console.log(err);
+                res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+            })
+        } else {
+            res.json(buildInvalidPacket("This user didn't send any connection request."));
+        }
+    })
 });
 
 // GET de un solo Pending
