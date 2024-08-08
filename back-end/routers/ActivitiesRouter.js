@@ -116,7 +116,15 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
     }
 });
 
+router.get("/get/:id", tokenRequired, (req, res, next) => {
+    const activityId = req.params.id;
 
+    fitmatch.sqlManager.getActivityFromId(activityId)
+    .then(e => {
+        const data = e;
+        res.buildSendDataPacket(data);
+    })
+})
 
 // DELETE elimina l'Activities id
 // TODO
