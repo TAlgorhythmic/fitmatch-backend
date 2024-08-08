@@ -39,7 +39,6 @@ const UserProfile = () => {
         .catch(error => {
             console.log('Error loading user data:', error);
             setError('Failed to load profile. Please try again later.');
-           
         });
     }, []);
 

@@ -17,6 +17,7 @@ class ConnectSession {
         this.postRejects(20000);
         this.isCancelled = false;
         this.modified = new Date();
+        this.temp;
         this.user = fitmatch.getUserManager().containsKey(this.id) ? fitmatch.userManager.get(this.id).user : undefined;
         if (!this.user) {
             fitmatch.sqlManager.getUserFromId(this.id)
@@ -43,6 +44,7 @@ class ConnectSession {
                     response.json(buildInvalidPacket())
                 } else {
                     const listUsersData = e;
+                    console.log(listUsersData);
 
                     if (!listUsersData) return null;
 
@@ -51,7 +53,6 @@ class ConnectSession {
                     });
 
                     const sketchyOrdered = sketchyOrder(listUsersData);
-
                     response.json(buildSendDataPacket(sketchyOrdered));
                 }
             })

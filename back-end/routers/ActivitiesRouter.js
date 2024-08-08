@@ -4,6 +4,7 @@ import { DataTypes } from "sequelize";
 import { tokenRequired } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
 import User from "../api/User.js";
+import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -43,7 +44,7 @@ const router = express.Router();
 router.get('/', tokenRequired, async function (req, res, next) {
     sqlManager.getAllActivities()
         .then(activities => {
-            const data = activities[0];
+            const data = sanitizeDataReceivedForArrayOfObjects(activities, "id");
             const filtered = sqlManager.filterActivities(data);
             let i = 0;
             function recursive() {
@@ -116,7 +117,15 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
     }
 });
 
+router.get("/get/:id", tokenRequired, (req, res, next) => {
+    const activityId = req.params.id;
 
+    fitmatch.sqlManager.getActivityFromId(activityId)
+    .then(e => {
+        const data = e[0];
+        res.json(buildSendDataPacket(data));
+    })
+})
 
 // DELETE elimina l'Activities id
 // TODO
