@@ -56,21 +56,15 @@ router.post('/send/:other_id', tokenRequired, function (req, res, next) {
     const id = req.token.id;
     const other_id = req.params.other_id;
 
+    // TODO check for rejects
+
     fitmatch.getSqlManager().sendConnectionRequest(id, other_id)
     .then(e => {
-        const data = e;
-        if (data.find(item => item.sender_id === id)) {
-            fitmatch.sqlManager.putFriends(id, other_id)
-            .then(e => {
-                res.json(buildSimpleOkPacket());
-            })
-            .catch(err => {
-                console.log(err);
-                res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-            })
-        } else {
-            res.json(buildInvalidPacket("This user didn't send any connection request."));
-        }
+        res.json(buildSimpleOkPacket())
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
     })
 });
 
@@ -122,8 +116,9 @@ router.get('/pendings', tokenRequired, function (req, res, next) {
         .then(response => {
             response.forEach(element => {
                 list_of_users.push({
+                    id: element.id,
                     name: element.name,
-                    lastName: element.lastname, 
+                    lastName: element.lastname,
                     img: element.img,
                     description: element.description
                 });
@@ -164,6 +159,7 @@ router.put('/edit', tokenRequired, function (req, res, next) {
 
 });
 
+// REJECT IN THE SWIPE
 router.post("/reject/:other_id", tokenRequired, (req, res, next) => {
     const id = req.token.id;
     const other_id = req.params.other_id;
@@ -177,21 +173,20 @@ router.post("/reject/:other_id", tokenRequired, (req, res, next) => {
     res.json(buildSimpleOkPacket());
 
     fitmatch.sqlManager.putRejection(id, other_id)
-    .then(e => {
-        res.json(buildSimpleOkPacket());
-    })
-    .catch(err => {
-        console.log(err);
-        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-    })
+        .then(e => {
+            res.json(buildSimpleOkPacket());
+        })
+        .catch(err => {
+            console.log(err);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+        })
 })
 
-// DELETE elimina l'Pending id
-router.delete('/reject/:other_id', tokenRequired, function (req, res, next) {
+// REJECT IN THE FRIEND REQUEST
+router.post("/rejectFriendRequest/:other_id", tokenRequired, (req, res, next) => {
     Pending.destroy({ where: { receiver_id: req.token.id, sender_id: req.params.other_id } })
-        .then((data) => res.json({ ok: true}))
+        .then((data) => res.json({ ok: true }))
         .catch((error) => res.json({ ok: false, error }))
-
-});
+})
 
 export default router;
