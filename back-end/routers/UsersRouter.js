@@ -188,13 +188,14 @@ router.get('/connect', tokenRequired, function (req, res, next) {
  */
 router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
+
     const preferences = req.body.preferences.length ? req.body.preferences : null;
     if (!preferences) {
         res.json(buildInvalidPacket("Preferences is empty."));
         return;
     }
     const description = req.body.description ? req.body.description : null;
-    const img = req.body.img ? req.body.img : null;
+    const img = req.body.img ? req.body.img : "img1.jpg";
     const proficiency = req.body.proficiency;
     if (!proficiency) {
         res.json(buildInvalidPacket("You must select your proficiency level!"));

@@ -90,11 +90,11 @@ router.post("/login", (request, response, next) => {
 });
 
 function register(name, lastname, provider, email, phone, password, request, response) {
-    fitmatch.sqlManager.getUserFromEmail(email)
+    fitmatch.sqlManager.getUserFromNumber(phone)
         .then(e => {
             const data = e;
             if (data.length) {
-                response.json(buildInvalidPacket("This email is already in use."));
+                response.json(buildInvalidPacket("This number is already in use."));
                 return;
             }
             if (provider === GOOGLE) {
@@ -162,9 +162,14 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
     // TODO fix double email error.
     const name = request.body.name;
     const lastname = request.body.lastname ? request.body.lastname : null;
-    const email = request.body.email;
-    const phone = request.body.phone ? request.body.phone : null;
+    const email = request.body.email ? request.body.email : null;
+    const phone = request.body.phone;
     const password = request.body.password;
+
+    if (!name || !phone || !password) {
+        response.json(buildInvalidPacket("There is invalid data."));
+        return;
+    }
 
     register(name, lastname, LOCAL, email, phone, password, request, response);
 });
