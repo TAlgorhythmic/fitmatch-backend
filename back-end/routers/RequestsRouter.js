@@ -56,21 +56,15 @@ router.post('/send/:other_id', tokenRequired, function (req, res, next) {
     const id = req.token.id;
     const other_id = req.params.other_id;
 
+    // TODO check for rejects
+
     fitmatch.getSqlManager().sendConnectionRequest(id, other_id)
     .then(e => {
-        const data = e;
-        if (data.find(item => item.sender_id === id)) {
-            fitmatch.sqlManager.putFriends(id, other_id)
-            .then(e => {
-                res.json(buildSimpleOkPacket());
-            })
-            .catch(err => {
-                console.log(err);
-                res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-            })
-        } else {
-            res.json(buildInvalidPacket("This user didn't send any connection request."));
-        }
+        res.json(buildSimpleOkPacket())
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
     })
 });
 
