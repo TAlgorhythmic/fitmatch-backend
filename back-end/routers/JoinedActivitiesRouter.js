@@ -12,8 +12,8 @@ router.get('/', tokenRequired, function (req, res, next) {
         const data = e;
         f.sqlManager.filterActivities(data);
         data.sort((a, b) => {
-            const date = new Date(a.expires.replace(" ", "T"));
-            const date2 = new Date(b.expires.replace(" ", "T"));
+            const date = new Date(a.expires);
+            const date2 = new Date(b.expires);
             return date.getTime() - date2.getTime();
         });
         res.json(buildSendDataPacket(data));
