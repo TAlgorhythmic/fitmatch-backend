@@ -139,7 +139,7 @@ class SQLManager {
 
     putRejection(issuer, rejected) {
         const time = new Date((new Date().getTime() + TIME_BEFORE_EXPIRES)).toISOString().slice(0, 19).replace("T", " ");
-        return fitmatch.getSql().query(`INSERT INTO rejects(issuer, rejected, expires) VALUES(?, ?, ?);`, { replacements: [ issuer.id, rejected.id, time ], type: QueryTypes.INSERT });
+        return fitmatch.getSql().query(`INSERT INTO rejects(issuer, rejected, expires) VALUES(?, ?, ?);`, { replacements: [ issuer, rejected, time ], type: QueryTypes.INSERT });
     }
 
     /**
