@@ -281,6 +281,7 @@ router.post("/setup", tokenRequired, (req, res, next) => {
 
 // put modificació d'un Users
 router.post('/edit', tokenRequired, function (req, res, next) {
+    console.log(req.body);
     if (fitmatch.userManager.containsKey(req.token.id)) {
         res.json(buildSendDataPacket(fitmatch.userManager.get(req.token.id).user));
         return;
