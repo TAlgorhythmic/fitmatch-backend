@@ -2,7 +2,7 @@ import express from 'express';
 import { DataTypes } from "sequelize";
 import fitmatch from "../api/Fitmatch.js";
 import { tokenRequired } from "../api/utils/Validate.js";
-import { buildInternalErrorPacket, buildSendDataPacket } from '../api/packets/PacketBuilder.js';
+import { buildInternalErrorPacket, buildSendDataPacket, buildSimpleOkPacket } from '../api/packets/PacketBuilder.js';
 import User from '../api/User.js';
 
 const sequelize = fitmatch.getSql();
@@ -12,8 +12,8 @@ const sqlManager = fitmatch.getSqlManager();
 const Pending = sequelize.define(
     'Pending',
     {
-        sender: DataTypes.STRING,
-        receiver: DataTypes.STRING
+        sender_id: DataTypes.STRING,
+        receiver_id: DataTypes.STRING
     },
     { tableName: 'pending', timestamps: false }
 );
@@ -62,11 +62,11 @@ router.post('/accept/:other_id', tokenRequired, function (req, res, next) {
                     res.json({ ok: true, data: item });
                 })
                 .catch((error) => {
-                    res.json({ ok: false, error });
+                    res.json({ ok: false, error: error });
                 });
         })
         .catch((error) => {
-            res.json({ ok: false, error });
+            res.json({ ok: false, error: error });
         });
 });
 
@@ -92,7 +92,8 @@ router.get('/pendings', tokenRequired, function (req, res, next) {
                 list_of_users.push({
                     name: element.name,
                     lastName: element.lastname, 
-                    img: element.img
+                    img: element.img,
+                    description: element.description
                 });
             });
             res.json(buildSendDataPacket(list_of_users));
@@ -111,8 +112,6 @@ router.post('/create', tokenRequired, function (req, res, next) {
         .then((item) => res.json({ ok: true, data: item }))
         .catch((error) => res.json({ ok: false, error }))
 });
-
-// POST, creació d'un nou Rejected peticion
 
 
 // put modificació d'un Pending
@@ -133,13 +132,26 @@ router.put('/edit', tokenRequired, function (req, res, next) {
 
 });
 
+router.post("/reject/:other_id", tokenRequired, (req, res, next) => {
+    const id = req.token.id;
+    const other_id = req.params.other_id;
 
+    
+
+    fitmatch.sqlManager.putRejection(id, other_id)
+    .then(e => {
+        res.json(buildSimpleOkPacket());
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+    })
+})
 
 // DELETE elimina l'Pending id
 router.delete('/reject/:other_id', tokenRequired, function (req, res, next) {
-
-    Pending.destroy({ where: { receiver_id: req.params.other_id, sender_id: req.token.id } })
-        .then((data) => res.json({ ok: true, data }))
+    Pending.destroy({ where: { receiver_id: req.token.id, sender_id: req.params.other_id } })
+        .then((data) => res.json({ ok: true}))
         .catch((error) => res.json({ ok: false, error }))
 
 });

@@ -25,15 +25,14 @@ export function hasNumber(input) {
 // Middleware for register endpoint
 export function validateRegisterCredentials(req, res, next) {
     const name = req.body.name;
-    const email = req.body.email;
+    const phone = req.body.phone;
     const password = req.body.password;
     if (!name) {
         res.json(buildInvalidPacket("A name must be specified."));
         return;
     }
-    if (!isValidEmail(email)) {
-        res.json(buildInvalidPacket("The email is invalid."));
-        return;
+    if (!phone) {
+        res.json(buildInvalidPacket("The phone is invalid."))
     }
     if (!isValidPassword(password)) {
         res.json("The password must include: numbers, special characters, uppercase and lowercase charachters.");
@@ -56,6 +55,7 @@ export function isValidTimetable(int) {
 // Middleware
 export function tokenRequired(req, res, next) {
     let token = req.headers.authorization;
+    console.log(token);
 
     if (!token) {
         res.json(buildNoPermissionPacket("A token is required."));

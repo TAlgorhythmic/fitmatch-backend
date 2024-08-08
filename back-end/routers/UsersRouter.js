@@ -170,6 +170,10 @@ router.get('/connect', tokenRequired, function (req, res, next) {
 
                 sessions.get(token.id).sendMore(res);
             })
+            .catch(err => {
+                console.log(err);
+                res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+            })
     }
 });
 
@@ -188,13 +192,14 @@ router.get('/connect', tokenRequired, function (req, res, next) {
  */
 router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
+
     const preferences = req.body.preferences.length ? req.body.preferences : null;
     if (!preferences) {
         res.json(buildInvalidPacket("Preferences is empty."));
         return;
     }
     const description = req.body.description ? req.body.description : null;
-    const img = req.body.img ? req.body.img : null;
+    const img = req.body.img ? req.body.img : "img1.jpg";
     const proficiency = req.body.proficiency;
     if (!proficiency) {
         res.json(buildInvalidPacket("You must select your proficiency level!"));
@@ -222,14 +227,14 @@ router.post("/setup", tokenRequired, (req, res, next) => {
     const friday = req.body.friday ? true : false;
     const saturday = req.body.saturday ? true : false;
     const sunday = req.body.sunday ? true : false;
-    const timetable1 = req.body.timetable1 ? true : false;
-    const timetable2 = req.body.timetable2 ? true : false;
+    const timetable1 = req.body.timetable1;
+    const timetable2 = req.body.timetable2;
 
-    /*if (!isValidTimetable(timetable1) || !isValidTimetable(timetable2)) {
+    if (!isValidTimetable(timetable1) || !isValidTimetable(timetable2)) {
         console.log(`${timetable1} - ${timetable2}`);
         res.json(buildInvalidPacket("Timetable is not valid."));
         return;
-    }*/
+    }
 
     if (fitmatch.getUserManager().containsKey(req.token.id)) {
         const user = fitmatch.getUserManager().get(req.token.id).user;

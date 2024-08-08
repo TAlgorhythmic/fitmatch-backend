@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
     const [formData, setFormData] = useState({
-        email: '',
+        phone: '',
         password: '',
-        name: ''
+        name: '',
     });
     const navigate = useNavigate();
 
@@ -33,6 +33,7 @@ const Register = () => {
             });
 
             const data = await response.json();
+            console.log(data)
             if (data.status == 0) {
                 console.log('User registered:', data);
                 const token = data.token;
@@ -59,15 +60,15 @@ const Register = () => {
                         <div>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
-                                    <label htmlFor="email">Gmail</label>
+                                    <label htmlFor="phone">phone</label>
                                     <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        value={formData.email}
+                                        type="text"
+                                        id="phone"
+                                        name="phone"
+                                        value={formData.phone}
                                         onChange={handleChange}
                                         required
-                                        placeholder="Enter your Gmail"
+                                        placeholder="Enter your phone"
                                     />
                                 </div>
                                 <div className="form-group">
