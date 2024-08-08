@@ -13,7 +13,7 @@ function SubHeader() {
                         <Nav>
                             <Link className="nav-link" to="/">Nuevas actividades</Link>
                             <Link className="nav-link" to="/agenda">Agenda</Link>
-                            <Link className="nav-link" to="/">Crear actividad</Link>
+                            <Link className="nav-link" to="/create-activitie">Crear actividad</Link>
                             <Link className="nav-link" to="/">Actividades propias</Link>
                         </Nav>
                     </Navbar.Collapse>
