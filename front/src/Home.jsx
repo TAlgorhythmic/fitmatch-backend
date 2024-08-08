@@ -75,7 +75,7 @@ function Home() {
 
     async function getActivityById() {
         const activity = await ActivitiesController.getItemById(activities[0].id);  
-        console.log("actividad 0: " + activity);
+        console.log("actividad 0: " + activity.data);
     }
 
     getActivityById();
