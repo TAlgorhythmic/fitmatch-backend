@@ -28,15 +28,24 @@ class BaseController {
     }
 
     async getItemById(id) {
+        const data = {};
         const response = await fetch(`${this.apiUrl}/get/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': "Bearer " + this.token
             }
-        });
+        }).then(res =>
+            res.json()
+            .then(dataa => {
+                console.log(dataa);
+                data = dataa.data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+        );
 
-        const data = await response.json();
         return data;
     }
     async createItem(itemData) {
