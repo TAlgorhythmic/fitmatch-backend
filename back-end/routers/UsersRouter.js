@@ -282,22 +282,18 @@ router.post("/setup", tokenRequired, (req, res, next) => {
 // put modificació d'un Users
 router.post('/edit', tokenRequired, function (req, res, next) {
     if (fitmatch.userManager.containsKey(req.token.id)) {
-        res.json(fitmatch.userManager.get(req.token.id).user);
+        res.json(buildSendDataPacket(fitmatch.userManager.get(req.token.id).user));
         return;
     }
     Users.findOne({ where: { id: req.token.id } })
         .then((al) =>
             al.update(req.body)
         )
-        .then((ret) => res.json({
-            ok: true,
-            msg: "Record updated",
-            data: ret
-        }))
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }));
+        .then((ret) => res.json(buildSimpleOkPacket()))
+        .catch(error => {
+            console.log(error);
+            res.json(buildInternalErrorPacket("Backend internal error."));
+        });
 
 });
 
