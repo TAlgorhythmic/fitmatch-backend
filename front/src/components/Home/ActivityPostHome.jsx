@@ -1,12 +1,21 @@
 import { Alert, Row, Col, Image } from 'react-bootstrap';
 import { CheckCircleFill, CheckCircle } from 'react-bootstrap-icons';
+import { useState, useEffect } from 'react';
 import './ActivityPostHome.css';
 
 function ActivityPostHome(props) {
+
     const { data } = props;
+
     const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     let postDate = new Date(data.postDate);
     let expireDate = new Date(data.expires);
+
+    const icon1 = <CheckCircle className="actCheckIcon" color="grey" size={28} onMouseEnter={()=>setIcon(1)} onMouseOut={()=>setIcon(2)}/>;
+    const icon2 = <CheckCircleFill className="checkPointer" color="green" size={28} onMouseEnter={()=>setIcon(1)} onMouseOut={()=>setIcon(2)}/>;
+
+    const [icon, setIcon] = useState(1);
+    
     return (
         <div className="activityContainer">
             <Alert variant="info" className='customAlert'>
@@ -21,7 +30,7 @@ function ActivityPostHome(props) {
                         <p>{data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} </p>
                         <div className="dateCheck">
                             <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>
-                            <CheckCircle color="grey" size={28} />
+                            {icon == 1 ? icon2 : icon1}
                         </div>
                     </Col>
                 </Row>
