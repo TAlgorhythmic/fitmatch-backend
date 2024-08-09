@@ -117,6 +117,10 @@ class SQLManager {
         return fitmatch.getSql().query("SELECT * FROM users WHERE email = ?;", { replacements: [email], type: QueryTypes.SELECT });
     }
 
+    joinActivity(id, activityId) {
+        return fitmatch.sql.query("INSERT INTO joins_activities (userId, postId) VALUES(?, ?);", { replacements: [id, activityId], type: QueryTypes.INSERT });
+    }
+
     /**
      * @returns a promise
      */
