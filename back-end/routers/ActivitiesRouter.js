@@ -53,36 +53,53 @@ router.get('/', tokenRequired, async function (req, res, next) {
                     return;
                 }
                 fitmatch.getSqlManager().getUserFromId(filtered[i].userId)
-                .then(e => {
-                    const data = e[0];
-                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
-                    filtered[i].user = user;
-                    i++;
-                    recursive();
-                })
+                    .then(e => {
+                        const data = e[0];
+                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                        filtered[i].user = user;
+                        i++;
+                        recursive();
+                    })
             }
             recursive();
         })
         .catch(error => {
             console.log(error);
             res.json(
-            buildInvalidPacket("Backend internal error.")
-        )
-    });
+                buildInvalidPacket("Backend internal error.")
+            )
+        });
 });
 
 router.get("/feed", tokenRequired, (req, res, next) => {
     sqlManager.getActivitiesFeed(req.token.id, res);
 });
 
-// POST, creació d'un nou Activities
+// POST, creación de un nuevo Activities
 router.post('/create', tokenRequired, function (req, res, next) {
-    Activities.create(req.body)
+    // Obtener la fecha actual
+    const currentDate = new Date();
+
+    // Obtener la fecha de expiración del cuerpo de la solicitud
+    const expiresInput = req.body.expires ? new Date(req.body.expires) : null;
+
+    // Sumar 2 horas a la fecha de expiración, si está definida
+    const expiresDate = expiresInput ? new Date(expiresInput.getTime() + 2 * 60 * 60 * 1000) : null;
+
+    // Crear un nuevo objeto con la data recibida y añadir los campos postDate y expires
+    const activityData = {
+        ...req.body,
+        postDate: currentDate,
+        expires: expiresDate,
+        userId: req.token.id
+    };
+
+    Activities.create(activityData)
         .then((item) => item.save())
         .then((item) => res.json({ ok: true, data: item }))
-        .catch((error) => res.json({ ok: false, error }))
-
+        .catch((error) => res.json({ ok: false, error }));
 });
+
 
 
 /**
@@ -103,17 +120,17 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
     const title = req.body.title;
     const description = req.body.description;
     const expires = req.body.expires;
-    
+
     const prom = fitmatch.sqlManager.updateActivity(id, title, description, expires, res);
-    
+
     if (prom) {
         prom.then(e => {
             res.json(buildSimpleOkPacket());
         })
-        .catch(err => {
-            console.log(err);
-            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-        });
+            .catch(err => {
+                console.log(err);
+                res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+            });
     }
 });
 
@@ -121,10 +138,10 @@ router.get("/get/:id", tokenRequired, (req, res, next) => {
     const activityId = req.params.id;
 
     fitmatch.sqlManager.getActivityFromId(activityId)
-    .then(e => {
-        const data = e[0];
-        res.json(buildSendDataPacket(data));
-    })
+        .then(e => {
+            const data = e[0];
+            res.json(buildSendDataPacket(data));
+        })
 })
 
 // DELETE elimina l'Activities id
