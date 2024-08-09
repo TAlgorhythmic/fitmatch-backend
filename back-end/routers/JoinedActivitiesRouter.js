@@ -25,6 +25,8 @@ router.get('/', tokenRequired, function (req, res, next) {
     })
 });
 
+router.post("/dejoin/:id", tokenRequired)
+
 router.post('/join/:id', tokenRequired, function (req, res, next) {
     const id = parseInt(req.token.id);
     const activityId = parseInt(req.params.id);
