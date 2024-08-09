@@ -6,6 +6,7 @@ import usersRouter from "./routers/UsersRouter.js";
 import authRouter from "./routers/AuthRouter.js";
 import joinedActivitiesRouter from "./routers/JoinedActivitiesRouter.js";
 import requestRouter from "./routers/RequestsRouter.js";
+import credentialsRouter from "./routers/CredentialsRouter.js";
 import e from "express";
 import { removeGarbage } from "./api/management/SQLManager.js";
 
@@ -45,6 +46,7 @@ function run() {
     app.use('/api/users', usersRouter);
     app.use('/api/joinedactivities', joinedActivitiesRouter);
     app.use('/api/requests', requestRouter);
+    app.use("/api/credentials", credentialsRouter);
 
     //npm run build y luego se puede  app.use(express.static('FRONT/dist'));
     app.use(e.static("../front/dist"));
