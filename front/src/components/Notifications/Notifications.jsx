@@ -89,7 +89,7 @@ function Notifications() {
     return (
         <>
             <div onClick={toggleNotifi} className="notification-icon">
-                <svg fill="#0d6efd" width="32px" height="32px" viewBox="-1.5 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className='bell-icon' fill="#0d6efd" width="32px" height="32px" viewBox="-1.5 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                     <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">

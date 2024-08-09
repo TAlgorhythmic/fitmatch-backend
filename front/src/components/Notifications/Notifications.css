@@ -154,3 +154,7 @@ nav {
     align-items: center;
     padding: 2px;
 }
+
+.bell-icon:hover {
+    fill: darkblue;  
+}
