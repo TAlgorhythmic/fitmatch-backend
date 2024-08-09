@@ -49,13 +49,12 @@ class BaseController {
         return data;
     }
     async createItem(itemData) {
-        const response = await fetch(this.apiUrl, {
+        const response = await fetch(this.apiUrl + "/" + itemData, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': "Bearer " + this.token // Si necesitas un token para autenticación
-            },
-            body: JSON.stringify(itemData)
+            }
         });
 
         const data = await response.json();

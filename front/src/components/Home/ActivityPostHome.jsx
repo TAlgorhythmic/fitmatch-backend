@@ -1,8 +1,9 @@
-import { Alert, Row, Col, Image } from 'react-bootstrap';
+import { Alert, Row, Col, Image, Button } from 'react-bootstrap';
 import { CheckCircleFill, CheckCircle } from 'react-bootstrap-icons';
 import { useState, useEffect } from 'react';
 import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
+import BaseController from '../../controllers/BaseController.js';
 
 function ActivityPostHome(props) {
 
@@ -13,6 +14,20 @@ function ActivityPostHome(props) {
 
     const icon1 = <CheckCircle className="actCheckIcon" color="grey" size={28} onMouseEnter={() => setIcon(1)} onMouseOut={() => setIcon(2)} />;
     const icon2 = <CheckCircleFill className="checkPointer" color="green" size={28} onMouseEnter={() => setIcon(1)} onMouseOut={() => setIcon(2)} />;
+
+    const token = localStorage.getItem('authToken');
+    const tableName = "joinedactivities/join";
+    const JoinAcitivityController = new BaseController(tableName, token);
+
+    function joinActivity() {
+        JoinAcitivityController.createItem(data.id)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
 
     const [icon, setIcon] = useState(1);
 
@@ -30,7 +45,8 @@ function ActivityPostHome(props) {
                         <p>{data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} </p>
                         <div className="dateCheck">
                             <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>
-                            {icon == 1 ? icon2 : icon1}
+                            {/*icon == 1 ? icon2 : icon1*/}
+                            <Button variant="primary" onClick={joinActivity}>Unirse</Button>
                         </div>
                     </Col>
                 </Row>
