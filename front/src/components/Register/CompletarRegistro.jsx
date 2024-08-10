@@ -4,6 +4,9 @@ import { Camera, Phone, Person, Envelope, GeoAlt } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './registerf.css';
+import { useJsApiLoader, GoogleMap, Autocomplete } from "@react-google-maps/api";
+
+const libraries = ["places"];
 
 
 const RegisterForm = () => {
@@ -42,6 +45,11 @@ const RegisterForm = () => {
   ];
 
   const [selectedInterests, setSelectedInterests] = useState(['']);
+
+  const [location, setLocation] = useState({
+    lat: null,
+    long: null
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -140,6 +148,48 @@ const RegisterForm = () => {
       console.log(result.error);
     }
   };
+
+  function InputLocationAutocomplete(props) {
+
+    const classname = props.className;
+    const name = props.name;
+    const value = props.value;
+    const htmlFor = props.htmlFor;
+    const placeholder = props.placeholder;
+    const onChange = props.onChange;
+    const setLocation = props.setLocation;
+  
+    const {isLoaded} = useJsApiLoader({
+      googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+      libraries: libraries
+    });
+  
+    function onPlaceChanged(event) {
+      const place = event.getPlace();
+      if (!place.geometry) return;
+      setLocation({
+        lat: place.geometry.location.lat(),
+        long: place.geometry.location.lng()
+      });
+  
+    }
+  
+    if (!isLoaded) return <div>Loading...</div>;
+  
+    return (
+      <Autocomplete onPlaceChanged={e => onPlaceChanged(e)}>
+        <Form.Control
+          type="text"
+          className={classname}
+          name={name}
+          value={value}
+          htmlFor={htmlFor}
+          placeholder={placeholder}
+          onChange={onChange}
+        />
+      </Autocomplete>
+    )
+  }
 
   return (
     <Container className="custom-register-form">
@@ -395,53 +445,3 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
-
-
-import { useJsApiLoader, GoogleMap, Autocomplete } from "@react-google-maps/api"
-
-const libraries = ["places"];
-
-function InputLocationAutocomplete(props) {
-
-  const classname = props.className;
-  const name = props.name;
-  const value = props.value;
-  const htmlFor = props.htmlFor;
-  const placeholder = props.placeholder;
-  const onChange = props.onChange;
-  const setLocation = props.setLocation;
-
-  const [key, setKey] = useState("");
-  const isLoaded = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
-    libraries: libraries
-  });
-
-  const [instance, setInstance] = useState(null);
-
-  function onPlaceChanged(event) {
-    if (!key) return;
-    const place = event.getPlace();
-    if (!place.geometry) return;
-    setLocation({
-      lat: place.geometry.location.lat(),
-      long: place.geometry.location.lng()
-    });
-  }
-
-  if (!isLoaded) return <div>Loading...</div>;
-
-  return (
-    <Autocomplete onLoad={i => setInstance(i)} onPlaceChanged={e => onPlaceChanged(e)}>
-      <Form.Control
-        type="text"
-        className={classname}
-        name={name}
-        value={value}
-        htmlFor={htmlFor}
-        placeholder={placeholder}
-        onChange={onChange}
-      />
-    </Autocomplete>
-  )
-}
