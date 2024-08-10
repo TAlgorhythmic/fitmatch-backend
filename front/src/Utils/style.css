@@ -1,0 +1,41 @@
+.popup {
+    position: fixed;
+    top: -200px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 48%;
+    height: 22%;
+    opacity: 0%;
+    transition: 0.3s !important;
+}
+.visible {
+    top: 0 !important;
+    opacity: 100% !important;
+}
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.error {
+    box-shadow: 0px 0px 10px rgb(155, 73, 73);
+}
+.item {
+    max-width: 90%;
+}
+.separator {
+    width: 90%;
+    border: 1px solid black;
+    opacity: 40%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+.first-item {
+    margin-top: 4%;
+}
+.last-item {
+    margin-bottom: 4%;
+}

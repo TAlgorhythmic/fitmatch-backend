@@ -15,9 +15,27 @@
     --color-info: #03A9F4;
 }
 
+.relative {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+}
+
 /*Principales*/
 .contenedorPrincipal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: fit-content;
     background-color: var(--color-fondo-principal);
+    filter: brightness(100%);
+    transition-duration: 0.3s;
+}
+
+.darkened {
+    filter: brightness(52%);
+    pointer-events: none !important;
 }
 
 .mainContent {
