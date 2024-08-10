@@ -1,6 +1,7 @@
 import { QueryTypes } from "sequelize";
 import fitmatch from "./../Fitmatch.js";
-import { buildInvalidPacket, buildSendDataPacket } from "../packets/PacketBuilder.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from "../packets/PacketBuilder.js";
+import { sanitizeDataReceivedForSingleObject } from "../utils/Sanitizers.js";
 
 const TABLES_VERSION = 0;
 const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
@@ -44,7 +45,34 @@ class SQLManager {
     }
 
     sendConnectionRequest(id, other_id) {
-        return fitmatch.sql.query("INSERT INTO pending(sender_id, receiver_id) VALUES(?, ?;", { replacements: [id, other_id], type: QueryTypes.INSERT });
+        return fitmatch.sql.query("INSERT INTO pending(sender_id, receiver_id) VALUES(?, ?);", { replacements: [id, other_id], type: QueryTypes.INSERT });
+    }
+
+    leaveActivity(id, activityId, res) {
+        this.getJoinedActivity(id, activityId)
+        .then(e => {
+            const data = sanitizeDataReceivedForSingleObject(e);
+            if (data) {
+                res.json(buildInvalidPacket("You can't leave an activity you didn't join."));
+                return;
+            }
+            fitmatch.getSql().query("DELETE FROM joins_activities WHERE userId = ? AND activityId = ?;", { replacements: [id, activityId], type: QueryTypes.DELETE })
+            .then(e => {
+                res.json(buildSimpleOkPacket());
+            })
+            .catch(err => {
+                console.log(err);
+                res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+        });
+    }
+
+    getJoinedActivity(id, activityId) {
+        return fitmatch.getSql().query("SELECT * FROM joins_activities WHERE userId = ? AND postId = ?;", { replacements: [id, activityId], type: QueryTypes.SELECT });
     }
 
     getReceiverPendingsFromId(id) {
