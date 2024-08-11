@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import BaseController from './controllers/BaseController';
+import JoinedActivitiesController from './controllers/JoinedActivitiesController';
 import { Row, Col, Container } from 'react-bootstrap';
 import ActivityDayDisplay from './components/Agenda/ActivityDayDisplay';
 import './Agenda.css';
@@ -17,12 +18,13 @@ function Agenda() {
 
     const tableName = "joinedactivities";
 
-    const AgendaController = new BaseController(tableName, token);
+    const AgendaController = new JoinedActivitiesController(token);
 
     useEffect(() => {
         async function getJoinedActivities() {
-            const data = await AgendaController.getAll();
-            setJoinedActivities(data.data);
+            const data = await AgendaController.getAllJoinedActivities();
+            console.log(data)
+            setJoinedActivities(data);
         }
         getJoinedActivities();
     }, []);
