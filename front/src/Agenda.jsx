@@ -40,8 +40,8 @@ function Agenda() {
     return (
         <>
             <div className="contenedorHome">
-                {joinedActivities.map((activity) => (
-                    <Row>
+                {joinedActivities.map((activity, index) => (
+                    <Row key={index}>
                         <ActivityDayDisplay data={activity} />
                     </Row>
                 ))}
