@@ -1,10 +1,27 @@
 /*Navbar*/
 .customNavbar {
-    border-radius: 8px;
-    background-color: var(--color-fondo-principal) !important;
-    border: 1px solid var(--color-terciario);
-    padding: 20px 0;
-    margin-bottom: 20px;
+    width: 100%;
+    background-color: black;
+}
+.navbar-icons-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.navbar-icons-middle {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.logo-img {
+    width: 70px;
+    padding-left: 10px;
+    height: auto;
+    object-fit: contain;
 }
 
 .customBrand {
@@ -22,6 +39,15 @@
     width: 600px;
 }
 
-.customNav > * {
-    margin-left: 10px;
+.customNavbar a:hover svg {
+    fill: #e59400; /* Naranja oscuro */
+}
+
+.navbar-list {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    /* Centra los elementos horizontalmente */
+    margin: 0;
+    padding: 0;
 }
