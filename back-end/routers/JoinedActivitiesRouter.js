@@ -56,10 +56,25 @@ router.post('/join/:id', tokenRequired, function (req, res, next) {
 });
 
 // GET JoinedActivities that user not joined
-router.get('/notjoined/:userId'), function (req, res, next) {
-    JoinedActivities.findAll({where: { userId: req.params.userId }})
-    .then((data) => res.json({ ok: true, data }))
-    .catch((error) => res.json({ ok: false, error }))
+router.get('/notjoined'), tokenRequired, function (req, res, next) {
+    f.getSqlManager().getAllActivities()
+    .then(e => {
+        const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
+        if (!data.length) {
+            res.json(buildSendDataPacket([]));
+            return;
+        }
+        f.getSqlManager().getJoinedActivities(req.token.id)
+        .then(e1 => {
+            const joinsData = sanitizeDataReceivedForArrayOfObjects(e1, "userId");
+            if (!joinsData.length) {
+                res.json(buildSendDataPacket([]));
+                return;
+            }
+            const filtered = joinsData.filter(item => !data.find(item1 => item1.id === item.userId));
+            res.json(buildSendDataPacket(filtered));
+        })
+    });
 }
 
 
