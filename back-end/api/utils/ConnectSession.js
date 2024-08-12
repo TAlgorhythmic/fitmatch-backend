@@ -3,6 +3,7 @@ import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket } fro
 import User from "../User.js";
 import fitmatch from "./../Fitmatch.js";
 import { areCompatible } from './Algorithms.js';
+import { sanitizeDataReceivedForArrayOfObjects } from "./Sanitizers.js";
 
 const USERS_PER_REQUEST = 15;
 const TIMEOUT = 360000;
@@ -30,7 +31,7 @@ class ConnectSession {
                 if (this.isCancelled) {
                     response.json(buildInvalidPacket());
                 } else {
-                    const listUsersData = e;
+                    const listUsersData = sanitizeDataReceivedForArrayOfObjects(e, "id").map(item => new User(item.id, item.name, item.lastname, item.email, item.phone, item.description, item.proficiency, item.trainingPreferences, item.img, item.city, item.latitude, item.longitude, item.isSetup, item.monday, item.tuesday, item.wednesday, item.thursday, item.friday, item.saturday, item.sunday, item.timetable1, item.timetable2));
 
                     if (!listUsersData.length) return null;
 
