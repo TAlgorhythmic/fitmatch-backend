@@ -85,22 +85,19 @@ const UserProfile = () => {
                 <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>First Name</Form.Label>
+                            <Form.Label>Nombre</Form.Label>
                             <InputGroup>
-                                <InputGroup.Text><Person /></InputGroup.Text>
+                                <InputGroup.Text><Person/></InputGroup.Text>
                                 <Form.Control
                                     type="text"
-                                    name="name"
                                     value={userData.name}
-                                    onChange={handleChange}
-                                    placeholder="Name"
                                 />
                             </InputGroup>
                         </Form.Group>
                     </Col>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Last Name</Form.Label>
+                            <Form.Label>Apellidos</Form.Label>
                             <InputGroup>
                                 <InputGroup.Text><Person /></InputGroup.Text>
                                 <Form.Control
@@ -108,27 +105,26 @@ const UserProfile = () => {
                                     name="lastname"
                                     value={userData.lastname}
                                     onChange={handleChange}
-                                    placeholder="Last Name"
+                                    placeholder="Apellidos"
                                 />
                             </InputGroup>
                         </Form.Group>
                     </Col>
                 </Row>
                 <Form.Group className="mb-3">
-                    <Form.Label>fitmatch@gmail.com</Form.Label>
+                    <Form.Label>Email</Form.Label>
                     <InputGroup>
                         <InputGroup.Text><Envelope /></InputGroup.Text>
                         <Form.Control
-                            type="email"
-                            name="email"
+                            type="text"
                             value={userData.email}
                             onChange={handleChange}
-                            placeholder="Email"
+                            placeholder="fitmatch@gmail.com"
                         />
                     </InputGroup>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>+34...</Form.Label>
+                    <Form.Label>Phone</Form.Label>
                     <InputGroup>
                         <InputGroup.Text><Phone /></InputGroup.Text>
                         <Form.Control
@@ -136,7 +132,6 @@ const UserProfile = () => {
                             name="phone"
                             value={userData.phone}
                             onChange={handleChange}
-                            placeholder="Phone"
                             readOnly
                         />
                     </InputGroup>
@@ -147,25 +142,13 @@ const UserProfile = () => {
                         <InputGroup.Text><GeoAlt /></InputGroup.Text>
                         <Form.Control
                             type="text"
-                            name="city"
                             value={userData.city}
                             onChange={handleChange}
-                            placeholder="City"
                         />
                     </InputGroup>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        name="description"
-                        value={userData.description}
-                        onChange={handleChange}
-                        placeholder="Description"
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Proficiency</Form.Label>
+                    <Form.Label>Nivel</Form.Label>
                     <Form.Select
                         name="proficiency"
                         value={userData.proficiency}
@@ -177,13 +160,17 @@ const UserProfile = () => {
                     </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Training Preferences</Form.Label>
+                    <Form.Label>Intereses</Form.Label>
                     <Form.Control
-                        type="text"
-                        name="trainingPreferences"
                         value={userData.trainingPreferences}
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Control
+                        as="textarea"
+                        value={userData.description}
                         onChange={handleChange}
-                        placeholder="Training Preferences"
+                        placeholder="Escribe una breve descripción sobre ti"
                     />
                 </Form.Group>
                 <div className="d-flex justify-content-center mt-4">
