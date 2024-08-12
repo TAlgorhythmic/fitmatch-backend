@@ -8,16 +8,14 @@ function CreateActivity() {
     const ActivityController = new ActivitiesController();
 
     useEffect(() => {
-        function getPressedButton() {
+        async function getPressedButton() {
             const token = localStorage.getItem('authToken');
             // Obtener los valores de los inputs usando el id
             const titleInput = document.getElementById('title').value;
             const descriptionInput = document.getElementById('description').value;
             const expiresInput = document.getElementById('expires').value;
 
-            console.log(expiresInput)
-
-            ActivityController.createActivity(titleInput, descriptionInput, expiresInput, token)
+            await ActivityController.createActivity(titleInput, descriptionInput, expiresInput, token)
                 .then(res => res.json())
                 .then(res => {
                     if (res.ok) {
