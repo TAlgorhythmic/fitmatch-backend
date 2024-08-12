@@ -53,7 +53,6 @@ class SQLManager {
         .then(e => {
             const data = sanitizeDataReceivedForSingleObject(e);
             if (!data) {
-                console.log(data);
                 res.json(buildInvalidPacket("You can't leave an activity you didn't join."));
                 return;
             }
