@@ -194,7 +194,7 @@ router.get('/connect', tokenRequired, function (req, res, next) {
 router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
 
-    const preferences = req.body.preferences.length ? req.body.preferences : null;
+    const preferences = req.body.preferences ? (req.body.preferences.length ? req.body.preferences : null) : null;
     
     if (!preferences) {
         
