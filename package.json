@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@mobiscroll/react-lite": "^4.10.9",
-    "@react-google-maps/api": "^2.19.3"
-  }
-}
