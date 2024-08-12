@@ -77,6 +77,8 @@ router.get("/feed", tokenRequired, (req, res, next) => {
 
 // POST, creación de un nuevo Activities
 router.post('/create', tokenRequired, function (req, res, next) {
+
+    console.log("desde backend: " + req.body.title);
     // Obtener la fecha actual
     const currentDate = new Date();
 

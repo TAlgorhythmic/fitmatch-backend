@@ -5,18 +5,18 @@ import ActivitiesController from './controllers/ActivitiesController.js';
 
 function CreateActivity() {
 
-    const ActivityController = new ActivitiesController();
+    const token = localStorage.getItem('authToken');
+    const ActivityController = new ActivitiesController(token);
 
     useEffect(() => {
         async function getPressedButton() {
-            const token = localStorage.getItem('authToken');
+
             // Obtener los valores de los inputs usando el id
             const titleInput = document.getElementById('title').value;
             const descriptionInput = document.getElementById('description').value;
             const expiresInput = document.getElementById('expires').value;
 
-            await ActivityController.createActivity(titleInput, descriptionInput, expiresInput, token)
-                .then(res => res.json())
+            await ActivityController.createActivity(titleInput, descriptionInput, expiresInput)
                 .then(res => {
                     if (res.ok) {
                         showPopup("ACTIIVIDAD CREADA CORRECTAMENTE", "", false);
@@ -27,6 +27,7 @@ function CreateActivity() {
                         showPopup("ERROR AL CREAR ACTIVIDAD", "", true);
                     }
                 })
+
         }
 
         // Agregar evento de clic al botón plusButton
