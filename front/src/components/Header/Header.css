@@ -2,7 +2,15 @@
 .customNavbar {
     width: 100%;
     background-color: black;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
+
+::-webkit-scrollbar {
+    display: none;
+}
+
 .navbar-icons-right {
     display: flex;
     align-items: center;
@@ -24,10 +32,10 @@
     object-fit: contain;
 }
 
-.customBrand {
+.customTextLogo {
     color: var(--color-principal) !important;
     font-family: 'Pacifico', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 2em !important;
+    font-size: 1.5em !important;
 }
 
 .subHeaderCustom {
@@ -40,7 +48,8 @@
 }
 
 .customNavbar a:hover svg {
-    fill: #e59400; /* Naranja oscuro */
+    fill: #e59400;
+    /* Naranja oscuro */
 }
 
 .navbar-list {
@@ -50,4 +59,63 @@
     /* Centra los elementos horizontalmente */
     margin: 0;
     padding: 0;
+}
+
+
+/* ADD FRIENDS MIDDLE STYLE */
+.makeFriends {
+    position: relative;
+    display: inline-block;
+    padding: 7px 40px;
+    border: 2px solid #fefefe;
+    text-transform: uppercase;
+    color: #fefefe;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.makeFriends::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% - 12px);
+    background-color: #212121;
+    transition: 0.3s ease-in-out;
+    transform: scaleY(1);
+}
+
+.makeFriends:hover::before {
+    transform: scaleY(0);
+}
+
+.makeFriends::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: -2px;
+    height: calc(100% + 4px);
+    width: calc(100% - 12px);
+    background-color: #212121;
+    transition: 0.3s ease-in-out;
+    transform: scaleX(1);
+    transition-delay: 0.5s;
+}
+
+.makeFriends:hover::after {
+    transform: scaleX(0);
+}
+
+.makeFriends span {
+    position: relative;
+    z-index: 3;
+}
+
+.buttonMakeFriends {
+    background-color: none;
+    text-decoration: none;
+    background-color: #212121;
+    border: none;
 }
