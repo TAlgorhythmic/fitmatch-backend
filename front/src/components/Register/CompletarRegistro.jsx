@@ -317,28 +317,6 @@ const RegisterForm = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-<<<<<<< HEAD
-      <Form.Label>Selecciona tu horario de entrenamiento</Form.Label>
-      <div className="time-picker-container">
-        <TimePicker
-          onChange={(value) => handleTimeChange('timetable1', value)}
-          value={formData.timetable1}
-          disableClock={true}
-          format="HH:mm"
-          step={30}
-          placeholder="Selecciona tu hora habitual de entrada"
-        />
-        <TimePicker
-          onChange={(value) => handleTimeChange('timetable2', value)}
-          value={formData.timetable2}
-          disableClock={true}
-          format="HH:mm"
-          step={30}
-          placeholder="Selecciona tu hora habitual de salida"
-        />
-      </div>
-    </Form.Group>
-=======
           <TimePicker
             onChange={(value) => handleTimeChange('timetable1', value)}
             value={formData.timetable1}
@@ -357,7 +335,6 @@ const RegisterForm = () => {
             placeholder="Selecciona tu hora habitual de entrada"
           />
         </Form.Group>
->>>>>>> 7bfd9fc06bd92370a664abb33bbef27f7e7a3f82
         <Form.Group className="mb-3">
           <Form.Label>Lunes</Form.Label>
           <Form.Control
