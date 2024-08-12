@@ -41,7 +41,7 @@ class ConnectSession {
         fitmatch.sqlManager.getAllUsersWithLimitOffset(USERS_PER_REQUEST, this.position - USERS_PER_REQUEST)
             .then(e => {
                 if (this.isCancelled) {
-                    response.json(buildInvalidPacket())
+                    response.json(buildInvalidPacket());
                 } else {
                     const listUsersData = e;
 
