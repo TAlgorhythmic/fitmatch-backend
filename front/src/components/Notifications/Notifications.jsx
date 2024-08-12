@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './Notifications.css';
-import { Bell } from 'react-bootstrap-icons';
+import {showPopup} from '../../Utils/Utils.js';
 
 function Notifications() {
     const [notifications, setNotifications] = useState([]);
@@ -61,7 +61,7 @@ function Notifications() {
             .then(response => {
                 response.json()
                     .then(data => {
-                        data.ok ? alert("Request rejected successfully.") : alert("Error rejecting request.");
+                        data.ok ? showPopup("Request rejected successfully.", "", false) : showPopup("Error rejecting request.", "", true);
                         setUpdateList(prev => !prev);
                     })
             })
@@ -80,7 +80,7 @@ function Notifications() {
                 response.json()
                     .then(data => {
                         console.log(data);
-                        data.ok ? alert("Request accepted successfully.") : alert("Error accepting request.");
+                        data.ok ? showPopup("Request accepted successfully.", "", false) : alert("Error accepting request.", "", true);
                         setUpdateList(prev => !prev);
                     })
             })
@@ -89,7 +89,7 @@ function Notifications() {
     return (
         <>
             <div onClick={toggleNotifi} className="notification-icon">
-                <svg fill="#0d6efd" width="32px" height="32px" viewBox="-1.5 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className='bell-icon' fill="#0d6efd" width="32px" height="32px" viewBox="-1.5 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                     <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">

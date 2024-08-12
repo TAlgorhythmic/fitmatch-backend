@@ -12,7 +12,7 @@ class BaseController {
     }
 
     async getApiUrl() {
-        return this.apiUrl;        
+        return this.apiUrl;
     }
 
     async getAll() {
@@ -37,9 +37,9 @@ class BaseController {
             }
         }).then(res =>
             res.json()
-            .then(dataa => {
-                console.log(dataa);
-                data = dataa.data;
+            .then(responseData => {
+                console.log(responseData);
+                data = responseData.data;
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -48,14 +48,14 @@ class BaseController {
 
         return data;
     }
+    
     async createItem(itemData) {
-        const response = await fetch(this.apiUrl, {
+        const response = await fetch(this.apiUrl + "/" + itemData, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': "Bearer " + this.token // Si necesitas un token para autenticación
-            },
-            body: JSON.stringify(itemData)
+            }
         });
 
         const data = await response.json();

@@ -1,1 +1,0 @@
-{"username":"root","password":"1234","database":"fitmatch","host":"127.0.0.1","dialect":"mysql","tokenSecretKey":"secret-key","google_client_id":"clientid","client_secret":"clientsecret","callbackURL":"url"}

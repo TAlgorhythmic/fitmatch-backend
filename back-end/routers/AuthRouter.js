@@ -124,7 +124,6 @@ function register(name, lastname, provider, email, phone, password, request, res
                         fitmatch.sqlManager.getUserFromNumber(phone)
                         .then(e => {
                             const data = sanitizeDataReceivedForSingleObject(e);
-                            console.log(data);
                             const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                             fitmatch.userManager.put(user.id, user);
                             const token = createToken(request.ip, user.id);
@@ -161,7 +160,6 @@ function register(name, lastname, provider, email, phone, password, request, res
  * }
  */
 router.post("/register", validateRegisterCredentials, (request, response, next) => {
-    // TODO fix double email error.
     const name = request.body.name;
     const lastname = request.body.lastname ? request.body.lastname : null;
     const email = request.body.email ? request.body.email : null;

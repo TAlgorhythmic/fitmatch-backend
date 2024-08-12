@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './Register.css';
 import { useNavigate } from 'react-router-dom';
+import { showPopup } from '../../Utils/Utils';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -41,6 +42,8 @@ const Register = () => {
                 setSuccess(true);
                 setError('');
                 navigate('/formulario');   
+            } else {
+                showPopup("Error", data.error, true);
             }
             
         } catch (err) {
