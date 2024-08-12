@@ -1,8 +1,11 @@
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import './CreateActivity.css';
-import {showPopup} from './Utils/Utils.js';
+import { showPopup } from './Utils/Utils.js';
+import ActivitiesController from './controllers/ActivitiesController.js';
 
 function CreateActivity() {
+
+    const ActivityController = new ActivitiesController();
 
     useEffect(() => {
         function getPressedButton() {
@@ -14,18 +17,7 @@ function CreateActivity() {
 
             console.log(expiresInput)
 
-            fetch('http://localhost:3001/api/activities/create', {
-                method: "POST",
-                headers: {
-                    'Content-Type': "application/json",
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    title: titleInput,
-                    description: descriptionInput,
-                    expires: expiresInput,
-                })
-            })
+            ActivityController.createActivity(titleInput, descriptionInput, expiresInput, token)
                 .then(res => res.json())
                 .then(res => {
                     if (res.ok) {
