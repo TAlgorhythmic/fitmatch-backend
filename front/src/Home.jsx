@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import SubHeader from './components/Header/SubHeader.jsx';
 import BaseController from './controllers/BaseController';
 import { Row, Col } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
@@ -76,7 +75,6 @@ function Home() {
 
     return (
         <>
-            <SubHeader />
             <div className="contenedorHome">
                 {activities.map((activity, index) => (
                     <Row key={index}>
