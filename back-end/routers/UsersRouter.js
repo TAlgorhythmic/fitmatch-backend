@@ -193,14 +193,9 @@ router.get('/connect', tokenRequired, function (req, res, next) {
  */
 router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
-<<<<<<< HEAD
-    console.log(req.body.preferences);
+
     const preferences = req.body.preferences.length ? req.body.preferences : null;
     
-=======
-    
-    const preferences = req.body.preferences ? (req.body.preferences.length ? req.body.preferences : null) : null;
->>>>>>> 7bfd9fc06bd92370a664abb33bbef27f7e7a3f82
     if (!preferences) {
         
         res.json(buildInvalidPacket("Preferences is empty."));
