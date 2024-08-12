@@ -29,8 +29,8 @@ function App() {
   return (
     <>
       <div className={"contenedorPrincipal " + (popupState.isVisible ? "darkened" : "")}>
+        <Header />
         <Container>
-          <Header />
           <SubHeader />
           <div className="mainContent">
             <Outlet />
