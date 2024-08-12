@@ -3,7 +3,7 @@ import { CheckCircleFill, CheckCircle } from 'react-bootstrap-icons';
 import { useState, useEffect } from 'react';
 import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
-import BaseController from '../../controllers/BaseController.js';
+import JoinedActivitiesController  from '../../controllers/JoinedActivitiesController.js';
 import {showPopup} from '../../Utils/Utils.js';
 
 function ActivityPostHome(props) {
@@ -13,15 +13,16 @@ function ActivityPostHome(props) {
     let postDate = new Date(data.postDate);
     let expireDate = new Date(data.expires);
 
-    const icon1 = <CheckCircle className="actCheckIcon" color="grey" size={28} onMouseEnter={() => setIcon(1)} onMouseOut={() => setIcon(2)} />;
+    /*const icon1 = <CheckCircle className="actCheckIcon" color="grey" size={28} onMouseEnter={() => setIcon(1)} onMouseOut={() => setIcon(2)} />;
     const icon2 = <CheckCircleFill className="checkPointer" color="green" size={28} onMouseEnter={() => setIcon(1)} onMouseOut={() => setIcon(2)} />;
+    
+    const [icon, setIcon] = useState(1);*/
 
     const token = localStorage.getItem('authToken');
-    const tableName = "joinedactivities/join";
-    const JoinAcitivityController = new BaseController(tableName, token);
+    const AgendaController = new JoinedActivitiesController(token);
 
-    function joinActivity() {
-        JoinAcitivityController.createItem(data.id)
+    async function joinActivity() {
+        await AgendaController.joinActivity(data.id)
             .then(response => {
                 showPopup("Joined Succesfully", "", false);
             })
@@ -29,8 +30,6 @@ function ActivityPostHome(props) {
                 showPopup("Error Joining Activity", error, false);
             });
     }
-
-    const [icon, setIcon] = useState(1);
 
     return (
         <div className="activityContainer">

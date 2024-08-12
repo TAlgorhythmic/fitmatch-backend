@@ -52,11 +52,11 @@ class SQLManager {
         this.getJoinedActivity(id, activityId)
         .then(e => {
             const data = sanitizeDataReceivedForSingleObject(e);
-            if (data) {
+            if (!data) {
                 res.json(buildInvalidPacket("You can't leave an activity you didn't join."));
                 return;
             }
-            fitmatch.getSql().query("DELETE FROM joins_activities WHERE userId = ? AND activityId = ?;", { replacements: [id, activityId], type: QueryTypes.DELETE })
+            fitmatch.getSql().query("DELETE FROM joins_activities WHERE userId = ? AND postId = ?;", { replacements: [id, activityId], type: QueryTypes.DELETE })
             .then(e => {
                 res.json(buildSimpleOkPacket());
             })
