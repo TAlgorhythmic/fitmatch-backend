@@ -144,14 +144,4 @@ router.get("/get/:id", tokenRequired, (req, res, next) => {
         })
 })
 
-// DELETE elimina l'Activities id
-// TODO
-router.delete('/:id', tokenRequired, function (req, res, next) {
-
-    Activities.destroy({ where: { id: req.params.id } })
-        .then((data) => res.json({ ok: true, data }))
-        .catch((error) => res.json({ ok: false, error }))
-
-});
-
 export default router;
