@@ -14,13 +14,13 @@ function ActivityDayDisplay(props) {
     const AgendaController = new JoinedActivitiesController(token);
 
     async function leaveActivity() {
-        AgendaController.leaveActivity(data.id)
+        console.log(await AgendaController.leaveActivity(data.id)
             .then(response => {
                 console.log(response);
             })
             .catch(error => {
                 console.error('Error deleteJoinedActivity:', error);
-            })
+            }))
     }
 
     return (
