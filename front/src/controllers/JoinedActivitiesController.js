@@ -26,29 +26,6 @@ class JoinedActivitiesController extends BaseController {
         return data;
     }
 
-    // Función para obtener actividades no unidas, hay que pasa el id del usuario, preguntar luego si se puede hacer con el token
-
-    /*async getNotJoined() {
-        let data = {};
-        let response = await fetch(`${this.apiUrl}/`, {
-            method: 'GET',
-            headers: {
-                "Authorization": "Bearer " + this.token,
-                'Content-Type': 'application/json'
-            }
-        }).then(res =>
-            res.json()
-            .then(responseData => {
-                console.log(responseData);
-                data = responseData.data;
-            })
-            .catch(error => {
-                console.error('Error getAllJoinedActivities:', error);
-            })
-        );
-        return data;
-    }*/
-
     async joinActivity(id) {
         let data = {};
         let response = await fetch(`${this.apiUrl}/join/${id}`, {
@@ -60,11 +37,11 @@ class JoinedActivitiesController extends BaseController {
         }).then(res =>
             res.json()
             .then(responseData => {
-                console.log(responseData);
+                console.log('Unido desde controller: ' + responseData);
                 data = responseData.data;
             })
             .catch(error => {
-                console.error('Error joinActivity:', error);
+                console.error('Error joinActivity: ', error);
             })
         );
         return data;
@@ -81,7 +58,7 @@ class JoinedActivitiesController extends BaseController {
         }).then(res =>
             res.json()
             .then(responseData => {
-                console.log(responseData);
+                console.log('Eliminado desde controller: ' + responseData.error);
                 data = responseData.data;
             })
             .catch(error => {
@@ -93,3 +70,26 @@ class JoinedActivitiesController extends BaseController {
 }
 
 export default JoinedActivitiesController;
+
+// Función para obtener actividades no unidas, hay que pasa el id del usuario, preguntar luego si se puede hacer con el token
+
+/*async getNotJoined() {
+    let data = {};
+    let response = await fetch(`${this.apiUrl}/`, {
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + this.token,
+            'Content-Type': 'application/json'
+        }
+    }).then(res =>
+        res.json()
+        .then(responseData => {
+            console.log(responseData);
+            data = responseData.data;
+        })
+        .catch(error => {
+            console.error('Error getAllJoinedActivities:', error);
+        })
+    );
+    return data;
+}*/
