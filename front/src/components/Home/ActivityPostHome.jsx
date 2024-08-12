@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
 import BaseController from '../../controllers/BaseController.js';
+import {showPopup} from '../../Utils/Utils.js';
 
 function ActivityPostHome(props) {
 
@@ -22,10 +23,10 @@ function ActivityPostHome(props) {
     function joinActivity() {
         JoinAcitivityController.createItem(data.id)
             .then(response => {
-                console.log(response);
+                showPopup("Joined Succesfully", "", false);
             })
             .catch(error => {
-                console.log(error);
+                showPopup("Error Joining Activity", error, false);
             });
     }
 
