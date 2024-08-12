@@ -164,7 +164,6 @@ router.get('/connect', tokenRequired, function (req, res, next) {
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                 fitmatch.getUserManager().put(user.id, user);
 
-
                 if (!sessions.has(token.id)) {
                     sessions.set(token.id, new ConnectSession(user));
                 }
