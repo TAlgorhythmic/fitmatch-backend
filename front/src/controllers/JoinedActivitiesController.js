@@ -7,7 +7,7 @@ class JoinedActivitiesController extends BaseController {
 
     async getAllJoinedActivities() {
         let data = {};
-        let response = await fetch(`${this.apiUrl}/`, {
+        await fetch(`${this.apiUrl}/`, {
             method: 'GET',
             headers: {
                 "Authorization": "Bearer " + this.token,
@@ -16,7 +16,6 @@ class JoinedActivitiesController extends BaseController {
         }).then(res =>
             res.json()
             .then(responseData => {
-                console.log(responseData);
                 data = responseData.data;
             })
             .catch(error => {
@@ -27,8 +26,7 @@ class JoinedActivitiesController extends BaseController {
     }
 
     async joinActivity(id) {
-        let data = {};
-        let response = await fetch(`${this.apiUrl}/join/${id}`, {
+        await fetch(`${this.apiUrl}/join/${id}`, {
             method: 'POST',
             headers: {
                 "Authorization": "Bearer " + this.token,
@@ -37,19 +35,16 @@ class JoinedActivitiesController extends BaseController {
         }).then(res =>
             res.json()
             .then(responseData => {
-                console.log('Unido desde controller: ' + responseData);
-                data = responseData.data;
+                console.log('Unido desde controller: ' + responseData.status);
             })
             .catch(error => {
                 console.error('Error joinActivity: ', error);
             })
         );
-        return data;
     }
 
     async leaveActivity(id) {
-        let data = {};
-        let response = await fetch(`${this.apiUrl}/leave/${id}`, {
+        await fetch(`${this.apiUrl}/leave/${id}`, {
             method: 'POST',
             headers: {
                 "Authorization": "Bearer " + this.token,
@@ -59,13 +54,11 @@ class JoinedActivitiesController extends BaseController {
             res.json()
             .then(responseData => {
                 console.log('Eliminado desde controller: ' + responseData.error);
-                data = responseData.data;
             })
             .catch(error => {
                 console.error('Error leaveActivity:', error);
             })
         );
-        return data;
     }
 }
 
