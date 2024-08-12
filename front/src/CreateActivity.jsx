@@ -10,24 +10,25 @@ function CreateActivity() {
 
     useEffect(() => {
         async function getPressedButton() {
-
             // Obtener los valores de los inputs usando el id
             const titleInput = document.getElementById('title').value;
             const descriptionInput = document.getElementById('description').value;
             const expiresInput = document.getElementById('expires').value;
 
-            await ActivityController.createActivity(titleInput, descriptionInput, expiresInput)
-                .then(res => {
-                    if (res.ok) {
-                        showPopup("ACTIIVIDAD CREADA CORRECTAMENTE", "", false);
-                        titleInput.value = "";
-                        descriptionInput.value = "";
-                        expiresInput.value = "";
-                    } else {
-                        showPopup("ERROR AL CREAR ACTIVIDAD", "", true);
-                    }
-                })
-
+            try {
+                const res = await ActivityController.createActivity(titleInput, descriptionInput, expiresInput);
+                if (res) {
+                    showPopup("ACTIVIDAD CREADA CORRECTAMENTE", "", false);
+                    document.getElementById('title').value = "";
+                    document.getElementById('description').value = "";
+                    document.getElementById('expires').value = "";
+                } else {
+                    showPopup("ERROR AL CREAR ACTIVIDAD", "", true);
+                }
+            } catch (error) {
+                console.error('Error al crear la actividad:', error);
+                showPopup("ERROR AL CREAR ACTIVIDAD", "", true);
+            }
         }
 
         // Agregar evento de clic al botón plusButton
