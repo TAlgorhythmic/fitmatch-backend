@@ -1,5 +1,4 @@
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { PersonFillAdd, PeopleFill } from 'react-bootstrap-icons';
+import { PersonFillAdd, PersonCircle } from 'react-bootstrap-icons';
 import Notifications from '../Notifications/Notifications.jsx';
 import './Header.css';
 
@@ -36,17 +35,22 @@ function Header() {
                 <a href="/">
                     <img className='logo-img' src='./LogoFitMatch.jpg' />
                 </a>
+                <p className='customTextLogo'>FITMATCH</p>
 
                 <div className='navbar-icons-middle'>
-                    <a href="/friends">
-                        <PersonFillAdd size={32} color='#f0b71d' />
-                    </a>
+                    <button className='buttonMakeFriends'>
+                        <a href="/friends" className='makeFriends'>
+                            <span>
+                                <PersonFillAdd size={32} color='#f0b71d' />
+                            </span>
+                        </a>
+                    </button>
                 </div>
 
                 <div className='navbar-icons-right'>
                     <Notifications />
                     <a href="/user/profile">
-                        <PeopleFill size={32} color='#f0b71d' />
+                        <PersonCircle size={32} color='#f0b71d' />
                     </a>
                 </div>
             </nav>
