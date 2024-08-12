@@ -105,9 +105,10 @@ class SQLManager {
     }
 
     removeActivityCompletely(id) {
-        return fitmatch.sql.query(`DELETE FROM activities WHERE id = ?;`, { replacements: [id], type: QueryTypes.DELETE })
+        fitmatch.sql.query(`DELETE FROM activities WHERE id = ?;`, { replacements: [id], type: QueryTypes.DELETE })
         .then(e => {
-            return fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?`, { replacements: [id], type: QueryTypes.DELETE });
+            fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?`, { replacements: [id], type: QueryTypes.DELETE })
+            .catch(err => console.log(err));
         })
         .catch(err => console.log("Operation remove activity completely failed. Error: " + err));
     }
@@ -182,7 +183,7 @@ class SQLManager {
                 injects.push(value);
             }
             
-            if (i + 1 < map.size) {
+            if (i < map.size) {
                 str += ", ";
             }
             i++;

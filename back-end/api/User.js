@@ -13,8 +13,8 @@ export default class User {
         this.trainingPreferences = trainingPreferences;
         this.img = img;
         this.city = city;
-        this.latitude = lat;
-        this.longitude = long;
+        this.latitude = parseFloat(lat);
+        this.longitude = parseFloat(long);
         this.isSetup = isSetup;
         this.monday = monday;
         this.tuesday = tuesday;
@@ -71,19 +71,19 @@ export default class User {
     }
     setLatitude(lat) {
         this.latitude = lat;
-        this.indexChange("latitude", lat);
+        this.indexChange("latitude", lat.toString());
     }
     setLongitude(long) {
         this.longitude = long;
-        this.indexChange("longitude", long);
+        this.indexChange("longitude", long.toString());
     }
     setLocation(city, latitude, longitude) {
         this.city = city;
         this.latitude = latitude;
         this.longitude = longitude;
         this.indexChange("city", city);
-        this.indexChange("latitude", latitude);
-        this.indexChange("longitude", longitude);
+        this.indexChange("latitude", latitude.toString());
+        this.indexChange("longitude", longitude.toString());
     }
     setIsSetup(isSetup) {
         this.isSetup = isSetup;
