@@ -28,8 +28,8 @@ class BaseController {
     }
 
     async getItemById(id) {
-        const data = {};
-        const response = await fetch(`${this.apiUrl}/get/${id}`, {
+        let data = {};
+        await fetch(`${this.apiUrl}/get/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ class BaseController {
                 console.error('Error:', error);
             })
         );
-
+        console.log(data)
         return data;
     }
     
