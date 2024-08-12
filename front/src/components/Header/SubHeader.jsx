@@ -6,7 +6,7 @@ function SubHeader() {
 
     return (
         <>
-            <Navbar expand="lg" className="bg-body-tertiary subHeaderCustom fixed-top">
+            <Navbar expand="lg" className="subHeaderCustom fix-on-top">
                 <Container  >
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav" className='justify-content-center'>
