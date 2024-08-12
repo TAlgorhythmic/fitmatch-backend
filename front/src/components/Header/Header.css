@@ -7,6 +7,20 @@
     z-index: 1000;
 }
 
+.subHeaderCustom {
+    border-radius: 8px;
+    background-color: var(--color-fondo-principal) !important;
+    border: 1px solid var(--color-terciario);
+}
+
+.fix-on-top {
+    position: sticky !important;
+    top: 60px; /* Ajusta este valor según la altura de tu header */
+    z-index: 29; /* Un valor menor que el z-index del header */
+    background-color: transparent !important;
+    backdrop-filter: blur(5px);
+}
+
 ::-webkit-scrollbar {
     display: none;
 }
@@ -23,6 +37,7 @@
     display: flex;
     align-items: center;
     margin-left: auto;
+    margin-right: 100px;
 }
 
 .logo-img {
@@ -36,15 +51,6 @@
     color: var(--color-principal) !important;
     font-family: 'Pacifico', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.5em !important;
-}
-
-.subHeaderCustom {
-    border-radius: 8px;
-    background-color: var(--color-fondo-principal) !important;
-    border: 1px solid var(--color-terciario);
-    padding: 20px 0;
-    margin-top: 60px;
-    width: 600px;
 }
 
 .customNavbar a:hover svg {
