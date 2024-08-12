@@ -44,11 +44,12 @@ class ConnectSession {
                     response.json(buildInvalidPacket())
                 } else {
                     const listUsersData = e;
-                    console.log(listUsersData);
 
                     if (!listUsersData) return null;
 
                     listUsersData.forEach(user => {
+                        console.log(user);
+                        console.log(this.user);
                         user.matchPercent = areCompatible(this.user, user);
                     });
 
