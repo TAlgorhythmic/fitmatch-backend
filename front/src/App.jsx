@@ -1,4 +1,5 @@
 import Header from './components/Header/Header.jsx';
+
 import { Container } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Outlet } from 'react-router-dom';
@@ -29,8 +30,8 @@ function App() {
   return (
     <>
       <div className={"contenedorPrincipal " + (popupState.isVisible ? "darkened" : "")}>
+        <Header />
         <Container>
-          <Header />
           <SubHeader />
           <div className="mainContent">
             <Outlet />

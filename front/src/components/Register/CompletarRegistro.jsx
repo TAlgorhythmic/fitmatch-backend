@@ -1,15 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Camera, Phone, Person, Envelope, GeoAlt } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './registerf.css';
-import { useJsApiLoader, GoogleMap, Autocomplete } from "@react-google-maps/api";
+import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 
 const libraries = ["places"];
 
 
 const RegisterForm = () => {
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+    libraries: libraries
+  });
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -32,12 +38,12 @@ const RegisterForm = () => {
     friday: false,
     saturday: false,
     sunday: false,
-
   });
 
   const navigate = useNavigate();
 
   const [imageFile, setImageFile] = useState(null);
+
   const sportsInterests = [
     'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
     'CrossFit', 'Bodybuilding', 'Pilates', 'Boxing', 'HIIT',
@@ -45,11 +51,6 @@ const RegisterForm = () => {
   ];
 
   const [selectedInterests, setSelectedInterests] = useState(['']);
-
-  const [location, setLocation] = useState({
-    lat: null,
-    long: null
-  });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -74,6 +75,8 @@ const RegisterForm = () => {
     fetchUserData();
   }, []);
 
+  const ref = useRef(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'phone') {
@@ -81,6 +84,11 @@ const RegisterForm = () => {
       if (phoneValue.length <= 9) {
         setFormData({ ...formData, phone: phoneValue });
       }
+    } else if (name === "city") {
+      setFormData({
+        ...formData,
+        city: value,
+      });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -129,12 +137,14 @@ const RegisterForm = () => {
       setFormData({ ...formData, img: imageResult.imageUrl });
     }
 
+    console.log(formData);
     const response = await fetch('http://localhost:3001/api/users/setup', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
+
       body: JSON.stringify(formData),
     });
 
@@ -149,46 +159,20 @@ const RegisterForm = () => {
     }
   };
 
-  function InputLocationAutocomplete(props) {
-
-    const classname = props.className;
-    const name = props.name;
-    const value = props.value;
-    const htmlFor = props.htmlFor;
-    const placeholder = props.placeholder;
-    const onChange = props.onChange;
-    const setLocation = props.setLocation;
-  
-    const {isLoaded} = useJsApiLoader({
-      googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
-      libraries: libraries
-    });
-  
-    function onPlaceChanged(event) {
-      const place = event.getPlace();
-      if (!place.geometry) return;
-      setLocation({
-        lat: place.geometry.location.lat(),
-        long: place.geometry.location.lng()
-      });
-  
+  function onPlaceChanged(e) {
+    if (!isLoaded) {
+      console.log("not loaded.");
+      return;
     }
-  
-    if (!isLoaded) return <div>Loading...</div>;
-  
-    return (
-      <Autocomplete onPlaceChanged={e => onPlaceChanged(e)}>
-        <Form.Control
-          type="text"
-          className={classname}
-          name={name}
-          value={value}
-          htmlFor={htmlFor}
-          placeholder={placeholder}
-          onChange={onChange}
-        />
-      </Autocomplete>
-    )
+    const place = ref.current.getPlace();
+    if (place && place.geometry) {
+      setFormData({
+        ...formData,
+        city: place.formatted_address,
+        latitude: place.geometry.location.lat(),
+        longitude: place.geometry.location.lng(),
+      });
+    }
   }
 
   return (
@@ -252,19 +236,24 @@ const RegisterForm = () => {
             />
           </InputGroup>
         </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label><GeoAlt /> City</Form.Label>
-          <InputGroup>
-            <InputGroup.Text><GeoAlt /></InputGroup.Text>
-            <InputLocationAutocomplete
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              placeholder="Enter your city"
-            />
-
-          </InputGroup>
-        </Form.Group>
+        {
+          isLoaded ? (<Form.Group className="mb-3">
+            <Form.Label><GeoAlt /> City</Form.Label>
+            <InputGroup>
+              <InputGroup.Text><GeoAlt /></InputGroup.Text>
+              <Autocomplete onLoad={e => ref.current = e} onPlaceChanged={e => onPlaceChanged(e)}>
+                <Form.Control
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  placeholder="Enter your city"
+                  onChange={handleChange}
+                />
+              </Autocomplete>
+            </InputGroup>
+          </Form.Group>) : <></>
+        }
+        
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
