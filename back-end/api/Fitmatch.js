@@ -15,7 +15,8 @@ const defaultConfig = {
     tokenSecretKey: "secret-key",
     google_client_id: "clientid",
     client_secret: "clientsecret",
-    callbackURL: "url"
+    callbackURL: "url",
+    mapsApiKey: "key"
 }
 
 class Fitmatch {
