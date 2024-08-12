@@ -35,6 +35,7 @@ const RegisterForm = () => {
   const navigate = useNavigate();
 
   const [imageFile, setImageFile] = useState(null);
+
   const sportsInterests = [
     'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running', 
     'CrossFit', 'Bodybuilding', 'Pilates', 'Boxing', 'HIIT',
@@ -121,12 +122,14 @@ const RegisterForm = () => {
       setFormData({ ...formData, img: imageResult.imageUrl });
     }
 
+    console.log(formData);
     const response = await fetch('http://localhost:3001/api/users/setup', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
+
       body: JSON.stringify(formData),
     });
 
@@ -276,24 +279,26 @@ const RegisterForm = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
+      <Form.Label>Selecciona tu horario de entrenamiento</Form.Label>
+      <div className="time-picker-container">
         <TimePicker
-            onChange={(value) => handleTimeChange('timetable1', value)}
-            value={formData.timetable1}
-            disableClock={true}
-            placeholder="Selecciona tu hora habitual de entrada"
-
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <TimePicker
-            onChange={(value) => handleTimeChange('timetable2', value)}
-            value={formData.timetable2}
-            disableClock={true}
-            format="HH:mm"
-            step={30}
-            placeholder="Selecciona tu hora habitual de entrada"
-          />
-        </Form.Group>
+          onChange={(value) => handleTimeChange('timetable1', value)}
+          value={formData.timetable1}
+          disableClock={true}
+          format="HH:mm"
+          step={30}
+          placeholder="Selecciona tu hora habitual de entrada"
+        />
+        <TimePicker
+          onChange={(value) => handleTimeChange('timetable2', value)}
+          value={formData.timetable2}
+          disableClock={true}
+          format="HH:mm"
+          step={30}
+          placeholder="Selecciona tu hora habitual de salida"
+        />
+      </div>
+    </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Lunes</Form.Label>
           <Form.Control
