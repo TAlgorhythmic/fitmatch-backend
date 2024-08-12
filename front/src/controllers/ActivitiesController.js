@@ -15,12 +15,12 @@ class ActivitiesController extends BaseController {
             }
         }).then(res =>
             res.json()
-            .then(responseData => {
-                data = responseData.data;
-            })
-            .catch(error => {
-                console.error('Error getAllActivities:', error);
-            })
+                .then(responseData => {
+                    data = responseData.data;
+                })
+                .catch(error => {
+                    console.error('Error getAllActivities:', error);
+                })
         );
         return data;
     }
@@ -35,12 +35,12 @@ class ActivitiesController extends BaseController {
             }
         }).then(res =>
             res.json()
-            .then(responseData => {
-                data = responseData.data;
-            })
-            .catch(error => {
-                console.error('Error getFeed:', error);
-            })
+                .then(responseData => {
+                    data = responseData.data;
+                })
+                .catch(error => {
+                    console.error('Error getFeed:', error);
+                })
         );
         return data;
     }
@@ -57,15 +57,14 @@ class ActivitiesController extends BaseController {
                 description: description,
                 expires: expires
             })
-        }).then(res =>
-            res.json()
+        }).then(res => res.json())
             .then(responseData => {
-                console.log('Creado desde controller: ' + responseData.status);
+                console.log('ActivitiesController: ' + responseData.status);
             })
             .catch(error => {
                 console.error('Error createActivity: ', error);
-            })
-        );
+                throw new Error('Error al crear la actividad');
+            });
     }
 }
 
