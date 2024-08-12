@@ -229,6 +229,10 @@ class SQLManager {
         return fitmatch.getSql().query(`UPDATE activities SET title = ? description = ? expires = ? WHERE id = ?`, { replacements: [title, description, expires, id], type: QueryTypes.UPDATE })
     }
 
+    getRejectionByPair(id1, id2) {
+        return fitmatch.sql.query(`SELECT CASE WHEN issuer = ? THEN rejected ELSE issuer END AS friendId FROM friends WHERE issuer = ? OR rejected = ?;`, { replacements: [id1, id1, id2] });
+    }
+
     // TODO todo mal
     getActivitiesFeed(id, res) {
         fitmatch.getSql().query(`SELECT CASE WHEN userId1 = ? THEN userId2 ELSE userId1 END AS friendId FROM friends WHERE userId1 = ? OR userId2 = ?;`, { replacements: [id, id, id], type: QueryTypes.SELECT })
