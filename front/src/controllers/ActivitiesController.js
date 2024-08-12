@@ -45,7 +45,7 @@ class ActivitiesController extends BaseController {
         return data;
     }
 
-    async createActivity(title, description, expires, userId) {
+    async createActivity(title, description, expires) {
         await fetch(`${this.apiUrl}/create`, {
             method: 'POST',
             headers: {
@@ -55,8 +55,7 @@ class ActivitiesController extends BaseController {
             body: JSON.stringify({
                 title: title,
                 description: description,
-                expires: expires,
-                userId: userId
+                expires: expires
             })
         }).then(res =>
             res.json()
