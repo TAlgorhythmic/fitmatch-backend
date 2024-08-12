@@ -23,7 +23,6 @@ function Agenda() {
     useEffect(() => {
         async function getJoinedActivities() {
             const data = await AgendaController.getAllJoinedActivities();
-            console.log(data)
             setJoinedActivities(data);
         }
         getJoinedActivities();
