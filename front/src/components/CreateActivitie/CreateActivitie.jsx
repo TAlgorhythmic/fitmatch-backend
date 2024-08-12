@@ -1,8 +1,8 @@
 import { useEffect, useState} from 'react';
-import './CreateActivitie.css'
+import './CreateActivitie.css';
+import {showPopup} from '../../Utils/Utils.js';
 
 function CreateActivitie() {
-    const [messageBack, setmessageBack] = useState('');
 
     useEffect(() => {
         function getPressedButton() {
@@ -29,12 +29,12 @@ function CreateActivitie() {
                 .then(res => res.json())
                 .then(res => {
                     if (res.ok) {
-                        setmessageBack("Activitie created successfully");
+                        showPopup("ACTIIVIDAD CREADA CORRECTAMENTE", "", false);
                         titleInput.value = "";
                         descriptionInput.value = "";
                         expiresInput.value = "";
                     } else {
-                        setmessageBack("Error creating activitie");
+                        showPopup("ERROR AL CREAR ACTIVIDAD", "", true);
                     }
                 })
         }
@@ -53,7 +53,7 @@ function CreateActivitie() {
         <>
             <form className='form-create-activitie'>
                 <p className="title">CREATE ACTIVITIE</p>
-                <div className="flex">
+                <div>
                     <label>
                         <span>Title</span>
                         <input id="title" className="input-activitie" type="text" placeholder="" required="" />
@@ -69,23 +69,13 @@ function CreateActivitie() {
                     <span>Expires</span>
                     <input id="expires" className="date-input" style={{ marginBottom: "10px" }} type="datetime-local" placeholder="" required="" />
                 </label>
-                <a className="plusButton" href="#popup1">
+                <a className="plusButton">
                     <svg className="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <g mask="url(#mask0_21_345)">
                             <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
                         </g>
                     </svg>
                 </a>
-
-                <div id="popup1" className="overlay">
-                    <div className="popup">
-                        <h2>{messageBack}</h2>
-                        <a className="close" href="#">&times;</a>
-                        <div className="content">
-                            <p>Si tiene dudas pregunte al servicio tecnico</p>
-                        </div>
-                    </div>
-                </div>
             </form>
         </>
     )
