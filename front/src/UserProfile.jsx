@@ -64,7 +64,7 @@ const UserProfile = () => {
             const response = await fetch('http://localhost:3001/api/users/edit', requestOptions);
             const data = await response.json();
             console.log(data);
-            if (data.ok) {
+            if (data.status==0) {
                 console.log()
                 alert('Profile updated successfully');
             } else {

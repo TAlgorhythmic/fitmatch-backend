@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import SwipeCard from './SwipeCard'; 
+import mobiscroll from '@mobiscroll/react-lite';
 import './MakeFriends.css'; 
 
 const MakeFriends = () => {
@@ -17,81 +17,48 @@ const MakeFriends = () => {
             'Content-Type': 'application/json'
           }
         });
+
         const res = await response.json();
-        const data = res.data;
-        if (data.length) {
-          setPersona(data);
-          setCurrentIndex(data.length - 1);
-        } else {
-          console.log('No data found:', data);
+
+        if (res.status != 0) {
+         console.log('No hay user');
         }
+        const data = res.data;
+        console.log(data)
+        setPersona(data);
+        setCurrentIndex(data.length - 1);
+        
       } catch (error) {
-        console.error('Failed to fetch users:', error);
-      }
+        console.log('hay un error')
+      } 
     }
 
     getUsers();
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
   }, []);
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'ArrowRight') {
-      swipeCard('right');
-    } else if (e.key === 'ArrowLeft') {
-      swipeCard('left');
-    }
-  };
-
-  const swipeCard = async (direction) => {
-    const currentUser = persona[currentIndex];
-    if (!currentUser) return;
-
-    // Llama al endpoint basado en la dirección del swipe
-    if (direction === 'right') {
-      await handleAccept(currentUser.id);
-    } else {
-      console.log('FALLO');
-    }
-
-    setCurrentIndex((prevIndex) => prevIndex - 1);
-  };
-
-  const handleAccept = async (otherId) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/requests/accept/${otherId}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      const res = await response.json();
-      console.log(res.data)
-      if (res.ok) {
-        console.log(`User ${otherId} accepted!`);
-      } else {
-        console.error(`Failed to accept user ${otherId}:`, res.error);
-      }
-    } catch (error) {
-      console.error('Error accepting user:', error);
-    }
-  };
-
 
   return (
     <div className="swipe-container" ref={swipeContainerRef} tabIndex="0">
-      {persona.map((p, index) => (
-        <SwipeCard
-          key={p.id}
-          person={p}
-          index={index}
-          currentIndex={currentIndex}
-          onSwipe={swipeCard}
-        />
+      {persona.map((person, index) => (
+        <mobiscroll.Card 
+          key={person.id}
+          className={index === currentIndex ? 'active' : 'inactive'}
+          lang="es"
+          theme="ios" 
+          themeVariant="light"
+        > 
+          <mobiscroll.CardHeader>
+            <mobiscroll.CardTitle>{person.name} {person.lastname}</mobiscroll.CardTitle>
+            <mobiscroll.CardSubtitle>{person.city}</mobiscroll.CardSubtitle>
+          </mobiscroll.CardHeader>
+          <mobiscroll.CardContent>
+            <img draggable="false" src={`http://localhost:3001/uploads/${person.img}`} alt={`${person.name}`} />
+            <div className="card-Makefriends-info">
+              <p><strong>Level:</strong> {person.proficiency}</p>
+              <p><strong>Preferences:</strong> {person.trainingPreferences}</p>
+              <p>{person.description}</p>
+            </div>
+          </mobiscroll.CardContent>
+        </mobiscroll.Card>
       ))}
     </div>
   );
