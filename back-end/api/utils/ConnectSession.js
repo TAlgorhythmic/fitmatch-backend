@@ -10,7 +10,7 @@ const TIMEOUT = 360000;
 export const sessions = new Map();
 
 class ConnectSession {
-    constructor(user, sendRes, res) {
+    constructor(user) {
         this.id = user.id;
         this.position = 0;
         this.rejects = [];
@@ -32,7 +32,7 @@ class ConnectSession {
                 } else {
                     const listUsersData = e;
 
-                    if (!listUsersData) return null;
+                    if (!listUsersData.length) return null;
 
                     listUsersData.forEach(user => {
                         user.matchPercent = areCompatible(this.user, user);
