@@ -10,28 +10,15 @@ const TIMEOUT = 360000;
 export const sessions = new Map();
 
 class ConnectSession {
-    constructor(id) {
-        this.id = id;
+    constructor(user) {
+        this.id = user.id;
         this.position = 0;
         this.rejects = [];
         this.postRejects(20000);
         this.isCancelled = false;
         this.modified = new Date();
         this.temp;
-        this.user = fitmatch.getUserManager().containsKey(this.id) ? fitmatch.userManager.get(this.id).user : undefined;
-        if (!this.user) {
-            fitmatch.sqlManager.getUserFromId(this.id)
-            .then(e => {
-                const data = e;
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
-                fitmatch.userManager.put(user.id, user);
-                this.user = user;
-            })
-            .catch(err => {
-                console.log(err);
-                console.warn("Fatal error warning! User did not exist and could not fetch it. Possible crash incoming.")
-            })
-        }
+        this.user = user;
     }
 
     sendMore(response) {
@@ -41,15 +28,13 @@ class ConnectSession {
         fitmatch.sqlManager.getAllUsersWithLimitOffset(USERS_PER_REQUEST, this.position - USERS_PER_REQUEST)
             .then(e => {
                 if (this.isCancelled) {
-                    response.json(buildInvalidPacket())
+                    response.json(buildInvalidPacket());
                 } else {
                     const listUsersData = e;
 
-                    if (!listUsersData) return null;
+                    if (!listUsersData.length) return null;
 
                     listUsersData.forEach(user => {
-                        console.log(user);
-                        console.log(this.user);
                         user.matchPercent = areCompatible(this.user, user);
                     });
 
