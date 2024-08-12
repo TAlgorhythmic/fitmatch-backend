@@ -3,6 +3,7 @@ import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket } fro
 import User from "../User.js";
 import fitmatch from "./../Fitmatch.js";
 import { areCompatible } from './Algorithms.js';
+import { sanitizeDataReceivedForArrayOfObjects } from "./Sanitizers.js";
 
 const USERS_PER_REQUEST = 15;
 const TIMEOUT = 360000;
@@ -10,28 +11,15 @@ const TIMEOUT = 360000;
 export const sessions = new Map();
 
 class ConnectSession {
-    constructor(id) {
-        this.id = id;
+    constructor(user) {
+        this.id = user.id;
         this.position = 0;
         this.rejects = [];
         this.postRejects(20000);
         this.isCancelled = false;
         this.modified = new Date();
         this.temp;
-        this.user = fitmatch.getUserManager().containsKey(this.id) ? fitmatch.userManager.get(this.id).user : undefined;
-        if (!this.user) {
-            fitmatch.sqlManager.getUserFromId(this.id)
-            .then(e => {
-                const data = e;
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
-                fitmatch.userManager.put(user.id, user);
-                this.user = user;
-            })
-            .catch(err => {
-                console.log(err);
-                console.warn("Fatal error warning! User did not exist and could not fetch it. Possible crash incoming.")
-            })
-        }
+        this.user = user;
     }
 
     sendMore(response) {
@@ -43,13 +31,11 @@ class ConnectSession {
                 if (this.isCancelled) {
                     response.json(buildInvalidPacket());
                 } else {
-                    const listUsersData = e;
+                    const listUsersData = sanitizeDataReceivedForArrayOfObjects(e, "id").map(item => new User(item.id, item.name, item.lastname, item.email, item.phone, item.description, item.proficiency, item.trainingPreferences, item.img, item.city, item.latitude, item.longitude, item.isSetup, item.monday, item.tuesday, item.wednesday, item.thursday, item.friday, item.saturday, item.sunday, item.timetable1, item.timetable2));
 
-                    if (!listUsersData) return null;
+                    if (!listUsersData.length) return null;
 
                     listUsersData.forEach(user => {
-                        console.log(user);
-                        console.log(this.user);
                         user.matchPercent = areCompatible(this.user, user);
                     });
 
