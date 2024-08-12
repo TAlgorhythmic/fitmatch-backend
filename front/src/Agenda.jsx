@@ -16,8 +16,6 @@ function Agenda() {
     const [joinedActivities, setJoinedActivities] = useState([]);
     const [activitiesDays, setActivitiesDays] = useState([]);
 
-    const tableName = "joinedactivities";
-
     const AgendaController = new JoinedActivitiesController(token);
 
     useEffect(() => {

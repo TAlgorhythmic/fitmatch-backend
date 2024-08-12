@@ -9,7 +9,7 @@ import UserProfile from './UserProfile.jsx'
 import Agenda from './Agenda.jsx'
 import ChangePassword from './components/Login/CambioContra.jsx'
 import CompletarRegistro from './components/Register/CompletarRegistro.jsx'
-import CreateActivitie from './components/CreateActivitie/CreateActivitie.jsx'
+import CreateActivity from './CreateActivity.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 
@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="agenda" element={<Agenda />} />
-          <Route path='create-activitie' element={<CreateActivitie />} />
+          <Route path='create-activitie' element={<CreateActivity />} />
           <Route path="friends" element={<MakeFriends />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
