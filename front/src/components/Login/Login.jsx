@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css'; 
+import './Login.css';
 
 const Login = () => {
     const [phone, setPhone] = useState('');
@@ -17,15 +17,15 @@ const Login = () => {
         };
 
         const requestOptions = {
-            method: 'POST', 
-            headers: { 
+            method: 'POST',
+            headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(loginData)
         };
 
         fetch("http://localhost:3001/api/auth/login", requestOptions)
-         .then(response => response.json())
+            .then(response => response.json())
             .then(response => {
                 if (response.status === 0) {
                     setResposta('Login successful');
@@ -51,33 +51,37 @@ const Login = () => {
     return (
         <div className="login-container">
             <div className="login-box">
-                <h1 className="logo-text">W</h1>
+                <h2 className="h2OfLogin">LOGIN</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
-                        <input 
-                            type="text" 
-                            placeholder="Phone" 
-                            value={phone} 
-                            onChange={(e) => setPhone(e.target.value)} 
-                            required 
+                        <input
+                            type="text"
+                            placeholder="Phone"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="input-group">
-                        <input 
-                            type="password" 
-                            placeholder="Password" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            required 
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                     </div>
-                    <button type="submit" className="login-button">Log In</button>
+                    <button type="submit" className="buttonOfLogin">Log In</button>
                 </form>
                 {/* Aquí cambiamos el botón por un enlace */}
-                <a href="#" onClick={handleForgotPasswordClick} className="forgot-password-link">
+                <a href="#" onClick={handleForgotPasswordClick} className="link-to-register">
                     Forgot your password?
                 </a>
-                <h3>{resposta}</h3> 
+                <hr className='hrOfLogin' />
+                <a href='/register' className='link-to-register'>
+                    Dont have an account? Register
+                </a>
+                <h3>{resposta}</h3>
             </div>
         </div>
     );
