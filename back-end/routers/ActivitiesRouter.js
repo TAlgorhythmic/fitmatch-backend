@@ -119,6 +119,8 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
         res.json(e => buildInvalidPacket("What is this id...?"));
         return;
     }
+
+    // COMPROBAR
     const title = req.body.title;
     const description = req.body.description;
     const expires = req.body.expires;
