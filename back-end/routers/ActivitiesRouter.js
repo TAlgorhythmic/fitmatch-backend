@@ -148,4 +148,18 @@ router.get("/get/:id", tokenRequired, (req, res, next) => {
         })
 })
 
+router.get("/getown", tokenRequired, (req, res, next) => {
+    const id = req.token.id;
+
+    fitmatch.sqlManager.getActivitiesFromUserId(id)
+    .then(e => {
+        const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
+        res.json(buildSendDataPacket(data));
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+    })
+});
+
 export default router;
