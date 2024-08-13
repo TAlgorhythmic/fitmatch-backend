@@ -1,7 +1,7 @@
 import { QueryTypes } from "sequelize";
 import fitmatch from "./../Fitmatch.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from "../packets/PacketBuilder.js";
-import { sanitizeDataReceivedForSingleObject } from "../utils/Sanitizers.js";
+import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../utils/Sanitizers.js";
 
 const TABLES_VERSION = 0;
 const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
@@ -229,15 +229,22 @@ class SQLManager {
         return fitmatch.getSql().query(`UPDATE activities SET title = ? description = ? expires = ? WHERE id = ?`, { replacements: [title, description, expires, id], type: QueryTypes.UPDATE })
     }
 
-    getRejectionByPair(id1, id2) {
-        return fitmatch.sql.query(`SELECT CASE WHEN issuer = ? THEN rejected ELSE issuer END AS friendId FROM friends WHERE issuer = ? OR rejected = ?;`, { replacements: [id1, id1, id2] });
+    getRejectionsById(id) {
+        return fitmatch.sql.query(`SELECT CASE WHEN issuer = ? THEN rejected ELSE issuer END AS friendId FROM rejects WHERE issuer = ? OR rejected = ?;`, { replacements: [id, id, id] });
+    }
+
+    getFriendsById(id) {
+        return fitmatch.getSql().query(`SELECT CASE WHEN userId1 = ? THEN userId2 ELSE userId1 END AS friendId FROM friends WHERE userId1 = ? OR userId2 = ?;`, { replacements: [id, id, id], type: QueryTypes.SELECT });
+    }
+
+    getPendingsById(id) {
+        return fitmatch.getSql().query("SELECT CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END AS pendingId FROM pendings WHERE sender_id = ? OR receiver_id = ?;")
     }
 
     // TODO todo mal
     getActivitiesFeed(id, res) {
-        fitmatch.getSql().query(`SELECT CASE WHEN userId1 = ? THEN userId2 ELSE userId1 END AS friendId FROM friends WHERE userId1 = ? OR userId2 = ?;`, { replacements: [id, id, id], type: QueryTypes.SELECT })
-        .then(e => {
-            const data = e[0];
+        this.getFriendsById(id).then(e => {
+            const data = sanitizeDataReceivedForArrayOfObjects(e, "friendId");
             if (!data.length) {
                 res.json(buildSendDataPacket([]));
                 return;
