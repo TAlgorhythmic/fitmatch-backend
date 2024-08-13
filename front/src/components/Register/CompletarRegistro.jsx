@@ -8,14 +8,7 @@ import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 
 const libraries = ["places"];
 
-
 const RegisterForm = () => {
-
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
-    libraries: libraries
-  });
-
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -39,6 +32,13 @@ const RegisterForm = () => {
     saturday: false,
     sunday: false,
   });
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+    libraries: libraries
+  });
+
+  const ref = useRef(null)
 
   const navigate = useNavigate();
 
@@ -75,8 +75,6 @@ const RegisterForm = () => {
     fetchUserData();
   }, []);
 
-  const ref = useRef(null);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'phone') {
@@ -84,11 +82,6 @@ const RegisterForm = () => {
       if (phoneValue.length <= 9) {
         setFormData({ ...formData, phone: phoneValue });
       }
-    } else if (name === "city") {
-      setFormData({
-        ...formData,
-        city: value,
-      });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -159,20 +152,14 @@ const RegisterForm = () => {
     }
   };
 
-  function onPlaceChanged(e) {
-    if (!isLoaded) {
-      console.log("not loaded.");
-      return;
-    }
-    const place = ref.current.getPlace();
-    if (place && place.geometry) {
-      setFormData({
-        ...formData,
-        city: place.formatted_address,
-        latitude: place.geometry.location.lat(),
-        longitude: place.geometry.location.lng(),
-      });
-    }
+  function onPlaceChanged() {
+    if (ref.current.getPlace() && ref.current.getPlace().geometry)
+    setFormData({
+      ...formData,
+      city: ref.current.getPlace().formatted_address,
+      latitude: ref.current.getPlace().geometry.location.lat(),
+      longitude: ref.current.getPlace().geometry.location.lng()
+    })
   }
 
   return (
@@ -186,7 +173,7 @@ const RegisterForm = () => {
                 <InputGroup.Text><Person /></InputGroup.Text>
                 <Form.Control
                   type="text"
-                  name="firstName"
+                  name="Nombre"
                   value={formData.firstName}
                   readOnly
                 />
@@ -237,55 +224,25 @@ const RegisterForm = () => {
           </InputGroup>
         </Form.Group>
         {
-          isLoaded ? (<Form.Group className="mb-3">
-            <Form.Label><GeoAlt /> City</Form.Label>
-            <InputGroup>
-              <InputGroup.Text><GeoAlt /></InputGroup.Text>
-              <Autocomplete onLoad={e => ref.current = e} onPlaceChanged={e => onPlaceChanged(e)}>
-                <Form.Control
-                  type="text"
-                  name="city"
-                  value={formData.city}
-                  placeholder="Enter your city"
-                  onChange={handleChange}
-                />
+          isLoaded ? (
+            <Form.Group className="mb-3">
+              <Form.Label><GeoAlt /> City</Form.Label>
+              <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
+                <InputGroup>
+                  <InputGroup.Text><GeoAlt /></InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    placeholder="Enter your city"
+                  />
+                </InputGroup>
               </Autocomplete>
-            </InputGroup>
-          </Form.Group>) : <></>
+            </Form.Group>
+          ) : <></>
         }
-        
-        <Row>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Latitude</Form.Label>
-              <InputGroup>
-                <Form.Control
-                  type="text"
-                  name="latitude"
-                  value={formData.latitude}
-                  onChange={handleChange}
-                  placeholder="Enter latitude"
-                  readOnly
-                />
-              </InputGroup>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Longitude</Form.Label>
-              <InputGroup>
-                <Form.Control
-                  type="text"
-                  name="longitude"
-                  value={formData.longitude}
-                  onChange={handleChange}
-                  placeholder="Enter longitude"
-                  readOnly
-                />
-              </InputGroup>
-            </Form.Group>
-          </Col>
-        </Row>
+
         <Form.Group className="mb-3">
           <Form.Label>Country</Form.Label>
           <Form.Select
@@ -300,12 +257,15 @@ const RegisterForm = () => {
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Proficiency</Form.Label>
-          <Form.Control
-            type="text"
+          <Form.Select
             name="proficiency"
             value={formData.proficiency}
             onChange={handleChange}
-          />
+          >
+            <option value="Beginner">Principiante</option>
+            <option value="Intermediate">Intermedio</option>
+            <option value="Advanced">Avanzado</option>
+          </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Description</Form.Label>
@@ -317,23 +277,25 @@ const RegisterForm = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <TimePicker
-            onChange={(value) => handleTimeChange('timetable1', value)}
-            value={formData.timetable1}
-            disableClock={true}
-            placeholder="Selecciona tu hora habitual de entrada"
-
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <TimePicker
-            onChange={(value) => handleTimeChange('timetable2', value)}
-            value={formData.timetable2}
-            disableClock={true}
-            format="HH:mm"
-            step={30}
-            placeholder="Selecciona tu hora habitual de entrada"
-          />
+          <Form.Label>Selecciona tu horario de entrenamiento</Form.Label>
+          <div className="time-picker-container">
+            <TimePicker
+              onChange={(value) => handleTimeChange('timetable1', value)}
+              value={formData.timetable1}
+              disableClock={true}
+              format="HH:mm"
+              step={30}
+              placeholder="Selecciona tu hora habitual de entrada"
+            />
+            <TimePicker
+              onChange={(value) => handleTimeChange('timetable2', value)}
+              value={formData.timetable2}
+              disableClock={true}
+              format="HH:mm"
+              step={30}
+              placeholder="Selecciona tu hora habitual de salida"
+            />
+          </div>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Lunes</Form.Label>
@@ -434,3 +396,5 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
+
+
