@@ -82,7 +82,6 @@ const MakeFriends = () => {
 
           if (res.status === 0) {
             console.log('se ha enviado');
-            // Puedes añadir lógica adicional aquí si es necesario
           } else {
            console.log('todo mal');
           }

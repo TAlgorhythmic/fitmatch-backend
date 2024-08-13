@@ -184,7 +184,7 @@ const RegisterForm = () => {
             <Form.Group className="mb-3">
               <Form.Label>Last Name</Form.Label>
               <InputGroup>
-                <InputGroup.Text><Person /></InputGroup.Text>
+                <InputGroup.Text> <Person style={{ fontSize: '100%', color: 'blue' }} /></InputGroup.Text>
                 <Form.Control
                   type="text"
                   name="lastName"
