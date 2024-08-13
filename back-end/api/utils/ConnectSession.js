@@ -54,7 +54,6 @@ class ConnectSession {
                                 pendingsData.forEach(it => ignoreSet.add(it.pendingId));
 
                                 const filtered = this.filterUsers(listUsersData, ignoreSet);
-                                console.log(filtered);
 
                                 if (!filtered.length) return null;
 
@@ -63,7 +62,6 @@ class ConnectSession {
                                 });
 
                                 const sketchyOrdered = sketchyOrder(filtered);
-                                console.log(sketchyOrdered);
                                 response.json(buildSendDataPacket(sketchyOrdered));
                             })
                             .then(e => {
