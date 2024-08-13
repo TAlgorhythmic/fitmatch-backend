@@ -32,8 +32,8 @@ function Header() {
     return (
         <>
             <nav className="customNavbar">
-                <a href="/">
-                    <img className='logo-img' src='./LogoFitMatch.jpg'/><span className='customTextLogo'>FITMATCH</span>
+                <a href="/" style={{"textDecoration": "none"}}>
+                    <img className='logo-img' src='./LogoFitMatch.jpg'/><span className='customTextLogo'>Fitmatch</span>
                 </a>
 
                 <div className='navbar-icons-middle'>
