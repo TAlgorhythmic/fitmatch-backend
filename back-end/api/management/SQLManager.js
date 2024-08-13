@@ -179,6 +179,12 @@ class SQLManager {
             //TODO
             if (key === "trainingPreferences") {
                 injects.push(value);
+            } else if ((key === "timetable1" || key === "timetable2") && (typeof value === "string" || value instanceof String)) {
+                const split = value.split(":");
+                const hour = parseInt(split[0]);
+                const mins = parseInt(split[1]);
+                const time = (hour * 60) + mins;
+                injects.push(time);
             } else {
                 injects.push(value);
             }
