@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css'; 
+import './Login.css';
 
 const Login = () => {
     const [phone, setPhone] = useState('');
@@ -17,15 +17,15 @@ const Login = () => {
         };
 
         const requestOptions = {
-            method: 'POST', 
-            headers: { 
+            method: 'POST',
+            headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(loginData)
         };
 
         fetch("http://localhost:3001/api/auth/login", requestOptions)
-         .then(response => response.json())
+            .then(response => response.json())
             .then(response => {
                 if (response.status === 0) {
                     setResposta('Login successful');
@@ -48,40 +48,39 @@ const Login = () => {
     };
 
     return (
-        <div className="principal-login">
-            <div className="formulario-login">
-                <h2>Iniciar Sesión</h2>
+        <div className="login-container">
+            <div className="login-box">
+                <h2 className="h2OfLogin">LOGIN</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="grupo-formulario">
-                        <label htmlFor="phone">Teléfono</label>
-                        <input 
-                            type="text" 
-                            id="phone"
-                            placeholder="Introduce tu teléfono" 
-                            value={phone} 
-                            onChange={(e) => setPhone(e.target.value)} 
-                            required 
-                            className="input-control"
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            placeholder="Phone"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            required
                         />
                     </div>
-                    <div className="grupo-formulario">
-                        <label htmlFor="password">Contraseña</label>
-                        <input 
-                            type="password" 
-                            id="password"
-                            placeholder="Introduce tu contraseña" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            required 
-                            className="input-control"
+                    <div className="input-group">
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                     </div>
-                    <button type="submit" className="boton-login">Iniciar Sesión</button>
+                    <button type="submit" className="buttonOfLogin">Log In</button>
                 </form>
-                <a href="#" onClick={handleForgotPasswordClick} className="enlace-forgot-password">
-                    ¿Olvidaste tu contraseña?
+                {/* Aquí cambiamos el botón por un enlace */}
+                <a href="#" onClick={handleForgotPasswordClick} className="link-to-register">
+                    Forgot your password?
                 </a>
-                <h3>{resposta}</h3> 
+                <hr className='hrOfLogin' />
+                <p className='link-to-register'>
+                    Dont have an account? <a href="/register">REGISTER</a>
+                </p>
+                <h3>{resposta}</h3>
             </div>
         </div>
     );
