@@ -1,68 +1,61 @@
-.principal-login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    background-size: cover;
-}
-
-.login-box {
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    width: 320px;
+/* Estilo general */
+.login-container {
+    background-color: #1c1c1c; /* Fondo ligeramente más claro para el contenedor */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 102, 0, 0.7); /* Sombra con color naranja */
+    width: 300px;
     text-align: center;
+    margin: auto;
 }
 
-.grupo-formulario {
-    margin-bottom: 1.5rem;
+.h2OfLogin {
+    color: #ff6600; /* Naranja para el título */
+    margin-bottom: 30px;
+    font-size: 28px;
 }
 
-.grupo-formulario label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    color: #555;
+.hrOfLogin {
+    border: 1px solid #ff6600; /* Línea naranja */
+    margin-bottom: 30px;
 }
 
-.input-control {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #ced4da;
-    box-sizing: border-box;
-}
-
-.input-control:focus {
-    border-color: #80bdff;
-    outline: none;
-}
-
-.boton-login {
+input[type="text"], input[type="password"] {
     width: 100%;
     padding: 12px;
-    font-size: 18px;
+    margin: 10px 0;
+    background-color: #333;
     border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
+    border-radius: 5px;
+    color: #fff; /* Texto blanco en el input */
+    font-size: 16px;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+    border: 2px solid #ff6600; /* Borde naranja al enfocar */
+}
+
+.buttonOfLogin {
+    background-color: #ff6600;
+    color: #000;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.boton-login:hover {
-    background-color: #0056b3;
+.buttonOfLogin:hover {
+    background-color: #e65c00; /* Oscurecer el botón al pasar el mouse */
 }
 
-.enlace-forgot-password {
-    display: block;
-    text-align: center;
-    margin-top: 1rem;
-    color: #007bff;
+.link-to-register {
+    color: #ff6600;
     text-decoration: none;
-}
-
-.enlace-forgot-password:hover {
-    text-decoration: underline;
+    display: block;
+    margin-top: 20px;
+    font-size: 14px;
 }
