@@ -24,7 +24,7 @@ class ConnectSession {
 
     filterUsers(array, ignore) {
         return array.filter(item => {
-            if (item === this.user || ignore.has(item)) return false;
+            if (item.id === this.id || ignore.has(item)) return false;
             return true;
         });
     }
