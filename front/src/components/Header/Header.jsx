@@ -33,9 +33,8 @@ function Header() {
         <>
             <nav className="customNavbar">
                 <a href="/">
-                    <img className='logo-img' src='./LogoFitMatch.jpg' />
+                    <img className='logo-img' src='./LogoFitMatch.jpg'/><span className='customTextLogo'>FITMATCH</span>
                 </a>
-                <p className='customTextLogo'>FITMATCH</p>
 
                 <div className='navbar-icons-middle'>
                     <button className='buttonMakeFriends'>

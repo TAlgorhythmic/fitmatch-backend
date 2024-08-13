@@ -183,7 +183,7 @@ class SQLManager {
                 injects.push(value);
             }
             
-            if (i < map.size) {
+            if (i + 1 < map.size) {
                 str += ", ";
             }
             i++;

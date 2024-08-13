@@ -249,9 +249,9 @@ const RegisterForm = () => {
             value={formData.proficiency}
             onChange={handleChange}
           >
-            <option value="Beginner">Principiante</option>
-            <option value="Intermediate">Intermedio</option>
-            <option value="Advanced">Avanzado</option>
+            <option value="Principiante">Principiante</option>
+            <option value="Intermedio">Intermedio</option>
+            <option value="Avanzado">Avanzado</option>
           </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3">
