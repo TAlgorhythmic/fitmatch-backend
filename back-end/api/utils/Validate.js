@@ -55,7 +55,6 @@ export function isValidTimetable(int) {
 // Middleware
 export function tokenRequired(req, res, next) {
     let token = req.headers.authorization;
-    console.log(token);
 
     if (!token) {
         res.json(buildNoPermissionPacket("A token is required."));
@@ -71,7 +70,6 @@ export function tokenRequired(req, res, next) {
             const expiredAt = decoded.expiredAt;
             if (expiredAt > new Date().getTime() && decoded.ip === req.ip) {
                 req.token = decoded;
-                console.log(decoded);
                 next();
             } else {
                 res.json(buildNoPermissionPacket("This token is expired/invalid!"))

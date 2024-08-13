@@ -119,6 +119,8 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
         res.json(e => buildInvalidPacket("What is this id...?"));
         return;
     }
+
+    // COMPROBAR
     const title = req.body.title;
     const description = req.body.description;
     const expires = req.body.expires;
@@ -145,5 +147,19 @@ router.get("/get/:id", tokenRequired, (req, res, next) => {
             res.json(buildSendDataPacket(data));
         })
 })
+
+router.get("/getown", tokenRequired, (req, res, next) => {
+    const id = req.token.id;
+
+    fitmatch.sqlManager.getActivitiesFromUserId(id)
+    .then(e => {
+        const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
+        res.json(buildSendDataPacket(data));
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+    })
+});
 
 export default router;
