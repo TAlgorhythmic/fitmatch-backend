@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
 
 const Register = () => {
-   
+
     const [formData, setFormData] = useState({
         phone: '',
         password: '',
@@ -40,11 +40,11 @@ const Register = () => {
                 localStorage.setItem('authToken', token);
                 setSuccess(true);
                 setError('');
-                navigate('/formulario');   
+                navigate('/formulario');
             } else {
                 showPopup("Error", data.error, true);
             }
-            
+
         } catch (err) {
             console.error('Error during registration:', err);
             setError('Error during registration. Please try again.');
@@ -53,16 +53,15 @@ const Register = () => {
 
     return (
         <>
-            <div className="principal-registrar">
+            <div className="register-container">
                 <div className="formulario-register">
-                    <h2>Sign Up</h2>
+                    <h2 className='h2OfRegister'>Sign Up</h2>
                     {success ? (
                         <p className="mensaje">Registration successful!</p>
                     ) : (
                         <div>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
-                                    <label htmlFor="phone">phone</label>
                                     <input
                                         type="text"
                                         id="phone"
@@ -74,20 +73,17 @@ const Register = () => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="password">Password</label>
                                     <input
-                                    
-                                    id="contraseña"
-                                    name="contraseña"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    required
-                                    placeholder="Introduce tu contraseña"
-                                    className="input-control"
-                                />
+                                    type='password'
+                                        id="contraseña"
+                                        name="contraseña"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder="Introduce tu contraseña"
+                                    />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="name">Name</label>
                                     <input
                                         type="text"
                                         id="name"
@@ -98,8 +94,8 @@ const Register = () => {
                                         placeholder="Enter your name"
                                     />
                                 </div>
-                                <button type="submit" className="register-button">Sign Up</button>
-                                <p className="texto-iniciar-sesion">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
+                                <button type="submit" className="buttonRegister">Sign Up</button>
+                                <p className="link-to-login">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
                                 {error && <p className="error-message">{error}</p>}
                             </form>
                         </div>
