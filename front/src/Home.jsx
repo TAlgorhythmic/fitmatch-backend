@@ -72,7 +72,7 @@ function Home() {
     if (isValidToken === false) {
         return <Navigate to="/login" />;
     }
-
+    
     return (
         <>
             <div className="contenedorHome">
