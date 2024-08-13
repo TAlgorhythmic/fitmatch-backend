@@ -183,7 +183,7 @@ class SQLManager {
                 injects.push(value);
             }
             
-            if (i < map.size) {
+            if (i + 1 < map.size) {
                 str += ", ";
             }
             i++;
@@ -230,7 +230,7 @@ class SQLManager {
     }
 
     getRejectionsById(id) {
-        return fitmatch.sql.query(`SELECT CASE WHEN issuer = ? THEN rejected ELSE issuer END AS friendId FROM rejects WHERE issuer = ? OR rejected = ?;`, { replacements: [id, id, id] });
+        return fitmatch.sql.query(`SELECT CASE WHEN issuer = ? THEN rejected ELSE issuer END AS friendId FROM rejects WHERE issuer = ? OR rejected = ?;`, { replacements: [id, id, id], type: QueryTypes.SELECT });
     }
 
     getFriendsById(id) {
@@ -238,7 +238,7 @@ class SQLManager {
     }
 
     getPendingsById(id) {
-        return fitmatch.getSql().query("SELECT CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END AS pendingId FROM pendings WHERE sender_id = ? OR receiver_id = ?;")
+        return fitmatch.getSql().query("SELECT CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END AS pendingId FROM pending WHERE sender_id = ? OR receiver_id = ?;", { replacements: [id, id, id], type:QueryTypes.SELECT })
     }
 
     // TODO todo mal

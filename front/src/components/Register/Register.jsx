@@ -34,9 +34,7 @@ const Register = () => {
             });
 
             const data = await response.json();
-            console.log(data)
             if (data.status == 0) {
-                console.log('User registered:', data);
                 const token = data.token;
                 localStorage.setItem('authToken', token);
                 setSuccess(true);
