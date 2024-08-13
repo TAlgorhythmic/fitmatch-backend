@@ -113,7 +113,7 @@ const MakeFriends = () => {
               <h4>{person.city}</h4>
             </div>
             <div className="card-content">
-              <img draggable="false" src={`http://localhost:3001/uploads/${person.img}`} alt={`${person.name}`} />
+              <img draggable="false"  src={`http://localhost:3001/uploads/${person.img}`} />
               <div className="card-Makefriends-info">
                 <p><strong>Nivel:</strong> {person.proficiency}</p>
                 <p><strong>Intereses:</strong> {person.trainingPreferences}</p>

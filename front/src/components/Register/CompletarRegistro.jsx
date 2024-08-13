@@ -164,7 +164,7 @@ const RegisterForm = () => {
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label><Person /> Last Name</Form.Label>
+              <Form.Label>Last Name</Form.Label>
               <InputGroup>
                 <InputGroup.Text><Person /></InputGroup.Text>
                 <Form.Control
@@ -217,6 +217,10 @@ const RegisterForm = () => {
               placeholder="Enter your city"
             />
           </InputGroup>
+          <Form.Group>
+         <Form.Label>Time Zone</Form.Label> 
+         value={formData.latitude} 
+          </Form.Group>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Country</Form.Label>
