@@ -154,7 +154,7 @@ function areLocationsCompatible(user1, user2, thresholdKm) {
 
         return Math.max(0, compatibilidad);
     } catch (error) {
-        console.error('Error al calcular la compatibilidad de ubicación:', error);
+        console.error('Error al calcular la compatibilidad de ubicación: ', error);
         return 0;
     }
 }
