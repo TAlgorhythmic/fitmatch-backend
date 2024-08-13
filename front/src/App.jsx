@@ -5,11 +5,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Outlet } from 'react-router-dom';
 import 'react-time-picker/dist/TimePicker.css';
 import '@mobiscroll/react-lite/dist/css/mobiscroll.min.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PopupMessage from './Utils/PopupMessage.jsx';
 import { setShowPopup } from './Utils/Utils.js';
+import SubHeader from './components/Header/SubHeader.jsx';
+import { useLocation } from 'react-router-dom'
 
 function App() {
+
+  const location = useLocation()
+
+  const [isHome, setIsHome] = useState(false);
 
   const [popupState, setPopupState] = useState({
     isVisible: false,
@@ -27,10 +33,20 @@ function App() {
     })
   }
 
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setIsHome(true);
+    }
+  }, [location])
+
+
   return (
     <>
       <div className={"contenedorPrincipal " + (popupState.isVisible ? "darkened" : "")}>
         <Header />
+        {
+          isHome ? <SubHeader /> : <></>
+        }
         <Container>
           <div className="mainContent">
             <Outlet />
