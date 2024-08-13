@@ -1,10 +1,20 @@
 .swipe-container {
  text-align: center;
  width: 50%;
+ height: 100%;
+
 
 }	.card-content{
  width: 100%;
  height: 100%;
+ text-align: center;
+}.person-level{
+ width: 100%;
+ height: 100%;
+ text-align: center;
+}
+.person-level-value{
+ font-size: 100px;
 }
  
 
