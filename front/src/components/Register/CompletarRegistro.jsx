@@ -182,7 +182,7 @@ const RegisterForm = () => {
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label><Person /> Last Name</Form.Label>
+              <Form.Label>Last Name</Form.Label>
               <InputGroup>
                 <InputGroup.Text><Person /></InputGroup.Text>
                 <Form.Control
@@ -242,19 +242,6 @@ const RegisterForm = () => {
             </Form.Group>
           ) : <></>
         }
-
-        <Form.Group className="mb-3">
-          <Form.Label>Country</Form.Label>
-          <Form.Select
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-          >
-            <option value="Spain">Spain</option>
-            <option value="Europe">Europe</option>
-
-          </Form.Select>
-        </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Proficiency</Form.Label>
           <Form.Select
