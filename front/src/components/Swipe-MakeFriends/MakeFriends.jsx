@@ -109,14 +109,13 @@ const MakeFriends = () => {
         <div key={person.id} {...handlers} className={index === currentIndex ? 'active' : 'inactive'} style={{display: index === currentIndex ? 'block' : 'none'}}>
           <div className="card">
             <div className="card-header">
-              <h2>{person.name} {person.lastname}</h2>
-              <h4>{person.city}</h4>
+              <h2>{person.name}</h2>
             </div>
             <div className="card-content">
               <img draggable="false"  src={`http://localhost:3001/uploads/${person.img}`} />
               <div className="card-Makefriends-info">
                 <p><strong>Nivel:</strong> {person.proficiency}</p>
-                <p><strong>Intereses:</strong> {person.trainingPreferences}</p>
+                <p>{person.trainingPreferences}</p>
                 <p>{person.description}</p>
               </div>
             </div>
