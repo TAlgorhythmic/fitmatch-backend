@@ -143,7 +143,7 @@ router.get("/get/:id", tokenRequired, (req, res, next) => {
 
     fitmatch.sqlManager.getActivityFromId(activityId)
         .then(e => {
-            const data = e[0];
+            const data = sanitizeDataReceivedForSingleObject(e);
             res.json(buildSendDataPacket(data));
         })
 })
@@ -161,5 +161,28 @@ router.get("/getown", tokenRequired, (req, res, next) => {
         res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
     })
 });
+
+router.delete("/delete/:id", tokenRequired, (req, res, next) => {
+    const id = req.token.id;
+    const activityId = req.params.id;
+
+    fitmatch.getSqlManager().getActivityFromId(activityId).then(e => {
+        const data = sanitizeDataReceivedForSingleObject(e);
+        if (!data) {
+            res.json(buildInvalidPacket("This activity does not exist."));
+            return;
+        }
+        if (!data.userId !== id) {
+            res.json(buildInvalidPacket("You are not allowed to do this."));
+            return;
+        }
+        fitmatch.sqlManager.removeActivityCompletely(activityId);
+        res.json(buildSimpleOkPacket());
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+    })
+})
 
 export default router;
