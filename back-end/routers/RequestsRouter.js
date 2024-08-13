@@ -5,7 +5,7 @@ import { tokenRequired } from "../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from '../api/packets/PacketBuilder.js';
 import User from '../api/User.js';
 import ConnectSession, { sessions } from '../api/utils/ConnectSession.js';
-import { sanitizeDataReceivedForArrayOfObjects } from '../api/utils/Sanitizers.js';
+import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from '../api/utils/Sanitizers.js';
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -57,15 +57,20 @@ router.post('/send/:other_id', tokenRequired, function (req, res, next) {
     const id = req.token.id;
     const other_id = req.params.other_id;
 
-    // TODO check for rejects
-
-    fitmatch.getSqlManager().sendConnectionRequest(id, other_id)
-    .then(e => {
-        res.json(buildSimpleOkPacket())
-    })
-    .catch(err => {
-        console.log(err);
-        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+    fitmatch.sqlManager.getRejectionByPair(id, other_id).then(e => {
+        const data = sanitizeDataReceivedForSingleObject(e);
+        if (data) {
+            res.json(buildInvalidPacket("This user has already rejected you."));
+            return;
+        }
+        fitmatch.getSqlManager().sendConnectionRequest(id, other_id)
+            .then(e => {
+                res.json(buildSimpleOkPacket())
+            })
+            .catch(err => {
+                console.log(err);
+                res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+            })
     })
 });
 
@@ -81,7 +86,7 @@ router.post('/accept/:other_id', tokenRequired, function (req, res, next) {
             if (data.find(item => item.receiver_id === id)) {
                 fitmatch.sqlManager.putFriends(id, other_id)
                     .then(e => {
-                        Pending.destroy({ where: { receiver_id: id, sender_id: other_id} })
+                        Pending.destroy({ where: { receiver_id: id, sender_id: other_id } })
                             .then((data) => res.json({ ok: true }))
                             .catch((error) => res.json({ ok: false, error }))
                     })
@@ -173,7 +178,6 @@ router.post("/reject/:other_id", tokenRequired, (req, res, next) => {
 
     const session = sessions.get(id);
     session.rejects.push(other_id);
-    res.json(buildSimpleOkPacket());
 
     fitmatch.sqlManager.putRejection(id, other_id)
         .then(e => {
