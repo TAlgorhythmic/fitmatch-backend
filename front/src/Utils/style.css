@@ -4,6 +4,8 @@
     left: 0;
     right: 0;
     margin: auto;
+    background-color: white;
+    border-radius: 8px;
     width: 48%;
     height: 22%;
     opacity: 0%;

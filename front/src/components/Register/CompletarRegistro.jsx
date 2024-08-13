@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Camera, Phone, Person, Envelope, GeoAlt } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import TimePicker from 'react-time-picker'; 
+import TimePicker from 'react-time-picker';
 import './registerf.css';
+import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 
+const libraries = ["places"];
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -20,24 +22,30 @@ const RegisterForm = () => {
     preferences: '',
     latitude: '',
     longitude: '',
-    timetable1:'06:00',
+    timetable1: '06:00',
     timetable2: '23:00',
-    monday:false,
-    tuesday:false,
+    monday: false,
+    tuesday: false,
     wednesday: false,
-    thursday:true,
-    friday:false,
-    saturday:false,
-    sunday:false,
-    
+    thursday: true,
+    friday: false,
+    saturday: false,
+    sunday: false,
   });
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+    libraries: libraries
+  });
+
+  const ref = useRef(null)
 
   const navigate = useNavigate();
 
   const [imageFile, setImageFile] = useState(null);
 
   const sportsInterests = [
-    'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running', 
+    'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
     'CrossFit', 'Bodybuilding', 'Pilates', 'Boxing', 'HIIT',
     'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'
   ];
@@ -55,7 +63,7 @@ const RegisterForm = () => {
         },
       });
       const userData = await response.json();
-      if(userData.status==0){
+      if (userData.status == 0) {
         setFormData((prevFormData) => ({
           ...prevFormData,
           firstName: userData.data.name,
@@ -70,8 +78,8 @@ const RegisterForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'phone') {
-      const phoneValue = value.replace(/\D/g, ''); 
-      if (phoneValue.length <= 9) { 
+      const phoneValue = value.replace(/\D/g, '');
+      if (phoneValue.length <= 9) {
         setFormData({ ...formData, phone: phoneValue });
       }
     } else {
@@ -83,7 +91,7 @@ const RegisterForm = () => {
   };
 
   const handleImageChange = (e) => {
-    setImageFile(e.target.files[0]||null);
+    setImageFile(e.target.files[0] || null);
   };
 
   const handleInterestClick = (interest) => {
@@ -115,7 +123,7 @@ const RegisterForm = () => {
 
       const imageResult = await imageUploadResponse.json();
 
-      if (imageResult.status!==0) {
+      if (imageResult.status !== 0) {
         alert('hay error');
       }
 
@@ -137,12 +145,22 @@ const RegisterForm = () => {
     console.log(result);
     if (result.status === 0) {
       console.log('Usuario registrado con éxito');
-      navigate('/'); 
+      navigate('/');
     } else {
       alert('todo mal!');
       console.log(result.error);
     }
   };
+
+  function onPlaceChanged() {
+    if (ref.current.getPlace() && ref.current.getPlace().geometry)
+    setFormData({
+      ...formData,
+      city: ref.current.getPlace().formatted_address,
+      latitude: ref.current.getPlace().geometry.location.lat(),
+      longitude: ref.current.getPlace().geometry.location.lng()
+    })
+  }
 
   return (
     <Container className="custom-register-form">
@@ -186,7 +204,7 @@ const RegisterForm = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              
+
             />
           </InputGroup>
         </Form.Group>
@@ -198,26 +216,33 @@ const RegisterForm = () => {
               type="tel"
               name="phone"
               value={formData.phone}
-             
-              maxLength={9} 
+
+              maxLength={9}
               placeholder="Introduce your phone number"
               readOnly
             />
           </InputGroup>
         </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label><GeoAlt /> City</Form.Label>
-          <InputGroup>
-            <InputGroup.Text><GeoAlt /></InputGroup.Text>
-            <Form.Control
-              type="text"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              placeholder="Enter your city"
-            />
-          </InputGroup>
-        </Form.Group>
+        {
+          isLoaded ? (
+            <Form.Group className="mb-3">
+              <Form.Label><GeoAlt /> City</Form.Label>
+              <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
+                <InputGroup>
+                  <InputGroup.Text><GeoAlt /></InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    placeholder="Enter your city"
+                  />
+                </InputGroup>
+              </Autocomplete>
+            </Form.Group>
+          ) : <></>
+        }
+
         <Form.Group className="mb-3">
           <Form.Label>Country</Form.Label>
           <Form.Select
@@ -227,20 +252,20 @@ const RegisterForm = () => {
           >
             <option value="Spain">Spain</option>
             <option value="Europe">Europe</option>
-          
+
           </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3">
-        <Form.Label>Proficiency</Form.Label>
-           <Form.Select
-                        name="proficiency"
-                        value={formData.proficiency}
-                        onChange={handleChange}
-                    >
-                        <option value="Beginner">Principiante</option>
-                        <option value="Intermediate">Intermedio</option>
-                        <option value="Advanced">Avanzado</option>
-        </Form.Select>
+          <Form.Label>Proficiency</Form.Label>
+          <Form.Select
+            name="proficiency"
+            value={formData.proficiency}
+            onChange={handleChange}
+          >
+            <option value="Beginner">Principiante</option>
+            <option value="Intermediate">Intermedio</option>
+            <option value="Advanced">Avanzado</option>
+          </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Description</Form.Label>
@@ -252,34 +277,34 @@ const RegisterForm = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-      <Form.Label>Selecciona tu horario de entrenamiento</Form.Label>
-      <div className="time-picker-container">
-        <TimePicker
-          onChange={(value) => handleTimeChange('timetable1', value)}
-          value={formData.timetable1}
-          disableClock={true}
-          format="HH:mm"
-          step={30}
-          placeholder="Selecciona tu hora habitual de entrada"
-        />
-        <TimePicker
-          onChange={(value) => handleTimeChange('timetable2', value)}
-          value={formData.timetable2}
-          disableClock={true}
-          format="HH:mm"
-          step={30}
-          placeholder="Selecciona tu hora habitual de salida"
-        />
-      </div>
-    </Form.Group>
+          <Form.Label>Selecciona tu horario de entrenamiento</Form.Label>
+          <div className="time-picker-container">
+            <TimePicker
+              onChange={(value) => handleTimeChange('timetable1', value)}
+              value={formData.timetable1}
+              disableClock={true}
+              format="HH:mm"
+              step={30}
+              placeholder="Selecciona tu hora habitual de entrada"
+            />
+            <TimePicker
+              onChange={(value) => handleTimeChange('timetable2', value)}
+              value={formData.timetable2}
+              disableClock={true}
+              format="HH:mm"
+              step={30}
+              placeholder="Selecciona tu hora habitual de salida"
+            />
+          </div>
+        </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Lunes</Form.Label>
           <Form.Control
-           type="text"
+            type="text"
             name="lunes"
             value={formData.monday}
             onChange={handleChange}
-             placeholder="Enter schedule for Monday"
+            placeholder="Enter schedule for Monday"
           />
         </Form.Group>
         <Form.Group className="mb-3">
