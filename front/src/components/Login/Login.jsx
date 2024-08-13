@@ -42,7 +42,6 @@ const Login = () => {
             });
     };
 
-    // Función para manejar la navegación cuando se hace clic en "Forgot your password?"
     const handleForgotPasswordClick = (e) => {
         e.preventDefault();
         navigate('/nuevaContra');
@@ -86,7 +85,6 @@ const Login = () => {
         </div>
     );
 };
-
 export default Login;
 
 
