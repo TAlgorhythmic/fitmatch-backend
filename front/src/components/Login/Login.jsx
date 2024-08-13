@@ -42,47 +42,50 @@ const Login = () => {
             });
     };
 
-    // Función para manejar la navegación cuando se hace clic en "Forgot your password?"
     const handleForgotPasswordClick = (e) => {
         e.preventDefault();
         navigate('/nuevaContra');
     };
 
     return (
-        <div className="login-container">
-            <div className="login-box">
-                <h1 className="logo-text">W</h1>
+        <div className="principal-login">
+            <div className="formulario-login">
+                <h2>Iniciar Sesión</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="input-group">
+                    <div className="grupo-formulario">
+                        <label htmlFor="phone">Teléfono</label>
                         <input 
                             type="text" 
-                            placeholder="Phone" 
+                            id="phone"
+                            placeholder="Introduce tu teléfono" 
                             value={phone} 
                             onChange={(e) => setPhone(e.target.value)} 
                             required 
+                            className="input-control"
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="grupo-formulario">
+                        <label htmlFor="password">Contraseña</label>
                         <input 
                             type="password" 
-                            placeholder="Password" 
+                            id="password"
+                            placeholder="Introduce tu contraseña" 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
                             required 
+                            className="input-control"
                         />
                     </div>
-                    <button type="submit" className="login-button">Log In</button>
+                    <button type="submit" className="boton-login">Iniciar Sesión</button>
                 </form>
-                {/* Aquí cambiamos el botón por un enlace */}
-                <a href="#" onClick={handleForgotPasswordClick} className="forgot-password-link">
-                    Forgot your password?
+                <a href="#" onClick={handleForgotPasswordClick} className="enlace-forgot-password">
+                    ¿Olvidaste tu contraseña?
                 </a>
                 <h3>{resposta}</h3> 
             </div>
         </div>
     );
 };
-
 export default Login;
 
 
