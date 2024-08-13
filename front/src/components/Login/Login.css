@@ -59,7 +59,3 @@ input[type="text"]:focus, input[type="password"]:focus {
     margin-top: 20px;
     font-size: 14px;
 }
-
-.link-to-register:hover {
-    text-decoration: underline;
-}
