@@ -9,8 +9,10 @@ export function sanitizeDataReceivedForSingleObject(data) {
 export function sanitizeDataReceivedForArrayOfObjects(data, commonNotUndefinedField) {
     let sanitized = data;
     if (!Array.isArray(data) || !data.length) return [];
-    while (!sanitized[0][commonNotUndefinedField]) {
-        sanitized = sanitized[0];
+    while (true) {
+        if (Array.isArray(sanitized[0]) && !sanitized[0].length) return [];
+        else if (!Array.isArray(sanitized)) return [];
+        else if (sanitized[0][commonNotUndefinedField]) break;
     }
     return sanitized;
 }
