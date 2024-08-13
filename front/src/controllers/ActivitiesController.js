@@ -66,6 +66,28 @@ class ActivitiesController extends BaseController {
                 throw new Error('Error al crear la actividad');
             });
     }
+
+    async updateActivity(id, title, description, expires) {
+        await fetch(`${this.apiUrl}/edit/${id}`, {
+            method: 'POST',
+            headers: {
+                "Authorization": "Bearer " + this.token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title,
+                description: description,
+                expires: expires
+            })
+        }).then(res => res.json())
+            .then(responseData => {
+                console.log('ActivitiesController: ' + responseData.status);
+            })
+            .catch(error => {
+                console.error('Error updateActivity: ', error);
+                throw new Error('Error al actualizar la actividad');
+            });
+    }
 }
 
 export default ActivitiesController;
