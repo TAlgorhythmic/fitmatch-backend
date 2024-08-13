@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
 
 const Register = () => {
+   
     const [formData, setFormData] = useState({
         phone: '',
         password: '',
@@ -51,12 +52,12 @@ const Register = () => {
     };
 
     return (
-        <div className="page-container">
-            <div className="register-container">
-                <div className="register-card">
+        <>
+            <div className="principal-registrar">
+                <div className="formulario-register">
                     <h2>Sign Up</h2>
                     {success ? (
-                        <p className="success-message">Registration successful!</p>
+                        <p className="mensaje">Registration successful!</p>
                     ) : (
                         <div>
                             <form onSubmit={handleSubmit}>
@@ -75,14 +76,15 @@ const Register = () => {
                                 <div className="form-group">
                                     <label htmlFor="password">Password</label>
                                     <input
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        required
-                                        placeholder="Enter your password"
-                                    />
+                                    
+                                    id="contraseña"
+                                    name="contraseña"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="Introduce tu contraseña"
+                                    className="input-control"
+                                />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="name">Name</label>
@@ -97,13 +99,14 @@ const Register = () => {
                                     />
                                 </div>
                                 <button type="submit" className="register-button">Sign Up</button>
+                                <p className="texto-iniciar-sesion">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
                                 {error && <p className="error-message">{error}</p>}
                             </form>
                         </div>
                     )}
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
