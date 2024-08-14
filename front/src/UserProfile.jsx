@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Person, Envelope, Phone, GeoAlt } from 'react-bootstrap-icons';
 import { OK, NO_PERMISSION } from './Utils/StatusCodes';
 import { showPopup } from './Utils/Utils';
 import { Navigate } from 'react-router-dom';
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+import './UserProfile.css';
 
 const libraries = ["places"];
 
@@ -23,21 +24,20 @@ const UserProfile = () => {
         longitude: ''
     });
 
-   
     const sportsInterests = [
         'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
         'CrossFit', 'Bodybuilding', 'Pilates', 'Boxing', 'HIIT',
         'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'
-      ];
-    
-      const [selectedInterests, setSelectedInterests] = useState([]);
+    ];
+
+    const [selectedInterests, setSelectedInterests] = useState([]);
 
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
         libraries: libraries
-      });
-    
-      const ref = useRef(null)
+    });
+
+    const ref = useRef(null);
 
     const [error, setError] = useState(null);
 
@@ -51,24 +51,24 @@ const UserProfile = () => {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => {return response.json()})
-        .then(data => {
-            if (data.status === OK) {
-                setUserData(data.data);
-                if (data.data.trainingPreferences) {
-                    const initialSelectedInterests = data.data.trainingPreferences.split(', ').filter(item => {return item})
-                    setSelectedInterests(initialSelectedInterests);
+            .then(response => { return response.json() })
+            .then(data => {
+                if (data.status === OK) {
+                    setUserData(data.data);
+                    if (data.data.trainingPreferences) {
+                        const initialSelectedInterests = data.data.trainingPreferences.split(', ').filter(item => { return item });
+                        setSelectedInterests(initialSelectedInterests);
+                    }
+                } else if (data.status === NO_PERMISSION) {
+                    setError(data);
+                } else {
+                    showPopup("Data is invalid", data.error, true);
                 }
-            } else if (data.status === NO_PERMISSION) {
-                setError(data);
-            } else {
-                showPopup("Data is invalid", data.error, true);
-            }
-        })
-        .catch(error => {
-            console.log('Error loading user data:', error);
-            setError('Failed to load profile. Please try again later.');
-        });
+            })
+            .catch(error => {
+                console.log('Error loading user data:', error);
+                setError('Failed to load profile. Please try again later.');
+            });
     }, []);
 
     if (error && error.status === NO_PERMISSION) {
@@ -97,8 +97,7 @@ const UserProfile = () => {
             const response = await fetch('http://localhost:3001/api/users/edit', requestOptions);
             const data = await response.json();
             console.log(data);
-            if (data.status==0) {
-                console.log()
+            if (data.status === 0) {
                 alert('Profile updated successfully');
             } else {
                 alert('Error updating profile: ' + data.error);
@@ -119,37 +118,47 @@ const UserProfile = () => {
     if (error) {
         return <div>{error}</div>;
     }
-    
+
     function onPlaceChanged() {
-        if (ref.current.getPlace() && ref.current.getPlace().geometry)
+        if (ref.current.getPlace() && ref.current.getPlace().geometry) {
             setUserData({
-          ...userData,
-          city: ref.current.getPlace().formatted_address,
-          latitude: ref.current.getPlace().geometry.location.lat(),
-          longitude: ref.current.getPlace().geometry.location.lng()
-        })
-      }
+                ...userData,
+                city: ref.current.getPlace().formatted_address,
+                latitude: ref.current.getPlace().geometry.location.lat(),
+                longitude: ref.current.getPlace().geometry.location.lng()
+            });
+        }
+    }
 
     return (
-        <Container>
+        <Container className="container-profile">
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col md={6}>
-                        <Form.Group className="mb-3">
-                            <InputGroup>
-                                <InputGroup.Text><Person/></InputGroup.Text>
+                        <Form.Group className="form-group-profile mb-3">
+                            <InputGroup className="input-group">
+                                <InputGroup.Text className="input-group-text-profile">
+                                    <Person />
+                                </InputGroup.Text>
                                 <Form.Control
+                                    className="form-control-profile"
                                     type="text"
                                     value={userData.name}
+                                    name="name"
+                                    onChange={handleChange}
+                                    placeholder="Nombre"
                                 />
                             </InputGroup>
                         </Form.Group>
                     </Col>
                     <Col md={6}>
-                        <Form.Group className="mb-3">
-                            <InputGroup>
-                                <InputGroup.Text><Person /></InputGroup.Text>
+                        <Form.Group className="form-group-profile mb-3">
+                            <InputGroup className="input-group">
+                                <InputGroup.Text className="input-group-text-profile">
+                                    <Person />
+                                </InputGroup.Text>
                                 <Form.Control
+                                    className="form-control-profile"
                                     type="text"
                                     name="lastname"
                                     value={userData.lastname}
@@ -161,76 +170,86 @@ const UserProfile = () => {
                     </Col>
                 </Row>
                 <Row>
-                <Col md={6}>
-                <Form.Group className="mb-3">
-                    <InputGroup>
-                        <InputGroup.Text><Envelope /></InputGroup.Text>
-                        <Form.Control
-                            type="text"
-                            value={userData.email}
-                            onChange={handleChange}
-                            placeholder="fitmatch@gmail.com"
-                        />
-                    </InputGroup>
-                </Form.Group>
-                </Col>
-                <Col md={6}>
-                <Form.Group className="mb-3">
-                    <InputGroup>
-                        <InputGroup.Text><Phone /></InputGroup.Text>
-                        <Form.Control
-                            type="text"
-                            name="phone"
-                            value={userData.phone}
-                            onChange={handleChange}
-                            readOnly
-                        />
-                    </InputGroup>
-                </Form.Group>
-                </Col>
+                    <Col md={6}>
+                        <Form.Group className="form-group-profile mb-3">
+                            <InputGroup className="input-group">
+                                <InputGroup.Text className="input-group-text-profile">
+                                    <Envelope />
+                                </InputGroup.Text>
+                                <Form.Control
+                                    className="form-control-profile"
+                                    type="email"
+                                    name="email"
+                                    value={userData.email}
+                                    onChange={handleChange}
+                                    placeholder="Correo electrónico"
+                                />
+                            </InputGroup>
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group className="form-group-profile mb-3">
+                            <InputGroup className="input-group">
+                                <InputGroup.Text className="input-group-text-profile">
+                                    <Phone />
+                                </InputGroup.Text>
+                                <Form.Control
+                                    className="form-control-profile"
+                                    type="text"
+                                    name="phone"
+                                    value={userData.phone}
+                                    onChange={handleChange}
+                                    readOnly
+                                    placeholder="Teléfono"
+                                />
+                            </InputGroup>
+                        </Form.Group>
+                    </Col>
                 </Row>
                 <Row>
-                <Col md={6}>
-                {
-          isLoaded ? (
-            <Form.Group className="mb-3">
-              <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
-                <InputGroup>
-                  <InputGroup.Text><GeoAlt /></InputGroup.Text>
-                  <Form.Control
-                    type="text"
-                    name="city"
-                    value={userData.city}
-                    onChange={handleChange}
-                  />
-                </InputGroup>
-              </Autocomplete>
-            </Form.Group>
-          ) : <></>
-        }
-                </Col>
-               <Col md={6}>
-                <Form.Group className="mb-3">
-                    
-                    <Form.Select
-                        name="proficiency"
-                        value={userData.proficiency}
-                        onChange={handleChange}
-                    >
-                        <option value="Principiante">Principiante</option>
-                        <option value="Intermedio">Intermedio</option>
-                        <option value="Avanzado">Avanzado</option>
-                    </Form.Select>
-                </Form.Group>
-                </Col>
+                    <Col md={6}>
+                        {isLoaded ? (
+                            <Form.Group className="form-group-profile mb-3">
+                                <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
+                                    <InputGroup className="input-group">
+                                        <InputGroup.Text className="input-group-text-profile">
+                                            <GeoAlt />
+                                        </InputGroup.Text>
+                                        <Form.Control
+                                            className="form-control-profile"
+                                            type="text"
+                                            name="city"
+                                            value={userData.city}
+                                            onChange={handleChange}
+                                            placeholder="Ciudad"
+                                        />
+                                    </InputGroup>
+                                </Autocomplete>
+                            </Form.Group>
+                        ) : <></>}
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group className="form-group-profile mb-3">
+                            <Form.Select
+                                className="form-select-profile"
+                                name="proficiency"
+                                value={userData.proficiency}
+                                onChange={handleChange}
+                            >
+                                <option value="Principiante">Principiante</option>
+                                <option value="Intermedio">Intermedio</option>
+                                <option value="Avanzado">Avanzado</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
                 </Row>
-                <Form.Group className="mb-3">
+                <Form.Group className="form-group-profile mb-3">
                     <div className="d-flex flex-wrap justify-content-center">
                         {sportsInterests.map((interest) => (
                             <Button
                                 key={interest}
                                 variant={selectedInterests.includes(interest) ? 'primary' : 'outline-primary'}
-                                className="me-2 mb-2 custom-preferences-btn"
+                                className={`me-2 mb-2 custom-preferences-btn ${selectedInterests.includes(interest) ? 'primary' : 'outline-primary'}`}
                                 onClick={() => handleInterestClick(interest)}
                             >
                                 {interest}
@@ -238,16 +257,23 @@ const UserProfile = () => {
                         ))}
                     </div>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="form-group-profile mb-3">
                     <Form.Control
                         as="textarea"
+                        className="form-control-profile"
                         value={userData.description}
                         onChange={handleChange}
                         placeholder="Escribe una breve descripción sobre ti"
                     />
                 </Form.Group>
-                <div className="d-flex justify-content-center mt-4">
-                    <Button variant="primary" type="submit">Save</Button>
+                <div className="button-group d-flex justify-content-center mt-4">
+                    <Button
+                        className="submit-button"
+                        variant="primary"
+                        type="submit"
+                    >
+                        Guardar
+                    </Button>
                 </div>
             </Form>
         </Container>
@@ -255,4 +281,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
