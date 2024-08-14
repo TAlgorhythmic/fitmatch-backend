@@ -42,7 +42,7 @@ const router = express.Router();
 //     {ok: false, error: mensaje_de_error}
 
 // Not recommended
-router.get('/', tokenRequired, async function (req, res, next) {
+router.get('/', tokenRequired, function (req, res, next) {
     // get all activities
     sqlManager.getAllActivities()
         .then(activities => {
