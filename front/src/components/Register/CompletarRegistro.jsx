@@ -192,7 +192,7 @@ const RegisterForm = () => {
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label> First Name</Form.Label>
+            
               <InputGroup>
                 <InputGroup.Text><Person /></InputGroup.Text>
                 <Form.Control
@@ -206,7 +206,7 @@ const RegisterForm = () => {
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Last Name</Form.Label>
+             
               <InputGroup>
                 <InputGroup.Text> <Person/></InputGroup.Text>
                 <Form.Control
@@ -214,6 +214,7 @@ const RegisterForm = () => {
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleChange}
+                  placeholder='Apellidos'
                 />
               </InputGroup>
             </Form.Group>
@@ -222,7 +223,7 @@ const RegisterForm = () => {
         <Row>
         <Col md={6}>
         <Form.Group className="mb-3">
-          <Form.Label><Envelope /> Email Address</Form.Label>
+         
           <InputGroup>
             <InputGroup.Text><Envelope /></InputGroup.Text>
             <Form.Control
@@ -230,6 +231,7 @@ const RegisterForm = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder='fitmatch@gmail.com'
 
             />
           </InputGroup>
@@ -237,9 +239,9 @@ const RegisterForm = () => {
         </Col>
         <Col md={6}>
         <Form.Group className="mb-3">
-          <Form.Label><Phone /> Phone Number</Form.Label>
+       
           <InputGroup>
-            <InputGroup.Text>34</InputGroup.Text>
+            <InputGroup.Text>+34</InputGroup.Text>
             <Form.Control
               type="tel"
               name="phone"
@@ -277,7 +279,7 @@ const RegisterForm = () => {
         </Col>
          <Col md={6}>
         <Form.Group className="mb-3">
-          <Form.Label>Proficiency</Form.Label>
+          <Form.Label>Nivel</Form.Label>
           <Form.Select
             name="proficiency"
             value={formData.proficiency}
@@ -291,7 +293,7 @@ const RegisterForm = () => {
         </Col>
         </Row>
         <Form.Group className="mb-3">
-          <Form.Label>Description</Form.Label>
+          <Form.Label>Descripción</Form.Label>
           <Form.Control
             type="text"
             name="description"
@@ -299,7 +301,7 @@ const RegisterForm = () => {
             onChange={handleChange}
           />
         </Form.Group>
-        
+
         <Form.Group className="mb-3">
           <Form.Label><Camera /> Image Upload</Form.Label>
           <Form.Control
@@ -309,9 +311,10 @@ const RegisterForm = () => {
           />
         </Form.Group>
 
+<div className='horario-entrenamiento'>
 
-        <Form.Group className="mb-3">
-  <Form.Label>Selecciona tu horario de entrenamiento</Form.Label>
+  <Form.Group className="mb-3">
+  <Form.Label>Horario habitual de entrenamiento</Form.Label>
   <div className="time-picker-container d-flex justify-content-between">
     <InputGroup className="me-3 time-picker-group">
       <InputGroup.Text className="time-picker-icon">
@@ -341,8 +344,8 @@ const RegisterForm = () => {
       />
     </InputGroup>
   </div>
- 
 </Form.Group>
+</div>
 <div className='dias-semana'>
 <Form.Group className="mb-3">
           <Form.Label>Lunes</Form.Label>
@@ -414,14 +417,14 @@ const RegisterForm = () => {
           <Form.Label>Preferences</Form.Label>
           <div className="d-flex flex-wrap justify-content-center">
             {sportsInterests.map((interest) => (
-              <Button
-                key={interest}
-                variant={selectedInterests.includes(interest) ? 'primary' : 'outline-primary'}
-                className="me-2 mb-2 custom-preferences-btn"
-                onClick={() => handleInterestClick(interest)}
-              >
-                {interest}
-              </Button>
+            <Button
+            key={interest}
+            className={`me-2 mb-2 custom-preferences-btn ${selectedInterests.includes(interest) ? 'custom-button-selected' : 'custom-button-unselected'}`}
+            onClick={() => handleInterestClick(interest)}
+>
+            {interest}
+            </Button>
+
             ))}
           </div>
         </Form.Group>
