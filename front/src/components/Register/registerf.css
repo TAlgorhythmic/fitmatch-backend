@@ -1,6 +1,6 @@
 .time-picker-container {
     display: flex;
-    gap: 20px; /* Aumenta el espacio entre los elementos */
+    gap: 30px; /* Aumenta el espacio entre los elementos */
   }
   
   .time-picker-group {
@@ -9,8 +9,8 @@
   }
   
   .time-picker-icon {
-    background-color: #2a85e1; /* Ajusta el color de fondo */
-    border: 1px solid #7e8993;
+    background-color: #4ce12a; /* Ajusta el color de fondo */
+  
     border-radius: 6px 0 0 6px;
     padding: 10px; /* Aumenta el padding para hacer el ícono más grande */
   }
@@ -18,19 +18,22 @@
   .time-picker-input {
     border: none;
     outline: none;
-    background-color: rgb(154, 6, 6);
+    background-color:gray;
     border-radius: 0 6px 6px 0;
     box-shadow: none;
-    padding: 5px; /* Aumenta el padding para hacer el campo más grande */
+    padding: 5.6px; /* Aumenta el padding para hacer el campo más grande */
     font-size: 1.25rem; /* Aumenta el tamaño de la fuente */
   }
   
   .time-picker-input input {
-    border: none;
-    outline: none;
+   
+    box-shadow: none;
     width: 100%;
-    background-color: red;
-    font-size: 1.25rem; /* Aumenta el tamaño de la fuente */
+    
+    height: 100%;
+    border-radius: auto;
+    background-color: gray;
+    font-size: auto; /* Aumenta el tamaño de la fuente */
   }
   
   .time-picker-input:focus,
@@ -40,13 +43,13 @@
   
   .input-group-text {
     border: 1px solid #ced4da;
-    background-color: white;
+    background-color: palevioletred;
     border-radius: 6px 0 0 6px;
   }
   
   .input-group-text .bi-clock {
     font-size: 1.5rem; /* Aumenta el tamaño del ícono */
-    color: #495057;
+    color:rebeccapurple;
   }
   
   
