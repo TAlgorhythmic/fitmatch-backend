@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Person, Envelope, Phone, GeoAlt } from 'react-bootstrap-icons';
 import { OK, NO_PERMISSION } from './Utils/StatusCodes';
 import { showPopup } from './Utils/Utils';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 
 const libraries = ["places"];
@@ -23,6 +23,7 @@ const UserProfile = () => {
         longitude: ''
     });
 
+    const navigate = useNavigate();
    
     const sportsInterests = [
         'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
@@ -99,14 +100,14 @@ const UserProfile = () => {
             const response = await fetch('http://localhost:3001/api/users/edit', requestOptions);
             const data = await response.json();
             console.log(data);
-            if (data.status==0) {
-                console.log()
-                alert('Profile updated successfully');
+            if (data.status===0) {
+                showPopup("Info", "¡Perfil actualizado correctamente!", false);
+                navigate("/");
             } else {
-                alert('Error updating profile: ' + data.error);
+                showPopup('Error updating profile', data.error, true);
             }
         } catch (error) {
-            alert('Error updating profile');
+            showPopup('Error updating profile', error, true);
         }
     };
 
