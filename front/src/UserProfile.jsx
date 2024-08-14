@@ -18,7 +18,9 @@ const UserProfile = () => {
         proficiency: '',
         trainingPreferences: '',
         img: '',
-        city: ''
+        city: '',
+        latitude: '',
+        longitude: ''
     });
 
    
@@ -53,10 +55,10 @@ const UserProfile = () => {
         .then(data => {
             if (data.status === OK) {
                 setUserData(data.data);
-                const initialSelectedInterests = Array.from(new Set(
-                    data.data.trainingPreferences.split(', ').filter(Boolean)
-                ));
-                setSelectedInterests(initialSelectedInterests);
+                if (data.data.trainingPreferences) {
+                    const initialSelectedInterests = data.data.trainingPreferences.split(', ').filter(item => {return item})
+                    setSelectedInterests(initialSelectedInterests);
+                }
             } else if (data.status === NO_PERMISSION) {
                 setError(data);
             } else {
@@ -206,7 +208,6 @@ const UserProfile = () => {
             </Form.Group>
           ) : <></>
         }
-                
                 </Col>
                <Col md={6}>
                 <Form.Group className="mb-3">
@@ -216,9 +217,9 @@ const UserProfile = () => {
                         value={userData.proficiency}
                         onChange={handleChange}
                     >
-                        <option value="Beginner">Principiante</option>
-                        <option value="Intermediate">Intermedio</option>
-                        <option value="Advanced">Avanzado</option>
+                        <option value="Principiante">Principiante</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Avanzado">Avanzado</option>
                     </Form.Select>
                 </Form.Group>
                 </Col>
