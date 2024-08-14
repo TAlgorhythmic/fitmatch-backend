@@ -208,7 +208,7 @@ const RegisterForm = () => {
             <Form.Group className="mb-3">
               <Form.Label>Last Name</Form.Label>
               <InputGroup>
-                <InputGroup.Text> <Person style={{ fontSize: '100%', color: 'blue' }} /></InputGroup.Text>
+                <InputGroup.Text> <Person/></InputGroup.Text>
                 <Form.Control
                   type="text"
                   name="lastName"
@@ -219,6 +219,8 @@ const RegisterForm = () => {
             </Form.Group>
           </Col>
         </Row>
+        <Row>
+        <Col md={6}>
         <Form.Group className="mb-3">
           <Form.Label><Envelope /> Email Address</Form.Label>
           <InputGroup>
@@ -232,10 +234,12 @@ const RegisterForm = () => {
             />
           </InputGroup>
         </Form.Group>
+        </Col>
+        <Col md={6}>
         <Form.Group className="mb-3">
           <Form.Label><Phone /> Phone Number</Form.Label>
           <InputGroup>
-            <InputGroup.Text>+34</InputGroup.Text>
+            <InputGroup.Text>34</InputGroup.Text>
             <Form.Control
               type="tel"
               name="phone"
@@ -247,6 +251,10 @@ const RegisterForm = () => {
             />
           </InputGroup>
         </Form.Group>
+        </Col>
+        </Row>
+        <Row>
+        <Col md={6}>
         {
           isLoaded ? (
             <Form.Group className="mb-3">
@@ -266,6 +274,8 @@ const RegisterForm = () => {
             </Form.Group>
           ) : <></>
         }
+        </Col>
+         <Col md={6}>
         <Form.Group className="mb-3">
           <Form.Label>Proficiency</Form.Label>
           <Form.Select
@@ -278,6 +288,8 @@ const RegisterForm = () => {
             <option value="Avanzado">Avanzado</option>
           </Form.Select>
         </Form.Group>
+        </Col>
+        </Row>
         <Form.Group className="mb-3">
           <Form.Label>Description</Form.Label>
           <Form.Control
@@ -287,6 +299,17 @@ const RegisterForm = () => {
             onChange={handleChange}
           />
         </Form.Group>
+        
+        <Form.Group className="mb-3">
+          <Form.Label><Camera /> Image Upload</Form.Label>
+          <Form.Control
+            type="file"
+            name="img"
+            onChange={handleImageChange}
+          />
+        </Form.Group>
+
+
         <Form.Group className="mb-3">
   <Form.Label>Selecciona tu horario de entrenamiento</Form.Label>
   <div className="time-picker-container d-flex justify-content-between">
@@ -386,14 +409,7 @@ const RegisterForm = () => {
         </Form.Group>
 </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label><Camera /> Image Upload</Form.Label>
-          <Form.Control
-            type="file"
-            name="img"
-            onChange={handleImageChange}
-          />
-        </Form.Group>
+        
         <Form.Group className="mb-3 custom-preferences">
           <Form.Label>Preferences</Form.Label>
           <div className="d-flex flex-wrap justify-content-center">
