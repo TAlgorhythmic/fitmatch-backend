@@ -2,8 +2,10 @@ import { useState } from 'react';
 import './Register.css';
 import { useNavigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
+import { INVALID, OK } from '../../Utils/StatusCodes';
 
 const Register = () => {
+
     const [formData, setFormData] = useState({
         phone: '',
         password: '',
@@ -34,16 +36,18 @@ const Register = () => {
             });
 
             const data = await response.json();
-            if (data.status == 0) {
+            if (data.status === OK) {
                 const token = data.token;
                 localStorage.setItem('authToken', token);
                 setSuccess(true);
                 setError('');
                 navigate('/formulario');   
+            } else if (data.status === INVALID) {
+                showPopup("Invalid data", data.error, false);
             } else {
-                showPopup("Error", data.error, true);
+                showPopup("Unexpected error", data.error, true);
             }
-            
+
         } catch (err) {
             console.error('Error during registration:', err);
             setError('Error during registration. Please try again.');
@@ -51,17 +55,16 @@ const Register = () => {
     };
 
     return (
-        <div className="page-container">
+        <>
             <div className="register-container">
-                <div className="register-card">
-                    <h2>Sign Up</h2>
+                <div className="formulario-register">
+                    <h2 className='h2OfRegister'>Sign Up</h2>
                     {success ? (
-                        <p className="success-message">Registration successful!</p>
+                        <p className="mensaje">Registration successful!</p>
                     ) : (
                         <div>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
-                                    <label htmlFor="phone">phone</label>
                                     <input
                                         type="text"
                                         id="phone"
@@ -73,7 +76,6 @@ const Register = () => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="password">Password</label>
                                     <input
                                         type="password"
                                         id="password"
@@ -81,11 +83,10 @@ const Register = () => {
                                         value={formData.password}
                                         onChange={handleChange}
                                         required
-                                        placeholder="Enter your password"
+                                        placeholder="Introduce tu contraseña"
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="name">Name</label>
                                     <input
                                         type="text"
                                         id="name"
@@ -96,14 +97,15 @@ const Register = () => {
                                         placeholder="Enter your name"
                                     />
                                 </div>
-                                <button type="submit" className="register-button">Sign Up</button>
+                                <button type="submit" className="buttonRegister">Sign Up</button>
+                                <p className="link-to-login">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
                                 {error && <p className="error-message">{error}</p>}
                             </form>
                         </div>
                     )}
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

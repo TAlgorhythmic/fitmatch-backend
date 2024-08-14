@@ -32,16 +32,15 @@ function Header() {
     return (
         <>
             <nav className="customNavbar">
-                <a href="/">
-                    <img className='logo-img' src='./LogoFitMatch.jpg' />
+                <a href="/" style={{"textDecoration": "none"}}>
+                    <img className='logo-img' src='./LogoFitMatch.jpg'/><span className='customTextLogo'>Fitmatch</span>
                 </a>
-                <p className='customTextLogo'>FITMATCH</p>
 
                 <div className='navbar-icons-middle'>
                     <button className='buttonMakeFriends'>
                         <a href="/friends" className='makeFriends'>
                             <span>
-                                <PersonFillAdd size={32} color='#f0b71d' />
+                                <PersonFillAdd size={32} color='#ff6600' />
                             </span>
                         </a>
                     </button>
@@ -50,7 +49,7 @@ function Header() {
                 <div className='navbar-icons-right'>
                     <Notifications />
                     <a href="/user/profile">
-                        <PersonCircle size={32} color='#f0b71d' />
+                        <PersonCircle size={32} color='#ff6600' />
                     </a>
                 </div>
             </nav>

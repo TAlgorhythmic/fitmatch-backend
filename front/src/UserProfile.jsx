@@ -1,6 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Person, Envelope, Phone, GeoAlt } from 'react-bootstrap-icons';
+import { OK, NO_PERMISSION } from './Utils/StatusCodes';
+import { showPopup } from './Utils/Utils';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+
+const libraries = ["places"];
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({
@@ -10,10 +16,29 @@ const UserProfile = () => {
         phone: '',
         description: '',
         proficiency: '',
-        trainingPreferences: '',
+        trainingPreferences: [],
         img: '',
-        city: ''
+        city: '',
+        latitude: '',
+        longitude: ''
     });
+
+    const navigate = useNavigate();
+   
+    const sportsInterests = [
+        'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
+        'CrossFit', 'Bodybuilding', 'Pilates', 'Boxing', 'HIIT',
+        'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'
+      ];
+    
+      const [selectedInterests, setSelectedInterests] = useState([]);
+
+    const { isLoaded } = useJsApiLoader({
+        googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+        libraries: libraries
+      });
+    
+      const ref = useRef(null)
 
     const [error, setError] = useState(null);
 
@@ -29,18 +54,27 @@ const UserProfile = () => {
         })
         .then(response => {return response.json()})
         .then(data => {
-            console.log('User data:', data);
-            if (!data.status === 0) {
-                throw new Error('Failed to fetch user profile');
+            if (data.status === OK) {
+                setUserData(data.data);
+                if (data.data.trainingPreferences) {
+                    console.log(data.data.trainingPreferences);
+                    setSelectedInterests(data.data.trainingPreferences);
+                }
+            } else if (data.status === NO_PERMISSION) {
+                setError(data);
+            } else {
+                showPopup("Data is invalid", data.error, true);
             }
-            setUserData(data.data);
-            
         })
         .catch(error => {
             console.log('Error loading user data:', error);
             setError('Failed to load profile. Please try again later.');
         });
     }, []);
+
+    if (error && error.status === NO_PERMISSION) {
+        return <Navigate to="/login" />;
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -51,6 +85,8 @@ const UserProfile = () => {
         e.preventDefault();
 
         const token = localStorage.getItem('authToken');
+        console.log(selectedInterests);
+        setUserData({...userData, trainingPreferences: selectedInterests})
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -64,20 +100,38 @@ const UserProfile = () => {
             const response = await fetch('http://localhost:3001/api/users/edit', requestOptions);
             const data = await response.json();
             console.log(data);
-            if (data.status==0) {
-                console.log()
-                alert('Profile updated successfully');
+            if (data.status===0) {
+                showPopup("Info", "¡Perfil actualizado correctamente!", false);
+                navigate("/");
             } else {
-                alert('Error updating profile: ' + data.error);
+                showPopup('Error updating profile', data.error, true);
             }
         } catch (error) {
-            alert('Error updating profile');
+            showPopup('Error updating profile', error, true);
+        }
+    };
+
+    const handleInterestClick = (interest) => {
+        if (selectedInterests.includes(interest)) {
+            setSelectedInterests(selectedInterests.filter(i => i !== interest));
+        } else {
+            setSelectedInterests([...selectedInterests, interest]);
         }
     };
 
     if (error) {
         return <div>{error}</div>;
     }
+    
+    function onPlaceChanged() {
+        if (ref.current.getPlace() && ref.current.getPlace().geometry)
+            setUserData({
+          ...userData,
+          city: ref.current.getPlace().formatted_address,
+          latitude: ref.current.getPlace().geometry.location.lat(),
+          longitude: ref.current.getPlace().geometry.location.lng()
+        })
+      }
 
     return (
         <Container>
@@ -85,7 +139,6 @@ const UserProfile = () => {
                 <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Nombre</Form.Label>
                             <InputGroup>
                                 <InputGroup.Text><Person/></InputGroup.Text>
                                 <Form.Control
@@ -97,7 +150,6 @@ const UserProfile = () => {
                     </Col>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Apellidos</Form.Label>
                             <InputGroup>
                                 <InputGroup.Text><Person /></InputGroup.Text>
                                 <Form.Control
@@ -111,20 +163,23 @@ const UserProfile = () => {
                         </Form.Group>
                     </Col>
                 </Row>
+                <Row>
+                <Col md={6}>
                 <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
                     <InputGroup>
                         <InputGroup.Text><Envelope /></InputGroup.Text>
                         <Form.Control
                             type="text"
+                            name="email"
                             value={userData.email}
                             onChange={handleChange}
                             placeholder="fitmatch@gmail.com"
                         />
                     </InputGroup>
                 </Form.Group>
+                </Col>
+                <Col md={6}>
                 <Form.Group className="mb-3">
-                    <Form.Label>Phone</Form.Label>
                     <InputGroup>
                         <InputGroup.Text><Phone /></InputGroup.Text>
                         <Form.Control
@@ -136,38 +191,61 @@ const UserProfile = () => {
                         />
                     </InputGroup>
                 </Form.Group>
+                </Col>
+                </Row>
+                <Row>
+                <Col md={6}>
+                {
+          isLoaded ? (
+            <Form.Group className="mb-3">
+              <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
+                <InputGroup>
+                  <InputGroup.Text><GeoAlt /></InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    name="city"
+                    value={userData.city}
+                    onChange={handleChange}
+                  />
+                </InputGroup>
+              </Autocomplete>
+            </Form.Group>
+          ) : <></>
+        }
+                </Col>
+               <Col md={6}>
                 <Form.Group className="mb-3">
-                    <Form.Label>City</Form.Label>
-                    <InputGroup>
-                        <InputGroup.Text><GeoAlt /></InputGroup.Text>
-                        <Form.Control
-                            type="text"
-                            value={userData.city}
-                            onChange={handleChange}
-                        />
-                    </InputGroup>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Nivel</Form.Label>
+                    
                     <Form.Select
                         name="proficiency"
                         value={userData.proficiency}
                         onChange={handleChange}
                     >
-                        <option value="Beginner">Principiante</option>
-                        <option value="Intermediate">Intermedio</option>
-                        <option value="Advanced">Avanzado</option>
+                        <option value="Principiante">Principiante</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Avanzado">Avanzado</option>
                     </Form.Select>
                 </Form.Group>
+                </Col>
+                </Row>
                 <Form.Group className="mb-3">
-                    <Form.Label>Intereses</Form.Label>
-                    <Form.Control
-                        value={userData.trainingPreferences}
-                    />
+                    <div className="d-flex flex-wrap justify-content-center">
+                        {sportsInterests.map((interest) => (
+                            <Button
+                                key={interest}
+                                variant={selectedInterests.includes(interest) ? 'primary' : 'outline-primary'}
+                                className="me-2 mb-2 custom-preferences-btn"
+                                onClick={() => handleInterestClick(interest)}
+                            >
+                                {interest}
+                            </Button>
+                        ))}
+                    </div>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Control
                         as="textarea"
+                        name="description"
                         value={userData.description}
                         onChange={handleChange}
                         placeholder="Escribe una breve descripción sobre ti"

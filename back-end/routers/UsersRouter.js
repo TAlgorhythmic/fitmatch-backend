@@ -46,26 +46,6 @@ const Users = sequelize.define(
     { tableName: 'users', timestamps: false }
 );
 
-// GET lista de todos los Userss
-// vinculamos la ruta /api/Userss a la función declarada
-// si todo ok devolveremos un objeto tipo:
-//     {ok: true, data: [lista_de_objetos_Users...]}
-// si se produce un error:
-//     {ok: false, error: mensaje_de_error}
-
-router.get('/', tokenRequired, function (req, res, next) {
-
-    Users.findAll()
-        .then(Userss => {
-            res.json(Userss)
-        })
-        .catch(error => {
-            console.log(error);
-            res.json(buildInternalErrorPacket("Backend internal error. Check logs if you're an admin."));
-        })
-
-});
-
 router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, next) => {
     if (!req.file) {
         res.json(buildInvalidPacket("Image is empty."));
@@ -80,15 +60,15 @@ router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, nex
         user.setImg(req.file.filename);
     } else {
         fitmatch.sqlManager.getUserFromId(id)
-        .then(e => {
-            const data = sanitizeDataReceivedForSingleObject(e);
-            const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
-            if (user.img && user.img !== "img1.jpg") {
-                if (fs.existsSync("./uploads/" + user.img)) fs.rmSync("./uploads/" + user.img);
-            }
-            user.setImg(req.file.filename);
-            fitmatch.userManager.put(id, user);
-        })
+            .then(e => {
+                const data = sanitizeDataReceivedForSingleObject(e);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                if (user.img && user.img !== "img1.jpg") {
+                    if (fs.existsSync("./uploads/" + user.img)) fs.rmSync("./uploads/" + user.img);
+                }
+                user.setImg(req.file.filename);
+                fitmatch.userManager.put(id, user);
+            })
     }
     res.json(buildSimpleOkPacket());
 });
@@ -194,9 +174,9 @@ router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
 
     const preferences = req.body.preferences ? (req.body.preferences.length ? req.body.preferences : null) : null;
-    
+
     if (!preferences) {
-        
+
         res.json(buildInvalidPacket("Preferences is empty."));
         return;
     }
@@ -257,46 +237,101 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         res.json(buildSimpleOkPacket());
     } else {
         fitmatch.getSqlManager().getUserFromId(id)
-        .then(e => {
-            const data = sanitizeDataReceivedForSingleObject(e);
-            const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
-            fitmatch.userManager.put(user.id, user);
-            user.setIsSetup(true);
-            user.setTrainingPreferences(preferences);
-            user.setDescription(description);
-            user.setImg(img);
-            user.setProficiency(proficiency);
-            user.setMonday(monday);
-            user.setTuesday(tuesday);
-            user.setWednesday(wednesday);
-            user.setThursday(thursday);
-            user.setFriday(friday);
-            user.setSaturday(saturday);
-            user.setSunday(sunday);
-            user.setTimetable1(timetable1);
-            user.setTimetable2(timetable2);
-            res.json(buildSimpleOkPacket());
-        });
+            .then(e => {
+                const data = sanitizeDataReceivedForSingleObject(e);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                fitmatch.userManager.put(user.id, user);
+                user.setIsSetup(true);
+                user.setTrainingPreferences(preferences);
+                user.setDescription(description);
+                user.setImg(img);
+                user.setProficiency(proficiency);
+                user.setMonday(monday);
+                user.setTuesday(tuesday);
+                user.setWednesday(wednesday);
+                user.setThursday(thursday);
+                user.setFriday(friday);
+                user.setSaturday(saturday);
+                user.setSunday(sunday);
+                user.setTimetable1(timetable1);
+                user.setTimetable2(timetable2);
+                res.json(buildSimpleOkPacket());
+            });
     }
 })
 
 // put modificació d'un Users
 router.post('/edit', tokenRequired, function (req, res, next) {
-    console.log(req.body);
-    if (fitmatch.userManager.containsKey(req.token.id)) {
-        res.json(buildSendDataPacket(fitmatch.userManager.get(req.token.id).user));
+    const name = req.body.name;
+    if (!name) {
+        res.json(buildInvalidPacket("The name is empty."));
         return;
     }
-    Users.findOne({ where: { id: req.token.id } })
-        .then((al) =>
-            al.update(req.body)
-        )
-        .then((ret) => res.json(buildSimpleOkPacket()))
-        .catch(error => {
-            console.log(error);
-            res.json(buildInternalErrorPacket("Backend internal error."));
-        });
 
+    const lastname = req.body.lastname ? req.body.lastname : null;
+    const email = req.body.email ? req.body.email : null;
+    const description = req.body.description ? req.body.description : null;
+    const proficiency = req.body.proficiency && (req.body.proficiency === "Principiante" || req.body.proficiency === "Intermedio" || req.body.proficiency === "Avanzado") ? req.body.proficiency : null;
+    if (proficiency === null) {
+        console.warn("Warning! proficiency for " + name + " is null when it shouldn't!")
+    }
+    const trainingPreferences = Array.isArray(req.body.trainingPreferences) ? req.body.trainingPreferences : null;
+    const img = req.body.img ? req.body.img : "img1.jpg";
+    const country = req.body.country ? req.body.country : null;
+    const city = req.body.city ? req.body.city : null;
+    const latitude = req.body.latitude ? req.body.latitude : null;
+    const longitude = req.body.longitude ? req.body.longitude : null;
+    const monday = req.body.monday ? true : false;
+    const tuesday = req.body.tuesday ? true : false;
+    const wednesday = req.body.wednesday ? true : false;
+    const thursday = req.body.thursday ? true : false;
+    const friday = req.body.friday ? true : false;
+    const saturday = req.body.saturday ? true : false;
+    const sunday = req.body.sunday ? true : false;
+    const timetable1 = req.body.timetable1 ? req.body.timetable1 : null;
+    const timetable2 = req.body.timetable2 ? req.body.timetable2 : null;
+
+    let user = null;
+    if (fitmatch.userManager.containsKey(req.token.id)) {
+        user = fitmatch.userManager.get(req.token.id).user;
+    }
+
+    const update = () => {
+        user.setName(name);
+        user.setLastName(lastname);
+        user.setEmail(email);
+        user.setDescription(description);
+        user.setTrainingPreferences(trainingPreferences);
+        user.setImg(img);
+        user.setCountry(country);
+        user.setLocation(city, latitude, longitude);
+        user.setMonday(monday);
+        user.setTuesday(tuesday);
+        user.setWednesday(wednesday);
+        user.setThursday(thursday);
+        user.setFriday(friday);
+        user.setSaturday(saturday);
+        user.setSunday(sunday);
+        user.setTimetable1(timetable1);
+        user.setTimetable2(timetable2);
+    }
+
+    if (user !== null) {
+        update();
+    } else {
+        fitmatch.getSqlManager().getUserFromId(req.token.id)
+        .then(e => {
+            const data = sanitizeDataReceivedForSingleObject(e);
+            user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country);
+            fitmatch.userManager.put(user.id, user);
+            update();
+            res.json(buildSimpleOkPacket());
+        })
+        .catch(err => {
+            console.log(err);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+        })
+    }
 });
 
 // DELETE elimina l'Users id
@@ -337,7 +372,6 @@ router.put('/changepasswd', tokenRequired, function (req, res, next) {
 router.get("/profile", tokenRequired, (req, res, next) => {
     const id = req.token.id;
     if (fitmatch.getUserManager().containsKey(id)) {
-        console.log(fitmatch.getUserManager().get(id).user);
         res.json(buildSendDataPacket(fitmatch.getUserManager().get(id).user));
     } else {
         fitmatch.getSqlManager().getUserFromId(id)
@@ -345,7 +379,6 @@ router.get("/profile", tokenRequired, (req, res, next) => {
                 const data = sanitizeDataReceivedForSingleObject(e);
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                 fitmatch.getUserManager().put(user.id, user);
-                console.log(user);
                 res.json(buildSendDataPacket(user));
             })
             .catch(err => {

@@ -104,6 +104,12 @@ class SQLManager {
             });
     }
 
+    createNewActivity(title, description, expires, userId) {
+        const time = new Date((new Date().getTime() + TIME_BEFORE_EXPIRES)).toISOString().slice(0, 19).replace("T", " ");
+        const expire = expires.toISOString().slice(0, 19).replace("T", " ");
+        return fitmatch.sql.query("INSERT INTO activities (title, description, postDate, expires, userId, tableVersion) VALUES(?, ?, ?, ?, ?, ?);", { replacements: [title, description, time, expire, userId, TABLES_VERSION] })
+    }
+
     removeActivityCompletely(id) {
         fitmatch.sql.query(`DELETE FROM activities WHERE id = ?;`, { replacements: [id], type: QueryTypes.DELETE })
         .then(e => {
@@ -179,6 +185,12 @@ class SQLManager {
             //TODO
             if (key === "trainingPreferences") {
                 injects.push(value);
+            } else if ((key === "timetable1" || key === "timetable2") && (typeof value === "string" || value instanceof String)) {
+                const split = value.split(":");
+                const hour = parseInt(split[0]);
+                const mins = parseInt(split[1]);
+                const time = (hour * 60) + mins;
+                injects.push(time);
             } else {
                 injects.push(value);
             }
@@ -229,8 +241,16 @@ class SQLManager {
         return fitmatch.getSql().query(`UPDATE activities SET title = ? description = ? expires = ? WHERE id = ?`, { replacements: [title, description, expires, id], type: QueryTypes.UPDATE })
     }
 
+    getActivityJoins(id) {
+        return fitmatch.sql.query("SELECT * FROM joins_activities WHERE postId = ?", { replacements: [id], type: QueryTypes.SELECT })
+    }
+
     getRejectionsById(id) {
         return fitmatch.sql.query(`SELECT CASE WHEN issuer = ? THEN rejected ELSE issuer END AS friendId FROM rejects WHERE issuer = ? OR rejected = ?;`, { replacements: [id, id, id], type: QueryTypes.SELECT });
+    }
+
+    getRejectionByPair(id, other_id) {
+        return fitmatch.sql.query("SELECT * FROM rejects WHERE (issuer = ? AND rejected = ?) OR (issuer = ? AND rejected = ?);", { replacements: [id, other_id, other_id, id] });
     }
 
     getFriendsById(id) {

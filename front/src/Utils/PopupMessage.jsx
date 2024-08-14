@@ -11,7 +11,7 @@ export default function PopupMessage(props) {
     return (
         <div className={`popup${isVisible ? " visible" : ""}${isError ? " error" : ""}`}>
             <div className="first-item flex"><h1 className="item">{title}</h1></div>
-            <div className="flex"><br className="separator item"></br></div>
+            <div className="flex"><hr className="separator item" /></div>
             <div className="flex">{message}</div>
             <div className="last-item flex"><Button onClick={onClose}>Aceptar</Button></div>
         </div>
