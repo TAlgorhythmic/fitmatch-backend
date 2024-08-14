@@ -10,8 +10,6 @@ import { showPopup } from '../../Utils/Utils.js';
 
 const libraries = ["places"];
 
-// TODO safety
-
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     firstName: '',
