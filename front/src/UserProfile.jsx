@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Person, Envelope, Phone, GeoAlt } from 'react-bootstrap-icons';
 import { OK, NO_PERMISSION } from './Utils/StatusCodes';
 import { showPopup } from './Utils/Utils';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 
 const libraries = ["places"];
@@ -16,11 +16,14 @@ const UserProfile = () => {
         phone: '',
         description: '',
         proficiency: '',
-        trainingPreferences: '',
+        trainingPreferences: [],
         img: '',
-        city: ''
+        city: '',
+        latitude: '',
+        longitude: ''
     });
 
+    const navigate = useNavigate();
    
     const sportsInterests = [
         'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
@@ -53,10 +56,10 @@ const UserProfile = () => {
         .then(data => {
             if (data.status === OK) {
                 setUserData(data.data);
-                const initialSelectedInterests = Array.from(new Set(
-                    data.data.trainingPreferences.split(', ').filter(Boolean)
-                ));
-                setSelectedInterests(initialSelectedInterests);
+                if (data.data.trainingPreferences) {
+                    console.log(data.data.trainingPreferences);
+                    setSelectedInterests(data.data.trainingPreferences);
+                }
             } else if (data.status === NO_PERMISSION) {
                 setError(data);
             } else {
@@ -82,6 +85,8 @@ const UserProfile = () => {
         e.preventDefault();
 
         const token = localStorage.getItem('authToken');
+        console.log(selectedInterests);
+        setUserData({...userData, trainingPreferences: selectedInterests})
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -95,14 +100,14 @@ const UserProfile = () => {
             const response = await fetch('http://localhost:3001/api/users/edit', requestOptions);
             const data = await response.json();
             console.log(data);
-            if (data.status==0) {
-                console.log()
-                alert('Profile updated successfully');
+            if (data.status===0) {
+                showPopup("Info", "¡Perfil actualizado correctamente!", false);
+                navigate("/");
             } else {
-                alert('Error updating profile: ' + data.error);
+                showPopup('Error updating profile', data.error, true);
             }
         } catch (error) {
-            alert('Error updating profile');
+            showPopup('Error updating profile', error, true);
         }
     };
 
@@ -165,6 +170,7 @@ const UserProfile = () => {
                         <InputGroup.Text><Envelope /></InputGroup.Text>
                         <Form.Control
                             type="text"
+                            name="email"
                             value={userData.email}
                             onChange={handleChange}
                             placeholder="fitmatch@gmail.com"
@@ -206,7 +212,6 @@ const UserProfile = () => {
             </Form.Group>
           ) : <></>
         }
-                
                 </Col>
                <Col md={6}>
                 <Form.Group className="mb-3">
@@ -216,9 +221,9 @@ const UserProfile = () => {
                         value={userData.proficiency}
                         onChange={handleChange}
                     >
-                        <option value="Beginner">Principiante</option>
-                        <option value="Intermediate">Intermedio</option>
-                        <option value="Advanced">Avanzado</option>
+                        <option value="Principiante">Principiante</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Avanzado">Avanzado</option>
                     </Form.Select>
                 </Form.Group>
                 </Col>
@@ -240,6 +245,7 @@ const UserProfile = () => {
                 <Form.Group className="mb-3">
                     <Form.Control
                         as="textarea"
+                        name="description"
                         value={userData.description}
                         onChange={handleChange}
                         placeholder="Escribe una breve descripción sobre ti"
