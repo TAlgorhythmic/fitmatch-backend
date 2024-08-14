@@ -7,6 +7,7 @@ import ActivityPostHome from './components/Home/ActivityPostHome';
 import './Home.css';
 import { showPopup } from './Utils/Utils';
 import { OK } from '../../back-end/api/packets/StatusCodes';
+import ActivitiesController from './controllers/ActivitiesController';
 
 function Home() {
     const [activities, setActivities] = useState([]);
@@ -58,8 +59,6 @@ function Home() {
                 console.log('Error: ', activitiesData);
             }
         }
-
-        getActivities();
 
         if (isValidToken) {
             getActivities();
