@@ -25,7 +25,7 @@ const UserProfile = () => {
     });
 
     const navigate = useNavigate();
-   
+
     const sportsInterests = [
         'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
         'CrossFit', 'Bodybuilding', 'Pilates', 'Boxing', 'HIIT',
@@ -53,24 +53,24 @@ const UserProfile = () => {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => {return response.json()})
-        .then(data => {
-            if (data.status === OK) {
-                setUserData(data.data);
-                if (data.data.trainingPreferences) {
-                    const initialSelectedInterests = data.data.trainingPreferences.split(', ').filter(item => {return item})
-                    setSelectedInterests(initialSelectedInterests);
+            .then(response => { return response.json() })
+            .then(data => {
+                if (data.status === OK) {
+                    setUserData(data.data);
+                    if (data.data.trainingPreferences) {
+                        const initialSelectedInterests = data.data.trainingPreferences.split(', ').filter(item => { return item })
+                        setSelectedInterests(initialSelectedInterests);
+                    }
+                } else if (data.status === NO_PERMISSION) {
+                    setError(data);
+                } else {
+                    showPopup("Data is invalid", data.error, true);
                 }
-            } else if (data.status === NO_PERMISSION) {
-                setError(data);
-            } else {
-                showPopup("Data is invalid", data.error, true);
-            }
-        })
-        .catch(error => {
-            console.log('Error loading user data:', error);
-            setError('Failed to load profile. Please try again later.');
-        });
+            })
+            .catch(error => {
+                console.log('Error loading user data:', error);
+                setError('Failed to load profile. Please try again later.');
+            });
     }, []);
 
     if (error && error.status === NO_PERMISSION) {
@@ -87,7 +87,7 @@ const UserProfile = () => {
 
         const token = localStorage.getItem('authToken');
         console.log(selectedInterests);
-        setUserData({...userData, trainingPreferences: selectedInterests})
+        setUserData({ ...userData, trainingPreferences: selectedInterests })
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -101,7 +101,7 @@ const UserProfile = () => {
             const response = await fetch('http://localhost:3001/api/users/edit', requestOptions);
             const data = await response.json();
             console.log(data);
-            if (data.status==0) {
+            if (data.status == 0) {
                 console.log()
                 alert('Profile updated successfully');
             } else {
@@ -175,33 +175,33 @@ const UserProfile = () => {
                     </Col>
                 </Row>
                 <Row>
-                <Col md={6}>
-                <Form.Group className="mb-3">
-                    <InputGroup>
-                        <InputGroup.Text><Envelope /></InputGroup.Text>
-                        <Form.Control
-                            type="text"
-                            value={userData.email}
-                            onChange={handleChange}
-                            placeholder="fitmatch@gmail.com"
-                        />
-                    </InputGroup>
-                </Form.Group>
-                </Col>
-                <Col md={6}>
-                <Form.Group className="mb-3">
-                    <InputGroup>
-                        <InputGroup.Text><Phone /></InputGroup.Text>
-                        <Form.Control
-                            type="text"
-                            name="phone"
-                            value={userData.phone}
-                            onChange={handleChange}
-                            readOnly
-                        />
-                    </InputGroup>
-                </Form.Group>
-                </Col>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <InputGroup>
+                                <InputGroup.Text className="input-group-text-profile"><Envelope /></InputGroup.Text>
+                                <Form.Control
+                                    type="text"
+                                    value={userData.email}
+                                    onChange={handleChange}
+                                    placeholder="fitmatch@gmail.com"
+                                />
+                            </InputGroup>
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <InputGroup>
+                                <InputGroup.Text className="input-group-text-profile"><Phone /></InputGroup.Text>
+                                <Form.Control
+                                    type="text"
+                                    name="phone"
+                                    value={userData.phone}
+                                    onChange={handleChange}
+                                    readOnly
+                                />
+                            </InputGroup>
+                        </Form.Group>
+                    </Col>
                 </Row>
                 <Row>
                     <Col md={6}>
