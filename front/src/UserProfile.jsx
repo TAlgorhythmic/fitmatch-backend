@@ -89,7 +89,6 @@ const UserProfile = () => {
                 <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Nombre</Form.Label>
                             <InputGroup>
                                 <InputGroup.Text><Person/></InputGroup.Text>
                                 <Form.Control
@@ -101,7 +100,6 @@ const UserProfile = () => {
                     </Col>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Apellidos</Form.Label>
                             <InputGroup>
                                 <InputGroup.Text><Person /></InputGroup.Text>
                                 <Form.Control
@@ -115,8 +113,9 @@ const UserProfile = () => {
                         </Form.Group>
                     </Col>
                 </Row>
+                <Row>
+                <Col md={6}>
                 <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
                     <InputGroup>
                         <InputGroup.Text><Envelope /></InputGroup.Text>
                         <Form.Control
@@ -127,8 +126,9 @@ const UserProfile = () => {
                         />
                     </InputGroup>
                 </Form.Group>
+                </Col>
+                <Col md={6}>
                 <Form.Group className="mb-3">
-                    <Form.Label>Phone</Form.Label>
                     <InputGroup>
                         <InputGroup.Text><Phone /></InputGroup.Text>
                         <Form.Control
@@ -140,6 +140,10 @@ const UserProfile = () => {
                         />
                     </InputGroup>
                 </Form.Group>
+                </Col>
+                </Row>
+                <Row>
+                <Col md={6}>
                 <Form.Group className="mb-3">
                     <Form.Label>City</Form.Label>
                     <InputGroup>
@@ -151,6 +155,8 @@ const UserProfile = () => {
                         />
                     </InputGroup>
                 </Form.Group>
+                </Col>
+               <Col md={6}>
                 <Form.Group className="mb-3">
                     <Form.Label>Nivel</Form.Label>
                     <Form.Select
@@ -163,6 +169,8 @@ const UserProfile = () => {
                         <option value="Advanced">Avanzado</option>
                     </Form.Select>
                 </Form.Group>
+                </Col>
+                </Row>
                 <Form.Group className="mb-3">
                     <Form.Label>Intereses</Form.Label>
                     <Form.Control
