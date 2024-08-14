@@ -9,7 +9,7 @@ const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
 
 export function isActivityExpired(activity) {
     const date = new Date(activity.expires);
-    return Date.now <= date.getTime();
+    return Date.now() <= date.getTime();
 }
 
 export function removeGarbage(millis) {
@@ -18,6 +18,7 @@ export function removeGarbage(millis) {
             const itemToRemove = garbage.pop();
             if (!itemToRemove) {
                 console.log("Activities table is now clean.");
+                removeGarbage(millis);
                 return;
             }
             try {
@@ -29,7 +30,7 @@ export function removeGarbage(millis) {
             } catch (err) {
                 console.log(err);
             } finally {
-                recursive();
+                removeGarbage(millis);
             }
         }
         recursive();
@@ -86,10 +87,6 @@ class SQLManager {
 
     putFriends(id1, id2) {
         return fitmatch.sql.query("INSERT INTO friends(userId1, userId2) VALUES(?, ?);", { replacements: [id1, id2], type: QueryTypes.INSERT });
-    }
-
-    getActivityFromId(id) {
-        return fitmatch.sql.query("SELECT * FROM activities WHERE id = ?;", { replacements: [id], type: QueryTypes.SELECT });
     }
 
     destroyUserCompletely(id) {
@@ -240,7 +237,7 @@ class SQLManager {
             res.json(buildInvalidPacket("Every single piece of data received is invalid. Could not effectuate query."));
             return;
         }
-        return fitmatch.getSql().query(`UPDATE activities SET title = ? description = ? expires = ? WHERE id = ?`, { replacements: [title, description, expires, id], type: QueryTypes.UPDATE })
+        return fitmatch.getSql().query(`UPDATE activities SET ${titl}, ${desc}, ${expire} WHERE id = ?`, { replacements: [title, description, expires, id], type: QueryTypes.UPDATE })
     }
 
     getActivityJoins(id) {
