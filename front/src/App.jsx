@@ -35,7 +35,7 @@ function App() {
 
   useEffect(() => {
     if (location.pathname === '/' || location.pathname === '/create-activitie'
-      || location.pathname === 'agenda' || location.pathname === 'own-activities'
+      || location.pathname === '/agenda' || location.pathname === '/own-activities'
     ) {
       setShowHome(true);
     }
