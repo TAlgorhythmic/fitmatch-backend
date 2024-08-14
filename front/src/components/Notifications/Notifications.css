@@ -20,7 +20,7 @@ nav {
 }
 
 .icon span {
-    background: #f00;
+    background: #ff4444;
     padding: 7px;
     border-radius: 50%;
     color: #fff;
@@ -49,30 +49,35 @@ nav {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     pointer-events: none;
     border-radius: 10px;
-    background-color: white;
+    background-color: #000;
+    /* Fondo negro */
 }
 
 .notifi-box h2 {
     font-size: 14px;
     padding: 10px;
-    border-bottom: 1px solid #eee;
-    color: #999;
+    border-bottom: 1px solid #444;
+    /* Línea divisoria en gris oscuro */
+    color: #ff6600;
+    /* Color naranja */
 }
 
 .notifi-box h2 span {
-    color: #f00;
+    color: #ff4444;
 }
 
 .notifi-item {
     display: flex;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #444;
+    /* Línea divisoria en gris oscuro */
     padding: 15px 5px;
     margin-bottom: 15px;
     cursor: pointer;
 }
 
 .notifi-item:hover {
-    background-color: #eee;
+    background-color: #333;
+    /* Fondo gris oscuro al pasar el ratón */
 }
 
 .notifi-item img {
@@ -82,17 +87,19 @@ nav {
     border-radius: 50%;
     object-fit: cover;
     padding-top: 7px;
-    margin: auto 10px auto auto;   
+    margin: auto 10px auto auto;
 }
 
 .notifi-item .text h4 {
-    color: #777;
+    color: #ff6600;
+    /* Texto en naranja */
     font-size: 16px;
     margin-top: 10px;
 }
 
 .notifi-item .text p {
     color: #aaa;
+    /* Texto en gris claro */
     font-size: 12px;
 }
 
@@ -111,22 +118,26 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
+    background: #444;
+    /* Fondo gris oscuro */
 }
 
 .notifi-item .buttons .accept-button {
-    background: #eee;
+    background: #444;
 }
 
 .notifi-item .buttons .accept-button:hover {
     background: #3dad41;
+    /* Verde aceptado */
 }
 
 .notifi-item .buttons .reject-button {
-    background: #eee;
+    background: #444;
 }
 
 .notifi-item .buttons .reject-button:hover {
-    background: red;
+    background: #ff6600;
+    /* Naranja rechazado */
 }
 
 .notifi-item:hover .buttons button {
@@ -142,7 +153,8 @@ nav {
     position: absolute;
     top: -8px;
     right: -8px;
-    background-color: #ff4444;
+    background-color: #ff6600;
+    /* Naranja */
     color: white;
     font-size: 12px;
     font-weight: bold;
@@ -156,5 +168,5 @@ nav {
 }
 
 .bell-icon:hover {
-    fill: #c34f02;  
+    fill: #c34f02;
 }
