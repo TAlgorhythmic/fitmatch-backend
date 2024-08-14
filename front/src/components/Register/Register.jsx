@@ -74,9 +74,9 @@ const Register = () => {
                                 </div>
                                 <div className="form-group">
                                     <input
-                                    type='password'
-                                        id="contraseña"
-                                        name="contraseña"
+                                        type="text"
+                                        id="password"
+                                        name="password"
                                         value={formData.password}
                                         onChange={handleChange}
                                         required
