@@ -7,6 +7,7 @@ import './registerf.css';
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
 import { showPopup } from '../../Utils/Utils.js';
+import Switch from 'react-switch';
 
 const libraries = ["places"];
 
@@ -29,12 +30,19 @@ const RegisterForm = () => {
     monday: false,
     tuesday: false,
     wednesday: false,
-    thursday: true,
+    thursday: false,
     friday: false,
     saturday: false,
     sunday: false,
   });
 
+  const handleSwitchChange = (day, checked) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [day]: checked,
+    }));
+  };
+        
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
     libraries: libraries
@@ -310,72 +318,73 @@ const RegisterForm = () => {
       />
     </InputGroup>
   </div>
+ 
 </Form.Group>
-
-        <Form.Group className="mb-3">
+<div className='dias-semana'>
+<Form.Group className="mb-3">
           <Form.Label>Lunes</Form.Label>
-          <Form.Control
-            type="text"
-            name="lunes"
-            value={formData.monday}
-            onChange={handleChange}
-            placeholder="Enter schedule for Monday"
+          <Switch
+            onChange={(checked) => handleSwitchChange('monday', checked)}
+            checked={formData.monday}
+            offColor="#0000"
+            onColor="#ff6600"
           />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Martes</Form.Label>
-          <Form.Control
-            type="text"
-            name="martes"
-            value={formData.tuesday}
-            onChange={handleChange}
+          <Switch
+            onChange={(checked) => handleSwitchChange('tuesday', checked)}
+            checked={formData.tuesday}
+            offColor="#0000"
+            onColor="#ff6600"
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Miercoles</Form.Label>
-          <Form.Control
-            type="text"
-            name="description"
-            value={formData.wednesday}
-            onChange={handleChange}
+          <Form.Label>Miércoles</Form.Label>
+          <Switch
+            onChange={(checked) => handleSwitchChange('wednesday', checked)}
+            checked={formData.wednesday}
+            offColor="#0000"
+            onColor="#ff6600"
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>jueves</Form.Label>
-          <Form.Control
-            type="text"
-            name="jueves"
-            value={formData.thursday}
-            onChange={handleChange}
+          <Form.Label>Jueves</Form.Label>
+          <Switch
+            onChange={(checked) => handleSwitchChange('thursday', checked)}
+            checked={formData.thursday}
+            offColor="#0000"
+            onColor="#ff6600"
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>viernes</Form.Label>
-          <Form.Control
-            type="text"
-            name="viernes"
-            value={formData.friday}
-            onChange={handleChange}
+          <Form.Label>Viernes</Form.Label>
+          <Switch
+            onChange={(checked) => handleSwitchChange('friday', checked)}
+            checked={formData.friday}
+            offColor="#0000"
+            onColor="#ff6600"
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>saturday</Form.Label>
-          <Form.Control
-            type="text"
-            name="saturday"
-            value={formData.saturday}
-            onChange={handleChange}
+          <Form.Label>Sábado</Form.Label>
+          <Switch
+            onChange={(checked) => handleSwitchChange('saturday', checked)}
+            checked={formData.saturday}
+            offColor="#0000"
+            onColor="#ff6600"
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>sunday</Form.Label>
-          <Form.Control
-            type="text"
-            name="sunday"
-            value={formData.sunday}
-            onChange={handleChange}
+          <Form.Label>Domingo</Form.Label>
+          <Switch
+            onChange={(checked) => handleSwitchChange('sunday', checked)}
+            checked={formData.sunday}
+            offColor="#0000"
+            onColor="#ff6600"
           />
         </Form.Group>
+</div>
 
         <Form.Group className="mb-3">
           <Form.Label><Camera /> Image Upload</Form.Label>
