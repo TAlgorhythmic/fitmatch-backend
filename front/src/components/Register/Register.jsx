@@ -74,7 +74,7 @@ const Register = () => {
                                 </div>
                                 <div className="form-group">
                                     <input
-                                        type="text"
+                                        type="password"
                                         id="password"
                                         name="password"
                                         value={formData.password}
