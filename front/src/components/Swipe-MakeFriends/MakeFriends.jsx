@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import './MakeFriends.css'; 
+import './MakeFriends.css';
+import { NO_PERMISSION, OK } from '../../Utils/StatusCodes';
+import { Navigate } from 'react-router-dom';
+import { showPopup } from '../../Utils/Utils';
 
 const MakeFriends = () => {
   const [persona, setPersona] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [tokenValid, setTokenValid] = useState(true);
   const swipeContainerRef = useRef(null);
 
   useEffect(() => {
@@ -20,19 +24,19 @@ const MakeFriends = () => {
 
         const res = await response.json();
 
-        if (res.status !== 0) {
-          console.log('No hay usuarios disponibles');
-          return;
+        if (res.status === OK) {
+          const data = res.data;
+          setPersona(data);
+          setCurrentIndex(data.length - 1);
+        } else if (res.status === NO_PERMISSION) {
+          setTokenValid(false);
+        } else {
+          showPopup("Error", res.error, true);
         }
-        
-        const data = res.data;
-        console.log(data);
-        setPersona(data);
-        setCurrentIndex(data.length - 1);
-        
+
       } catch (error) {
         console.log('Error al obtener los usuarios:', error);
-      } 
+      }
     }
 
     getUsers();
@@ -54,16 +58,15 @@ const MakeFriends = () => {
 
           const res = await response.json();
 
-          if (res.status === 0) {
-            console.log('Rejection sent successfully');
-          } else {
-            console.error('Error sending rejection:');
+          if (res.status !== OK) {
+            showPopup("Something went wrong.", res.error, true);
           }
+
         } catch (error) {
           console.error('Error during rejection request:', error);
         }
       }
-      
+
     } else if (direction === 'right') {
       const otherId = persona[currentIndex]?.id;
 
@@ -80,12 +83,10 @@ const MakeFriends = () => {
 
           const res = await response.json();
 
-          if (res.status === 0) {
-            console.log('se ha enviado');
-
-          } else {
-           console.log('todo mal');
+          if (res.status !== OK) {
+            showPopup("Something went wrong.", res.error, true);
           }
+
         } catch (error) {
           console.error('Error during connection request:', error);
         }
@@ -103,16 +104,21 @@ const MakeFriends = () => {
     trackMouse: true // Esto permite que el swipe funcione también con el mouse
   });
 
+  if (!tokenValid) {
+    showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
+    return <Navigate to="/login" />
+  }
+
   return (
     <div className="swipe-container" ref={swipeContainerRef} tabIndex="0">
       {persona.length > 0 && persona.map((person, index) => (
-        <div key={person.id} {...handlers} className={index === currentIndex ? 'active' : 'inactive'} style={{display: index === currentIndex ? 'block' : 'none'}}>
+        <div key={person.id} {...handlers} className={index === currentIndex ? 'active' : 'inactive'} style={{ display: index === currentIndex ? 'block' : 'none' }}>
           <div className="card">
             <div className="card-header">
               <h2>{person.name}</h2>
             </div>
             <div className="card-content">
-              <img draggable="false"  src={`http://localhost:3001/uploads/${person.img}`} />
+              <img draggable="false" src={`http://localhost:3001/uploads/${person.img}`} />
               <div className="card-Makefriends-info">
                 <p><strong>Nivel:</strong> {person.proficiency}</p>
                 <p>{person.trainingPreferences}</p>
