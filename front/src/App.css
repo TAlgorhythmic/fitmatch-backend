@@ -41,14 +41,15 @@
     --bs-gutter-x: 5rem;
     --bs-gutter-y: 0;
     width: 100%;
+    height: fit-content;
     background-color: black;
     padding-right: calc(var(--bs-gutter-x)* .5);
     padding-left: calc(var(--bs-gutter-x)* .5);
     margin-right: auto;
     margin-left: auto;
 }
-
 .mainContent {
-    padding: 50px;
+    padding-top: 50px;
+    min-height: 100vh;
     background-color: white;
 }
