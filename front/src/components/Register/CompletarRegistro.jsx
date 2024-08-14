@@ -306,7 +306,6 @@ const RegisterForm = () => {
         disableClock={true}
         format="HH:mm"
         step={30}
-       
         className="time-picker-input"
       />
     </InputGroup>
