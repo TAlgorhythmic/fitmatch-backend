@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
-import { Camera, Phone, Person, Envelope, GeoAlt } from 'react-bootstrap-icons';
+import { Camera, Phone, Person, Envelope, GeoAlt, Clock } from 'react-bootstrap-icons';
 import { useNavigate, Navigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './registerf.css';
@@ -280,26 +280,39 @@ const RegisterForm = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Selecciona tu horario de entrenamiento</Form.Label>
-          <div className="time-picker-container">
-            <TimePicker
-              onChange={(value) => handleTimeChange('timetable1', value)}
-              value={formData.timetable1}
-              disableClock={true}
-              format="HH:mm"
-              step={30}
-              placeholder="Selecciona tu hora habitual de entrada"
-            />
-            <TimePicker
-              onChange={(value) => handleTimeChange('timetable2', value)}
-              value={formData.timetable2}
-              disableClock={true}
-              format="HH:mm"
-              step={30}
-              placeholder="Selecciona tu hora habitual de salida"
-            />
-          </div>
-        </Form.Group>
+  <Form.Label>Selecciona tu horario de entrenamiento</Form.Label>
+  <div className="time-picker-container d-flex justify-content-between">
+    <InputGroup className="me-3 time-picker-group">
+      <InputGroup.Text className="time-picker-icon">
+        <Clock />
+      </InputGroup.Text>
+      <TimePicker
+        onChange={(value) => handleTimeChange('timetable1', value)}
+        value={formData.timetable1}
+        disableClock={true}
+        format="HH:mm"
+        step={30}
+       
+        className="time-picker-input"
+      />
+    </InputGroup>
+    <InputGroup className="time-picker-group">
+      <InputGroup.Text className="time-picker-icon">
+        <Clock />
+      </InputGroup.Text>
+      <TimePicker
+        onChange={(value) => handleTimeChange('timetable2', value)}
+        value={formData.timetable2}
+        disableClock={true}
+        format="HH:mm"
+        step={30}
+       
+        className="time-picker-input"
+      />
+    </InputGroup>
+  </div>
+</Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>Lunes</Form.Label>
           <Form.Control
