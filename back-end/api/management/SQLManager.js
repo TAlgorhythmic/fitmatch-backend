@@ -2,6 +2,7 @@ import { QueryTypes } from "sequelize";
 import fitmatch from "./../Fitmatch.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from "../packets/PacketBuilder.js";
 import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../utils/Sanitizers.js";
+import User from "../User.js";
 
 const TABLES_VERSION = 0;
 const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
@@ -277,12 +278,77 @@ class SQLManager {
                     const timeLeftA = new Date(a.expires).getTime() - Date.now();
                     const timeLeftB = new Date(b.expires).getTime() - Date.now();
                     return timeLeftA - timeLeftB;
+                });
+
+                let i = 0;
+            // Inject activity creator
+            function recursive() {
+                if (!filtered[i]) {
+                    res.json(buildSendDataPacket(filtered));
+                    return;
+                }
+                fitmatch.getSqlManager().getUserFromId(filtered[i].userId)
+                .then(e => {
+                    const data = sanitizeDataReceivedForSingleObject(e);
+                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                    filtered[i].user = user;
+                    inject2();
                 })
-                res.json(buildSendDataPacket(filtered));
+                function inject2() {
+                    // Inject every user object to
+                    if (!filtered[i]) {
+                        recursive();
+                        return;
+                    }
+                    fitmatch.getSqlManager().getActivityJoins(filtered[i].id)
+                        .then(e => {
+                            const joinsData = sanitizeDataReceivedForArrayOfObjects(e, "userId");
+                            const obj = [];
+                            let index = 0;
+                            function userRecursive() {
+                                if (!joinsData[index]) {
+                                    filtered[i].joinedUsers = obj;
+                                    i++;
+                                    recursive();
+                                    return;
+                                }
+                                function recursiveNext() {
+                                    index++;
+                                    userRecursive();
+                                }
+                                const userId = joinsData[index].userId;
+                                if (fitmatch.userManager.containsKey(userId)) {
+                                    const user = fitmatch.userManager.get(userId).user;
+                                    obj.push(user);
+                                    recursiveNext();
+                                } else {
+                                    fitmatch.sqlManager.getUserFromId(userId)
+                                    .then(e => {
+                                        const innerUserData = sanitizeDataReceivedForSingleObject(e);
+                                        const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
+                                        obj.push(user);
+                                        recursiveNext();
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                                    })
+                                }
+                            }
+                            userRecursive();
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                        })
+                }
+            }
+            // Run recursive
+            recursive();
             }
             let i = 0;
             const feed = [];
-            function recursive() {
+            function recursive1() {
                 this.getActivitiesFromUserId(data[i])
                 .then(e => {
                     const activitiesData = e[0];
@@ -290,11 +356,11 @@ class SQLManager {
                     
                 }).catch(err => console.log(err)).finally(e => {
                     i++;
-                    if (data[i]) recursive;
+                    if (data[i]) recursive1();
                     else sendData(feed);
                 })
             }
-            recursive();
+            recursive1();
         })
     }
 

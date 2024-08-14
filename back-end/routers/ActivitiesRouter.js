@@ -43,7 +43,6 @@ const router = express.Router();
 
 // Not recommended
 router.get('/', tokenRequired, function (req, res, next) {
-    console.warn("peticion");
     // get all activities
     sqlManager.getAllActivities()
         .then(activities => {
@@ -133,11 +132,7 @@ router.get("/feed", tokenRequired, (req, res, next) => {
 
 // POST, creación de un nuevo Activities
 router.post('/create', tokenRequired, function (req, res, next) {
-
-    console.log("desde backend: " + req.body.title);
-    // Obtener la fecha actual
-    const currentDate = new Date();
-
+    
     // Obtener la fecha de expiración del cuerpo de la solicitud
     const expiresInput = req.body.expires ? new Date(req.body.expires) : null;
     if (!expiresInput) {
@@ -215,7 +210,66 @@ router.get("/getown", tokenRequired, (req, res, next) => {
     fitmatch.sqlManager.getActivitiesFromUserId(id)
         .then(e => {
             const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
-            res.json(buildSendDataPacket(data));
+            const filtered = sqlManager.filterActivities(data);
+            let i = 0;
+            // Inject activity creator
+            function recursive() {
+                if (!filtered[i]) {
+                    res.json(buildSendDataPacket(filtered));
+                    return;
+                }
+                function inject2() {
+                    // Inject every user object to
+                    if (!filtered[i]) {
+                        recursive();
+                        return;
+                    }
+                    fitmatch.getSqlManager().getActivityJoins(filtered[i].id)
+                        .then(e => {
+                            const joinsData = sanitizeDataReceivedForArrayOfObjects(e, "userId");
+                            const obj = [];
+                            let index = 0;
+                            function userRecursive() {
+                                if (!joinsData[index]) {
+                                    filtered[i].joinedUsers = obj;
+                                    i++;
+                                    recursive();
+                                    return;
+                                }
+                                function recursiveNext() {
+                                    index++;
+                                    userRecursive();
+                                }
+                                const userId = joinsData[index].userId;
+                                if (fitmatch.userManager.containsKey(userId)) {
+                                    const user = fitmatch.userManager.get(userId).user;
+                                    obj.push(user);
+                                    recursiveNext();
+                                } else {
+                                    fitmatch.sqlManager.getUserFromId(userId)
+                                    .then(e => {
+                                        const innerUserData = sanitizeDataReceivedForSingleObject(e);
+                                        const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
+                                        obj.push(user);
+                                        recursiveNext();
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                                    })
+                                }
+                            }
+                            userRecursive();
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                        })
+                }
+                inject2();
+            }
+            // Run recursive
+            recursive();
         })
         .catch(err => {
             console.log(err);
