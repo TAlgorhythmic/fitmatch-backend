@@ -218,6 +218,7 @@ class SQLManager {
 
     filterActivities(array) {
         return array.filter(item => {
+            if (!item) return false;
             const isExpired = isActivityExpired(item);
             if (isExpired) {
                 garbage.push(item);
