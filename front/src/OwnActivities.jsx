@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import BaseController from './controllers/BaseController';
 import { Row, Col } from 'react-bootstrap';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import OwnActivityPost from './components/OwnActivities/OwnActivityPost';
 import ActivitiesController from './controllers/ActivitiesController';
 import './OwnActivities.css';

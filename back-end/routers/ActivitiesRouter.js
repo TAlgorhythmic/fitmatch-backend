@@ -43,6 +43,7 @@ const router = express.Router();
 
 // Not recommended
 router.get('/', tokenRequired, function (req, res, next) {
+    console.warn("peticion");
     // get all activities
     sqlManager.getAllActivities()
         .then(activities => {
@@ -63,11 +64,14 @@ router.get('/', tokenRequired, function (req, res, next) {
                     const data = sanitizeDataReceivedForSingleObject(e);
                     const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                     filtered[i].user = user;
-                    i++;
                     inject2();
                 })
                 function inject2() {
                     // Inject every user object to
+                    if (!filtered[i]) {
+                        recursive();
+                        return;
+                    }
                     fitmatch.getSqlManager().getActivityJoins(filtered[i].id)
                         .then(e => {
                             const joinsData = sanitizeDataReceivedForArrayOfObjects(e, "userId");
@@ -76,19 +80,26 @@ router.get('/', tokenRequired, function (req, res, next) {
                             function userRecursive() {
                                 if (!joinsData[index]) {
                                     filtered[i].joinedUsers = obj;
+                                    i++;
                                     recursive();
                                     return;
+                                }
+                                function recursiveNext() {
+                                    index++;
+                                    userRecursive();
                                 }
                                 const userId = joinsData[index].userId;
                                 if (fitmatch.userManager.containsKey(userId)) {
                                     const user = fitmatch.userManager.get(userId).user;
                                     obj.push(user);
+                                    recursiveNext();
                                 } else {
                                     fitmatch.sqlManager.getUserFromId(userId)
                                     .then(e => {
                                         const innerUserData = sanitizeDataReceivedForSingleObject(e);
                                         const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
                                         obj.push(user);
+                                        recursiveNext();
                                     })
                                     .catch(err => {
                                         console.log(err);

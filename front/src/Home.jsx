@@ -7,6 +7,7 @@ import ActivityPostHome from './components/Home/ActivityPostHome';
 import './Home.css';
 import { showPopup } from './Utils/Utils';
 import { OK } from '../../back-end/api/packets/StatusCodes';
+import ActivitiesController from './controllers/ActivitiesController';
 
 function Home() {
     const [activities, setActivities] = useState([]);
@@ -51,6 +52,7 @@ function Home() {
     useEffect(() => {
         async function getActivities() {
             const activitiesData = await ActivitiesController.getAll();
+            console.log(activitiesData);
             if (activitiesData.status === 0) {
                 if (activitiesData.data.length) setActivities(activitiesData.data);
                 else console.log("No data found (array empty).");
@@ -58,8 +60,6 @@ function Home() {
                 console.log('Error: ', activitiesData);
             }
         }
-
-        getActivities();
 
         if (isValidToken) {
             getActivities();
