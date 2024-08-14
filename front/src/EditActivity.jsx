@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import './CreateActivity.css';
 import { showPopup } from './Utils/Utils.js';
 import ActivitiesController from './controllers/ActivitiesController.js';
@@ -6,6 +7,24 @@ import ActivitiesController from './controllers/ActivitiesController.js';
 function EditActivity() {
     const token = localStorage.getItem('authToken');
     const ActivityController = new ActivitiesController(token);
+    const { id } = useParams();
+    const [activity, setActivity] = useState({});
+    const [expires, setExpires] = useState(undefined);
+
+    useEffect(() => {
+        async function getActivity() {
+            await ActivityController.getActivityById(id)
+                .then(response => {
+                    setActivity(response);
+                    setExpires(response.expires);
+                })
+                .catch(error => {
+                    showPopup("Error Loading Activity", error, false);
+                });
+        }
+
+        getActivity();
+    }, []);
 
     useEffect(() => {
         async function getPressedButton() {
@@ -15,18 +34,11 @@ function EditActivity() {
             const expiresInput = document.getElementById('expires').value;
 
             try {
-                const res = await ActivityController.createActivity(titleInput, descriptionInput, expiresInput);
-                if (res) {
-                    showPopup("ACTIVIDAD CREADA CORRECTAMENTE", "", false);
-                    document.getElementById('title').value = "";
-                    document.getElementById('description').value = "";
-                    document.getElementById('expires').value = "";
-                } else {
-                    showPopup("ERROR AL CREAR ACTIVIDAD", "", true);
-                }
+                await ActivityController.updateActivity(id, titleInput, descriptionInput, expiresInput);
+                showPopup("ACTIVIDAD ACTUALIZADA CORRECTAMENTE", "", false);
             } catch (error) {
-                console.error('Error al crear la actividad:', error);
-                showPopup("ERROR AL CREAR ACTIVIDAD", "", true);
+                console.error('Error al actualizar la actividad:', error);
+                showPopup("ERROR AL ACTUALIZAR ACTIVIDAD", error.message, true);
             }
         }
 
@@ -40,19 +52,27 @@ function EditActivity() {
         };
     }, []);
 
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setActivity(prevState => ({
+            ...prevState,
+            [id]: value
+        }));
+    };
+
     return (
         <>
             <form className='form-create-activity'>
-                <p className="title">CREATE ACTIVITY</p>
+                <p className="title">EDIT ACTIVITY</p>
                 <div>
                     <label>
                         <span>Title</span>
-                        <input id="title" className="input-activity" type="text" placeholder="" required="" />
+                        <input id="title" className="input-activity" type="text" placeholder="" required="" value={activity.title} onChange={handleChange} />
                     </label>
 
                     <label>
                         <span>Description</span>
-                        <input id="description" className="input-activity" type="text" placeholder="" required="" />
+                        <input id="description" className="input-activity" type="text" placeholder="" required="" value={activity.description} onChange={handleChange} />
                     </label>
                 </div>
 
