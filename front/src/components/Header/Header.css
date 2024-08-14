@@ -88,13 +88,13 @@
 }
 
 .customTextLogo {
-    color: #f0b71d !important;
+    color: #ff6600 !important;
     font-family: 'Pacifico', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 2em !important;
 }
 
 .customNavbar a:hover svg {
-    fill: #e59400;
+    fill: #c34f02;
     /* Naranja oscuro */
 }
 

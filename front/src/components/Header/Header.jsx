@@ -40,7 +40,7 @@ function Header() {
                     <button className='buttonMakeFriends'>
                         <a href="/friends" className='makeFriends'>
                             <span>
-                                <PersonFillAdd size={32} color='#f0b71d' />
+                                <PersonFillAdd size={32} color='#ff6600' />
                             </span>
                         </a>
                     </button>
@@ -49,7 +49,7 @@ function Header() {
                 <div className='navbar-icons-right'>
                     <Notifications />
                     <a href="/user/profile">
-                        <PersonCircle size={32} color='#f0b71d' />
+                        <PersonCircle size={32} color='#ff6600' />
                     </a>
                 </div>
             </nav>
