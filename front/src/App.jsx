@@ -47,11 +47,11 @@ function App() {
         {
           isHome ? <SubHeader /> : <></>
         }
-        <Container>
+        <div className='mainContainer'>
           <div className="mainContent">
             <Outlet />
           </div>
-        </Container>
+        </div>
       </div>
       <PopupMessage isVisible={popupState.isVisible} title={popupState.title} message={popupState.message} isError={popupState.isError} onClose={onClose} />
     </>
