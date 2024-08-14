@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Person, Envelope, Phone, GeoAlt } from 'react-bootstrap-icons';
+import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+
+const libraries = ["places"];
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({
@@ -14,6 +17,13 @@ const UserProfile = () => {
         img: '',
         city: ''
     });
+
+    const { isLoaded } = useJsApiLoader({
+        googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+        libraries: libraries
+      });
+    
+      const ref = useRef(null)
 
     const [error, setError] = useState(null);
 
@@ -78,6 +88,16 @@ const UserProfile = () => {
     if (error) {
         return <div>{error}</div>;
     }
+    
+    function onPlaceChanged() {
+        if (ref.current.getPlace() && ref.current.getPlace().geometry)
+            setUserData({
+          ...userData,
+          city: ref.current.getPlace().formatted_address,
+          latitude: ref.current.getPlace().geometry.location.lat(),
+          longitude: ref.current.getPlace().geometry.location.lng()
+        })
+      }
 
     return (
         <Container>
@@ -140,17 +160,26 @@ const UserProfile = () => {
                 </Row>
                 <Row>
                 <Col md={6}>
-                <Form.Group className="mb-3">
-                    <Form.Label>City</Form.Label>
-                    <InputGroup>
-                        <InputGroup.Text><GeoAlt /></InputGroup.Text>
-                        <Form.Control
-                            type="text"
-                            value={userData.city}
-                            onChange={handleChange}
-                        />
-                    </InputGroup>
-                </Form.Group>
+                {
+          isLoaded ? (
+            <Form.Group className="mb-3">
+              <Form.Label><GeoAlt /> City</Form.Label>
+              <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
+                <InputGroup>
+                  <InputGroup.Text><GeoAlt /></InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    name="city"
+                    value={userData.city}
+                    onChange={handleChange}
+                    placeholder="Enter your city"
+                  />
+                </InputGroup>
+              </Autocomplete>
+            </Form.Group>
+          ) : <></>
+        }
+                
                 </Col>
                <Col md={6}>
                 <Form.Group className="mb-3">
