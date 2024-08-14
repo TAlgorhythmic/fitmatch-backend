@@ -16,6 +16,7 @@
     padding-left: 0;
 }
 
+
 .form-create-activity {
     display: flex;
     flex-direction: column;
@@ -29,6 +30,13 @@
 
 .input-activity {
     width: 100%;
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    background-color: #f8f9fa;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .date-input {
