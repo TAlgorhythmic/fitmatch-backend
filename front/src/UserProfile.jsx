@@ -21,6 +21,15 @@ const UserProfile = () => {
         city: ''
     });
 
+   
+    const sportsInterests = [
+        'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
+        'CrossFit', 'Bodybuilding', 'Pilates', 'Boxing', 'HIIT',
+        'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'
+      ];
+    
+      const [selectedInterests, setSelectedInterests] = useState([]);
+
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
         libraries: libraries
@@ -44,6 +53,10 @@ const UserProfile = () => {
         .then(data => {
             if (data.status === OK) {
                 setUserData(data.data);
+                const initialSelectedInterests = Array.from(new Set(
+                    data.data.trainingPreferences.split(', ').filter(Boolean)
+                ));
+                setSelectedInterests(initialSelectedInterests);
             } else if (data.status === NO_PERMISSION) {
                 setError(data);
             } else {
@@ -90,6 +103,14 @@ const UserProfile = () => {
             }
         } catch (error) {
             alert('Error updating profile');
+        }
+    };
+
+    const handleInterestClick = (interest) => {
+        if (selectedInterests.includes(interest)) {
+            setSelectedInterests(selectedInterests.filter(i => i !== interest));
+        } else {
+            setSelectedInterests([...selectedInterests, interest]);
         }
     };
 
@@ -171,7 +192,6 @@ const UserProfile = () => {
                 {
           isLoaded ? (
             <Form.Group className="mb-3">
-              <Form.Label><GeoAlt /> City</Form.Label>
               <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
                 <InputGroup>
                   <InputGroup.Text><GeoAlt /></InputGroup.Text>
@@ -180,7 +200,6 @@ const UserProfile = () => {
                     name="city"
                     value={userData.city}
                     onChange={handleChange}
-                    placeholder="Enter your city"
                   />
                 </InputGroup>
               </Autocomplete>
@@ -191,7 +210,7 @@ const UserProfile = () => {
                 </Col>
                <Col md={6}>
                 <Form.Group className="mb-3">
-                    <Form.Label>Nivel</Form.Label>
+                    
                     <Form.Select
                         name="proficiency"
                         value={userData.proficiency}
@@ -205,10 +224,18 @@ const UserProfile = () => {
                 </Col>
                 </Row>
                 <Form.Group className="mb-3">
-                    <Form.Label>Intereses</Form.Label>
-                    <Form.Control
-                        value={userData.trainingPreferences}
-                    />
+                    <div className="d-flex flex-wrap justify-content-center">
+                        {sportsInterests.map((interest) => (
+                            <Button
+                                key={interest}
+                                variant={selectedInterests.includes(interest) ? 'primary' : 'outline-primary'}
+                                className="me-2 mb-2 custom-preferences-btn"
+                                onClick={() => handleInterestClick(interest)}
+                            >
+                                {interest}
+                            </Button>
+                        ))}
+                    </div>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Control
