@@ -84,22 +84,27 @@ router.post('/create', tokenRequired, function (req, res, next) {
 
     // Obtener la fecha de expiración del cuerpo de la solicitud
     const expiresInput = req.body.expires ? new Date(req.body.expires) : null;
+    if (!expiresInput) {
+        res.json(buildInvalidPacket("You must specify the expiration date."));
+        return;
+    }
 
-    // Sumar 2 horas a la fecha de expiración, si está definida
-    const expiresDate = expiresInput ? new Date(expiresInput.getTime() + 2 * 60 * 60 * 1000) : null;
+    const title = req.body.title;
+    if (!title) {
+        res.json(buildInvalidPacket("A title is required."));
+        return;
+    }
+
+    const description = req.body.description ? req.body.description : null;
 
     // Crear un nuevo objeto con la data recibida y añadir los campos postDate y expires
-    const activityData = {
-        ...req.body,
-        postDate: currentDate,
-        expires: expiresDate,
-        userId: req.token.id
-    };
-
-    Activities.create(activityData)
-        .then((item) => item.save())
-        .then((item) => res.json({ ok: true, data: item }))
-        .catch((error) => res.json({ ok: false, error }));
+    fitmatch.getSqlManager().createNewActivity(title, description, expiresInput, req.token.id)
+    .then(e => {
+        res.json(buildSimpleOkPacket());
+    }).catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+    });
 });
 
 
@@ -142,10 +147,10 @@ router.get("/get/:id", tokenRequired, (req, res, next) => {
     const activityId = req.params.id;
 
     fitmatch.sqlManager.getActivityFromId(activityId)
-        .then(e => {
-            const data = sanitizeDataReceivedForSingleObject(e);
-            res.json(buildSendDataPacket(data));
-        })
+    .then(e => {
+        const data = sanitizeDataReceivedForSingleObject(e);
+        res.json(buildSendDataPacket(data));
+    })
 })
 
 router.get("/getown", tokenRequired, (req, res, next) => {

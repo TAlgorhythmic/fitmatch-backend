@@ -2,11 +2,15 @@ import { useEffect, useState } from 'react';
 import './CreateActivity.css';
 import { showPopup } from './Utils/Utils.js';
 import ActivitiesController from './controllers/ActivitiesController.js';
+import { OK } from "./Utils/StatusCodes.js";
+import { Navigate } from "react-router-dom";
 
 function CreateActivity() {
 
     const token = localStorage.getItem('authToken');
     const ActivityController = new ActivitiesController(token);
+
+    const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
         async function getPressedButton() {
@@ -17,11 +21,12 @@ function CreateActivity() {
 
             try {
                 const res = await ActivityController.createActivity(titleInput, descriptionInput, expiresInput);
-                if (res) {
-                    showPopup("ACTIVIDAD CREADA CORRECTAMENTE", "", false);
+                if (res.status === OK) {
+                    showPopup("¡Actividad creada correctamente!", "", false);
                     document.getElementById('title').value = "";
                     document.getElementById('description').value = "";
                     document.getElementById('expires').value = "";
+                    setRedirect(true);
                 } else {
                     showPopup("ERROR AL CREAR ACTIVIDAD", "", true);
                 }
@@ -40,6 +45,8 @@ function CreateActivity() {
             plusButton.removeEventListener('click', getPressedButton);
         };
     }, []);
+
+    if (redirect) return <Navigate to="/agenda"/>;
 
     return (
         <>
