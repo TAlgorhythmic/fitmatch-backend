@@ -2,7 +2,7 @@ import f from "./Fitmatch.js";
 
 export default class User {
 
-    constructor(id, name, lastname, email, phone, description, proficiency, trainingPreferences, img, city, lat, long, isSetup, monday, tuesday, wednesday, thursday, friday, saturday, sunday, timetable1, timetable2) {
+    constructor(id, name, lastname, email, phone, description, proficiency, trainingPreferences, img, city, lat, long, isSetup, monday, tuesday, wednesday, thursday, friday, saturday, sunday, timetable1, timetable2, country) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -10,7 +10,13 @@ export default class User {
         this.phone = phone;
         this.description = description;
         this.proficiency = proficiency;
-        this.trainingPreferences = trainingPreferences;
+        if (typeof trainingPreferences === "string" || trainingPreferences instanceof String) {
+            this.trainingPreferences = trainingPreferences.split(";");
+        } else if (Array.isArray(trainingPreferences)) {
+            this.trainingPreferences = trainingPreferences;
+        } else {
+            this.trainingPreferences = null;
+        }
         this.img = img;
         this.city = city;
         this.latitude = parseFloat(lat);
@@ -25,6 +31,7 @@ export default class User {
         this.sunday = sunday;
         this.timetable1 = timetable1;
         this.timetable2 = timetable2;
+        this.country = country ? country : null;
     }
 
     indexChange(field, value) {
@@ -59,7 +66,7 @@ export default class User {
     }
     setTrainingPreferences(trainingPreferences) {
         this.trainingPreferences = trainingPreferences;
-        this.indexChange("trainingPreferences", trainingPreferences);
+        this.indexChange("trainingPreferences", Array.isArray(trainingPreferences) ? trainingPreferences.join(";") : null);
     }
     setImg(img) {
         this.img = img ? img : "img1.jpg";
@@ -71,19 +78,19 @@ export default class User {
     }
     setLatitude(lat) {
         this.latitude = lat;
-        this.indexChange("latitude", lat.toString());
+        this.indexChange("latitude", lat ? lat.toString() : null);
     }
     setLongitude(long) {
         this.longitude = long;
-        this.indexChange("longitude", long.toString());
+        this.indexChange("longitude", long ? long.toString() : null);
     }
     setLocation(city, latitude, longitude) {
         this.city = city;
         this.latitude = latitude;
         this.longitude = longitude;
         this.indexChange("city", city);
-        this.indexChange("latitude", latitude.toString());
-        this.indexChange("longitude", longitude.toString());
+        this.indexChange("latitude", latitude ? latitude.toString() : null);
+        this.indexChange("longitude", longitude ? longitude.toString() : null);
     }
     setIsSetup(isSetup) {
         this.isSetup = isSetup;
@@ -100,6 +107,10 @@ export default class User {
     setWednesday(bool) {
         this.wednesday = bool;
         this.indexChange("wednesday", bool);
+    }
+    setCountry(str) {
+        this.country = str;
+        this.indexChange("country", str);
     }
     setThursday(bool) {
         this.thursday = bool;
