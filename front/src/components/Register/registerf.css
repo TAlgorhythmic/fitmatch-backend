@@ -1,35 +1,40 @@
 .time-picker-container {
     display: flex;
-    gap: 30px; /* Aumenta el espacio entre los elementos */
+    gap: 20px; /* Reduce el espacio entre los elementos */
+    justify-content: center; /* Centra los elementos en el contenedor */
   }
   
   .time-picker-group {
     display: flex;
     align-items: center;
+    background-color: #000; /* Fondo negro */
+    border-radius: 6px;
+    padding: 4px 8px; /* Ajusta el padding para que el grupo sea más compacto */
   }
   
   .time-picker-icon {
     background-color: white; /* Ajusta el color de fondo */
-  
     border-radius: 6px 0 0 6px;
-    padding: 10px; /* Aumenta el padding para hacer el ícono más grande */
+    padding: 6px; /* Reduce el padding para un tamaño más compacto */
   }
   
   .time-picker-input {
     border: none;
     outline: none;
-    background-color:black;
+    background-color: black;
     border-radius: 0 6px 6px 0;
     box-shadow: none;
-    padding: 5.6px; /* Aumenta el padding para hacer el campo más grande */
-    font-size: 1.25rem; /* Aumenta el tamaño de la fuente */
+    padding: 5px 8px; /* Reduce el padding para ajustar el tamaño */
+    font-size: 1rem; /* Reduce el tamaño de la fuente */
+    color: white;
   }
+  
   .time-picker-input input {
     box-shadow: none;
     width: 100%;
-    height: 100%;
+    height: auto; /* Deja que el input ajuste su altura */
     border-radius: auto;
-    
+    color: white;
   }
   
   .time-picker-input:focus,
@@ -44,21 +49,23 @@
   }
   
   .input-group-text .bi-clock {
-    font-size: 1.5rem; /* Aumenta el tamaño del ícono */
-    color:black;
+    font-size: 1.25rem; /* Ajusta el tamaño del ícono */
+    color: black;
   }
+  
   .react-time-picker__wrapper {
     border: none; /* Elimina el borde */
     background-color: black; /* Asegúrate de que el fondo sea negro */
     color: white; /* Asegura que el texto sea visible */
     border-radius: 6px; /* Aplica un borde redondeado si es necesario */
   }
+  
   .dias-semana {
     display: flex;
     justify-content: space-between; /* Espaciado igual entre elementos */
     align-items: center; /* Alinea verticalmente al centro */
     flex-wrap: wrap; /* Permite que los elementos se envuelvan si es necesario */
-    gap: 20px; /* Espaciado entre los elementos */
+    gap: 10px; /* Reduce el espaciado entre los elementos */
   }
   
   .dias-semana .form-group {
@@ -71,11 +78,47 @@
     margin-bottom: 5px; /* Espacio reducido entre la etiqueta y el interruptor */
     color: #ff6600; /* Aplica el color naranja */
     font-weight: bold;
+    font-size: 0.9rem; /* Ajusta el tamaño de la fuente */
   }
   
   .dias-semana .react-switch {
     margin-top: 5px; /* Asegura un pequeño espacio entre el label y el switch */
   }
+  
+  .custom-button-selected {
+    background-color: #ff6600;
+    color: white;
+    border: 2px solid #ff6600;
+  }
+  
+  .custom-button-unselected {
+    background-color: transparent;
+    color: #ff6600;
+    border: 2px solid #ff6600;
+  }
+  
+  .horario-entrenamiento {
+    display: flex;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center;     /* Centra los elementos verticalmente */
+    flex-direction: column;  /* Coloca los elementos en columna */
+    text-align: center;      /* Centra el texto */
+    gap: 10px;               /* Espacio entre elementos */
+  }
+  
+  .time-picker-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Asegura que ocupe el ancho completo del contenedor */
+  }
+  
+  .time-picker-group {
+    display: flex;
+    align-items: center;
+    background-color: #000; /* Fondo negro */
+    border-radius: 6px;
+    padding: 4px 8px; /* Reduce el padding para que el grupo sea más compacto */
+  }  
   
   
   
