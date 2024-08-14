@@ -9,7 +9,7 @@
   }
   
   .time-picker-icon {
-    background-color: #4ce12a; /* Ajusta el color de fondo */
+    background-color: white; /* Ajusta el color de fondo */
   
     border-radius: 6px 0 0 6px;
     padding: 10px; /* Aumenta el padding para hacer el ícono más grande */
@@ -18,22 +18,18 @@
   .time-picker-input {
     border: none;
     outline: none;
-    background-color:gray;
+    background-color:black;
     border-radius: 0 6px 6px 0;
     box-shadow: none;
     padding: 5.6px; /* Aumenta el padding para hacer el campo más grande */
     font-size: 1.25rem; /* Aumenta el tamaño de la fuente */
   }
-  
   .time-picker-input input {
-   
     box-shadow: none;
     width: 100%;
-    
     height: 100%;
     border-radius: auto;
-    background-color:
-    font-size: auto; /* Aumenta el tamaño de la fuente */
+    
   }
   
   .time-picker-input:focus,
@@ -43,13 +39,42 @@
   
   .input-group-text {
     border: 1px solid #ced4da;
-    background-color: palevioletred;
+    background-color: white;
     border-radius: 6px 0 0 6px;
   }
   
   .input-group-text .bi-clock {
     font-size: 1.5rem; /* Aumenta el tamaño del ícono */
-    color:rebeccapurple;
+    color:black;
+  }
+  .react-time-picker__wrapper {
+    border: none; /* Elimina el borde */
+    background-color: black; /* Asegúrate de que el fondo sea negro */
+    color: white; /* Asegura que el texto sea visible */
+    border-radius: 6px; /* Aplica un borde redondeado si es necesario */
+  }
+  .dias-semana {
+    display: flex;
+    justify-content: space-between; /* Espaciado igual entre elementos */
+    align-items: center; /* Alinea verticalmente al centro */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan si es necesario */
+    gap: 20px; /* Espaciado entre los elementos */
+  }
+  
+  .dias-semana .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .dias-semana .form-label {
+    margin-bottom: 5px; /* Espacio reducido entre la etiqueta y el interruptor */
+    color: #ff6600; /* Aplica el color naranja */
+    font-weight: bold;
+  }
+  
+  .dias-semana .react-switch {
+    margin-top: 5px; /* Asegura un pequeño espacio entre el label y el switch */
   }
   
   

@@ -46,26 +46,6 @@ const Users = sequelize.define(
     { tableName: 'users', timestamps: false }
 );
 
-// GET lista de todos los Userss
-// vinculamos la ruta /api/Userss a la función declarada
-// si todo ok devolveremos un objeto tipo:
-//     {ok: true, data: [lista_de_objetos_Users...]}
-// si se produce un error:
-//     {ok: false, error: mensaje_de_error}
-
-router.get('/', tokenRequired, function (req, res, next) {
-
-    Users.findAll()
-        .then(Userss => {
-            res.json(Userss)
-        })
-        .catch(error => {
-            console.log(error);
-            res.json(buildInternalErrorPacket("Backend internal error. Check logs if you're an admin."));
-        })
-
-});
-
 router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, next) => {
     if (!req.file) {
         res.json(buildInvalidPacket("Image is empty."));
@@ -282,7 +262,6 @@ router.post("/setup", tokenRequired, (req, res, next) => {
 
 // put modificació d'un Users
 router.post('/edit', tokenRequired, function (req, res, next) {
-    console.log(req.body);
     const name = req.body.name;
     if (!name) {
         res.json(buildInvalidPacket("The name is empty."));
@@ -393,7 +372,6 @@ router.put('/changepasswd', tokenRequired, function (req, res, next) {
 router.get("/profile", tokenRequired, (req, res, next) => {
     const id = req.token.id;
     if (fitmatch.getUserManager().containsKey(id)) {
-        console.log(fitmatch.getUserManager().get(id).user);
         res.json(buildSendDataPacket(fitmatch.getUserManager().get(id).user));
     } else {
         fitmatch.getSqlManager().getUserFromId(id)
@@ -401,7 +379,6 @@ router.get("/profile", tokenRequired, (req, res, next) => {
                 const data = sanitizeDataReceivedForSingleObject(e);
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
                 fitmatch.getUserManager().put(user.id, user);
-                console.log(user);
                 res.json(buildSendDataPacket(user));
             })
             .catch(err => {
