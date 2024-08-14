@@ -241,6 +241,10 @@ class SQLManager {
         return fitmatch.getSql().query(`UPDATE activities SET title = ? description = ? expires = ? WHERE id = ?`, { replacements: [title, description, expires, id], type: QueryTypes.UPDATE })
     }
 
+    getActivityJoins(id) {
+        return fitmatch.sql.query("SELECT * FROM joins_activities WHERE postId = ?", { replacements: [id], type: QueryTypes.SELECT })
+    }
+
     getRejectionsById(id) {
         return fitmatch.sql.query(`SELECT CASE WHEN issuer = ? THEN rejected ELSE issuer END AS friendId FROM rejects WHERE issuer = ? OR rejected = ?;`, { replacements: [id, id, id], type: QueryTypes.SELECT });
     }

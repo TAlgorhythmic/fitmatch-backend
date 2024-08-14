@@ -41,27 +41,72 @@ const router = express.Router();
 // si se produce un error:
 //     {ok: false, error: mensaje_de_error}
 
+// Not recommended
 router.get('/', tokenRequired, async function (req, res, next) {
+    // get all activities
     sqlManager.getAllActivities()
         .then(activities => {
+            // sanitize data
             const data = sanitizeDataReceivedForArrayOfObjects(activities, "id");
+            // filter activities and remove expired ones.
             const filtered = sqlManager.filterActivities(data);
+            // Index
             let i = 0;
+            // Inject activity creator
             function recursive() {
                 if (!filtered[i]) {
                     res.json(buildSendDataPacket(filtered));
                     return;
                 }
                 fitmatch.getSqlManager().getUserFromId(filtered[i].userId)
-                    .then(e => {
-                        const data = e[0];
-                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
-                        filtered[i].user = user;
-                        i++;
-                        recursive();
-                    })
+                .then(e => {
+                    const data = sanitizeDataReceivedForSingleObject(e);
+                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                    filtered[i].user = user;
+                    i++;
+                    inject2();
+                })
+                function inject2() {
+                    // Inject every user object to
+                    fitmatch.getSqlManager().getActivityJoins(filtered[i].id)
+                        .then(e => {
+                            const joinsData = sanitizeDataReceivedForArrayOfObjects(e, "userId");
+                            const obj = [];
+                            let index = 0;
+                            function userRecursive() {
+                                if (!joinsData[index]) {
+                                    filtered[i].joinedUsers = obj;
+                                    recursive();
+                                    return;
+                                }
+                                const userId = joinsData[index].userId;
+                                if (fitmatch.userManager.containsKey(userId)) {
+                                    const user = fitmatch.userManager.get(userId).user;
+                                    obj.push(user);
+                                } else {
+                                    fitmatch.sqlManager.getUserFromId(userId)
+                                    .then(e => {
+                                        const innerUserData = sanitizeDataReceivedForSingleObject(e);
+                                        const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
+                                        obj.push(user);
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                                    })
+                                }
+                            }
+                            userRecursive();
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                        })
+                }
             }
+            // Run recursive
             recursive();
+
         })
         .catch(error => {
             console.log(error);
@@ -99,12 +144,12 @@ router.post('/create', tokenRequired, function (req, res, next) {
 
     // Crear un nuevo objeto con la data recibida y añadir los campos postDate y expires
     fitmatch.getSqlManager().createNewActivity(title, description, expiresInput, req.token.id)
-    .then(e => {
-        res.json(buildSimpleOkPacket());
-    }).catch(err => {
-        console.log(err);
-        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-    });
+        .then(e => {
+            res.json(buildSimpleOkPacket());
+        }).catch(err => {
+            console.log(err);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+        });
 });
 
 
@@ -147,24 +192,24 @@ router.get("/get/:id", tokenRequired, (req, res, next) => {
     const activityId = req.params.id;
 
     fitmatch.sqlManager.getActivityFromId(activityId)
-    .then(e => {
-        const data = sanitizeDataReceivedForSingleObject(e);
-        res.json(buildSendDataPacket(data));
-    })
+        .then(e => {
+            const data = sanitizeDataReceivedForSingleObject(e);
+            res.json(buildSendDataPacket(data));
+        })
 })
 
 router.get("/getown", tokenRequired, (req, res, next) => {
     const id = req.token.id;
 
     fitmatch.sqlManager.getActivitiesFromUserId(id)
-    .then(e => {
-        const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
-        res.json(buildSendDataPacket(data));
-    })
-    .catch(err => {
-        console.log(err);
-        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-    })
+        .then(e => {
+            const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
+            res.json(buildSendDataPacket(data));
+        })
+        .catch(err => {
+            console.log(err);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+        })
 });
 
 router.delete("/delete/:id", tokenRequired, (req, res, next) => {
@@ -184,10 +229,10 @@ router.delete("/delete/:id", tokenRequired, (req, res, next) => {
         fitmatch.sqlManager.removeActivityCompletely(activityId);
         res.json(buildSimpleOkPacket());
     })
-    .catch(err => {
-        console.log(err);
-        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-    })
+        .catch(err => {
+            console.log(err);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+        })
 })
 
 export default router;
