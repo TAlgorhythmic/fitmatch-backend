@@ -70,7 +70,7 @@ function Home() {
     }
 
     if (isValidToken === false) {
-        return <Navigate to="/login" />;
+        return <Navigate to="/login" replace />;
     }
 
     return (
