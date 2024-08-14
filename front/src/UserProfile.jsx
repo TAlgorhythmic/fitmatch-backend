@@ -53,24 +53,24 @@ const UserProfile = () => {
                 'Content-Type': 'application/json'
             }
         })
-            .then(response => { return response.json() })
-            .then(data => {
-                if (data.status === OK) {
-                    setUserData(data.data);
-                    if (data.data.trainingPreferences) {
-                        const initialSelectedInterests = data.data.trainingPreferences.split(', ').filter(item => { return item })
-                        setSelectedInterests(initialSelectedInterests);
-                    }
-                } else if (data.status === NO_PERMISSION) {
-                    setError(data);
-                } else {
-                    showPopup("Data is invalid", data.error, true);
+        .then(response => {return response.json()})
+        .then(data => {
+            if (data.status === OK) {
+                setUserData(data.data);
+                if (data.data.trainingPreferences) {
+                    console.log(data.data.trainingPreferences)
+                    setSelectedInterests(data.data.trainingPreferences);
                 }
-            })
-            .catch(error => {
-                console.log('Error loading user data:', error);
-                setError('Failed to load profile. Please try again later.');
-            });
+            } else if (data.status === NO_PERMISSION) {
+                setError(data);
+            } else {
+                showPopup("Data is invalid", data.error, true);
+            }
+        })
+        .catch(error => {
+            console.log('Error loading user data:', error);
+            setError('Failed to load profile. Please try again later.');
+        });
     }, []);
 
     if (error && error.status === NO_PERMISSION) {

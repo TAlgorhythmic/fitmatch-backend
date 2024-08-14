@@ -58,11 +58,23 @@
     color: white;
 }
 
+.custom-preferences-btn.outline-primary:active {
+    color: black;
+    background-color: #9d4a13;
+    border-color: black;
+}
+
 .custom-preferences-btn.primary {
     background-color: #ff6600;
     /* Naranja */
     color: white;
     border-color: #ff6600;
+}
+
+.custom-preferences-btn.primary:active {
+    color: black;
+    background-color: #9d4a13;
+    border-color: black;
 }
 
 textarea.form-control {
