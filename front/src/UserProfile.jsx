@@ -57,7 +57,7 @@ const UserProfile = () => {
             if (data.status === OK) {
                 setUserData(data.data);
                 if (data.data.trainingPreferences) {
-                    console.log(data.data.trainingPreferences);
+                    console.log(data.data.trainingPreferences)
                     setSelectedInterests(data.data.trainingPreferences);
                 }
             } else if (data.status === NO_PERMISSION) {
