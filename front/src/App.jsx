@@ -15,7 +15,7 @@ function App() {
 
   const location = useLocation()
 
-  const [isHome, setIsHome] = useState(false);
+  const [showHome, setShowHome] = useState(false);
 
   const [popupState, setPopupState] = useState({
     isVisible: false,
@@ -34,8 +34,10 @@ function App() {
   }
 
   useEffect(() => {
-    if (location.pathname === '/') {
-      setIsHome(true);
+    if (location.pathname === '/' || location.pathname === '/create-activitie'
+      || location.pathname === 'agenda' || location.pathname === 'own-activities'
+    ) {
+      setShowHome(true);
     }
   }, [location])
 
@@ -45,7 +47,7 @@ function App() {
       <div className={"contenedorPrincipal " + (popupState.isVisible ? "darkened" : "")}>
         <Header />
         {
-          isHome ? <SubHeader /> : <></>
+          showHome ? <SubHeader /> : <></>
         }
         <div className='mainContainer'>
           <div className="mainContent">
