@@ -70,7 +70,7 @@ function Home() {
         showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
         return <Navigate to="/login" />;
     }
-
+    
     return (
         <>
             <div className="contenedorHome">

@@ -10,6 +10,8 @@ import Agenda from './Agenda.jsx'
 import ChangePassword from './components/Login/CambioContra.jsx'
 import CompletarRegistro from './components/Register/CompletarRegistro.jsx'
 import CreateActivity from './CreateActivity.jsx'
+import OwnActivities from './OwnActivities.jsx';
+import EditActivity  from './EditActivity.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 
@@ -25,6 +27,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="nuevaContra" element={<ChangePassword />} />
           <Route path="user/profile" element={<UserProfile />} />
           <Route path="formulario" element={<CompletarRegistro />} />
+          <Route path="ownactivities" element={<OwnActivities />} />
+          <Route path="activities/edit/:id" element={<EditActivity />} />
         </Route>
       </Routes>
     </BrowserRouter>
