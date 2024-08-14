@@ -104,6 +104,12 @@ class SQLManager {
             });
     }
 
+    createNewActivity(title, description, expires, userId) {
+        const time = new Date((new Date().getTime() + TIME_BEFORE_EXPIRES)).toISOString().slice(0, 19).replace("T", " ");
+        const expire = expires.toISOString().slice(0, 19).replace("T", " ");
+        return fitmatch.sql.query("INSERT INTO activities (title, description, postDate, expires, userId, tableVersion) VALUES(?, ?, ?, ?, ?, ?);", { replacements: [title, description, time, expire, userId, TABLES_VERSION] })
+    }
+
     removeActivityCompletely(id) {
         fitmatch.sql.query(`DELETE FROM activities WHERE id = ?;`, { replacements: [id], type: QueryTypes.DELETE })
         .then(e => {
@@ -237,6 +243,10 @@ class SQLManager {
 
     getRejectionsById(id) {
         return fitmatch.sql.query(`SELECT CASE WHEN issuer = ? THEN rejected ELSE issuer END AS friendId FROM rejects WHERE issuer = ? OR rejected = ?;`, { replacements: [id, id, id], type: QueryTypes.SELECT });
+    }
+
+    getRejectionByPair(id, other_id) {
+        return fitmatch.sql.query("SELECT * FROM rejects WHERE (issuer = ? AND rejected = ?) OR (issuer = ? AND rejected = ?);", { replacements: [id, other_id, other_id, id] });
     }
 
     getFriendsById(id) {

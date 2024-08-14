@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './Register.css';
 import { useNavigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
+import { INVALID, OK } from '../../Utils/StatusCodes';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -34,14 +35,16 @@ const Register = () => {
             });
 
             const data = await response.json();
-            if (data.status == 0) {
+            if (data.status === OK) {
                 const token = data.token;
                 localStorage.setItem('authToken', token);
                 setSuccess(true);
                 setError('');
                 navigate('/formulario');   
+            } else if (data.status === INVALID) {
+                showPopup("Invalid data", data.error, false);
             } else {
-                showPopup("Error", data.error, true);
+                showPopup("Unexpected error", data.error, true);
             }
             
         } catch (err) {

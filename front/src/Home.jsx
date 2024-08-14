@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import BaseController from './controllers/BaseController';
-import { Row, Col } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
 import ActivityPostHome from './components/Home/ActivityPostHome';
 import './Home.css';
+import { showPopup } from './Utils/Utils';
+import { OK } from '../../back-end/api/packets/StatusCodes';
 
 function Home() {
     const [activities, setActivities] = useState([]);
@@ -28,7 +30,7 @@ function Home() {
                 const contentType = response.headers.get('content-type');
                 if (contentType && contentType.includes('application/json')) {
                     const data = await response.json();
-                    setIsValidToken(data.valid);
+                    setIsValidToken(data.status === OK ? true : false);
                 } else {
                     console.error('Expected JSON, but got:', contentType);
                     setIsValidToken(false);
@@ -64,12 +66,8 @@ function Home() {
         }
     }, [isValidToken]); // Dependencia añadida
 
-    if (!isValidToken === null) {
-        // Renderizar un indicador de carga mientras se valida el token
-        return <div>Loading...</div>;
-    }
-
-    if (isValidToken === false) {
+    if (!isValidToken && isValidToken !== null) {
+        showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
         return <Navigate to="/login" />;
     }
 

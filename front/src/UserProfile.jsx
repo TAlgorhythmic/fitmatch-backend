@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Person, Envelope, Phone, GeoAlt } from 'react-bootstrap-icons';
+import { OK, NO_PERMISSION } from './Utils/StatusCodes';
+import { showPopup } from './Utils/Utils';
+import { Navigate } from 'react-router-dom';
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({
@@ -29,18 +32,23 @@ const UserProfile = () => {
         })
         .then(response => {return response.json()})
         .then(data => {
-            console.log('User data:', data);
-            if (!data.status === 0) {
-                throw new Error('Failed to fetch user profile');
+            if (data.status === OK) {
+                setUserData(data.data);
+            } else if (data.status === NO_PERMISSION) {
+                setError(data);
+            } else {
+                showPopup("Data is invalid", data.error, true);
             }
-            setUserData(data.data);
-            
         })
         .catch(error => {
             console.log('Error loading user data:', error);
             setError('Failed to load profile. Please try again later.');
         });
     }, []);
+
+    if (error && error.status === NO_PERMISSION) {
+        return <Navigate to="/login" />;
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -74,10 +82,6 @@ const UserProfile = () => {
             alert('Error updating profile');
         }
     };
-
-    if (error) {
-        return <div>{error}</div>;
-    }
 
     return (
         <Container>

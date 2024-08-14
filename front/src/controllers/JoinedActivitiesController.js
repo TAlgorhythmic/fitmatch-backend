@@ -6,7 +6,7 @@ class JoinedActivitiesController extends BaseController {
     }
 
     async getAllJoinedActivities() {
-        let data = {};
+        let data = undefined;
         await fetch(`${this.apiUrl}/`, {
             method: 'GET',
             headers: {
@@ -16,7 +16,7 @@ class JoinedActivitiesController extends BaseController {
         }).then(res =>
             res.json()
             .then(responseData => {
-                data = responseData.data;
+                data = responseData;
             })
             .catch(error => {
                 console.error('Error getAllJoinedActivities:', error);

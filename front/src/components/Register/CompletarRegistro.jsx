@@ -1,12 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Camera, Phone, Person, Envelope, GeoAlt } from 'react-bootstrap-icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './registerf.css';
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
+import { showPopup } from '../../Utils/Utils.js';
 
 const libraries = ["places"];
+
+// TODO safety
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -43,6 +47,7 @@ const RegisterForm = () => {
   const navigate = useNavigate();
 
   const [imageFile, setImageFile] = useState(null);
+  const [tokenValid, setTokenValid] = useState(true);
 
   const sportsInterests = [
     'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
@@ -63,12 +68,16 @@ const RegisterForm = () => {
         },
       });
       const userData = await response.json();
-      if (userData.status == 0) {
+      if (userData.status === OK) {
         setFormData((prevFormData) => ({
           ...prevFormData,
           firstName: userData.data.name,
           phone: userData.data.phone,
         }));
+      } else if (userData.status === NO_PERMISSION) {
+        setTokenValid(false);
+      } else {
+        showPopup("Something went wrong", userData.error, true);
       }
     };
 
@@ -123,11 +132,14 @@ const RegisterForm = () => {
 
       const imageResult = await imageUploadResponse.json();
 
-      if (imageResult.status !== 0) {
-        alert('hay error');
+      if (imageResult.status === 0) {
+        setFormData({ ...formData, img: imageResult.imageUrl });
+      } else if (imageResult.status === NO_PERMISSION) {
+        setTokenValid(false);
+      } else {
+        showPopup("Something went wrong", imageResult.error, true);
       }
 
-      setFormData({ ...formData, img: imageResult.imageUrl });
     }
 
     console.log(formData);
@@ -146,9 +158,10 @@ const RegisterForm = () => {
     if (result.status === 0) {
       console.log('Usuario registrado con éxito');
       navigate('/');
+    } else if (result.status === NO_PERMISSION) {
+      setTokenValid(false);
     } else {
-      alert('todo mal!');
-      console.log(result.error);
+      showPopup("Something went wrong", result.error, true);
     }
   };
 
@@ -161,6 +174,11 @@ const RegisterForm = () => {
       longitude: ref.current.getPlace().geometry.location.lng()
     })
   }
+
+  if (!tokenValid) {
+    showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
+    return <Navigate to="/login" />
+}
 
   return (
     <Container className="custom-register-form">
