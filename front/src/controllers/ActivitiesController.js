@@ -46,6 +46,7 @@ class ActivitiesController extends BaseController {
     }
 
     async createActivity(title, description, expires) {
+        let data = undefined;
         await fetch(`${this.apiUrl}/create`, {
             method: 'POST',
             headers: {
@@ -59,15 +60,17 @@ class ActivitiesController extends BaseController {
             })
         }).then(res => res.json())
             .then(responseData => {
+                data = responseData;
                 console.log('ActivitiesController: ' + responseData.status);
             })
             .catch(error => {
                 console.error('Error createActivity: ', error);
                 throw new Error('Error al crear la actividad');
             });
+        return data;
     }
 
-    async updateActivity(id, title, description, expires) {
+    /*async updateActivity(id, title, description, expires) {
         await fetch(`${this.apiUrl}/edit/${id}`, {
             method: 'POST',
             headers: {
@@ -87,6 +90,27 @@ class ActivitiesController extends BaseController {
                 console.error('Error updateActivity: ', error);
                 throw new Error('Error al actualizar la actividad');
             });
+    }*/
+
+    async getOwnActivities() {
+        let data = [];
+        await fetch(`${this.apiUrl}/getown`, {
+            method: 'GET',
+            headers: {
+                "Authorization": "Bearer " + this.token,
+                'Content-Type': 'application/json'
+            }
+        }).then(res =>
+            res.json()
+                .then(responseData => {
+                    console.log('ActivitiesController: ' + responseData.status);
+                    data = responseData;
+                })
+                .catch(error => {
+                    console.error('Error getOwnActivities: ', error);
+                })
+        );
+        return data;
     }
 }
 
