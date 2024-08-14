@@ -16,7 +16,7 @@ const UserProfile = () => {
         phone: '',
         description: '',
         proficiency: '',
-        trainingPreferences: '',
+        trainingPreferences: [],
         img: '',
         city: '',
         latitude: '',
@@ -56,8 +56,8 @@ const UserProfile = () => {
             if (data.status === OK) {
                 setUserData(data.data);
                 if (data.data.trainingPreferences) {
-                    const initialSelectedInterests = data.data.trainingPreferences.split(', ').filter(item => {return item})
-                    setSelectedInterests(initialSelectedInterests);
+                    console.log(data.data.trainingPreferences);
+                    setSelectedInterests(data.data.trainingPreferences);
                 }
             } else if (data.status === NO_PERMISSION) {
                 setError(data);
@@ -84,6 +84,8 @@ const UserProfile = () => {
         e.preventDefault();
 
         const token = localStorage.getItem('authToken');
+        console.log(selectedInterests);
+        setUserData({...userData, trainingPreferences: selectedInterests})
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -167,6 +169,7 @@ const UserProfile = () => {
                         <InputGroup.Text><Envelope /></InputGroup.Text>
                         <Form.Control
                             type="text"
+                            name="email"
                             value={userData.email}
                             onChange={handleChange}
                             placeholder="fitmatch@gmail.com"
@@ -241,6 +244,7 @@ const UserProfile = () => {
                 <Form.Group className="mb-3">
                     <Form.Control
                         as="textarea"
+                        name="description"
                         value={userData.description}
                         onChange={handleChange}
                         placeholder="Escribe una breve descripción sobre ti"
