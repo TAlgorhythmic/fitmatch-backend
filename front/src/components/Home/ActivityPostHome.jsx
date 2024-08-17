@@ -37,6 +37,7 @@ function ActivityPostHome(props) {
                 <Row>
                     <Col md={2}>
                         <Image src={`http://localhost:3001/uploads/${data.user.img}`} alt="userImage" className="activityUserImage" roundedCircle />
+                        <h5 className='actUserName'>Participantes: {console.log(data.joinedUsers)}</h5>
                     </Col>
                     <Col md={10}>
                         <h5 className='actUserName'>{data.user.name} {data.user.lastname} <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
