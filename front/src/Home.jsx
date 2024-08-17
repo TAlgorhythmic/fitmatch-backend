@@ -8,6 +8,7 @@ import './Home.css';
 import { showPopup } from './Utils/Utils';
 import { OK } from '../../back-end/api/packets/StatusCodes';
 import ActivitiesController from './controllers/ActivitiesController';
+import AuthController from './controllers/AuthController';
 
 function Home() {
     const [activities, setActivities] = useState([]);
@@ -15,17 +16,12 @@ function Home() {
     const token = localStorage.getItem('authToken');
     const tableName = "activities";
     const ActivitiesController = new BaseController(tableName, token);
+    const Auth = new AuthController(token);
 
     useEffect(() => {
         const validateToken = async () => {
             try {
-                const response = await fetch('http://localhost:3001/api/auth/validate-token', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': "application/json",
-                        'Authorization': `Bearer ${token}`  // Enviar el token en los headers
-                    }
-                });
+                const response = await Auth.validateToken();
 
                 // Verifica si la respuesta es JSON
                 const contentType = response.headers.get('content-type');
