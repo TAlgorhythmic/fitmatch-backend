@@ -48,3 +48,8 @@
 .actCheckIcon {
     cursor: pointer;
 }
+
+.joinedUsers p{
+    font-size: 0.9em;
+    margin-top: 0.6em;
+}
