@@ -29,6 +29,7 @@ class ConnectSession {
         });
     }
 
+    // TODO ARREGLAR
     sendMore(response) {
         this.modified = new Date();
         this.position += USERS_PER_REQUEST;

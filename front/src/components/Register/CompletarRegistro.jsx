@@ -149,6 +149,7 @@ const RegisterForm = () => {
     }
 
     console.log(formData);
+    setFormData({...formData, preferences: selectedInterests})
     const response = await fetch('http://localhost:3001/api/users/setup', {
       method: 'POST',
       headers: {

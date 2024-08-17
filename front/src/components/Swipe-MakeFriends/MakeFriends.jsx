@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import './MakeFriends.css';
+import './MakeFriends.css'; // Importa el archivo CSS
 import { NO_PERMISSION, OK } from '../../Utils/StatusCodes';
 import { Navigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
@@ -106,19 +106,28 @@ const MakeFriends = () => {
 
   if (!tokenValid) {
     showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
-    return <Navigate to="/login" />
+    return <Navigate to="/login" />;
   }
 
   return (
     <div className="swipe-container" ref={swipeContainerRef} tabIndex="0">
       {persona.length > 0 && persona.map((person, index) => (
-        <div key={person.id} {...handlers} className={index === currentIndex ? 'active' : 'inactive'} style={{ display: index === currentIndex ? 'block' : 'none' }}>
+        <div
+          key={person.id}
+          {...handlers}
+          className={index === currentIndex ? 'active' : 'inactive'}
+          style={{ display: index === currentIndex ? 'block' : 'none' }}
+        >
           <div className="card">
             <div className="card-header">
               <h2>{person.name}</h2>
             </div>
             <div className="card-content">
-              <img draggable="false" src={`http://localhost:3001/uploads/${person.img}`} />
+              <img
+                draggable="false"
+                src={`http://localhost:3001/uploads/${person.img}`}
+                alt={person.name}
+              />
               <div className="card-Makefriends-info">
                 <p><strong>Nivel:</strong> {person.proficiency}</p>
                 <p>{person.trainingPreferences}</p>
@@ -133,8 +142,3 @@ const MakeFriends = () => {
 };
 
 export default MakeFriends;
-
-
-
-
-
