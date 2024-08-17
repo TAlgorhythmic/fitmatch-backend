@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import BaseController from './controllers/BaseController';
 import { Row } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
 import ActivityPostHome from './components/Home/ActivityPostHome';
@@ -14,14 +13,13 @@ function Home() {
     const [activities, setActivities] = useState([]);
     const [isValidToken, setIsValidToken] = useState(null);
     const token = localStorage.getItem('authToken');
-    const tableName = "activities";
-    const ActivitiesController = new BaseController(tableName, token);
-    const Auth = new AuthController(token);
+    const AuthControl = new AuthController(token);
+    const ActivityControl = new ActivitiesController(token);
 
     useEffect(() => {
         const validateToken = async () => {
             try {
-                const response = await Auth.validateToken();
+                const response = await AuthControl.validateToken();
 
                 // Verifica si la respuesta es JSON
                 const contentType = response.headers.get('content-type');
@@ -47,13 +45,12 @@ function Home() {
 
     useEffect(() => {
         async function getActivities() {
-            const activitiesData = await ActivitiesController.getAll();
-            console.log(activitiesData);
+            const activitiesData = await ActivityControl.getAllActivities();
             if (activitiesData.status === 0) {
                 if (activitiesData.data.length) setActivities(activitiesData.data);
                 else console.log("No data found (array empty).");
             } else {
-                console.log('Error: ', activitiesData);
+                console.log('Error: ', activitiesData.data);
             }
         }
 
