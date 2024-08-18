@@ -94,11 +94,14 @@ export function sketchyOrder(array) {
 
     // Get the amount of items the 25% actually is.
     const amount = Math.floor((array.length * 25) / 100);
-
+    
+    console.log("Length: " + array.length);
+    console.log("Amount to extract: " + amount);
     const likelyMatch = [];
 
     // Push likely matches.
     for (let i = 0; i < amount; i++) {
+        console.log("It works...?");
         likelyMatch.push(array.pop());
     }
 
@@ -107,7 +110,7 @@ export function sketchyOrder(array) {
 
     if (!array.length && !likelyMatch.length) return feed;
 
-    feed.push(likelyMatch.pop());
+    if (likelyMatch.length) feed.push(likelyMatch.pop());
     let i = 0;
     while (array.length || likelyMatch.length) {
         if (i % 4 === 0 && likelyMatch.length) {
@@ -141,7 +144,8 @@ router.get('/connect', tokenRequired, function (req, res, next) {
         fitmatch.getSqlManager().getUserFromId(token.id)
             .then(e => {
                 const data = sanitizeDataReceivedForSingleObject(e);
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country);
+                console.log(user);
                 fitmatch.getUserManager().put(user.id, user);
 
                 if (!sessions.has(token.id)) {
