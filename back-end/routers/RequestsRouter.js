@@ -41,15 +41,19 @@ const router = express.Router();
 
 router.get('/friends', tokenRequired, function (req, res, next) {
 
-    Friends.findAll({ where: { userId1: req.token.id } })
-        .then(Userss => {
-            res.json(Userss)
-        })
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }))
+    const id = req.token.id;
+    const ids = []
 
+    fitmatch.sqlManager.getFriendsById(id)
+    .then(e => {
+        const data = sanitizeDataReceivedForArrayOfObjects(e, "friendId");
+        data.forEach(item => ids.push(item.friendId));
+        res.json(buildSendDataPacket(ids));
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+    })
 });
 
 // ACCEPT SWIPE
