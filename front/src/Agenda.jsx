@@ -17,6 +17,11 @@ function Agenda() {
 
     const AgendaController = new JoinedActivitiesController(token);
 
+    const handleLeaveActivity = (activityId) => {
+        const updatedActivities = joinedActivities.filter(activity => activity.id !== activityId);
+        setJoinedActivities(updatedActivities);
+    };
+
     useEffect(() => {
         async function getJoinedActivities() {
             const data = await AgendaController.getAllJoinedActivities();
@@ -51,7 +56,7 @@ function Agenda() {
             <div className="contenedorHome">
                 {joinedActivities.map((activity, index) => (
                     <Row key={index}>
-                        <ActivityDayDisplay data={activity} />
+                        <ActivityDayDisplay data={activity} handleLeaveActivity={handleLeaveActivity} />
                     </Row>
                 ))}
             </div>
