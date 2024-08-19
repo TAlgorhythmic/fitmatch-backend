@@ -4,17 +4,24 @@
     left: 0;
     right: 0;
     margin: auto;
-    background-color: white;
+    background-color: #1a1a1a;
+    /* Fondo negro */
     border-radius: 8px;
     width: 48%;
-    height: 22%;
+    height: fit-content;
     opacity: 0%;
     transition: 0.3s !important;
+    color: #f0f0f0;
+    /* Texto en color blanco o un gris muy claro para contrastar con el fondo negro */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+    /* Sombra más sutil */
 }
+
 .visible {
     top: 0 !important;
     opacity: 100% !important;
 }
+
 .flex {
     display: flex;
     justify-content: center;
@@ -22,22 +29,48 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
 .error {
-    box-shadow: 0px 0px 10px rgb(155, 73, 73);
+    box-shadow: 0px 0px 10px rgb(255, 99, 71);
+    /* Sombra roja/naranja para errores */
 }
+
 .item {
     max-width: 90%;
+    color: #f0f0f0;
+    /* Color del texto */
 }
+
 .separator {
     width: 90%;
-    border: 1px solid black;
-    opacity: 40%;
+    border: 1px solid #ff6600;
+    /* Naranja para la línea */
+    opacity: 60%;
     margin-top: 2%;
     margin-bottom: 2%;
 }
+
 .first-item {
     margin-top: 4%;
 }
+
 .last-item {
     margin-bottom: 4%;
+}
+
+.buttonOfPopUp {
+    background-color: #ff6600;
+    /* Naranja */
+    color: #1a1a1a;
+    /* Texto en negro */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buttonOfPopUp:hover {
+    background-color: #e67300;
+    /* Un tono más oscuro de naranja al hacer hover */
 }
