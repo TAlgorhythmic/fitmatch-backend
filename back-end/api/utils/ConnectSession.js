@@ -15,7 +15,7 @@ class ConnectSession {
         if (!user || !user.id) throw new Error("User cannot be undefined.");
         this.id = user.id;
         this.position = 0;
-        this.rejects = [];
+        this.rejects = new Set();
         this.postRejects(20000);
         this.isCancelled = false;
         this.modified = new Date();
@@ -130,6 +130,7 @@ class ConnectSession {
                             }
                         })
                 });
+                this.rejects.clear();
             } catch (err) {
                 console.log(err);
             }
