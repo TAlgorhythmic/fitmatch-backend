@@ -17,7 +17,8 @@ class RequestsController extends BaseController {
         }).then(res =>
             res.json()
                 .then(responseData => {
-                    data = responseData.data;
+                    console.log('RequestControl: ' + responseData.data);
+                    data = responseData;
                 })
                 .catch(error => {
                     console.error('Error getFeed:', error);
