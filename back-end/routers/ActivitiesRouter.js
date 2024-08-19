@@ -127,7 +127,13 @@ router.get('/', tokenRequired, function (req, res, next) {
 });
 
 router.get("/feed", tokenRequired, (req, res, next) => {
-    sqlManager.getActivitiesFeed(req.token.id, res);
+    const data = sqlManager.getActivitiesFeed(req.token.id, res);
+
+    if(data != null && data.length > 0) {
+        res.json(data);
+    } else {
+        res.json(buildInvalidPacket("You don't have any activity in your feed."));
+    }
 });
 
 // POST, creación de un nuevo Activities
