@@ -252,6 +252,10 @@ class SQLManager {
         return fitmatch.sql.query("SELECT * FROM rejects WHERE (issuer = ? AND rejected = ?) OR (issuer = ? AND rejected = ?);", { replacements: [id, other_id, other_id, id] });
     }
 
+    getFriendByPair(id, other_id) {
+        return fitmatch.sql.query("SELECT * FROM friends WHERE (userId1 = ? AND userId2 = ?) OR (userId1 = ? AND userId2 = ?);", { replacements: [id, other_id, other_id, id] });
+    }
+
     getFriendsById(id) {
         return fitmatch.getSql().query(`SELECT CASE WHEN userId1 = ? THEN userId2 ELSE userId1 END AS friendId FROM friends WHERE userId1 = ? OR userId2 = ?;`, { replacements: [id, id, id], type: QueryTypes.SELECT });
     }
@@ -366,7 +370,7 @@ class SQLManager {
     }
 
     getAllPendings(id) {
-        return fitmatch.getSql().query(`SELECT u.* FROM pending p JOIN users u ON p.sender_id = u.id WHERE p.receiver_id = ?;`, { replacements: [id], type: QueryTypes.SELECT });
+        return fitmatch.getSql().query(`SELECT * FROM pending;`, { replacements: [id], type: QueryTypes.SELECT });
     }
 }
 

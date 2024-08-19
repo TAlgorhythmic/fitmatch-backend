@@ -101,7 +101,6 @@ export function sketchyOrder(array) {
 
     // Push likely matches.
     for (let i = 0; i < amount; i++) {
-        console.log("It works...?");
         likelyMatch.push(array.pop());
     }
 
