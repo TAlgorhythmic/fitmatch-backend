@@ -70,7 +70,7 @@ function ActivityPostHome(props) {
                         <div className="joinedUsers">
                             <h5 className='actUserName'>Participantes: {data.joinedUsers} {data.joinedUsers !== 1 ? 'usuarios' : 'usuario'}</h5>
                             <p>{data.friendsData.map((user, index) => (
-                                <span>
+                                <span key={user.friend_id}>
                                     <Link to="/">{user.friend_name} {user.friend_lastname}</Link>{index !== data.friendsData.length - 1 ? ", " : ""}
                                 </span>
                             ))}</p>
