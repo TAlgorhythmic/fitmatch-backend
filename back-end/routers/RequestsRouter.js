@@ -159,7 +159,7 @@ router.get('/pendings', tokenRequired, function (req, res, next) {
         i++;
         recursive(array)
     }
-    sqlManager.getPendingsById(req.token.id)
+    sqlManager.getPendingsFromReceiver(req.token.id)
         .then(response => {
             console.log(response);
             const data = sanitizeDataReceivedForArrayOfObjects(response, "pendingId");
