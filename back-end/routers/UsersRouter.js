@@ -456,4 +456,35 @@ router.get("/profile", tokenRequired, (req, res, next) => {
             })
     }
 })
+
+router.get("/profile/:id", tokenRequired, (req, res, next) => {
+    const id = req.token.id;
+    const other_id = req.params.id;
+
+    fitmatch.sqlManager.getFriendByPair(id, other_id)
+    .then(e => {
+        const friendData = sanitizeDataReceivedForSingleObject(e);
+        if (!friendData) {
+            res.json(buildInvalidPacket("You don't have permission to see this profile."));
+            return;
+        }
+        if (fitmatch.getUserManager().containsKey(other_id)) {
+            res.json(buildSendDataPacket(fitmatch.getUserManager().get(other_id).user));
+        } else {
+            fitmatch.getSqlManager().getUserFromId(other_id)
+                .then(e => {
+                    const data = sanitizeDataReceivedForSingleObject(e);
+                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                    fitmatch.getUserManager().put(user.id, user);
+                    res.json(buildSendDataPacket(user));
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json("Backend internal error. Check logs.");
+                })
+        }
+    })
+
+    
+})
 export default router;
