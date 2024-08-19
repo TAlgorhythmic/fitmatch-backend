@@ -130,7 +130,7 @@ router.get("/feed", tokenRequired, function (req, res, next) {
     sqlManager.getActivitiesFeed(1, res)
     .then(e => {
         if(e != null || e.length > 0) {
-            res.json(e);
+            res.json(buildSendDataPacket(e));
         } else {
             res.json(buildInvalidPacket("You don't have any activity in your feed."));
         }
