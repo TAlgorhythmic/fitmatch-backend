@@ -130,37 +130,37 @@ const MakeFriends = () => {
     showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
     return <Navigate to="/login" />;
   }
-
   return (
-    <div className="swipe-container" ref={swipeContainerRef} tabIndex="0">
+    <div className="contenedor-deslizar-perfiles" ref={swipeContainerRef} tabIndex="0">
       {persona.length > 0 && persona.map((person, index) => (
         <div
           key={person.id}
           {...handlers}
-          className={index === currentIndex ? 'active' : 'inactive'}
+          className={index === currentIndex ? 'perfil-activo contenedor-perfil' : 'perfil-inactivo contenedor-perfil'}
           style={{ display: index === currentIndex ? 'block' : 'none' }}
         >
-          <div className="card">
-            <div className="card-header">
-              <h2>{person.name}</h2>
+          <div className="tarjeta-perfil">
+            <div className="cabecera-perfil">
+              <h2 className="nombre-perfil">{person.name}</h2>
+              <p className="nivel-perfil"><strong>Nivel:</strong> {person.proficiency}</p>
             </div>
-            <div className="card-content">
+            <div className="contenido-perfil">
               <img
                 draggable="false"
                 src={`http://localhost:3001/uploads/${person.img}`}
                 alt={person.name}
+                className="imagen-perfil"
               />
-              <div className="card-Makefriends-info">
-                <p><strong>Nivel:</strong> {person.proficiency}</p>
-                <p>{person.trainingPreferences}</p>
-                <p>{person.description}</p>
+              <div className="informacion-perfil">
+                <p className="preferencias-perfil">{person.trainingPreferences}</p>
+                <p className="descripcion-perfil">{person.description}</p>
               </div>
             </div>
           </div>
         </div>
       ))}
     </div>
-  );
-};
+  );  
+};  
 
 export default MakeFriends;

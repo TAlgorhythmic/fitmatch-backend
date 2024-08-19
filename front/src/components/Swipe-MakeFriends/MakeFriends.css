@@ -1,64 +1,85 @@
-
-
-.swipe-container {
-  max-width: 700px; 
-  margin: 0 auto;
-  height: 100%;
+.contenedor-deslizar-perfiles {
   position: relative;
-  display: flex;
-  justify-content: center;
+  width: 100%;
+  max-width: 600px; /* Aumentar el tamaño máximo de la tarjeta */
+  margin: 0 auto;
+  outline: none;
 }
 
-.img {
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  max-height: 400px; 
-  object-fit: cover; 
-}
-
-.card-container {
-  width: 100%;
-  height: 100%;
+.contenedor-perfil {
   position: absolute;
-  top: 0;
-  left: 0;
+  width: 100%;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.card {
+.perfil-activo {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.perfil-inactivo {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.tarjeta-perfil {
   background-color: #fff;
-  color: black;
-  border-radius: 10px;
-  width: 200px;
-  height: fit-content;
-  max-width: 90%;
-  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 30px; /* Aumentar padding para darle más espacio */
+}
+
+.cabecera-perfil {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px; /* Mayor separación entre el encabezado y la imagen */
+}
+
+.nombre-perfil {
+  font-size: 2rem; /* Aumentar el tamaño del texto del nombre */
+  margin: 0;
+  color: #333;
+  flex: 1;
+}
+
+.nivel-perfil {
+  font-size: 1.2rem; /* Aumentar el tamaño del texto del nivel */
+  margin: 0;
+  color: #666;
+}
+
+.contenido-perfil {
   text-align: center;
-  padding: 1.5rem;
-  width: 100%; 
 }
 
-.card-header h2 {
-  margin: 0.5rem 0;
-}
-
-.card-content img {
+.imagen-perfil {
   width: 100%;
+  max-width: 350px; /* Aumentar el tamaño máximo de la imagen */
   height: auto;
-  max-height: 350px;
+  border-radius: 50%;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  margin-bottom: 20px; /* Mayor espacio debajo de la imagen */
 }
 
-.card-makefriends-info {
-  margin-top: 1rem;
+.informacion-perfil {
+  font-size: 1.2rem; /* Aumentar el tamaño de la fuente de la información */
+  color: #555;
   text-align: left;
-  width: 100%;
 }
 
-.card-makefriends-info p {
-  margin: 0.5rem 0;
-  font-size: 0.9rem;
-  text-align: justify;
+.preferencias-perfil {
+  margin-bottom: 15px; /* Mayor espacio entre preferencias y descripción */
+}
+
+.descripcion-perfil {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+  box-orient: vertical;
 }
