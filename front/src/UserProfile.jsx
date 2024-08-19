@@ -56,6 +56,7 @@ const UserProfile = () => {
         .then(response => {return response.json()})
         .then(data => {
             if (data.status === OK) {
+                console.log(data.data);
                 setUserData(data.data);
                 if (data.data.trainingPreferences) {
                     console.log(data.data.trainingPreferences)
