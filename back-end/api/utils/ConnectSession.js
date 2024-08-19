@@ -15,8 +15,6 @@ class ConnectSession {
         if (!user || !user.id) throw new Error("User cannot be undefined.");
         this.id = user.id;
         this.position = 0;
-        this.rejects = [];
-        this.postRejects(20000);
         this.isCancelled = false;
         this.modified = new Date();
         this.temp;
@@ -107,33 +105,6 @@ class ConnectSession {
                 console.log(err);
                 response.json(buildInternalErrorPacket(err));
             });
-    }
-
-    async postRejects(millis) {
-        setTimeout(async () => {
-            try {
-                this.rejects.forEach(reject => {
-                    fitmatch.sqlManager.putRejection(this.user.id, reject)
-                        .then(e => {
-                            console.log("Rejects updated for " + this.user.email);
-                            console.log("Output: " + e[0]);
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        })
-                        .finally(() => {
-                            this.isCancelled = (this.modified.getTime() + TIMEOUT) <= Date.now();
-                            if (!this.isCancelled) {
-                                this.postRejects(millis);
-                            } else {
-                                sessions.delete(this.user.id);
-                            }
-                        })
-                });
-            } catch (err) {
-                console.log(err);
-            }
-        }, millis);
     }
 }
 

@@ -50,6 +50,10 @@ class SQLManager {
         return fitmatch.sql.query("INSERT INTO pending(sender_id, receiver_id) VALUES(?, ?);", { replacements: [id, other_id], type: QueryTypes.INSERT });
     }
 
+    getPendingsFromReceiver(id) {
+        return fitmatch.sql.query("SELECT * FROM pending WHERE receiver_id = ?;", { replacements: [id], type: QueryTypes.SELECT })
+    }
+
     leaveActivity(id, activityId, res) {
         this.getJoinedActivity(id, activityId)
             .then(e => {
