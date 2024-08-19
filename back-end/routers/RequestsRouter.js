@@ -200,7 +200,7 @@ router.post("/reject/:other_id", tokenRequired, (req, res, next) => {
             res.json(buildInvalidPacket("This user has already rejected you."));
             return;
         }
-        if (!fitmatch.userManager.containsKey(id)) {
+        if (fitmatch.userManager.containsKey(id)) {
             const user = fitmatch.userManager.get(id).user;
             if (!sessions.has(id)) {
                 sessions.set(id, new ConnectSession(user));
