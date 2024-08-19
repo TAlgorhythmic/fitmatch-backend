@@ -14,31 +14,53 @@ const MakeFriends = () => {
   useEffect(() => {
     async function getUsers() {
       try {
-        const response = await fetch('http://localhost:3001/api/users/connect', {
+        const firstResponse = await fetch('http://localhost:3001/api/users/connect', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
             'Content-Type': 'application/json'
           }
         });
-
-        const res = await response.json();
-
-        if (res.status === OK) {
-          const data = res.data;
+    
+        const firstRes = await firstResponse.json();
+    
+        if (firstRes.status === OK) {
+          const data = firstRes.data;
           setPersona(data);
           setCurrentIndex(data.length - 1);
-        } else if (res.status === NO_PERMISSION) {
+    
+          // Verifica la condición para iniciar la segunda petición
+          if (data.length > 1) {
+            console.log("La condición se cumple, iniciando segunda petición...");
+            // Inicia la segunda petición automáticamente
+            const secondResponse = await fetch('http://localhost:3001/api/users/connect', {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                'Content-Type': 'application/json'
+              }
+            });
+    
+            const secondRes = await secondResponse.json();
+    
+            if (secondRes.status === OK) {
+              console.log("Datos de la segunda petición:", secondRes.data);
+              // Aquí puedes manejar los datos de la segunda petición
+            } else {
+              showPopup("Error", secondRes.error, true);
+            }
+          }
+        } else if (firstRes.status === NO_PERMISSION) {
           setTokenValid(false);
         } else {
-          showPopup("Error", res.error, true);
+          showPopup("Error", firstRes.error, true);
         }
-
+    
       } catch (error) {
         console.log('Error al obtener los usuarios:', error);
       }
     }
-
+    
     getUsers();
   }, []);
 
