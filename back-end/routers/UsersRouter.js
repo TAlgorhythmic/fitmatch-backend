@@ -132,7 +132,7 @@ router.get('/connect', tokenRequired, function (req, res, next) {
     const token = req.token;
 
     if (fitmatch.userManager.containsKey(token.id)) {
-        const user = fitmatch.userManager.get(token.id);
+        const user = fitmatch.userManager.get(token.id).user;
 
         if (!sessions.has(token.id)) {
             sessions.set(token.id, new ConnectSession(user));
