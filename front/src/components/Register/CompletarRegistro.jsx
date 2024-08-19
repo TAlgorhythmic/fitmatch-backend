@@ -148,7 +148,7 @@ const RegisterForm = () => {
 
     }
 
-    console.log(formData);
+    console.log(formData); //pasar preferences otra vez a form data
     const response = await fetch('http://localhost:3001/api/users/setup', {
       method: 'POST',
       headers: {
