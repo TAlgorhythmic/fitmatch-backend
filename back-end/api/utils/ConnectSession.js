@@ -1,5 +1,5 @@
 import { sketchyOrder } from "../../routers/UsersRouter.js";
-import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket } from "../packets/PacketBuilder.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildNoDataFoundPacket, buildSendDataPacket } from "../packets/PacketBuilder.js";
 import User from "../User.js";
 import fitmatch from "./../Fitmatch.js";
 import { areCompatible } from './Algorithms.js';
@@ -20,16 +20,24 @@ class ConnectSession {
         this.modified = new Date();
         this.temp;
         this.user = user;
+        this.attempt = 0;
     }
 
     filterUsers(array, ignore) {
         return array.filter(item => {
-            if (item.id === this.id || ignore.has(item)) return false;
+            if (!item || item.id === this.id || ignore.has(item.id)) return false;
             return true;
         });
     }
 
+    // TODO ARREGLAR
     sendMore(response) {
+        if (this.attempt > 1) {
+            console.log("No data found for " + this.user.name + ". Aborting...");
+            response.json(buildNoDataFoundPacket());
+            this.attempt = 0;
+            return;
+        }
         this.modified = new Date();
         this.position += USERS_PER_REQUEST;
 
@@ -48,6 +56,7 @@ class ConnectSession {
                             const friendsData = sanitizeDataReceivedForArrayOfObjects(e2, "friendId");
                             fitmatch.sqlManager.getPendingsById(this.id).then(e3 => {
                                 const pendingsData = sanitizeDataReceivedForArrayOfObjects(e3, "pendingId");
+                                console.log(pendingsData);
                                 const ignoreSet = new Set();
                                 rejectionsData.forEach(it => ignoreSet.add(it.friendId));
                                 friendsData.forEach(it => ignoreSet.add(it.friendId));
@@ -62,10 +71,13 @@ class ConnectSession {
                                 });
 
                                 const sketchyOrdered = sketchyOrder(filtered);
+
                                 response.json(buildSendDataPacket(sketchyOrdered));
+                                this.attempt = 0;
                             })
                             .then(e => {
                                 if (e === null) {
+                                    this.attempt++;
                                     this.sendMore(response);
                                 }
                             })

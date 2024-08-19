@@ -2,7 +2,7 @@
  * Aquest és per evitar haver d'importar molts arxius.
  */
 
-import { NO_PERMISSION, INVALID, INTERNAL_ERROR, OK } from "./StatusCodes.js"
+import { NO_PERMISSION, INVALID, INTERNAL_ERROR, OK, NO_DATA } from "./StatusCodes.js"
 
 class PacketNoPermission {
     constructor(message) {
@@ -46,6 +46,13 @@ class PacketSendData {
     }
 }
 
+class PacketNoDataFound {
+    constructor() {
+        this.status = NO_DATA;
+        this.error = "No data found.";
+    }
+}
+
 export function buildNoPermissionPacket(message) {
     return new PacketNoPermission(message);
 }
@@ -68,4 +75,8 @@ export function buildSimpleOkPacket() {
 
 export function buildSendDataPacket(data) {
     return new PacketSendData(data);
+}
+
+export function buildNoDataFoundPacket() {
+    return new PacketNoDataFound();
 }
