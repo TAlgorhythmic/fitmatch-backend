@@ -269,7 +269,10 @@ class SQLManager {
                 a.description,
                 a.postDate,
                 a.expires,
-                a.userId AS friend_id,
+            CASE
+                WHEN f.userId1 = ? THEN f.userId2  
+                ELSE f.userId1
+            END AS friend_id,
                 u.name AS friend_name,
                 u.lastname AS friend_lastname
             FROM 
@@ -277,15 +280,15 @@ class SQLManager {
             JOIN 
                 users u ON a.userId = u.id
             JOIN 
-                friends f ON (f.userId1 = u.id OR f.userId2 = u.id)
+                friends f ON (f.userId1 = ? OR f.userId2 = ?)  
             WHERE 
-                (f.userId1 = :userId OR f.userId2 = :userId) 
-                AND u.id != :userId
+                (u.id = f.userId1 OR u.id = f.userId2)
+            AND u.id != ? 
             ORDER BY 
-                a.postDate DESC;`, 
-            { 
-                replacements: { userId: id }, 
-                type: QueryTypes.SELECT 
+                a.postDate DESC;`,
+            {
+                replacements: [id, id, id, id],
+                type: QueryTypes.SELECT
             }
         );
     }

@@ -126,14 +126,15 @@ router.get('/', tokenRequired, function (req, res, next) {
         });
 });
 
-router.get("/feed", tokenRequired, (req, res, next) => {
-    const data = sqlManager.getActivitiesFeed(req.token.id, res);
-
-    if(data != null && data.length > 0) {
-        res.json(data);
-    } else {
-        res.json(buildInvalidPacket("You don't have any activity in your feed."));
-    }
+router.get("/feed", tokenRequired, function (req, res, next) {
+    sqlManager.getActivitiesFeed(1, res)
+    .then(e => {
+        if(e != null || e.length > 0) {
+            res.json(e);
+        } else {
+            res.json(buildInvalidPacket("You don't have any activity in your feed."));
+        }
+    })
 });
 
 // POST, creación de un nuevo Activities
