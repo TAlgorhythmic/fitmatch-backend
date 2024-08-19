@@ -49,3 +49,5 @@ class UsersController extends BaseController {
         return data;
     }
 }
+
+export default UsersController;
