@@ -36,7 +36,7 @@ function ActivityDayDisplay(props) {
                     </Col>
                     <Col md={10}>
                         <div className="actDayRightVisor">
-                            <p><span>{expireDate.getHours() + ":" + expireDate.getMinutes()}</span> &#9;&#9;&#9;{data.title} &#9;&#9;&#9;<Button variant="primary" onClick={leaveActivity}>Abandonar</Button></p>
+                            <p><span>{expireDate.getHours() + ":" + expireDate.getMinutes()}</span> &#9;&#9;&#9;{data.title} &#9;&#9;&#9;<Button variant="danger" onClick={leaveActivity}>Abandonar</Button></p>
                         </div>
                     </Col>
                 </Row>

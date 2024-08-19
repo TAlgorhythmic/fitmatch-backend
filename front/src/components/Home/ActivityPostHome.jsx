@@ -1,5 +1,4 @@
 import { Alert, Row, Col, Image, Button } from 'react-bootstrap';
-import { CheckCircleFill, CheckCircle } from 'react-bootstrap-icons';
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import './ActivityPostHome.css';
@@ -15,11 +14,6 @@ function ActivityPostHome(props) {
     let expireDate = new Date(data.expires);
 
     const [isJoined, setIsJoined] = useState(false);
-
-    /*const icon1 = <CheckCircle className="actCheckIcon" color="grey" size={28} onMouseEnter={() => setIcon(1)} onMouseOut={() => setIcon(2)} />;
-    const icon2 = <CheckCircleFill className="checkPointer" color="green" size={28} onMouseEnter={() => setIcon(1)} onMouseOut={() => setIcon(2)} />;
-    
-    const [icon, setIcon] = useState(1);*/
 
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
@@ -64,7 +58,6 @@ function ActivityPostHome(props) {
                         <p>{data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} </p>
                         <div className="dateCheck">
                             <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>
-                            {/*icon == 1 ? icon2 : icon1*/} 
                             {isJoined ? <Button variant="danger" onClick={leaveActivity}>Abandonar</Button> : <Button variant="primary" onClick={joinActivity}>Unirse</Button>}
                         </div>
                         <div className="joinedUsers">
