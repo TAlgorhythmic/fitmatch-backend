@@ -48,8 +48,7 @@ function Home() {
 
     useEffect(() => {
         async function getActivities() {
-            const activitiesData = await ActivityControl.getFeed();
-            console.log(activitiesData.status);
+            const activitiesData = await ActivityControl.getAllActivities();
             if (activitiesData.status === 0) {
                 if (activitiesData.data.length) setActivities(activitiesData.data);
                 else console.log("No data found (array empty).");
@@ -75,7 +74,7 @@ function Home() {
         }
         if (isValidToken) {
             getFriends();
-            console.log('friends: ' + friends); 
+            console.log('friends: ' + friends);     
         }
     }, [isValidToken]);
 
