@@ -40,7 +40,7 @@ export function removeGarbage(millis) {
 export const garbage = [];
 
 class SQLManager {
-    constructor() {}
+    constructor() { }
 
     getAllActivities() {
         return fitmatch.getSql().query("SELECT * FROM activities;")
@@ -52,25 +52,25 @@ class SQLManager {
 
     leaveActivity(id, activityId, res) {
         this.getJoinedActivity(id, activityId)
-        .then(e => {
-            const data = sanitizeDataReceivedForSingleObject(e);
-            if (!data) {
-                res.json(buildInvalidPacket("You can't leave an activity you didn't join."));
-                return;
-            }
-            fitmatch.getSql().query("DELETE FROM joins_activities WHERE userId = ? AND postId = ?;", { replacements: [id, activityId], type: QueryTypes.DELETE })
             .then(e => {
-                res.json(buildSimpleOkPacket());
+                const data = sanitizeDataReceivedForSingleObject(e);
+                if (!data) {
+                    res.json(buildInvalidPacket("You can't leave an activity you didn't join."));
+                    return;
+                }
+                fitmatch.getSql().query("DELETE FROM joins_activities WHERE userId = ? AND postId = ?;", { replacements: [id, activityId], type: QueryTypes.DELETE })
+                    .then(e => {
+                        res.json(buildSimpleOkPacket());
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+                    })
             })
             .catch(err => {
                 console.log(err);
                 res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-        });
+            });
     }
 
     getJoinedActivity(id, activityId) {
@@ -93,9 +93,9 @@ class SQLManager {
         fitmatch.getSql().query("DELETE FROM users WHERE id = ?;", { replacements: [id], type: QueryTypes.DELETE })
             .then(e => {
                 fitmatch.getSql().query("DELETE FROM days_of_week WHERE userId = ?;", { replacements: [id], type: QueryTypes.DELETE })
-                .then(e => {
-                    fitmatch.getSql()
-                })
+                    .then(e => {
+                        fitmatch.getSql()
+                    })
             })
             .catch(e => {
                 console.log("Operation destroy user failed. Error: " + e);
@@ -110,11 +110,11 @@ class SQLManager {
 
     removeActivityCompletely(id) {
         fitmatch.sql.query(`DELETE FROM activities WHERE id = ?;`, { replacements: [id], type: QueryTypes.DELETE })
-        .then(e => {
-            fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?`, { replacements: [id], type: QueryTypes.DELETE })
-            .catch(err => console.log(err));
-        })
-        .catch(err => console.log("Operation remove activity completely failed. Error: " + err));
+            .then(e => {
+                fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?`, { replacements: [id], type: QueryTypes.DELETE })
+                    .catch(err => console.log(err));
+            })
+            .catch(err => console.log("Operation remove activity completely failed. Error: " + err));
     }
 
     getActivityFromId(id) {
@@ -140,7 +140,7 @@ class SQLManager {
     }
 
     setUserImage(id, image) {
-        return fitmatch.getSql().query(`UPDATE users SET img = ? WHERE id = ?;`, { replacements: [ image, id ], type: QueryTypes.UPDATE });
+        return fitmatch.getSql().query(`UPDATE users SET img = ? WHERE id = ?;`, { replacements: [image, id], type: QueryTypes.UPDATE });
     }
 
     /**
@@ -158,19 +158,19 @@ class SQLManager {
      * @returns a promise
      */
     getUserFromNumber(number) {
-        return fitmatch.getSql().query(`SELECT * FROM users WHERE phone = ?;`, { replacements: [ number ], type: QueryTypes.SELECT });
+        return fitmatch.getSql().query(`SELECT * FROM users WHERE phone = ?;`, { replacements: [number], type: QueryTypes.SELECT });
     }
 
     createNewUser(name, lastname, provider, email, phone, hash) {
         const ln = lastname ? lastname : null;
         const ph = phone ? phone : null;
-        return fitmatch.getSql().query(`INSERT INTO users(name, lastname, provider, email, phone, pwhash, tableVersion) VALUES(?, ?, ?, ?, ?, ?, ${TABLES_VERSION});`, { replacements: [ name, ln, provider, email, ph, hash ], type: QueryTypes.INSERT })
+        return fitmatch.getSql().query(`INSERT INTO users(name, lastname, provider, email, phone, pwhash, tableVersion) VALUES(?, ?, ?, ?, ?, ?, ${TABLES_VERSION});`, { replacements: [name, ln, provider, email, ph, hash], type: QueryTypes.INSERT })
     }
 
     updateUser(user) {
         return fitmatch.getSql().query(
             `UPDATE users SET name = ?, lastname = ?, phone = ?, description = ?, proficiency = ?, trainingPreferences = ?, img = ?, city = ?, latitude = ?, longitude = ?, isSetup = ?, tableVersion = ${TABLES_VERSION} WHERE id = ?`,
-            { replacements: [ user.name, user.lastname, user.phone, user.description, user.proficiency, user.trainingPreferences, user.img, user.city, user.latitude, user.longitude, user.isSetup, user.id ] }
+            { replacements: [user.name, user.lastname, user.phone, user.description, user.proficiency, user.trainingPreferences, user.img, user.city, user.latitude, user.longitude, user.isSetup, user.id] }
         )
     }
 
@@ -192,7 +192,7 @@ class SQLManager {
             } else {
                 injects.push(value);
             }
-            
+
             if (i + 1 < map.size) {
                 str += ", ";
             }
@@ -204,7 +204,7 @@ class SQLManager {
 
     putRejection(issuer, rejected) {
         const time = new Date((new Date().getTime() + TIME_BEFORE_EXPIRES)).toISOString().slice(0, 19).replace("T", " ");
-        return fitmatch.getSql().query(`INSERT INTO rejects(issuer, rejected, expires) VALUES(?, ?, ?);`, { replacements: [ issuer, rejected, time ], type: QueryTypes.INSERT });
+        return fitmatch.getSql().query(`INSERT INTO rejects(issuer, rejected, expires) VALUES(?, ?, ?);`, { replacements: [issuer, rejected, time], type: QueryTypes.INSERT });
     }
 
     /**
@@ -230,9 +230,9 @@ class SQLManager {
         let titl;
         let desc;
         let expire;
-        if (title) {titl = "title = ? "; validChanges.push(title)} else titl = "";
-        if (description) {desc = "description = ? "; validChanges.push(description)} else desc = "";
-        if (expires) {expire = "expires = ? "; validChanges.push(expires)} else expire = "";
+        if (title) { titl = "title = ? "; validChanges.push(title) } else titl = "";
+        if (description) { desc = "description = ? "; validChanges.push(description) } else desc = "";
+        if (expires) { expire = "expires = ? "; validChanges.push(expires) } else expire = "";
         if (!titl && !desc && !expire) {
             res.json(buildInvalidPacket("Every single piece of data received is invalid. Could not effectuate query."));
             return;
@@ -261,108 +261,40 @@ class SQLManager {
     }
 
     getPendingsById(id) {
-        return fitmatch.getSql().query("SELECT CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END AS pendingId FROM pending WHERE sender_id = ? OR receiver_id = ?;", { replacements: [id, id, id], type:QueryTypes.SELECT })
+        return fitmatch.getSql().query("SELECT CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END AS pendingId FROM pending WHERE sender_id = ? OR receiver_id = ?;", { replacements: [id, id, id], type: QueryTypes.SELECT })
     }
 
     // TODO todo mal
     getActivitiesFeed(id, res) {
-        this.getFriendsById(id).then(e => {
-            const data = sanitizeDataReceivedForArrayOfObjects(e, "friendId");
-            if (!data.length) {
-                res.json(buildSendDataPacket([]));
-                return;
+        return fitmatch.getSql().query(
+            `SELECT 
+                a.id AS activity_id,
+                a.title,
+                a.description,
+                a.postDate,
+                a.expires,
+            CASE
+                WHEN f.userId1 = ? THEN f.userId2  
+                ELSE f.userId1
+            END AS friend_id,
+                u.name AS friend_name,
+                u.lastname AS friend_lastname
+            FROM 
+                activities a
+            JOIN 
+                users u ON a.userId = u.id
+            JOIN 
+                friends f ON (f.userId1 = ? OR f.userId2 = ?)  
+            WHERE 
+                (u.id = f.userId1 OR u.id = f.userId2)
+            AND u.id != ? 
+            ORDER BY 
+                a.postDate DESC;`,
+            {
+                replacements: [id, id, id, id],
+                type: QueryTypes.SELECT
             }
-
-            function sendData(feed) {
-                const filtered = this.filterActivities(feed);
-                filtered.sort((a, b) => {
-                    const timeLeftA = new Date(a.expires).getTime() - Date.now();
-                    const timeLeftB = new Date(b.expires).getTime() - Date.now();
-                    return timeLeftA - timeLeftB;
-                });
-
-                let i = 0;
-            // Inject activity creator
-            function recursive() {
-                if (!filtered[i]) {
-                    res.json(buildSendDataPacket(filtered));
-                    return;
-                }
-                fitmatch.getSqlManager().getUserFromId(filtered[i].userId)
-                .then(e => {
-                    const data = sanitizeDataReceivedForSingleObject(e);
-                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
-                    filtered[i].user = user;
-                    inject2();
-                })
-                function inject2() {
-                    // Inject every user object to
-                    if (!filtered[i]) {
-                        recursive();
-                        return;
-                    }
-                    fitmatch.getSqlManager().getActivityJoins(filtered[i].id)
-                        .then(e => {
-                            const joinsData = sanitizeDataReceivedForArrayOfObjects(e, "userId");
-                            const obj = [];
-                            let index = 0;
-                            function userRecursive() {
-                                if (!joinsData[index]) {
-                                    filtered[i].joinedUsers = obj;
-                                    i++;
-                                    recursive();
-                                    return;
-                                }
-                                function recursiveNext() {
-                                    index++;
-                                    userRecursive();
-                                }
-                                const userId = joinsData[index].userId;
-                                if (fitmatch.userManager.containsKey(userId)) {
-                                    const user = fitmatch.userManager.get(userId).user;
-                                    obj.push(user);
-                                    recursiveNext();
-                                } else {
-                                    fitmatch.sqlManager.getUserFromId(userId)
-                                    .then(e => {
-                                        const innerUserData = sanitizeDataReceivedForSingleObject(e);
-                                        const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
-                                        obj.push(user);
-                                        recursiveNext();
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-                                    })
-                                }
-                            }
-                            userRecursive();
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-                        })
-                }
-            }
-            // Run recursive
-            recursive();
-            }
-            let i = 0;
-            const feed = [];
-            function recursive1() {
-                this.getActivitiesFromUserId(data[i])
-                .then(e => {
-                    const activitiesData = e[0];
-                    activitiesData.forEach(item => feed.push(item));
-                    
-                }).catch(err => console.log(err)).finally(e => {
-                    i++;
-                    if (data[i]) recursive1();
-                    else sendData(feed);
-                })
-            }
-            recursive1();
-        })
+        );
     }
 
     getActivitiesFromUserId(id) {

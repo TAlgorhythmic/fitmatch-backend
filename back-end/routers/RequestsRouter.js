@@ -58,7 +58,7 @@ router.post('/send/:other_id', tokenRequired, function (req, res, next) {
     const other_id = req.params.other_id;
 
     if (id === other_id) {
-        res.json(buildInvalidPacket(""))
+        res.json(buildInvalidPacket("You cant add yourself."))
     }
 
     fitmatch.sqlManager.getRejectionByPair(id, other_id).then(e => {
@@ -80,13 +80,13 @@ router.post('/send/:other_id', tokenRequired, function (req, res, next) {
             })
             .catch(err => {
                 console.log(err);
-                res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+                res.json(buildInternalErrorPacket("Backend internal error. Check logs.12"));
             })
         })
     })
     .catch(err => {
         console.log(err);
-        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs.21"));
     })
 });
 
@@ -138,28 +138,30 @@ router.get('/pendings', tokenRequired, function (req, res, next) {
     const list_of_users = [];
     let i = 0;
     function recursive(array) {
-        const pendingId = array[i];
-        
-        if (!pendingId) {
+        if (i >= array.length) {
             res.json(buildSendDataPacket(list_of_users));
             return;
         }
+        const pendingId = array[i].pendingId;
+        
 
         fitmatch.sqlManager.getUserFromId(pendingId)
         .then(e => {
-            const data = sanitizeDataReceivedForArrayOfObjects(e);
+            const data = sanitizeDataReceivedForSingleObject(e);
             const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country);
             list_of_users.push(user);
+            nextIt(array);
         })
-        nextIt();
     }
-    function nextIt() {
+    function nextIt(array) {
         i++;
-        recursive()
+        recursive(array)
     }
     sqlManager.getPendingsById(req.token.id)
     .then(response => {
+        console.log(response);
         const data = sanitizeDataReceivedForArrayOfObjects(response, "pendingId");
+        console.log(data);
         recursive(data);
     })
     .catch(error => {
