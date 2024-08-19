@@ -8,7 +8,7 @@ import { showPopup } from '../../Utils/Utils.js';
 
 function ActivityPostHome(props) {
 
-    const { data } = props;
+    const { data, friendsList } = props;
 
     let postDate = new Date(data.postDate);
     let expireDate = new Date(data.expires);
@@ -62,7 +62,9 @@ function ActivityPostHome(props) {
                         </div>
                         <div className="joinedUsers">
                             <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
-                            <p>{data.joinedUsers.map((user, index) => (
+                            <p>{data.joinedUsers.filter(user => {
+                                return friendsList.includes(user.id)
+                            }).map((user, index) => (
                                 <span key={user.id}>
                                     <Link to="/">{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
                                 </span>

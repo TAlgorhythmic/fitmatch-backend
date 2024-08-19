@@ -74,7 +74,7 @@ function Home() {
         }
         if (isValidToken) {
             getFriends();
-            console.log('friends: ' + friends);
+            console.log('friends: ' + friends); 
         }
     }, [isValidToken]);
 
