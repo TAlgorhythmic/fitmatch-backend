@@ -273,6 +273,7 @@ class SQLManager {
                 a.description,
                 a.postDate,
                 a.expires,
+                u.img,
             CASE
                 WHEN f.userId1 = ? THEN f.userId2  
                 ELSE f.userId1
