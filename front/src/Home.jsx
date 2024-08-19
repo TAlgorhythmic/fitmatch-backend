@@ -49,12 +49,12 @@ function Home() {
     useEffect(() => {
         async function getActivities() {
             const activitiesData = await ActivityControl.getFeed();
-            console.log(activitiesData.status);
+            console.log(activitiesData);
             if (activitiesData.status === 0) {
                 if (activitiesData.data.length) setActivities(activitiesData.data);
                 else console.log("No data found (array empty).");
             } else {
-                console.log('Error: ', activitiesData.data);
+                console.log('Error: ', activitiesData);
             }
         }
 
