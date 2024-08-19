@@ -39,23 +39,6 @@ const router = express.Router();
 // si se produce un error:
 //     {ok: false, error: mensaje_de_error}
 
-router.get('/friends', tokenRequired, function (req, res, next) {
-
-    const id = req.token.id;
-    const ids = []
-
-    fitmatch.sqlManager.getFriendsById(id)
-    .then(e => {
-        const data = sanitizeDataReceivedForArrayOfObjects(e, "friendId");
-        data.forEach(item => ids.push(item.friendId));
-        res.json(buildSendDataPacket(ids));
-    })
-    .catch(err => {
-        console.log(err);
-        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-    })
-});
-
 // ACCEPT SWIPE
 router.post('/send/:other_id', tokenRequired, function (req, res, next) {
     const id = req.token.id;
@@ -217,7 +200,7 @@ router.post("/reject/:other_id", tokenRequired, (req, res, next) => {
             res.json(buildInvalidPacket("This user has already rejected you."));
             return;
         }
-        if (!fitmatch.userManager.containsKey(id)) {
+        if (fitmatch.userManager.containsKey(id)) {
             const user = fitmatch.userManager.get(id).user;
             if (!sessions.has(id)) {
                 sessions.set(id, new ConnectSession(user));
