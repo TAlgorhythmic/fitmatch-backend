@@ -17,7 +17,7 @@ function ActivityDayDisplay(props) {
     async function leaveActivity() {
         try {
             await AgendaController.leaveActivity(data.id);
-            showPopup("Leaved Successfully", "", false);
+            showPopup("Left Successfully", "", false);
             handleLeaveActivity(data.id);
         } catch (error) {
             showPopup("Error Leaving Activity", error, false);
