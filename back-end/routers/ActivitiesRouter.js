@@ -158,7 +158,14 @@ router.post('/create', tokenRequired, function (req, res, next) {
     // Crear un nuevo objeto con la data recibida y añadir los campos postDate y expires
     fitmatch.getSqlManager().createNewActivity(title, description, expiresInput, req.token.id)
         .then(e => {
+            const id = sanitizeDataReceivedForSingleObject(e);
             res.json(buildSimpleOkPacket());
+            fitmatch.sqlManager.joinActivity(req.token.id, id)
+            .catch(err => {
+                console.warn("Warning! Failed to join recently created activity, might result in unexpected behaviour.");
+                console.warn(err);
+            })
+
         }).catch(err => {
             console.log(err);
             res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
