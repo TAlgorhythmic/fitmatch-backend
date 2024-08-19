@@ -74,8 +74,7 @@ router.post('/send/:other_id', tokenRequired, function (req, res, next) {
                 res.json(buildInvalidPacket("This user is already your friend."));
                 return;
             }
-        })
-        fitmatch.getSqlManager().sendConnectionRequest(id, other_id)
+            fitmatch.getSqlManager().sendConnectionRequest(id, other_id)
             .then(e => {
                 res.json(buildSimpleOkPacket())
             })
@@ -83,6 +82,11 @@ router.post('/send/:other_id', tokenRequired, function (req, res, next) {
                 console.log(err);
                 res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
             })
+        })
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
     })
 });
 
