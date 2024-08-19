@@ -1,10 +1,11 @@
 import { Alert, Row, Col, Image, Button } from 'react-bootstrap';
 import { CheckCircleFill, CheckCircle } from 'react-bootstrap-icons';
 import { useState, useEffect } from 'react';
+import { Link, useLocation } from "react-router-dom";
 import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
-import JoinedActivitiesController  from '../../controllers/JoinedActivitiesController.js';
-import {showPopup} from '../../Utils/Utils.js';
+import JoinedActivitiesController from '../../controllers/JoinedActivitiesController.js';
+import { showPopup } from '../../Utils/Utils.js';
 
 function ActivityPostHome(props) {
 
@@ -47,6 +48,14 @@ function ActivityPostHome(props) {
                             <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>
                             {/*icon == 1 ? icon2 : icon1*/}
                             <Button variant="primary" onClick={joinActivity}>Unirse</Button>
+                        </div>
+                        <div className="joinedUsers">
+                            <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
+                            <p>{data.joinedUsers.map((user, index) => (
+                                <span key={user.id}>
+                                    <Link to="/">{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
+                                </span>
+                            ))}</p>
                         </div>
                     </Col>
                 </Row>

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import BaseController from './controllers/BaseController';
 import JoinedActivitiesController from './controllers/JoinedActivitiesController';
 import { Row, Col, Container } from 'react-bootstrap';
 import ActivityDayDisplay from './components/Agenda/ActivityDayDisplay';
@@ -17,6 +16,11 @@ function Agenda() {
     // const [activitiesDays, setActivitiesDays] = useState([]);
 
     const AgendaController = new JoinedActivitiesController(token);
+
+    const handleLeaveActivity = (activityId) => {
+        const updatedActivities = joinedActivities.filter(activity => activity.id !== activityId);
+        setJoinedActivities(updatedActivities);
+    };
 
     useEffect(() => {
         async function getJoinedActivities() {
@@ -52,7 +56,7 @@ function Agenda() {
             <div className="contenedorHome">
                 {joinedActivities.map((activity, index) => (
                     <Row key={index}>
-                        <ActivityDayDisplay data={activity} />
+                        <ActivityDayDisplay data={activity} handleLeaveActivity={handleLeaveActivity} />
                     </Row>
                 ))}
             </div>
