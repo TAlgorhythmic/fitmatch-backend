@@ -39,23 +39,6 @@ const router = express.Router();
 // si se produce un error:
 //     {ok: false, error: mensaje_de_error}
 
-router.get('/friends', tokenRequired, function (req, res, next) {
-
-    const id = req.token.id;
-    const ids = []
-
-    fitmatch.sqlManager.getFriendsById(id)
-    .then(e => {
-        const data = sanitizeDataReceivedForArrayOfObjects(e, "friendId");
-        data.forEach(item => ids.push(item.friendId));
-        res.json(buildSendDataPacket(ids));
-    })
-    .catch(err => {
-        console.log(err);
-        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-    })
-});
-
 // ACCEPT SWIPE
 router.post('/send/:other_id', tokenRequired, function (req, res, next) {
     const id = req.token.id;
