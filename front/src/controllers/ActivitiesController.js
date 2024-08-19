@@ -36,7 +36,7 @@ class ActivitiesController extends BaseController {
         }).then(res =>
             res.json()
                 .then(responseData => {
-                    data = responseData.data;
+                    data = responseData;
                 })
                 .catch(error => {
                     console.error('Error getFeed:', error);
