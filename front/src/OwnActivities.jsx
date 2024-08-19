@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import BaseController from './controllers/BaseController';
 import { Row, Col } from 'react-bootstrap';
 import { Navigate, useParams } from 'react-router-dom';
 import OwnActivityPost from './components/OwnActivities/OwnActivityPost';
 import ActivitiesController from './controllers/ActivitiesController';
+import AuthController from './controllers/AuthController';
 import './OwnActivities.css';
 
 function OwnActivities() {
@@ -12,17 +12,12 @@ function OwnActivities() {
     const [isValidToken, setIsValidToken] = useState(null);
     const token = localStorage.getItem('authToken');
     const ActivityController = new ActivitiesController(token);
+    const AuthControl = new AuthController(token);
 
     useEffect(() => {
         const validateToken = async () => {
             try {
-                const response = await fetch('http://localhost:3001/api/auth/validate-token', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': "application/json",
-                        'Authorization': `Bearer ${token}`  // Enviar el token en los headers
-                    }
-                });
+                const response = await AuthControl.validateToken();
 
                 // Verifica si la respuesta es JSON
                 const contentType = response.headers.get('content-type');

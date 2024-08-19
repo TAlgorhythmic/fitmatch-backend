@@ -20,14 +20,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="agenda" element={<Agenda />} />
-          <Route path='create-activitie' element={<CreateActivity />} />
+          <Route path='create-activity' element={<CreateActivity />} />
           <Route path="friends" element={<MakeFriends />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="nuevaContra" element={<ChangePassword />} />
           <Route path="user/profile" element={<UserProfile />} />
           <Route path="formulario" element={<CompletarRegistro />} />
-          <Route path="ownactivities" element={<OwnActivities />} />
+          <Route path="own-activities" element={<OwnActivities />} />
           <Route path="activities/edit/:id" element={<EditActivity />} />
         </Route>
       </Routes>

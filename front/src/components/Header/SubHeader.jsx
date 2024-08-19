@@ -21,7 +21,7 @@ function SubHeader() {
                         <Nav>
                             <Link
                                 className={`customNavLinkSubHeader ${actualRoute === '/create-activitie' && !hoveredLink ? 'active' : ''}`}
-                                to="/create-activitie"
+                                to="/create-activity"
                                 onMouseEnter={() => setHoveredLink('/create-activitie')}
                                 onMouseLeave={() => setHoveredLink(null)}
                             >

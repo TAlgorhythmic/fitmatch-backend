@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import "./style.css";
+import "./PopupMessage.css";
 
 export default function PopupMessage(props) {
     const isVisible = props.isVisible;
