@@ -29,8 +29,7 @@ const UserProfile = () => {
     const sportsInterests = [
         'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
         'CrossFit', 'Bodybuilding', 'Pilates', 'Boxing', 'HIIT',
-        'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'
-    ];
+        'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'];
 
     const [selectedInterests, setSelectedInterests] = useState([]);
 

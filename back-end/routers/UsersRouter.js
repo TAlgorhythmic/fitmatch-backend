@@ -9,7 +9,7 @@ import fs from "fs";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildSendDataPacket } from "../api/packets/PacketBuilder.js";
 import ConnectSession, { sessions } from "../api/utils/ConnectSession.js";
 import User from "../api/User.js";
-import { sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
+import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -125,7 +125,61 @@ export function sketchyOrder(array) {
     return feed;
 }
 
+router.get('/friends', tokenRequired, function (req, res, next) {
 
+    const id = req.token.id;
+    const ids = []
+
+    fitmatch.sqlManager.getFriendsById(id)
+    .then(e => {
+        const data = sanitizeDataReceivedForArrayOfObjects(e, "friendId");
+        data.forEach(item => ids.push(item.friendId));
+        res.json(buildSendDataPacket(ids));
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+    })
+});
+
+router.get('/connections', tokenRequired, function (req, res, next) {
+
+    const id = req.token.id;
+    const users = []
+
+    fitmatch.sqlManager.getFriendsById(id)
+    .then(e => {
+        const data = sanitizeDataReceivedForArrayOfObjects(e, "friendId");
+        let i = 0;
+        function recursive() {
+            if (!data[i]) {
+                res.json(buildSendDataPacket(users));
+                return;
+            }
+
+            if (fitmatch.userManager.containsKey(data[i].friendId)) {
+                const user = fitmatch.userManager.get(data[i].friendId).user;
+                users.push(user);
+                i++;
+                recursive();
+            } else {
+                fitmatch.sqlManager.getUserFromId(data[i].friendId)
+                .then(e => {
+                    const data = sanitizeDataReceivedForSingleObject(e);
+                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country);
+                    users.push(user);
+                    i++;
+                    recursive();
+                })
+            }
+        }
+        recursive();
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+    })
+});
 
 // GET compatible users
 router.get('/connect', tokenRequired, function (req, res, next) {
@@ -401,5 +455,36 @@ router.get("/profile", tokenRequired, (req, res, next) => {
                 res.json("Backend internal error. Check logs.");
             })
     }
+})
+
+router.get("/profile/:id", tokenRequired, (req, res, next) => {
+    const id = req.token.id;
+    const other_id = req.params.id;
+
+    fitmatch.sqlManager.getFriendByPair(id, other_id)
+    .then(e => {
+        const friendData = sanitizeDataReceivedForSingleObject(e);
+        if (!friendData) {
+            res.json(buildInvalidPacket("You don't have permission to see this profile."));
+            return;
+        }
+        if (fitmatch.getUserManager().containsKey(other_id)) {
+            res.json(buildSendDataPacket(fitmatch.getUserManager().get(other_id).user));
+        } else {
+            fitmatch.getSqlManager().getUserFromId(other_id)
+                .then(e => {
+                    const data = sanitizeDataReceivedForSingleObject(e);
+                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                    fitmatch.getUserManager().put(user.id, user);
+                    res.json(buildSendDataPacket(user));
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json("Backend internal error. Check logs.");
+                })
+        }
+    })
+
+    
 })
 export default router;

@@ -82,4 +82,23 @@
   -webkit-box-orient: vertical;
   line-clamp: 2;
   box-orient: vertical;
+}.etiqueta-preferencia {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #FF5A5F; /* Naranja */
+  color: white;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  border: 2px solid transparent; /* Borde invisible por defecto */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.preferencias-perfil {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Espacio entre las etiquetas */
+  margin-top: 15px;
 }
