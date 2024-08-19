@@ -76,7 +76,7 @@ function Home() {
             getFriends();
             console.log('friends: ' + friends);
         }
-    }, []);
+    }, [isValidToken]);
 
     if (!isValidToken && isValidToken !== null) {
         showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
