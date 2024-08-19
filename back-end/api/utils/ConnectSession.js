@@ -12,6 +12,7 @@ export const sessions = new Map();
 
 class ConnectSession {
     constructor(user) {
+        if (!user || !user.id) throw new Error("User cannot be undefined.");
         this.id = user.id;
         this.position = 0;
         this.rejects = [];

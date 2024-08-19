@@ -101,7 +101,6 @@ export function sketchyOrder(array) {
 
     // Push likely matches.
     for (let i = 0; i < amount; i++) {
-        console.log("It works...?");
         likelyMatch.push(array.pop());
     }
 
@@ -133,7 +132,7 @@ router.get('/connect', tokenRequired, function (req, res, next) {
     const token = req.token;
 
     if (fitmatch.userManager.containsKey(token.id)) {
-        const user = fitmatch.userManager.get(token.id);
+        const user = fitmatch.userManager.get(token.id).user;
 
         if (!sessions.has(token.id)) {
             sessions.set(token.id, new ConnectSession(user));
