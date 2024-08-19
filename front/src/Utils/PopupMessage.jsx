@@ -13,7 +13,7 @@ export default function PopupMessage(props) {
             <div className="first-item flex"><h1 className="item">{title}</h1></div>
             <div className="flex"><hr className="separator item" /></div>
             <div className="flex">{message}</div>
-            <div className="last-item flex"><Button onClick={onClose}>Aceptar</Button></div>
+            <div className="last-item flex"><Button className="buttonOfPopUp" onClick={onClose}>Aceptar</Button></div>
         </div>
     )
 }
