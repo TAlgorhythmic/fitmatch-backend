@@ -14,6 +14,8 @@ function ActivityPostHome(props) {
     let postDate = new Date(data.postDate);
     let expireDate = new Date(data.expires);
 
+    const [isJoined, setIsJoined] = useState(false);
+
     /*const icon1 = <CheckCircle className="actCheckIcon" color="grey" size={28} onMouseEnter={() => setIcon(1)} onMouseOut={() => setIcon(2)} />;
     const icon2 = <CheckCircleFill className="checkPointer" color="green" size={28} onMouseEnter={() => setIcon(1)} onMouseOut={() => setIcon(2)} />;
     
@@ -22,13 +24,29 @@ function ActivityPostHome(props) {
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
 
+    function handleStateChange() {
+        setIsJoined(!isJoined);
+    };
+
     async function joinActivity() {
         await AgendaController.joinActivity(data.id)
             .then(response => {
                 showPopup("Joined Succesfully", "", false);
+                handleStateChange();
             })
             .catch(error => {
                 showPopup("Error Joining Activity", error, false);
+            });
+    }
+
+    async function leaveActivity() {
+        await AgendaController.leaveActivity(data.id)
+            .then(response => {
+                showPopup("Left Succesfully", "", false);
+                handleStateChange();
+            })
+            .catch(error => {
+                showPopup("Error Leaving Activity", error, false);
             });
     }
 
@@ -46,8 +64,8 @@ function ActivityPostHome(props) {
                         <p>{data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} </p>
                         <div className="dateCheck">
                             <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>
-                            {/*icon == 1 ? icon2 : icon1*/}
-                            <Button variant="primary" onClick={joinActivity}>Unirse</Button>
+                            {/*icon == 1 ? icon2 : icon1*/} 
+                            {isJoined ? <Button variant="danger" onClick={leaveActivity}>Abandonar</Button> : <Button variant="primary" onClick={joinActivity}>Unirse</Button>}
                         </div>
                         <div className="joinedUsers">
                             <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
