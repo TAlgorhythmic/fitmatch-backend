@@ -14,55 +14,34 @@ const MakeFriends = () => {
   useEffect(() => {
     async function getUsers() {
       try {
-        const firstResponse = await fetch('http://localhost:3001/api/users/connect', {
+        const response = await fetch('http://localhost:3001/api/users/connect', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
             'Content-Type': 'application/json'
           }
         });
-    
-        const firstRes = await firstResponse.json();
-    
-        if (firstRes.status === OK) {
-          const data = firstRes.data;
+  
+        const res = await response.json();
+  
+        if (res.status === OK) {  // Corregido: 'OK' debería ser una cadena
+          const data = res.data;
           setPersona(data);
           setCurrentIndex(data.length - 1);
-    
-          // Verifica la condición para iniciar la segunda petición
-          if (data.length > 1) {
-            console.log("La condición se cumple, iniciando segunda petición...");
-            // Inicia la segunda petición automáticamente
-            const secondResponse = await fetch('http://localhost:3001/api/users/connect', {
-              method: 'GET',
-              headers: {
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-                'Content-Type': 'application/json'
-              }
-            });
-    
-            const secondRes = await secondResponse.json();
-    
-            if (secondRes.status === OK) {
-              console.log("Datos de la segunda petición:", secondRes.data);
-              // Aquí puedes manejar los datos de la segunda petición
-            } else {
-              showPopup("Error", secondRes.error, true);
-            }
-          }
-        } else if (firstRes.status === NO_PERMISSION) {
+        } else if (res.status === NO_PERMISSION) {  
           setTokenValid(false);
         } else {
-          showPopup("Error", firstRes.error, true);
+          showPopup("Error", res.error, true);
         }
-    
+  
       } catch (error) {
         console.log('Error al obtener los usuarios:', error);
       }
     }
-    
+  
     getUsers();
   }, []);
+  
 
   const handleSwipe = async (direction) => {
     if (direction === 'left') {
@@ -152,7 +131,15 @@ const MakeFriends = () => {
                 className="imagen-perfil"
               />
               <div className="informacion-perfil">
-                <p className="preferencias-perfil">{person.trainingPreferences}</p>
+
+              <p className="preferencias-perfil">
+  {person.trainingPreferences?.map((preference, index) => (
+    <span key={index} className="etiqueta-preferencia me-2 mb-2">
+      {preference}
+    </span>
+  )) || []}
+</p>
+
                 <p className="descripcion-perfil">{person.description}</p>
               </div>
             </div>
@@ -160,7 +147,8 @@ const MakeFriends = () => {
         </div>
       ))}
     </div>
-  );  
+  );
+  
 };  
 
 export default MakeFriends;
