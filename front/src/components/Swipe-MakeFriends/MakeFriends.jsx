@@ -4,6 +4,7 @@ import './MakeFriends.css'; // Importa el archivo CSS
 import { NO_PERMISSION, OK } from '../../Utils/StatusCodes';
 import { Navigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 const MakeFriends = () => {
   const [persona, setPersona] = useState([]);
@@ -105,12 +106,28 @@ const MakeFriends = () => {
     trackMouse: true // Esto permite que el swipe funcione también con el mouse
   });
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowLeft') {
+        handleSwipe('left');
+      } else if (event.key === 'ArrowRight') {
+        handleSwipe('right');
+      }
+    };
+  
+    window.addEventListener('keydown', handleKeyDown);
+  
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentIndex, persona]); // Asegúrate de actualizar los índices y personas
+  
   if (!tokenValid) {
     showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
     return <Navigate to="/login" />;
   }
   return (
-    <div className="contenedor-deslizar-perfiles" ref={swipeContainerRef} tabIndex="0">
+    <div className="contenedor-deslizar-perfiles" ref={swipeContainerRef} tabIndex="0" style={{ position: 'relative' }}>
       {persona.length > 0 && persona.map((person, index) => (
         <div
           key={person.id}
@@ -131,24 +148,33 @@ const MakeFriends = () => {
                 className="imagen-perfil"
               />
               <div className="informacion-perfil">
-
-              <p className="preferencias-perfil">
-  {person.trainingPreferences?.map((preference, index) => (
-    <span key={index} className="etiqueta-preferencia me-2 mb-2">
-      {preference}
-    </span>
-  )) || []}
-</p>
-
+                <p className="preferencias-perfil">
+                  {person.trainingPreferences?.map((preference, index) => (
+                    <span key={index} className="etiqueta-preferencia me-2 mb-2">
+                      {preference}
+                    </span>
+                  )) || []}
+                </p>
                 <p className="descripcion-perfil">{person.description}</p>
               </div>
             </div>
           </div>
         </div>
       ))}
+      <div className="flecha-contenedor flecha-izquierda">
+        <button className="boton-flecha" onClick={() => handleSwipe('left')} title="Desliza a la izquierda">
+          <FaArrowLeft />
+        </button>
+        <p className="texto-flecha">Anterior</p>
+      </div>
+      <div className="flecha-contenedor flecha-derecha">
+        <button className="boton-flecha" onClick={() => handleSwipe('right')} title="Desliza a la derecha">
+          <FaArrowRight />
+        </button>
+        <p className="texto-flecha">Siguiente</p>
+      </div>
     </div>
   );
-  
 };  
 
 export default MakeFriends;
