@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './ContraN.css'; // Puedes añadir estilos personalizados si es necesario
+import './CambioContra.css'; // Puedes añadir estilos personalizados si es necesario
 
 const ChangePassword = () => {
     const [newPassword, setNewPassword] = useState('');
