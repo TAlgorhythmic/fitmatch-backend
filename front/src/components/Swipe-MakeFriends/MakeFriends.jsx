@@ -12,37 +12,43 @@ const MakeFriends = () => {
   const [tokenValid, setTokenValid] = useState(true);
   const swipeContainerRef = useRef(null);
 
-  useEffect(() => {
-    async function getUsers() {
-      try {
-        const response = await fetch('http://localhost:3001/api/users/connect', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-            'Content-Type': 'application/json'
-          }
-        });
-  
-        const res = await response.json();
-  
-        if (res.status === OK) {  // Corregido: 'OK' debería ser una cadena
-          const data = res.data;
-          setPersona(data);
-          setCurrentIndex(data.length - 1);
-        } else if (res.status === NO_PERMISSION) {  
-          setTokenValid(false);
-        } else {
-          showPopup("Error", res.error, true);
+  async function getUsers() {
+    try {
+      const response = await fetch('http://localhost:3001/api/users/connect', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+          'Content-Type': 'application/json'
         }
-  
-      } catch (error) {
-        console.log('Error al obtener los usuarios:', error);
+      });
+
+      const res = await response.json();
+
+      if (res.status === OK) {  // Corregido: 'OK' debería ser una cadena
+        const data = res.data;
+        setPersona([...persona, ...data]);
+      } else if (res.status === NO_PERMISSION) {  
+        setTokenValid(false);
+      } else {
+        showPopup("Error", res.error, true);
       }
+
+    } catch (error) {
+      console.log('Error al obtener los usuarios:', error);
     }
+  }
+
+  useEffect(() => {
+    requestMoreIfNeeded();
+  }, [currentIndex]);
   
-    getUsers();
-  }, []);
-  
+  console.log(persona);
+
+  async function requestMoreIfNeeded() {
+    if (!persona.length || currentIndex >= persona.length - 3) {
+      getUsers();
+    }
+  }
 
   const handleSwipe = async (direction) => {
     if (direction === 'left') {
@@ -96,7 +102,7 @@ const MakeFriends = () => {
     }
 
     // Mueve al siguiente índice después de un swipe
-    setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
+    setCurrentIndex((prevIndex) => (prevIndex + 1));
   };
 
   const handlers = useSwipeable({
