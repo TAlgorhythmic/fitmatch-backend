@@ -129,11 +129,11 @@ router.get('/', tokenRequired, function (req, res, next) {
 router.get('/feed', tokenRequired, function (req, res, next) {
     const id = req.token.id;
 
-    sqlManager.getFriendsById(e => {
+    sqlManager.getFriendsById(id).then(e => {
         const feed = new Map();
         const friendsData = sanitizeDataReceivedForArrayOfObjects(e, "friendId");
         function lastFilterActivities() {
-            sqlManager.getJoinedActivities(id)
+            sqlManager.getRawJoinedActivities(id)
             .then(e => {
                 const joinsData = sanitizeDataReceivedForArrayOfObjects(e, "userId");
                 joinsData.forEach(item => feed.delete(item.postId));
@@ -150,7 +150,7 @@ router.get('/feed', tokenRequired, function (req, res, next) {
                 lastFilterActivities();
                 return;
             }
-            const friendId = friendsData[indexx];
+            const friendId = friendsData[indexx].friendId;
             // get all activities
             sqlManager.getActivitiesFromUserId(friendId)
             .then(activities => {

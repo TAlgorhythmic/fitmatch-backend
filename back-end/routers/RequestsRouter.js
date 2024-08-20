@@ -131,7 +131,8 @@ router.get('/pendings', tokenRequired, function (req, res, next) {
             res.json(buildSendDataPacket(list_of_users));
             return;
         }
-        const pendingId = array[i].pendingId;
+        console.log(array);
+        const pendingId = array[i].sender_id;
 
 
         fitmatch.sqlManager.getUserFromId(pendingId)
@@ -148,9 +149,7 @@ router.get('/pendings', tokenRequired, function (req, res, next) {
     }
     sqlManager.getPendingsFromReceiver(req.token.id)
         .then(response => {
-            console.log(response);
-            const data = sanitizeDataReceivedForArrayOfObjects(response, "pendingId");
-            console.log(data);
+            const data = sanitizeDataReceivedForArrayOfObjects(response, "receiver_id");
             recursive(data);
         })
         .catch(error => {
