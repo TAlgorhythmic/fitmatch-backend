@@ -168,25 +168,6 @@ router.post('/create', tokenRequired, function (req, res, next) {
         .catch((error) => res.json({ ok: false, error }))
 });
 
-// Likely doesn't work.
-// put modificació d'un Pending
-router.put('/edit', tokenRequired, function (req, res, next) {
-    Pending.findOne({ where: { id: req.token.id } })
-        .then((al) =>
-            al.update(req.body)
-        )
-        .then((ret) => res.json({
-            ok: true,
-            msg: "Record updated",
-            data: ret
-        }))
-        .catch(error => res.json({
-            ok: false,
-            error: error
-        }));
-
-});
-
 // REJECT IN THE SWIPE
 router.post("/reject/:other_id", tokenRequired, (req, res, next) => {
 
