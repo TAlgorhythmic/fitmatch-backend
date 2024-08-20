@@ -22,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="agenda" element={<Agenda />} />
           <Route path='create-activity' element={<CreateActivity />} />
           <Route path="friends" element={<MakeFriends />} />
+          <Route path="friends/list" />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="nuevaContra" element={<ChangePassword />} />
