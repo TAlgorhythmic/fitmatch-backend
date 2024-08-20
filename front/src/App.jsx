@@ -106,14 +106,15 @@ function App() {
     }
 
     getProfile();
-  }, [isValidToken]);
+  }, []);
 
-  if (isValidToken && user && !user.isSetup && location.pathname !== "/formulario") {
-    navigate("/formulario");
-  } else if (isValidToken && user && user.isSetup && location.pathname === "/formulario") {
-    showPopup("Error", "No tienes permiso para acceder a esta ruta.", true);
-    navigate("/");
-  }
+  useEffect(() => {
+    if (isValidToken && user && !user.isSetup && location.pathname !== "/formulario" && location.pathname !== "/register" && location.pathname !== "/login") {
+      navigate("/formulario");
+    } else if (isValidToken && user && user.isSetup && location.pathname === "/formulario") {
+      navigate("/");
+    }
+  }, [user])
 
   return (
     <>
