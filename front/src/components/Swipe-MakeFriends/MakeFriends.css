@@ -1,146 +1,142 @@
 .contenedor-deslizar-perfiles {
   position: relative;
   width: 100%;
-  max-width: 600px; /* Reducido el ancho máximo de la tarjeta */
-  margin: 0 auto;
-  outline: none;
-}
-
-.contenedor-perfil {
-  position: absolute;
-  width: 100%;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .perfil-activo {
-  opacity: 1;
-  transform: translateX(0);
+  display: block;
 }
 
 .perfil-inactivo {
-  opacity: 0;
-  transform: translateX(100%);
+  display: none;
 }
 
 .tarjeta-perfil {
   background-color: #fff;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  padding: 20px; /* Reducido el padding para disminuir el tamaño general */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .cabecera-perfil {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px; /* Reducido para optimizar el espacio */
+  margin-bottom: 20px;
 }
 
 .nombre-perfil {
-  font-family: 'CustomFont', sans-serif;
-  font-size: 2rem; /* Reducido el tamaño del texto del nombre */
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
   margin: 0;
-  color: #2c3e50;
-  flex: 1;
 }
 
 .nivel-perfil {
-  font-size: 1rem; /* Reducido el tamaño del texto de nivel */
-  margin: 0;
-  color: black;
+  font-size: 16px;
+  color: #666;
 }
 
 .contenido-perfil {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-.imagen-perfil {
-  width: 100%; /* Reducido el tamaño de la imagen */
-  max-width: 250px; /* Tamaño máximo más pequeño */
-  height: auto;
-  object-fit: cover;
-  margin-bottom: 15px; /* Reducido el margen inferior */
-  border: 3px solid #f39c12; /* Ajustado el borde */
+.informacion-horarios {
+  flex: 1;
 }
 
-.informacion-perfil {
-  font-size: 1rem; /* Reducido el tamaño del texto */
-  color: #555;
-  text-align: left;
+.dias-horarios {
+  display: flex;
+  flex-direction: column;
 }
 
-.preferencias-perfil {
-  margin-bottom: 15px; /* Reducido el margen inferior */
+.dias-semana {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px; /* Reducido el espacio entre etiquetas */
-  justify-content: center;
+  margin-bottom: 10px;
 }
 
 .etiqueta-preferencia {
-  display: inline-block;
-  padding: 5px 10px; /* Tamaño más pequeño */
   background-color: #ff6600;
-  color: white;
-  border-radius: 20px;
-  font-size: 0.8rem; /* Reducido el tamaño de fuente */
-  font-weight: bold;
-  text-align: center;
-  border: 2px solid transparent;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  display: inline-block;
 }
 
-.etiqueta-preferencia:hover {
-  background-color: #e67e22;
-  color: white;
-  cursor: pointer;
+.horarios-gimnasio p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.imagen-perfil-derecha {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 20px;
+}
+
+.informacion-perfil {
+  margin-top: 20px;
+}
+
+.preferencias-perfil {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 
 .descripcion-perfil {
-  margin: 0;
-  font-size: 0.9rem; /* Reducido el tamaño del texto */
-  color: #7f8c8d;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-clamp: 2;
-  box-orient: vertical;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
 }
 
 .flecha-contenedor {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  display: flex;
-  align-items: center;
   z-index: 10;
 }
 
-.boton-flecha {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 2rem; /* Reducido el tamaño de la flecha */
-  color: black; /* Color de la flecha */
-  margin-right: 8px; /* Espacio entre la flecha y el texto */
-}
-
-.texto-flecha {
-  font-size: 0.9rem; /* Reducido el tamaño del texto descriptivo */
-  color: black; /* Texto también en negro */
-}
-
 .flecha-izquierda {
-  left: -30px; /* Ajustada la posición */
+  left: 10px;
 }
 
 .flecha-derecha {
-  right: -30px; /* Ajustada la posición */
+  right: 10px;
+}
+
+.boton-flecha {
+  background-color: #ff6600;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .boton-flecha:hover {
-  color: #333; /* Cambia a un tono más oscuro al hacer hover */
+  background-color: #ff5500;
+}
+
+.texto-flecha {
+  color: #333;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 5px;
 }
 
