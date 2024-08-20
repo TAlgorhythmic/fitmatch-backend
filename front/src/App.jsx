@@ -13,6 +13,8 @@ import SubHeader from './components/Header/SubHeader.jsx';
 import { useLocation } from 'react-router-dom';
 import AuthController from "./controllers/AuthController.js";
 
+export let setToken;
+
 function App() {
 
   const [popupState, setPopupState] = useState({
@@ -36,6 +38,7 @@ function App() {
 
   const [user, setUser] = useState(null);
   const [isValidToken, setIsValidToken] = useState(null);
+  setToken = setIsValidToken;
   const token = localStorage.getItem('authToken');
   const AuthControl = new AuthController(token);
 
