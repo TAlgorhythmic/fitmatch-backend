@@ -8,7 +8,7 @@ import { showPopup } from './Utils/Utils';
 import { OK } from '../../back-end/api/packets/StatusCodes';
 import ActivitiesController from './controllers/ActivitiesController';
 import AuthController from './controllers/AuthController';
-import RequestsController from './controllers/RequestsController';
+import UsersController from './controllers/UsersController';
 
 function Home() {
     const [activities, setActivities] = useState([]);
@@ -17,7 +17,7 @@ function Home() {
     const token = localStorage.getItem('authToken');
     const AuthControl = new AuthController(token);
     const ActivityControl = new ActivitiesController(token);
-    const ReqControl = new RequestsController(token);
+    const UserControl = new UsersController(token);
 
     useEffect(() => {
         const validateToken = async () => {
@@ -64,7 +64,7 @@ function Home() {
 
     useEffect(() => {
         async function getFriends() {
-            const friendsData = await ReqControl.getFriends();
+            const friendsData = await UserControl.getFriends();
             if (friendsData.status === 0) {
                 if (friendsData.data.length) setFriends(friendsData.data);
                 else console.log("No data found (array empty).");

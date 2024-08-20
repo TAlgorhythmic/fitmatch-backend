@@ -5,6 +5,7 @@ import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
 import JoinedActivitiesController from '../../controllers/JoinedActivitiesController.js';
 import { showPopup } from '../../Utils/Utils.js';
+import UsersController from '../../controllers/UsersController.js';
 
 function ActivityPostHome(props) {
 
@@ -17,6 +18,7 @@ function ActivityPostHome(props) {
 
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
+    const UserControl = new UsersController(token);
 
     function handleStateChange() {
         setIsJoined(!isJoined);
@@ -43,6 +45,14 @@ function ActivityPostHome(props) {
                 showPopup("Error Leaving Activity", error, false);
             });
     }
+
+    useEffect(() => {
+        async function filterFriends() {
+            const friends = await UserControl.getFriends();
+            const friendsList = friends.filter(friend => friend.id);
+            setFriends(friendsList);
+        }
+    }, []);
 
     return (
         <div className="activityContainer">
