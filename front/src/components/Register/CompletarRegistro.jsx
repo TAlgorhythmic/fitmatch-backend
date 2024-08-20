@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
-import { Camera, Phone, Person, Envelope, GeoAlt, Clock } from 'react-bootstrap-icons';
+import { Camera, Person, Envelope, GeoAlt, Clock } from 'react-bootstrap-icons';
 import { useNavigate, Navigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './CompletarRegistro.css';
@@ -8,6 +8,7 @@ import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
 import { showPopup } from '../../Utils/Utils.js';
 import Switch from 'react-switch';
+import { setUpdateUser } from '../../App.jsx';
 
 const libraries = ["places"];
 
@@ -19,7 +20,7 @@ const RegisterForm = () => {
     phone: '',
     city: '',
     country: 'Spain',
-    proficiency: '',
+    proficiency: 'Principiante',
     description: '',
     img: '',
     preferences: '',
@@ -110,6 +111,7 @@ const RegisterForm = () => {
   };
 
   const handleInterestClick = (interest) => {
+    console.log(formData);
     let newSelectedInterests;
     if (selectedInterests.includes(interest)) {
       newSelectedInterests = selectedInterests.filter(i => i !== interest);
@@ -145,11 +147,8 @@ const RegisterForm = () => {
       } else {
         showPopup("Something went wrong", imageResult.error, true);
       }
-
     }
 
-    console.log(formData);
-    setFormData({...formData, preferences: selectedInterests})
     const response = await fetch('http://localhost:3001/api/users/setup', {
       method: 'POST',
       headers: {
@@ -164,6 +163,8 @@ const RegisterForm = () => {
     console.log(result);
     if (result.status === 0) {
       console.log('Usuario registrado con éxito');
+      setUpdateUser(true);
+      showPopup("Info", "Has terminado! Redirigiendo a la página principal...");
       navigate('/');
     } else if (result.status === NO_PERMISSION) {
       setTokenValid(false);
