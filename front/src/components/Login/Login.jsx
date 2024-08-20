@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { setToken } from '../../App';
 import './Login.css';
 
 const Login = () => {
@@ -30,6 +31,7 @@ const Login = () => {
                 if (response.status === 0) {
                     setResposta('Login successful');
                     const token = response.token;
+                    setToken(true);
                     localStorage.setItem('authToken', token);
                     navigate('/');
                 } else {
