@@ -26,7 +26,7 @@ function ActivityPostHome(props) {
     };
 
     async function joinActivity() {
-        await AgendaController.joinActivity(data.id)
+        await AgendaController.joinActivity(data.activity_id)
             .then(response => {
                 showPopup("Joined Succesfully", "", false);
                 handleStateChange();
@@ -37,7 +37,7 @@ function ActivityPostHome(props) {
     }
 
     async function leaveActivity() {
-        await AgendaController.leaveActivity(data.id)
+        await AgendaController.leaveActivity(data.activity_id)
             .then(response => {
                 showPopup("Left Succesfully", "", false);
                 handleStateChange();
