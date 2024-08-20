@@ -4,6 +4,10 @@ import { Dropdown } from 'react-bootstrap';
 import './Header.css';
 
 function Header() {
+    function logoutButtonOnClick() {
+        localStorage.removeItem("authToken");
+        window.location.href = "/";
+    }
 
     /*
     <NavDropdown title="" id="basic-nav-dropdown" className='customNavDropdown'>
@@ -57,7 +61,7 @@ function Header() {
         <Dropdown.Menu>
           <Dropdown.Item href="/user/profile">Ver Perfil</Dropdown.Item>
           <Dropdown.Item href="/user/settings">Configuración</Dropdown.Item>
-          <Dropdown.Item href="/logout">Cerrar Sesión</Dropdown.Item>
+          <Dropdown.Item href="#" onClick={logoutButtonOnClick}>Cerrar Sesión</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
                 </div>
