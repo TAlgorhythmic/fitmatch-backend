@@ -1,4 +1,4 @@
-import { PersonFillAdd, PersonCircle } from 'react-bootstrap-icons';
+import { PersonFillAdd, PersonCircle, People } from 'react-bootstrap-icons';
 import Notifications from '../Notifications/Notifications.jsx';
 import { Dropdown } from 'react-bootstrap';
 import './Header.css';
@@ -37,8 +37,8 @@ function Header() {
     return (
         <>
             <nav className="customNavbar">
-                <a href="/" style={{"textDecoration": "none"}}>
-                    <img className='logo-img' src='./logo.png'/><span className='customTextLogo'>Fitmatch</span>
+                <a href="/" style={{ "textDecoration": "none" }}>
+                    <img className='logo-img' src='./logo.png' /><span className='customTextLogo'>Fitmatch</span>
                 </a>
 
                 <div className='navbar-icons-middle'>
@@ -52,18 +52,22 @@ function Header() {
                 </div>
 
                 <div className='navbar-icons-right'>
+                    <a href="/friends">
+                        <People size={32} color='#ff6600' />
+                    </a>
                     <Notifications />
                     <Dropdown align="end">
-        <Dropdown.Toggle variant="link" id="dropdown-profile" className="text-decoration-none">
-          <PersonCircle size={32} color='#ff6600' />
-        </Dropdown.Toggle>
 
-        <Dropdown.Menu>
-          <Dropdown.Item href="/user/profile">Ver Perfil</Dropdown.Item>
-          <Dropdown.Item href="/user/settings">Configuración</Dropdown.Item>
-          <Dropdown.Item href="#" onClick={logoutButtonOnClick}>Cerrar Sesión</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+                        <Dropdown.Toggle variant="link" id="dropdown-profile" className="text-decoration-none">
+                            <PersonCircle size={32} color='#ff6600' />
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="/user/profile">Ver Perfil</Dropdown.Item>
+                            <Dropdown.Item href="/user/settings">Configuración</Dropdown.Item>
+                            <Dropdown.Item href="#" onClick={logoutButtonOnClick}>Cerrar Sesión</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </div>
             </nav>
         </>
