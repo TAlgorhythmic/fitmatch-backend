@@ -29,8 +29,20 @@ export default class User {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
-        this.timetable1 = timetable1;
-        this.timetable2 = timetable2;
+        if (typeof timetable1 === "number" || timetable1 instanceof Number) {
+            const extraMinutes = timetable1 % 60;
+            const hours = Math.floor(timetable1 / 60);
+            this.timetable1 = hours + ":" + extraMinutes;
+        } else {
+            this.timetable1 = timetable1;
+        }
+        if (typeof timetable2 === "number" || timetable2 instanceof Number) {
+            const extraMinutes = timetable2 % 60;
+            const hours = Math.floor(timetable2 / 60);
+            this.timetable2 = hours + ":" + extraMinutes;
+        } else {
+            this.timetable2 = timetable2;
+        }
         this.country = country ? country : null;
     }
 
