@@ -3,6 +3,7 @@ import './Register.css';
 import { useNavigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
 import { INVALID, OK } from '../../Utils/StatusCodes';
+import { setUpdateUser } from '../../App';
 
 const Register = () => {
 
@@ -41,6 +42,7 @@ const Register = () => {
                 localStorage.setItem('authToken', token);
                 setSuccess(true);
                 setError('');
+                setUpdateUser(true);
                 navigate('/formulario');   
             } else if (data.status === INVALID) {
                 showPopup("Invalid data", data.error, false);
