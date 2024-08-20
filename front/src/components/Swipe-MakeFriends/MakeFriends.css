@@ -30,6 +30,7 @@
 .cabecera-perfil {
   display: flex;
   justify-content: space-between;
+  flex-direction: row;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -45,21 +46,31 @@
   font-size: 16px;
   color: #666;
 }
-
 .contenido-perfil {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-direction: row-reverse; /* Esto mueve la imagen a la izquierda y la información a la derecha */
 }
 
 .informacion-horarios {
-  flex: 1;
+  text-align: right; /* Alinea el texto del horario a la derecha */
+text-align: center;
+}
+
+.imagen-perfil-derecha {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px; /* Añade espacio entre la imagen y el contenido de la derecha */
 }
 
 .informacion-horarios h5 {
   margin-bottom: 10px;
   font-size: 18px;
   color: #333;
+  text-align: center;
 }
 
 .dias-horarios {
@@ -68,9 +79,11 @@
 }
 
 .dias-semana {
+  text-align: center;
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 10px;
+
 }
 
 .etiqueta-preferencia {
@@ -82,33 +95,25 @@
   display: inline-block;
   margin-right: 5px;
   margin-bottom: 5px;
-  text-align: center;
 }
+
 
 .horarios-gimnasio p {
   margin: 5px 0;
   font-size: 14px;
   color: #333;
-  
-}
-
-.imagen-perfil-derecha {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-
- 
+  display: inline;
 }
 
 .informacion-perfil {
   margin-top: 20px;
- 
+  text-align: center;
 }
 
 .preferencias-perfil {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center; /* Esto centrará los elementos dentro del contenedor */
   margin-bottom: 10px;
 }
 
@@ -117,6 +122,7 @@
   color: #666;
   line-height: 1.5;
   text-align: justify;
+  
 }
 
 .flecha-contenedor {
@@ -127,24 +133,25 @@
 }
 
 .flecha-izquierda {
-  left: 10px;
+  left: 200px;
+  color: #333;
 }
 
 .flecha-derecha {
-  right: 10px;
+  right: 200px;
+  color: #333;
 }
 
 .boton-flecha {
-  background-color: #ff6600;
-  color: #fff;
+  color: black;
   border: none;
   padding: 10px;
-  border-radius: 50%;
+  border-radius: 30%;
   cursor: pointer;
 }
 
 .boton-flecha:hover {
-  background-color: #ff5500;
+  background-color: white;
 }
 
 .texto-flecha {
@@ -152,4 +159,7 @@
   font-size: 12px;
   text-align: center;
   margin-top: 5px;
+}
+.horarios-gimnasio p:first-child {
+  margin-right: 10px; /* Ajusta este valor según el espacio que necesites */
 }
