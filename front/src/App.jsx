@@ -105,8 +105,8 @@ function App() {
         });
     }
 
-    getProfile();
-  }, []);
+    if (!isValidToken) getProfile();
+  }, [isValidToken]);
 
   useEffect(() => {
     if (isValidToken && user && !user.isSetup && location.pathname !== "/formulario" && location.pathname !== "/register" && location.pathname !== "/login") {
