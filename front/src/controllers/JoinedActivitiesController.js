@@ -26,6 +26,7 @@ class JoinedActivitiesController extends BaseController {
     }
 
     async joinActivity(id) {
+        let data = undefined;
         await fetch(`${this.apiUrl}/join/${id}`, {
             method: 'POST',
             headers: {
@@ -35,12 +36,13 @@ class JoinedActivitiesController extends BaseController {
         }).then(res =>
             res.json()
             .then(responseData => {
-                console.log('Unido desde controller: ' + responseData.status);
+                data = responseData;
             })
             .catch(error => {
                 console.error('Error joinActivity: ', error);
             })
         );
+        return data;
     }
 
     async leaveActivity(id) {

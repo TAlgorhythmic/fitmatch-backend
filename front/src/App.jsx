@@ -14,6 +14,7 @@ import { useLocation } from 'react-router-dom';
 import AuthController from "./controllers/AuthController.js";
 
 export let setToken;
+export let setUpdateUser;
 
 function App() {
 
@@ -38,6 +39,8 @@ function App() {
 
   const [user, setUser] = useState(null);
   const [isValidToken, setIsValidToken] = useState(null);
+  const [updateUser, setUpdate] = useState(true);
+  setUpdateUser = setUpdate;
   setToken = setIsValidToken;
   const token = localStorage.getItem('authToken');
   const AuthControl = new AuthController(token);
@@ -92,6 +95,7 @@ function App() {
         .then(data => {
           if (data.status === OK) {
             setUser(data.data);
+
           } else {
             showPopup("Data is invalid", data.error, true);
           }
@@ -101,8 +105,11 @@ function App() {
         });
     }
 
-    if (isValidToken) getProfile();
-  }, [isValidToken]);
+    if (isValidToken && updateUser) {
+      getProfile();
+      setUpdateUser(false);
+    }
+  }, [isValidToken, updateUser, token]);
 
   useEffect(() => {  
     if (isValidToken && user && !user.isSetup) {

@@ -232,8 +232,9 @@ router.post("/setup", tokenRequired, (req, res, next) => {
     console.log(req.body);
 
     const email = req.body.email ? req.body.email : null;
-    const preferences = Array.isArray(req.body.preferences) ? (req.body.preferences.length ? req.body.preferences : null) : null;
-
+    const preferences = Array.isArray(req.body.preferences) ? (req.body.preferences.length ? req.body.preferences : null) : typeof req.body.preferences === "string" || req.body.preferences instanceof String ? req.body.preferences.split(", ") : null;
+    if (preferences.length > 1 && !preferences[0]) preferences.shift();
+    
     const lastname = req.body.lastName ? req.body.lastName : null;
     if (!preferences) {
         res.json(buildInvalidPacket("Preferences is empty."));
