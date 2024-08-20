@@ -61,11 +61,10 @@ class UsersController extends BaseController {
         }).then(res =>
             res.json()
                 .then(responseData => {
-                    console.log('RequestControl: ' + responseData.data);
                     data = responseData;
                 })
                 .catch(error => {
-                    console.error('Error getFeed:', error);
+                    console.error('Error getFriends:', error);
                 })
         );
         return data;

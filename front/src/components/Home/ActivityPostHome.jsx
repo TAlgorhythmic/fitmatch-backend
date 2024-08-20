@@ -15,6 +15,7 @@ function ActivityPostHome(props) {
     let expireDate = new Date(data.expires);
 
     const [isJoined, setIsJoined] = useState(false);
+    const [joinedFriends, setJoinedFriends] = useState([]);
 
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
@@ -48,10 +49,12 @@ function ActivityPostHome(props) {
 
     useEffect(() => {
         async function filterFriends() {
-            const friends = await UserControl.getFriends();
-            const friendsList = friends.filter(friend => friend.id);
-            setFriends(friendsList);
+            let joinedData = data.joinedUsers;
+            let joinedFriends = joinedData.filter(data => friendsList.includes(data.id))
+            console.log('amigos unidos: ' + joinedFriends)
+            setJoinedFriends(joinedFriends);
         }
+        filterFriends();
     }, []);
 
     return (
@@ -72,11 +75,9 @@ function ActivityPostHome(props) {
                         </div>
                         <div className="joinedUsers">
                             <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
-                            <p>{data.joinedUsers.filter(user => {
-                                return friendsList.includes(user.id)
-                            }).map((user, index) => (
+                            <p>De tus contactos: {joinedFriends.map((user, index) => (
                                 <span key={user.id}>
-                                    <Link to="/">{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
+                                    <Link to="/">{user.name} {user.lastname}</Link>{index !== joinedFriends.length - 1 ? ", " : ""}
                                 </span>
                             ))}</p>
                         </div>
