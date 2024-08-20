@@ -48,6 +48,26 @@ class UsersController extends BaseController {
         );
         return data;
     }
+
+    async getFriends() {
+        let data = [];
+        await fetch(`${this.apiUrl}/friends`, {
+            method: 'GET',
+            headers: {
+                "Authorization": "Bearer " + this.token,
+                'Content-Type': 'application/json'
+            }
+        }).then(res =>
+            res.json()
+                .then(responseData => {
+                    data = responseData;
+                })
+                .catch(error => {
+                    console.error('Error getFeed:', error);
+                })
+        );
+        return data;
+    }
 }
 
 export default UsersController;

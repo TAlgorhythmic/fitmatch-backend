@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import { Row } from 'react-bootstrap';
-import { Navigate } from 'react-router-dom';
 import ActivityPostHome from './components/Home/ActivityPostHome';
 import './Home.css';
-import { showPopup } from './Utils/Utils';
-import { OK } from '../../back-end/api/packets/StatusCodes';
 import ActivitiesController from './controllers/ActivitiesController';
-import AuthController from './controllers/AuthController';
-import RequestsController from './controllers/RequestsController';
+import UsersController from './controllers/UsersController';
 
 function Home() {
     const [activities, setActivities] = useState([]);
@@ -16,7 +12,7 @@ function Home() {
     const [friends, setFriends] = useState([]);
     const token = localStorage.getItem('authToken');
     const ActivityControl = new ActivitiesController(token);
-    const ReqControl = new RequestsController(token);
+    const usersControl = new UsersController(token);
 
 
     useEffect(() => {
@@ -36,12 +32,12 @@ function Home() {
 
     useEffect(() => {
         async function getFriends() {
-            const friendsData = await ReqControl.getFriends();
+            const friendsData = await usersControl.getFriends();
             if (friendsData.status === 0) {
                 if (friendsData.data.length) setFriends(friendsData.data);
                 else console.log("No data found (array empty).");
             } else {
-                console.log('Error: ', friendsData.data);
+                console.log('Error: ', friendsData);
             }
         }
         getFriends();
