@@ -50,7 +50,7 @@ function ActivityPostHome(props) {
     useEffect(() => {
         async function filterFriends() {
             let joinedData = data.joinedUsers;
-            console.log('amigos: ' + joinedData)
+            console.log('amigos unidos: ' + data.joinedUsers);
             let joinedFriends = joinedData.filter(data => friendsList.includes(data.id))
             console.log('amigos unidos: ' + joinedFriends)
             setJoinedFriends(joinedFriends);
