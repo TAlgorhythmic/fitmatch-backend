@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Outlet, useNavigate } from 'react-router-dom';
 import 'react-time-picker/dist/TimePicker.css';
 import '@mobiscroll/react-lite/dist/css/mobiscroll.min.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import PopupMessage from './Utils/PopupMessage.jsx';
 import { setShowPopup, showPopup } from './Utils/Utils.js';
 import SubHeader from './components/Header/SubHeader.jsx';
@@ -39,9 +39,7 @@ function App() {
   const token = localStorage.getItem('authToken');
   const AuthControl = new AuthController(token);
 
-
   useEffect(() => {
-
     const validateToken = async () => {
       try {
         const response = await AuthControl.validateToken();
@@ -66,22 +64,17 @@ function App() {
     } else {
       setIsValidToken(false);
     }
-  }, [token]);
+  }, []);
 
   const [showHome, setShowHome] = useState(false);
 
   useEffect(() => {
-    if (location.pathname === '/' || location.pathname === '/create-activity'
+    if (isValidToken && (location.pathname === '/' || location.pathname === '/create-activity'
       || location.pathname === '/agenda' || location.pathname === '/own-activities'
-    ) {
+    )) {
       setShowHome(true);
     }
-  }, [location])
-
-  if (!isValidToken && isValidToken !== null) {
-    showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
-    navigate("/login");
-  }
+  }, [isValidToken, location.pathname])
 
   useEffect(() => {
     async function getProfile() {
@@ -105,16 +98,27 @@ function App() {
         });
     }
 
-    if (!isValidToken) getProfile();
+    if (isValidToken) getProfile();
   }, [isValidToken]);
 
-  useEffect(() => {
-    if (isValidToken && user && !user.isSetup && location.pathname !== "/formulario" && location.pathname !== "/register" && location.pathname !== "/login") {
-      navigate("/formulario");
-    } else if (isValidToken && user && user.isSetup && location.pathname === "/formulario") {
-      navigate("/");
+  useEffect(() => {  
+    if (isValidToken && user && !user.isSetup) {
+      if (location.pathname !== "/formulario" && location.pathname !== "/register" && location.pathname !== "/login") {
+        navigate("/formulario");
+      }
+    } else if (isValidToken && user && user.isSetup) {
+      if (location.pathname === "/formulario") {
+        navigate("/");
+      }
     }
-  }, [user])
+  }, [isValidToken, location.pathname, navigate, user]);
+
+  useEffect(() => {
+    if (!isValidToken && isValidToken !== null) {
+      showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
+      navigate("/login");
+    }
+  }, [isValidToken, navigate])
 
   return (
     <>

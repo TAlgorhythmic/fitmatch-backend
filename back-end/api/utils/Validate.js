@@ -54,7 +54,7 @@ export function isValidTimetable(int) {
 
 // Middleware
 export function tokenRequired(req, res, next) {
-    let token = req.headers.authorization;
+    let token = req.headers.authorization || "";
 
     if (!token) {
         res.json(buildNoPermissionPacket("A token is required."));
