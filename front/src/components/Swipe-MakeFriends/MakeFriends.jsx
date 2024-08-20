@@ -189,13 +189,16 @@ const MakeFriends = () => {
               />
             </div>
             <div className="informacion-perfil">
-              <p className="preferencias-perfil">
-                {person.trainingPreferences?.map((preference, index) => (
-                  <span key={index} className="etiqueta-preferencia me-2 mb-2">
-                    {preference}
-                  </span>
-                )) || []}
-              </p>
+            <p className="preferencias-perfil">
+              {person.trainingPreferences
+             ?.filter(preference => preference.trim() !== "")
+              .map((preference, index) => (
+             <span key={index} className="etiqueta-preferencia me-2 mb-2">
+             {preference}
+             </span>
+             )) || []}
+            </p>
+
               <p className="descripcion-perfil">{person.description}</p>
             </div>
           </div>
