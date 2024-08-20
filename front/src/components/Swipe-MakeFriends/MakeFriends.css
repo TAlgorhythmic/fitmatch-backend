@@ -24,6 +24,7 @@
   max-width: 600px;
   width: 100%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 .cabecera-perfil {
@@ -55,6 +56,12 @@
   flex: 1;
 }
 
+.informacion-horarios h5 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
 .dias-horarios {
   display: flex;
   flex-direction: column;
@@ -73,12 +80,16 @@
   border-radius: 5px;
   font-size: 14px;
   display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  text-align: center;
 }
 
 .horarios-gimnasio p {
   margin: 5px 0;
   font-size: 14px;
   color: #333;
+  
 }
 
 .imagen-perfil-derecha {
@@ -86,11 +97,13 @@
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  margin-left: 20px;
+
+ 
 }
 
 .informacion-perfil {
   margin-top: 20px;
+ 
 }
 
 .preferencias-perfil {
@@ -103,6 +116,7 @@
   font-size: 14px;
   color: #666;
   line-height: 1.5;
+  text-align: justify;
 }
 
 .flecha-contenedor {
@@ -139,4 +153,3 @@
   text-align: center;
   margin-top: 5px;
 }
-
