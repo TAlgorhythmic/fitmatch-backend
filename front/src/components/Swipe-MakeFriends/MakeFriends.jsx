@@ -143,11 +143,12 @@ const MakeFriends = () => {
         >
           <div className="tarjeta-perfil">
             <div className="cabecera-perfil">
-              <h2 className="nombre-perfil">{person.name}</h2>
+              <h3 className="nombre-perfil">{person.name} {person.lastname}</h3>
               <p className="nivel-perfil"><strong>Nivel:</strong> {person.proficiency}</p>
             </div>
             <div className="contenido-perfil">
               <div className="informacion-horarios">
+                <h5>Mi horario</h5>
                 <div className="dias-horarios">
                   <div className="dias-semana">
                     {person.monday ? (
@@ -173,8 +174,8 @@ const MakeFriends = () => {
                     ) : <></>}
                   </div>
                   <div className="horarios-gimnasio">
-                    <p className="descripcion-perfil">{person.timetable1}</p>
-                    <p className="descripcion-perfil">{person.timetable2}</p>
+                    <p><strong>Entrada:</strong> {person.timetable1}</p>
+                    <p><strong>Salida:</strong> {person.timetable2}</p>
                   </div>
                 </div>
               </div>
