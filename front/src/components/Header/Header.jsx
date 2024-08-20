@@ -52,7 +52,7 @@ function Header() {
                 </div>
 
                 <div className='navbar-icons-right'>
-                    <a href="/friends">
+                    <a href="/friends/list">
                         <People size={32} color='#ff6600' />
                     </a>
                     <Notifications />
