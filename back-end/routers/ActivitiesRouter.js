@@ -59,12 +59,12 @@ router.get('/', tokenRequired, function (req, res, next) {
                     return;
                 }
                 fitmatch.getSqlManager().getUserFromId(filtered[i].userId)
-                .then(e => {
-                    const data = sanitizeDataReceivedForSingleObject(e);
-                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
-                    filtered[i].user = user;
-                    inject2();
-                })
+                    .then(e => {
+                        const data = sanitizeDataReceivedForSingleObject(e);
+                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                        filtered[i].user = user;
+                        inject2();
+                    })
                 function inject2() {
                     // Inject every user object to
                     if (!filtered[i]) {
@@ -94,16 +94,16 @@ router.get('/', tokenRequired, function (req, res, next) {
                                     recursiveNext();
                                 } else {
                                     fitmatch.sqlManager.getUserFromId(userId)
-                                    .then(e => {
-                                        const innerUserData = sanitizeDataReceivedForSingleObject(e);
-                                        const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
-                                        obj.push(user);
-                                        recursiveNext();
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-                                    })
+                                        .then(e => {
+                                            const innerUserData = sanitizeDataReceivedForSingleObject(e);
+                                            const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
+                                            obj.push(user);
+                                            recursiveNext();
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                                        })
                                 }
                             }
                             userRecursive();
@@ -126,20 +126,44 @@ router.get('/', tokenRequired, function (req, res, next) {
         });
 });
 
-router.get("/feed", tokenRequired, function (req, res, next) {
-    sqlManager.getActivitiesFeed(1, res)
-    .then(e => {
-        if(e != null || e.length > 0) {
-            res.json(buildSendDataPacket(e));
+router.get("/feed", tokenRequired, async function (req, res, next) {
+    const id_user = 1; //req.token.id;
+    
+    try {
+        // Obtiene las actividades del feed
+        const activities = await sqlManager.getActivitiesFeed(id_user);
+        
+        if (activities && activities.length > 0) {
+            // Crea un array para almacenar las promesas
+            const friendsDataPromises = activities.map(async (activity) => {
+                // Obtiene los datos de los amigos para cada actividad
+                const friendsData = await sqlManager.getActivitiesFeedFriends(id_user, activity.activity_id);
+                return {
+                    ...activity,
+                    friendsData
+                };
+            });
+
+            // Espera a que todas las promesas se resuelvan
+            const activitiesWithFriendsData = await Promise.all(friendsDataPromises);
+
+            // Envía la respuesta con los datos completos
+            res.json({ status: 0, data: activitiesWithFriendsData });
         } else {
+            // Responde cuando no hay actividades en el feed
             res.json(buildInvalidPacket("You don't have any activity in your feed."));
         }
-    })
+    } catch (error) {
+        // Maneja cualquier error que pueda ocurrir
+        next(error);
+    }
 });
+
+
 
 // POST, creación de un nuevo Activities
 router.post('/create', tokenRequired, function (req, res, next) {
-    
+
     // Obtener la fecha de expiración del cuerpo de la solicitud
     const expiresInput = req.body.expires ? new Date(req.body.expires) : null;
     if (!expiresInput) {
@@ -261,16 +285,16 @@ router.get("/getown", tokenRequired, (req, res, next) => {
                                     recursiveNext();
                                 } else {
                                     fitmatch.sqlManager.getUserFromId(userId)
-                                    .then(e => {
-                                        const innerUserData = sanitizeDataReceivedForSingleObject(e);
-                                        const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
-                                        obj.push(user);
-                                        recursiveNext();
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-                                    })
+                                        .then(e => {
+                                            const innerUserData = sanitizeDataReceivedForSingleObject(e);
+                                            const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
+                                            obj.push(user);
+                                            recursiveNext();
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                                        })
                                 }
                             }
                             userRecursive();

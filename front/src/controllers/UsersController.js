@@ -49,7 +49,6 @@ class UsersController extends BaseController {
         return data;
     }
 
-    // Obtener lista de IDs de usuarios agregados
     async getFriends() {
         let data = [];
         await fetch(`${this.apiUrl}/friends`, {
@@ -64,7 +63,7 @@ class UsersController extends BaseController {
                     data = responseData;
                 })
                 .catch(error => {
-                    console.error('Error getFriends:', error);
+                    console.error('Error getFeed:', error);
                 })
         );
         return data;

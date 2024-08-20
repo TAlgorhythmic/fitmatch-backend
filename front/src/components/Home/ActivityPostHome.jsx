@@ -62,10 +62,10 @@ function ActivityPostHome(props) {
             <Alert variant="info" className='customAlert'>
                 <Row>
                     <Col md={2}>
-                        <Image src={`http://localhost:3001/uploads/${data.user.img}`} alt="userImage" className="activityUserImage" roundedCircle />
+                        <Image src={`http://localhost:3001/uploads/${data.img}`} alt="userImage" className="activityUserImage" roundedCircle />
                     </Col>
                     <Col md={10}>
-                        <h5 className='actUserName'>{data.user.name} {data.user.lastname} <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
+                        <h5 className='actUserName'>{data.friend_name} {data.friend_lastname} <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
                         <hr />
                         <Alert.Heading>{data.title}</Alert.Heading>
                         <p>{data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} </p>
@@ -74,10 +74,10 @@ function ActivityPostHome(props) {
                             {isJoined ? <Button variant="danger" onClick={leaveActivity}>Abandonar</Button> : <Button variant="primary" onClick={joinActivity}>Unirse</Button>}
                         </div>
                         <div className="joinedUsers">
-                            <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
-                            <p>De tus contactos: {joinedFriends.map((user, index) => (
-                                <span key={user.id}>
-                                    <Link to="/">{user.name} {user.lastname}</Link>{index !== joinedFriends.length - 1 ? ", " : ""}
+                            <h5 className='actUserName'>Participantes: {data.joinedUsers} {data.joinedUsers !== 1 ? 'usuarios' : 'usuario'}</h5>
+                            <p>{data.friendsData.map((user, index) => (
+                                <span key={user.friend_id}>
+                                    <Link to="/">{user.friend_name} {user.friend_lastname}</Link>{index !== data.friendsData.length - 1 ? ", " : ""}
                                 </span>
                             ))}</p>
                         </div>
