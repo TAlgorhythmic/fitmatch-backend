@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS users(
     country VARCHAR(60),
     city VARCHAR(45) NOT NULL,
     latitude VARCHAR(50) NOT NULL,
-    longitude VARCHAR(50),
+    longitude VARCHAR(50) NOT NULL,
     isSetup BOOLEAN NOT NULL DEFAULT FALSE,
     tableVersion INT NOT NULL DEFAULT 0,
     monday BOOLEAN NOT NULL DEFAULT FALSE,
