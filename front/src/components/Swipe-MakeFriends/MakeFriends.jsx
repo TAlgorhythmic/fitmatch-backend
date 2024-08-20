@@ -138,55 +138,56 @@ const MakeFriends = () => {
           <div className="tarjeta-perfil">
             <div className="cabecera-perfil">
               <h2 className="nombre-perfil">{person.name}</h2>
-
               <p className="nivel-perfil"><strong>Nivel:</strong> {person.proficiency}</p>
             </div>
             <div className="contenido-perfil">
+              <div className="informacion-horarios">
+                <div className="dias-horarios">
+                  <div className="dias-semana">
+                    {person.monday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Lunes</span>
+                    ) : <> </>}
+                    {person.tuesday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Martes</span>
+                    ) : <> </>}
+                    {person.wednesday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Miércoles</span>
+                    ) : <></>}
+                    {person.thursday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Jueves</span>
+                    ) : <></>}
+                    {person.friday ?(
+                      <span className="etiqueta-preferencia me-2 mb-2">Viernes</span>
+                    ) : <></>}
+                    {person.saturday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Sábado</span>
+                    ) : <></>}
+                    {person.sunday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Domingo</span>
+                    ) : <></>}
+                  </div>
+                  <div className="horarios-gimnasio">
+                    <p className="descripcion-perfil">{person.timetable1}</p>
+                    <p className="descripcion-perfil">{person.timetable2}</p>
+                  </div>
+                </div>
+              </div>
               <img
                 draggable="false"
                 src={`http://localhost:3001/uploads/${person.img}`}
                 alt={person.name}
-                className="imagen-perfil"
+                className="imagen-perfil-derecha"
               />
-              <div className='Horarios'>
-                <div className="preferencias-perfil">
-                  {person.monday ? (
-                    <span className="etiqueta-preferencia me-2 mb-2">Lunes</span>
-                  ) : <></>
-                }
-                  {person.tuesday ? (
-                    <span className="etiqueta-preferencia me-2 mb-2">Martes</span>
-                  ) : <> </>}
-                  {person.wednesday ? (
-                    <span className="etiqueta-preferencia me-2 mb-2">Miércoles</span>
-                  ) : <></>}
-                  {person.thursday ? (
-                    <span className="etiqueta-preferencia me-2 mb-2">Jueves</span>
-                  ) : <></>}
-                  {person.friday ? (
-                    <span className="etiqueta-preferencia me-2 mb-2">Viernes</span>
-                  ) : <> </>}
-                  {person.saturday ? (
-                    <span className="etiqueta-preferencia me-2 mb-2">Sábado</span>
-                  ) : <> </>}
-                  {person.sunday ? (
-                    <span className="etiqueta-preferencia me-2 mb-2">Domingo</span>
-                  ) : <></>}
-                </div>
-                <p className="descripcion-perfil">{person.timetable1}</p>
-                <p className="descripcion-perfil">{person.timetable2}</p>
-
-              </div>
-              <div className="informacion-perfil">
-                <p className="preferencias-perfil">
-                  {person.trainingPreferences?.map((preference, index) => (
-                    <span key={index} className="etiqueta-preferencia me-2 mb-2">
-                      {preference}
-                    </span>
-                  )) || []}
-                </p>
-                <p className="descripcion-perfil">{person.description}</p>
-              </div>
+            </div>
+            <div className="informacion-perfil">
+              <p className="preferencias-perfil">
+                {person.trainingPreferences?.map((preference, index) => (
+                  <span key={index} className="etiqueta-preferencia me-2 mb-2">
+                    {preference}
+                  </span>
+                )) || []}
+              </p>
+              <p className="descripcion-perfil">{person.description}</p>
             </div>
           </div>
         </div>
@@ -204,7 +205,7 @@ const MakeFriends = () => {
         <p className="texto-flecha">Siguiente</p>
       </div>
     </div>
-  );
+  );  
 };  
 
 export default MakeFriends;
