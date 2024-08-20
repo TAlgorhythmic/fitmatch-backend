@@ -278,21 +278,28 @@ class SQLManager {
                 a.postDate,
                 a.expires,
                 u.img,
+                ja.postId,
             CASE
                 WHEN f.userId1 = ? THEN f.userId2  
                 ELSE f.userId1
             END AS friend_id,
                 u.name AS friend_name,
-                u.lastname AS friend_lastname
+                u.lastname AS friend_lastname,
+                COUNT(ja.userId) AS joinedUsers
             FROM 
                 activities a
             JOIN 
                 users u ON a.userId = u.id
-            JOIN 
-                friends f ON (f.userId1 = ? OR f.userId2 = ?)  
+            JOIN
+                friends f ON (f.userId1 = ? OR f.userId2 = ?)
+            LEFT JOIN
+                joins_activities ja ON a.id = ja.postId
             WHERE 
                 (u.id = f.userId1 OR u.id = f.userId2)
-            AND u.id != ? 
+            AND 
+                u.id != ?
+            GROUP BY
+                a.id, a.title, a.description, a.postDate, a.expires, u.img, friend_id, friend_name, friend_lastname
             ORDER BY 
                 a.postDate DESC;`,
             {
@@ -300,6 +307,37 @@ class SQLManager {
                 type: QueryTypes.SELECT
             }
         );
+    }
+
+    getActivitiesFeedFriends(id, activitie_id) {
+        return fitmatch.getSql().query(
+            `
+            SELECT DISTINCT 
+                u2.id AS friend_id, 
+                u2.name AS friend_name, 
+                u2.lastname AS friend_lastname, 
+                a.title AS activity_title
+            FROM 
+                friends f1
+            JOIN 
+                joins_activities ja1 ON f1.userId2 = ja1.userId
+            JOIN 
+                activities a ON ja1.postId = a.id
+            JOIN 
+                joins_activities ja2 ON ja2.postId = a.id
+            JOIN 
+                users u1 ON f1.userId1 = u1.id
+            JOIN 
+                users u2 ON ja2.userId = u2.id
+            WHERE 
+                u1.id = ? 
+                AND u2.id != u1.id
+                AND ja1.postId = ?;
+            `,
+            {
+                replacements: [id,activitie_id],
+                type: QueryTypes.SELECT
+            })
     }
 
     getActivitiesFromUserId(id) {

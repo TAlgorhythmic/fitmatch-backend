@@ -1,5 +1,6 @@
 import { PersonFillAdd, PersonCircle } from 'react-bootstrap-icons';
 import Notifications from '../Notifications/Notifications.jsx';
+import { Dropdown } from 'react-bootstrap';
 import './Header.css';
 
 function Header() {
@@ -33,7 +34,7 @@ function Header() {
         <>
             <nav className="customNavbar">
                 <a href="/" style={{"textDecoration": "none"}}>
-                    <img className='logo-img' src='./LogoFitMatch.jpg'/><span className='customTextLogo'>Fitmatch</span>
+                    <img className='logo-img' src='./logo.png'/><span className='customTextLogo'>Fitmatch</span>
                 </a>
 
                 <div className='navbar-icons-middle'>
@@ -48,9 +49,17 @@ function Header() {
 
                 <div className='navbar-icons-right'>
                     <Notifications />
-                    <a href="/user/profile">
-                        <PersonCircle size={32} color='#ff6600' />
-                    </a>
+                    <Dropdown align="end">
+        <Dropdown.Toggle variant="link" id="dropdown-profile" className="text-decoration-none">
+          <PersonCircle size={32} color='#ff6600' />
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+          <Dropdown.Item href="/user/profile">Ver Perfil</Dropdown.Item>
+          <Dropdown.Item href="/user/settings">Configuración</Dropdown.Item>
+          <Dropdown.Item href="/logout">Cerrar Sesión</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
                 </div>
             </nav>
         </>
