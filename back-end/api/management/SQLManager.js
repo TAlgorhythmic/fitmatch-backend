@@ -50,6 +50,10 @@ class SQLManager {
         return fitmatch.sql.query("SELECT * FROM pending WHERE receiver_id = ?;", { replacements: [id], type: QueryTypes.SELECT })
     }
 
+    removeFriendEntry(id, other_id) {
+        return fitmatch.sql.query("DELETE FROM friends WHERE (userId1 = ? AND userId2 = ?) OR (userId1 = ? AND userId2 = ?);", { replacements: [id, other_id, other_id, id], type: QueryTypes.DELETE });
+    }
+
     leaveActivity(id, activityId, res) {
         this.getJoinedActivity(id, activityId)
             .then(e => {
