@@ -1,0 +1,71 @@
+/* styles.css */
+
+.activityContainer {
+}
+
+.dataActivity{
+    padding: 10px;
+}
+
+.dataActivity h2 {
+    text-decoration: underline;
+}
+
+.customAlert {
+    border-radius: 12px;
+    /* Espacio debajo de la alerta */
+    background-color: #e9ecef;
+    /* Color de fondo para la alerta */
+    border: 1px solid #ced4da;
+    /* Borde sutil */
+}
+
+.customAlert .btn {
+    margin: 0 10px;
+    /* Espacio entre los botones */
+    padding: 10px 15px;
+    /* Tamaño de los botones */
+    border-radius: 8px;
+    /* Bordes redondeados en los botones */
+    font-weight: bold;
+    /* Texto en negrita */
+    transition: all 0.3s ease;
+    /* Transición suave para hover */
+}
+
+.btn-success {
+    background-color: white;
+    /* Color verde para el botón de editar */
+    border: 1px solid #28a745;
+    /* Borde del mismo color */
+    color: green;
+    /* Texto blanco */
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    /* Verde más oscuro en hover */
+    border-color: #1e7e34;
+    /* Borde más oscuro en hover */
+}
+
+.btn-danger {
+    background-color: #fff;
+    /* Fondo blanco para el botón de eliminar */
+    border: 1px solid #dc3545;
+    /* Borde rojo */
+    color: #dc3545;
+    /* Texto rojo */
+}
+
+.btn-danger:hover {
+    background-color: #dc3545;
+    /* Fondo rojo en hover */
+    color: #fff;
+    /* Texto blanco en hover */
+}
+
+.row {
+    margin-bottom: 15px;
+    /* Espacio entre filas si hay más contenido */
+}

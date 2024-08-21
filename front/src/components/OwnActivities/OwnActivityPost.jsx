@@ -29,10 +29,13 @@ function OwnActivityPost(props) {
             <div className="activityContainer">
                 <Alert variant="info" className='customAlert'>
                     <Row>
-                        <Col>
-                            {data.title}
-                            <Button variant="danger" onClick={deleteActivity}>Eliminar</Button>
-                            <Link to={"/activities/edit/" + data.id} className="btn btn-success">Editar</Link>
+                        <Col className="dataActivity">
+                            <h2>{data.title}</h2>
+                            <br />
+                            <p>{data.description}</p>
+                            <br />
+                            <Button variant="danger" className="btn-danger" onClick={deleteActivity}>Eliminar</Button>
+                            <Link to={`/activities/edit/${data.id}`} className="btn btn-success">Editar</Link>
                         </Col>
                     </Row>
                 </Alert>
