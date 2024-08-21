@@ -5,6 +5,7 @@ import { tokenRequired } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildNoDataFoundPacket, buildSendDataPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
 import User from "../api/User.js";
 import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
+import { isActivityExpired } from "../api/management/SQLManager.js";
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -281,6 +282,11 @@ router.post('/create', tokenRequired, function (req, res, next) {
     const expiresInput = req.body.expires ? new Date(req.body.expires) : null;
     if (!expiresInput) {
         res.json(buildInvalidPacket("You must specify the expiration date."));
+        return;
+    }
+
+    if (Date.now() >= expiresInput.getTime()) {
+        res.json(buildInvalidPacket("The activity cannot be expired upon creation."));
         return;
     }
 
