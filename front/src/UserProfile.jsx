@@ -137,7 +137,13 @@ const UserProfile = () => {
 
     return (
         <Container className="container-profile">
+
             <Form onSubmit={handleSubmit}>
+            <img
+                     draggable="false"
+                     src={`http://localhost:3001/uploads/${userData.img}`}
+                        alt={userData.name}
+                     className="imagen-perfil-derecha"/>
                 <Row>
                     <Col md={6}>
                         <Form.Group className="form-group-profile mb-3">
@@ -173,37 +179,6 @@ const UserProfile = () => {
                             </InputGroup>
                         </Form.Group>
                     </Col>
-                </Row>
-                <Row>
-                    <Col md={6}>
-                        <Form.Group className="mb-3">
-                            <InputGroup>
-                                <InputGroup.Text className="input-group-text-profile"><Envelope /></InputGroup.Text>
-                                <Form.Control
-                                    type="text"
-                                    value={userData.email}
-                                    onChange={handleChange}
-                                    placeholder="fitmatch@gmail.com"
-                                />
-                            </InputGroup>
-                        </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                        <Form.Group className="mb-3">
-                            <InputGroup>
-                                <InputGroup.Text className="input-group-text-profile"><Phone /></InputGroup.Text>
-                                <Form.Control
-                                    type="text"
-                                    name="phone"
-                                    value={userData.phone}
-                                    onChange={handleChange}
-                                    readOnly
-                                />
-                            </InputGroup>
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Row>
                     <Col md={6}>
                         {isLoaded ? (
                             <Form.Group className="form-group-profile mb-3">

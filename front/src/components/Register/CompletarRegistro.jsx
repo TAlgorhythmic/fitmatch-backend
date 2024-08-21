@@ -250,7 +250,7 @@ const RegisterForm = () => {
               value={formData.phone}
 
               maxLength={9}
-              placeholder="Introduce your phone number"
+              placeholder="697415616"
               readOnly
             />
           </InputGroup>
@@ -295,7 +295,7 @@ const RegisterForm = () => {
         </Col>
         </Row>
         <Form.Group className="mb-3">
-          <Form.Label>Descripción</Form.Label>
+          <Form.Label>Escribe algo especial que los demás deban saber</Form.Label>
           <Form.Control
             type="text"
             name="description"
