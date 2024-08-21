@@ -10,14 +10,15 @@ public class User {
     private static final Map<Integer, User> users = new ConcurrentHashMap<>();
     private static User[] inMemoryInitialUsers;
 
-    public static void loadUsers() {
+    public static User[] loadUsers() {
         try (final InputStreamReader reader = new InputStreamReader(User.class.getClassLoader().getResourceAsStream("bots.json"))) {
             inMemoryInitialUsers = Fitmatch.getInstance().getGson().fromJson(reader, User[].class);
-
+            return inMemoryInitialUsers;
         } catch (Throwable e) {
             e.printStackTrace();
             System.exit(-1);
         }
+        return null;
     }
 
     private int id;
@@ -46,7 +47,7 @@ public class User {
     }
 
     public void fetchToken(boolean startAfterwards) {
-        // TODO
+        
     }
 
     public String getCity() {
