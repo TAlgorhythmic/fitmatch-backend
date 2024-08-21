@@ -40,7 +40,7 @@ nav {
 
 .notifi-box {
     width: 300px;
-    height: 0px;
+    max-height: 400px; /* Altura máxima para permitir el scroll */
     opacity: 0;
     position: absolute;
     top: 100%;
@@ -49,17 +49,19 @@ nav {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     pointer-events: none;
     border-radius: 10px;
-    background-color: #000;
-    /* Fondo negro */
+    background-color: #000; /* Fondo negro */
+    overflow-y: auto; /* Habilita el scroll vertical */
 }
 
 .notifi-box h2 {
     font-size: 14px;
     padding: 10px;
-    border-bottom: 1px solid #444;
-    /* Línea divisoria en gris oscuro */
-    color: #ff6600;
-    /* Color naranja */
+    border-bottom: 1px solid #444; /* Línea divisoria en gris oscuro */
+    color: #ff6600; /* Color naranja */
+    background-color: #111; /* Fondo negro para la cabecera */
+    position: sticky; /* Mantiene la cabecera fija */
+    top: 0; /* Se mantiene en la parte superior */
+    z-index: 1; /* Asegura que esté por encima del resto */
 }
 
 .notifi-box h2 span {
