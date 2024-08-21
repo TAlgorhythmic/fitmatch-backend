@@ -144,6 +144,36 @@ const UserProfile = () => {
                      src={`http://localhost:3001/uploads/${userData.img}`}
                         alt={userData.name}
                      className="imagen-perfil-derecha"/>
+        <div className="horarios-gimnasio">
+        <p className='uno'><strong>Entrada:</strong> {userData.timetable1}</p>
+        <p className='dos'><strong>Salida:</strong> {userData.timetable2}</p>
+                  </div>
+                  <h5>Mi horario</h5>
+                <div className="dias-horarios">
+                  <div className="dias-semana">
+                    {userData.monday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Lunes</span>
+                    ) : <> </>}
+                    {userData.tuesday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2" >Martes</span>
+                    ) : <> </>}
+                    {userData.wednesday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Miércoles</span>
+                    ) : <></>}
+                    {userData.thursday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Jueves</span>
+                    ) : <></>}
+                    {userData.friday ?(
+                      <span className="etiqueta-preferencia me-2 mb-2">Viernes</span>
+                    ) : <></>}
+                    {userData.saturday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Sábado</span>
+                    ) : <></>}
+                    {userData.sunday ? (
+                      <span className="etiqueta-preferencia me-2 mb-2">Domingo</span>
+                    ) : <></>}
+                  </div>
+        </div>
                 <Row>
                     <Col md={6}>
                         <Form.Group className="form-group-profile mb-3">
