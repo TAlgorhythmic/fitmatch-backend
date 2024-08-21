@@ -22,6 +22,16 @@ function FriendsList() {
         getFriends();
     }, []);
 
+    async function handleRemoveFriend(id) {
+        const response = await UserControl.removeConnection(id);
+        if (response.status === 0) {
+            const updatedUsers = users.filter(user => user.id !== id);
+            setUsers(updatedUsers);
+        } else {
+            console.log('Error: ', response);
+        }
+    }
+
     return (
         <div className="contenedorHome">
             {users.map((user, index) => (
