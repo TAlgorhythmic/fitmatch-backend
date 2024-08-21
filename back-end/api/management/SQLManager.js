@@ -9,7 +9,7 @@ const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
 
 export function isActivityExpired(activity) {
     const date = new Date(activity.expires);
-    return Date.now() <= date.getTime();
+    return Date.now() >= date.getTime();
 }
 
 export function removeGarbage(millis) {
@@ -22,11 +22,7 @@ export function removeGarbage(millis) {
                 return;
             }
             try {
-                fitmatch.getSqlManager().removeActivityCompletely(itemToRemove.id)
-                    .then(e => {
-                        console.log(`Unused/expired activity: ${itemToRemove.id} removed successfully!`);
-                        return;
-                    });
+                fitmatch.getSqlManager().removeActivityCompletely(itemToRemove.id);
             } catch (err) {
                 console.log(err);
             } finally {
@@ -118,11 +114,14 @@ class SQLManager {
 
     removeActivityCompletely(id) {
         fitmatch.sql.query(`DELETE FROM activities WHERE id = ?;`, { replacements: [id], type: QueryTypes.DELETE })
+        .then(e => {
+            fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?`, { replacements: [id], type: QueryTypes.DELETE })
             .then(e => {
-                fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?`, { replacements: [id], type: QueryTypes.DELETE })
-                    .catch(err => console.log(err));
+                console.log(`The activity with an ID of ${id} has been removed successfully!`);
             })
-            .catch(err => console.log("Operation remove activity completely failed. Error: " + err));
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log("Operation remove activity completely failed. Error: " + err));
     }
 
     getActivityFromId(id) {
