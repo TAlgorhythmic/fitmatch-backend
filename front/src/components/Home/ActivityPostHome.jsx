@@ -11,6 +11,10 @@ function ActivityPostHome(props) {
 
     const { data, friendsList } = props;
 
+    if (!data || friendsList) {
+        throw new Error("Data or friendsList is not defined.");
+    }
+
     let postDate = new Date(data.postDate);
     let expireDate = new Date(data.expires);
 
