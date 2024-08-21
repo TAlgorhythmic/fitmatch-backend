@@ -142,6 +142,28 @@ router.get('/friends', tokenRequired, function (req, res, next) {
     })
 });
 
+router.delete("/friends/remove/:other_id", tokenRequired, (req, res, next) => {
+    const id = req.token.id;
+    const other_id = req.params.other_id;
+    
+    fitmatch.getSqlManager().getFriendByPair(id, other_id)
+    .then(e => {
+        const data = sanitizeDataReceivedForSingleObject(e);
+        if (!data) {
+            res.json(buildInvalidPacket("This user is not your friend."));
+            return;
+        }
+
+        fitmatch.sqlManager.removeFriendEntry(id, other_id)
+        .then(e => {
+            res.json(buildSimpleOkPacket());
+        })
+    }).catch(err => {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+    })
+})
+
 router.get('/connections', tokenRequired, function (req, res, next) {
 
     const id = req.token.id;
@@ -285,7 +307,6 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         user.setTrainingPreferences(preferences);
         user.setLastName(lastname);
         user.setDescription(description);
-        user.setImg(img);
         user.setProficiency(proficiency);
         user.setMonday(monday);
         user.setCity(city);
@@ -311,7 +332,6 @@ router.post("/setup", tokenRequired, (req, res, next) => {
                 user.setTrainingPreferences(preferences);
                 user.setLastName(lastname);
                 user.setDescription(description);
-                user.setImg(img);
                 user.setProficiency(proficiency);
                 user.setMonday(monday);
                 user.setCity(city);

@@ -2,9 +2,10 @@ import fitmatch from "./../api/Fitmatch.js";
 import express from 'express';
 import { DataTypes } from "sequelize";
 import { tokenRequired } from "./../api/utils/Validate.js";
-import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildNoDataFoundPacket, buildSendDataPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
 import User from "../api/User.js";
 import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
+import { isActivityExpired } from "../api/management/SQLManager.js";
 
 const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
@@ -126,8 +127,121 @@ router.get('/', tokenRequired, function (req, res, next) {
         });
 });
 
-router.get("/feed", tokenRequired, async function (req, res, next) {
-    const id_user = 1; //req.token.id;
+router.get('/feed', tokenRequired, function (req, res, next) {
+    const id = req.token.id;
+
+    sqlManager.getFriendsById(id).then(e => {
+        const feed = new Map();
+        const friendsData = sanitizeDataReceivedForArrayOfObjects(e, "friendId");
+        function lastFilterActivities() {
+            sqlManager.getRawJoinedActivities(id)
+            .then(e => {
+                const joinsData = sanitizeDataReceivedForArrayOfObjects(e, "userId");
+                joinsData.forEach(item => feed.delete(item.postId));
+                res.json(buildSendDataPacket(Array.from(feed.values())))
+            })
+            .catch(err => {
+                console.log(err);
+                res.json(buildInternalErrorPacket("Backend internal error. Check logs"));
+            })
+        }
+        let indexx = 0;
+        function recursiveFriends() {
+            if (!friendsData[indexx]) {
+                lastFilterActivities();
+                return;
+            }
+            const friendId = friendsData[indexx].friendId;
+            // get all activities
+            sqlManager.getActivitiesFromUserId(friendId)
+            .then(activities => {
+                // sanitize data
+                const data = sanitizeDataReceivedForArrayOfObjects(activities, "id");
+                // filter activities and remove expired ones.
+                const filtered = sqlManager.filterActivities(data);
+                // Index
+                let i = 0;
+                // Inject activity creator
+                function recursive() {
+                    if (!filtered[i]) {
+                        filtered.forEach(item => feed.set(item.id, item));
+                        indexx++;
+                        recursiveFriends();
+                        return;
+                    }
+                    fitmatch.getSqlManager().getUserFromId(filtered[i].userId)
+                    .then(e => {
+                        const data = sanitizeDataReceivedForSingleObject(e);
+                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                        filtered[i].user = user;
+                        inject2();
+                    })
+                    function inject2() {
+                        // Inject every user object to
+                        if (!filtered[i]) {
+                            recursive();
+                            return;
+                        }
+                        fitmatch.getSqlManager().getActivityJoins(filtered[i].id)
+                        .then(e => {
+                            const joinsData = sanitizeDataReceivedForArrayOfObjects(e, "userId");
+                            const obj = [];
+                            let index = 0;
+                            function userRecursive() {
+                                if (!joinsData[index]) {
+                                    filtered[i].joinedUsers = obj;
+                                    i++;
+                                    recursive();
+                                    return;
+                                }
+                                function recursiveNext() {
+                                    index++;
+                                    userRecursive();
+                                }
+                                const userId = joinsData[index].userId;
+                                if (fitmatch.userManager.containsKey(userId)) {
+                                    const user = fitmatch.userManager.get(userId).user;
+                                    obj.push(user);
+                                    recursiveNext();
+                                } else {
+                                    fitmatch.sqlManager.getUserFromId(userId)
+                                    .then(e => {
+                                        const innerUserData = sanitizeDataReceivedForSingleObject(e);
+                                        const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
+                                        obj.push(user);
+                                        recursiveNext();
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                                    })
+                                }
+                            }
+                            userRecursive();
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+                        })
+                }
+            }
+            // Run recursive
+            recursive();
+    
+        })
+        .catch(error => {
+            console.log(error);
+            res.json(
+                buildInvalidPacket("Backend internal error.")
+            )
+        });
+        }
+        recursiveFriends();
+    })
+});
+
+/*router.get("/feed", tokenRequired, async function (req, res, next) {
+    const id_user = req.token.id;
     
     try {
         // Obtiene las actividades del feed
@@ -148,17 +262,17 @@ router.get("/feed", tokenRequired, async function (req, res, next) {
             const activitiesWithFriendsData = await Promise.all(friendsDataPromises);
 
             // Envía la respuesta con los datos completos
-            res.json({ status: 0, data: activitiesWithFriendsData });
+            res.json(buildSendDataPacket(activitiesWithFriendsData));
         } else {
             // Responde cuando no hay actividades en el feed
-            res.json(buildInvalidPacket("You don't have any activity in your feed."));
+            res.json(buildNoDataFoundPacket());
         }
     } catch (error) {
-        // Maneja cualquier error que pueda ocurrir
-        next(error);
+        console.log(error);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
     }
 });
-
+*/
 
 
 // POST, creación de un nuevo Activities
@@ -168,6 +282,11 @@ router.post('/create', tokenRequired, function (req, res, next) {
     const expiresInput = req.body.expires ? new Date(req.body.expires) : null;
     if (!expiresInput) {
         res.json(buildInvalidPacket("You must specify the expiration date."));
+        return;
+    }
+
+    if (Date.now() >= expiresInput.getTime()) {
+        res.json(buildInvalidPacket("The activity cannot be expired upon creation."));
         return;
     }
 
@@ -248,6 +367,7 @@ router.get("/getown", tokenRequired, (req, res, next) => {
     fitmatch.sqlManager.getActivitiesFromUserId(id)
         .then(e => {
             const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
+            console.log(data);
             const filtered = sqlManager.filterActivities(data);
             let i = 0;
             // Inject activity creator
@@ -325,7 +445,7 @@ router.delete("/delete/:id", tokenRequired, (req, res, next) => {
             res.json(buildInvalidPacket("This activity does not exist."));
             return;
         }
-        if (!data.userId !== id) {
+        if (data.userId !== id) {
             res.json(buildInvalidPacket("You are not allowed to do this."));
             return;
         }

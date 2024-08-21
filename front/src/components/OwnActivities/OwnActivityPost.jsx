@@ -3,6 +3,7 @@ import { meses } from '../../data/meses';
 import JoinedActivitiesController from '../../controllers/ActivitiesController';
 import { Alert, Row, Col, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import { showPopup } from "../../Utils/Utils.js";
 
 function OwnActivityPost(props) {
 
@@ -15,9 +16,13 @@ function OwnActivityPost(props) {
     const AgendaController = new JoinedActivitiesController(token);
 
     async function deleteActivity() {
-        await AgendaController.leaveActivity(data.id)
+        await AgendaController.deleteActivity(data.id)
             .then(response => {
-                showPopup("Deleted Succesfully", "", false);
+                if(response.status === 0) {
+                    showPopup("Deleted Succesfully", "", false);
+                }else {
+                    showPopup("Error Deleting Activity","", false);
+                }
             })
             .catch(error => {
                 showPopup("Error Deleting Activity", error, false);
@@ -29,10 +34,13 @@ function OwnActivityPost(props) {
             <div className="activityContainer">
                 <Alert variant="info" className='customAlert'>
                     <Row>
-                        <Col>
-                            {data.title}
-                            <Button variant="danger" onClick={deleteActivity}>Eliminar</Button>
-                            <Link to={"/activities/edit/" + data.id} className="btn btn-success">Editar</Link>
+                        <Col className="dataActivity">
+                            <h2>{data.title}</h2>
+                            <br />
+                            <p>{data.description}</p>
+                            <br />
+                            <Button variant="danger" className="btn-danger" onClick={deleteActivity}>Eliminar</Button>
+                            <Link to={`/activities/edit/${data.id}`} className="btn btn-success">Editar</Link>
                         </Col>
                     </Row>
                 </Alert>
