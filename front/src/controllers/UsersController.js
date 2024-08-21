@@ -111,6 +111,26 @@ class UsersController extends BaseController {
         );
         return data;
     }
+
+    async removeFriend(id) {
+        data = {};
+        await fetch(`${this.apiUrl}/friends/remove/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Authorization": "Bearer " + this.token,
+                'Content-Type': 'application/json'
+            }
+        }).then(res =>
+            res.json()
+                .then(responseData => {
+                    data = responseData;
+                })
+                .catch(error => {
+                    console.error('Error removeFriend:', error);
+                })
+        );
+        return data;
+    }
 }
 
 export default UsersController;
