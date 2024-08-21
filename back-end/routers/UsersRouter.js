@@ -285,7 +285,6 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         user.setTrainingPreferences(preferences);
         user.setLastName(lastname);
         user.setDescription(description);
-        user.setImg(img);
         user.setProficiency(proficiency);
         user.setMonday(monday);
         user.setCity(city);
@@ -311,7 +310,6 @@ router.post("/setup", tokenRequired, (req, res, next) => {
                 user.setTrainingPreferences(preferences);
                 user.setLastName(lastname);
                 user.setDescription(description);
-                user.setImg(img);
                 user.setProficiency(proficiency);
                 user.setMonday(monday);
                 user.setCity(city);
