@@ -5,12 +5,13 @@ import FriendsListDisplay from './components/FriendsList/FriendsListDisplay';
 
 function FriendsList() {
 
-    const UserControl = new UsersController();
+    const token = localStorage.getItem('authToken');
+    const UserControl = new UsersController(token);
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
         async function getFriends() {
-            const friends = await UserControl.getFriends();
+            const friends = await UserControl.getConnections();
             if (friends.status === 0) {
                 if (friends.data.length) setUsers(friends.data);
                 else console.log("No data found (array empty).");

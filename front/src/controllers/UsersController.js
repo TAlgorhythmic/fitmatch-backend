@@ -94,7 +94,7 @@ class UsersController extends BaseController {
     // Obtener datos de un usuario por su ID, sólo si es amigo
     async getProfileById(id) {
         let data = {};
-        await fetch(`${this.apiUrl}/user/${id}`, {
+        await fetch(`${this.apiUrl}/profile/${id}`, {
             method: 'GET',
             headers: {
                 "Authorization": "Bearer " + this.token,
@@ -103,7 +103,7 @@ class UsersController extends BaseController {
         }).then(res =>
             res.json()
                 .then(responseData => {
-                    data = responseData;
+                    data = responseData.data;
                 })
                 .catch(error => {
                     console.error('Error getUserBYId:', error);
