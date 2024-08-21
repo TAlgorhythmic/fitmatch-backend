@@ -445,7 +445,7 @@ router.delete("/delete/:id", tokenRequired, (req, res, next) => {
             res.json(buildInvalidPacket("This activity does not exist."));
             return;
         }
-        if (!data.userId !== id) {
+        if (data.userId !== id) {
             res.json(buildInvalidPacket("You are not allowed to do this."));
             return;
         }
