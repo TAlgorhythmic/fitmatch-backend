@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setToken } from '../../App';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import './Login.css';
 
 const Login = () => {
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [resposta, setResposta] = useState('');
@@ -62,15 +67,20 @@ const Login = () => {
                             onChange={(e) => setPhone(e.target.value)}
                             required
                         />
+
                     </div>
                     <div className="input-group">
                         <input
-                            type="password"
+                          type={passwordVisible ? "text" : "password"}
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
+                            className='password'
                         />
+            <span className="toggle-password" onClick={togglePasswordVisibility}>
+            {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+            </span>
                     </div>
                     <button type="submit" className="buttonOfLogin">Log In</button>
                 </form>
