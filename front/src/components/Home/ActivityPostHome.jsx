@@ -47,7 +47,7 @@ function ActivityPostHome(props) {
             });
     }
 
-    useEffect(() => {
+    /*useEffect(() => {
         async function filterFriends() {
             let joinedData = data.joinedUsers;
             console.log('amigos unidos: ' + data.joinedUsers);
@@ -56,7 +56,7 @@ function ActivityPostHome(props) {
             setJoinedFriends(joinedFriends);
         }
         filterFriends();
-    }, []);
+    }, []);*/
 
     return (
         <div className="activityContainer">
