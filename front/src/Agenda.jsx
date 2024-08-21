@@ -11,12 +11,9 @@ function Agenda() {
 
     const [tokenValid, setTokenValid] = useState(true);
     const token = localStorage.getItem('authToken');
-
     const [joinedActivities, setJoinedActivities] = useState([]);
     // const [activitiesDays, setActivitiesDays] = useState([]);
-
     const AgendaController = new JoinedActivitiesController(token);
-
     const handleLeaveActivity = (activityId) => {
         const updatedActivities = joinedActivities.filter(activity => activity.id !== activityId);
         setJoinedActivities(updatedActivities);

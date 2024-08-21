@@ -1,6 +1,5 @@
 /*Tipografías*/
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-
 /*Colores*/
 :root {
     --color-principal: #5922ff;
@@ -14,13 +13,6 @@
     --color-éxito: #8BC34A;
     --color-info: #03A9F4;
 }
-
-.relative {
-    position: relative;
-    width: 100%;
-    height: fit-content;
-}
-
 /*Principales*/
 .contenedorPrincipal {
     position: absolute;
@@ -32,24 +24,7 @@
     filter: brightness(100%);
     transition-duration: 0.3s;
 }
-
 .darkened {
     filter: brightness(52%);
     pointer-events: none !important;
-}
-.mainContainer {
-    --bs-gutter-x: 5rem;
-    --bs-gutter-y: 0;
-    width: 100%;
-    height: fit-content;
-    background-color: black;
-    padding-right: calc(var(--bs-gutter-x)* .5);
-    padding-left: calc(var(--bs-gutter-x)* .5);
-    margin-right: auto;
-    margin-left: auto;
-}
-.mainContent {
-    padding-top: 50px;
-    min-height: 100vh;
-    background-color: white;
 }
