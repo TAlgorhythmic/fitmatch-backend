@@ -93,25 +93,30 @@ class ActivitiesController extends BaseController {
     }
 
     async getOwnActivities() {
-        let data = [];
-        await fetch(`${this.apiUrl}/getown`, {
-            method: 'GET',
-            headers: {
-                "Authorization": "Bearer " + this.token,
-                'Content-Type': 'application/json'
+        try {
+            const response = await fetch(`${this.apiUrl}/getown`, {
+                method: 'GET',
+                headers: {
+                    "Authorization": "Bearer " + this.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                console.error(`Error: ${response.status} ${response.statusText}`);
+                return null;
             }
-        }).then(res =>
-            res.json()
-                .then(responseData => {
-                    console.log('ActivitiesController: ' + responseData.status);
-                    data = responseData;
-                })
-                .catch(error => {
-                    console.error('Error getOwnActivities: ', error);
-                })
-        );
-        return data;
+
+            const responseData = await response.json();
+            console.log('ActivitiesController:', responseData.status);
+
+            return responseData;
+        } catch (error) {
+            console.error('Error getOwnActivities:', error);
+            return null;
+        }
     }
+
 
     async getActivityById(id) {
         let data = {};
@@ -131,6 +136,23 @@ class ActivitiesController extends BaseController {
                 })
         );
         return data;
+    }
+
+    async deleteActivity(id) {
+        await fetch(`${this.apiUrl}/delete/${id}`, {
+            method: 'delete',
+            headers: {
+                "Authorization": "Bearer " + this.token,
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json())
+            .then(responseData => {
+                console.log('ActivitiesController: ' + responseData.status);
+            })
+            .catch(error => {
+                console.error('Error leaveActivity: ', error);
+                throw new Error('Error al dejar la actividad');
+            });
     }
 }
 

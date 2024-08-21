@@ -5,6 +5,7 @@ import { NO_PERMISSION, OK } from '../../Utils/StatusCodes';
 import { Navigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { InfoCircle } from 'react-bootstrap-icons';
 
 const MakeFriends = () => {
   const [persona, setPersona] = useState([]);
@@ -145,6 +146,7 @@ const MakeFriends = () => {
             <div className="cabecera-perfil">
               <h3 className="nombre-perfil">{person.name} {person.lastname}</h3>
               <p className="nivel-perfil"><strong>Nivel:</strong> {person.proficiency}</p>
+              <InfoCircle className="icono-info" title="Información sobre el nivel" />
             </div>
             <div className="contenido-perfil">
               <div className="informacion-horarios">
@@ -155,7 +157,7 @@ const MakeFriends = () => {
                       <span className="etiqueta-preferencia me-2 mb-2">Lunes</span>
                     ) : <> </>}
                     {person.tuesday ? (
-                      <span className="etiqueta-preferencia me-2 mb-2">Martes</span>
+                      <span className="etiqueta-preferencia me-2 mb-2" >Martes</span>
                     ) : <> </>}
                     {person.wednesday ? (
                       <span className="etiqueta-preferencia me-2 mb-2">Miércoles</span>
@@ -174,8 +176,8 @@ const MakeFriends = () => {
                     ) : <></>}
                   </div>
                   <div className="horarios-gimnasio">
-                    <p><strong>Entrada:</strong> {person.timetable1}</p>
-                    <p><strong>Salida:</strong> {person.timetable2}</p>
+                    <p className='uno'><strong>Entrada:</strong> {person.timetable1}</p>
+                    <p className='dos'><strong>Salida:</strong> {person.timetable2}</p>
                   </div>
                 </div>
               </div>
@@ -187,13 +189,16 @@ const MakeFriends = () => {
               />
             </div>
             <div className="informacion-perfil">
-              <p className="preferencias-perfil">
-                {person.trainingPreferences?.map((preference, index) => (
-                  <span key={index} className="etiqueta-preferencia me-2 mb-2">
-                    {preference}
-                  </span>
-                )) || []}
-              </p>
+            <p className="preferencias-perfil">
+              {person.trainingPreferences
+             ?.filter(preference => preference.trim() !== "")
+              .map((preference, index) => (
+             <span key={index} className="etiqueta-preferencia me-2 mb-2">
+             {preference}
+             </span>
+             )) || []}
+            </p>
+
               <p className="descripcion-perfil">{person.description}</p>
             </div>
           </div>
@@ -203,13 +208,13 @@ const MakeFriends = () => {
         <button className="boton-flecha" onClick={() => handleSwipe('left')} title="Desliza a la izquierda">
           <FaArrowLeft />
         </button>
-        <p className="texto-flecha">Anterior</p>
+        <p className="texto-flecha">Rechazar</p>
       </div>
       <div className="flecha-contenedor flecha-derecha">
         <button className="boton-flecha" onClick={() => handleSwipe('right')} title="Desliza a la derecha">
           <FaArrowRight />
         </button>
-        <p className="texto-flecha">Siguiente</p>
+        <p className="texto-flecha">Aceptar</p>
       </div>
     </div>
   );  

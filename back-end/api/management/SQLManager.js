@@ -9,7 +9,7 @@ const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
 
 export function isActivityExpired(activity) {
     const date = new Date(activity.expires);
-    return Date.now() <= date.getTime();
+    return Date.now() >= date.getTime();
 }
 
 export function removeGarbage(millis) {
@@ -22,11 +22,7 @@ export function removeGarbage(millis) {
                 return;
             }
             try {
-                fitmatch.getSqlManager().removeActivityCompletely(itemToRemove.id)
-                    .then(e => {
-                        console.log(`Unused/expired activity: ${itemToRemove.id} removed successfully!`);
-                        return;
-                    });
+                fitmatch.getSqlManager().removeActivityCompletely(itemToRemove.id);
             } catch (err) {
                 console.log(err);
             } finally {
@@ -52,6 +48,10 @@ class SQLManager {
 
     getPendingsFromReceiver(id) {
         return fitmatch.sql.query("SELECT * FROM pending WHERE receiver_id = ?;", { replacements: [id], type: QueryTypes.SELECT })
+    }
+
+    removeFriendEntry(id, other_id) {
+        return fitmatch.sql.query("DELETE FROM friends WHERE (userId1 = ? AND userId2 = ?) OR (userId1 = ? AND userId2 = ?);", { replacements: [id, other_id, other_id, id], type: QueryTypes.DELETE });
     }
 
     leaveActivity(id, activityId, res) {
@@ -89,6 +89,10 @@ class SQLManager {
         return fitmatch.sql.query(`SELECT activities.* FROM joins_activities INNER JOIN activities ON joins_activities.postId = activities.id WHERE joins_activities.userId = ?;`, { replacements: [id], type: QueryTypes.SELECT });
     }
 
+    getRawJoinedActivities(id) {
+        return fitmatch.sql.query(`SELECT * FROM joins_activities WHERE userId = ?;`, { replacements: [id], type: QueryTypes.SELECT });
+    };
+
     putFriends(id1, id2) {
         return fitmatch.sql.query("INSERT INTO friends(userId1, userId2) VALUES(?, ?);", { replacements: [id1, id2], type: QueryTypes.INSERT });
     }
@@ -114,11 +118,14 @@ class SQLManager {
 
     removeActivityCompletely(id) {
         fitmatch.sql.query(`DELETE FROM activities WHERE id = ?;`, { replacements: [id], type: QueryTypes.DELETE })
+        .then(e => {
+            fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?`, { replacements: [id], type: QueryTypes.DELETE })
             .then(e => {
-                fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?`, { replacements: [id], type: QueryTypes.DELETE })
-                    .catch(err => console.log(err));
+                console.log(`The activity with an ID of ${id} has been removed successfully!`);
             })
-            .catch(err => console.log("Operation remove activity completely failed. Error: " + err));
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log("Operation remove activity completely failed. Error: " + err));
     }
 
     getActivityFromId(id) {
