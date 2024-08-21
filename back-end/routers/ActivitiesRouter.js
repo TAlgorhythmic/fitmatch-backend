@@ -361,6 +361,7 @@ router.get("/getown", tokenRequired, (req, res, next) => {
     fitmatch.sqlManager.getActivitiesFromUserId(id)
         .then(e => {
             const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
+            console.log(data);
             const filtered = sqlManager.filterActivities(data);
             let i = 0;
             // Inject activity creator

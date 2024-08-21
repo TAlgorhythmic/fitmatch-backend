@@ -13,6 +13,7 @@ public class User {
     public static void loadUsers() {
         try (final InputStreamReader reader = new InputStreamReader(User.class.getClassLoader().getResourceAsStream("bots.json"))) {
             inMemoryInitialUsers = Fitmatch.getInstance().getGson().fromJson(reader, User[].class);
+
         } catch (Throwable e) {
             e.printStackTrace();
             System.exit(-1);
@@ -44,7 +45,79 @@ public class User {
         this.password = password;
     }
 
-    public void fetchToken() {
+    public void fetchToken(boolean startAfterwards) {
         // TODO
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getProficiency() {
+        return proficiency;
+    }
+
+    public int getTimetable1() {
+        return timetable1;
+    }
+
+    public int getTimetable2() {
+        return timetable2;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String[] getTrainingPreferences() {
+        return trainingPreferences;
+    }
+
+    public static Map<Integer, User> getUsers() {
+        return users;
     }
 }
