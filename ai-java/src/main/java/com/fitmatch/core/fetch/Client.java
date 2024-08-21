@@ -19,4 +19,8 @@ public class Client {
             Fitmatch.getInstance().getScheduler().submit(() -> item.fetchToken(true));
         });
     }
+
+    public HttpClient getHttpClient() {
+        return this.client;
+    }
 }
