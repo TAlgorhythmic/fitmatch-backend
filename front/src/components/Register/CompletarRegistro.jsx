@@ -3,6 +3,7 @@ import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Camera, Person, Envelope, GeoAlt, Clock } from 'react-bootstrap-icons';
 import { useNavigate, Navigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
+import { Steps } from "antd";
 import './CompletarRegistro.css';
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
@@ -10,9 +11,12 @@ import { showPopup } from '../../Utils/Utils.js';
 import Switch from 'react-switch';
 import { setUpdateUser } from '../../App.jsx';
 
+const { Step } = Steps;
+
 const libraries = ["places"];
 
 const RegisterForm = () => {
+  const [currentStep, setCurrentStep] = useState(0);  // Estado para rastrear el paso actual
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -43,16 +47,14 @@ const RegisterForm = () => {
       [day]: checked,
     }));
   };
-        
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
     libraries: libraries
   });
 
-  const ref = useRef(null)
-
+  const ref = useRef(null);
   const navigate = useNavigate();
-
   const [imageFile, setImageFile] = useState(null);
   const [tokenValid, setTokenValid] = useState(true);
 
@@ -62,7 +64,7 @@ const RegisterForm = () => {
     'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'
   ];
 
-  const [selectedInterests, setSelectedInterests] = useState(['']);
+  const [selectedInterests, setSelectedInterests] = useState([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -102,6 +104,7 @@ const RegisterForm = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
+
   const handleTimeChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -111,7 +114,6 @@ const RegisterForm = () => {
   };
 
   const handleInterestClick = (interest) => {
-    console.log(formData);
     let newSelectedInterests;
     if (selectedInterests.includes(interest)) {
       newSelectedInterests = selectedInterests.filter(i => i !== interest);
@@ -126,28 +128,7 @@ const RegisterForm = () => {
     e.preventDefault();
     const token = localStorage.getItem('authToken');
 
-    if (imageFile) {
-      const formDataImage = new FormData();
-      formDataImage.append('img', imageFile);
-
-      const imageUploadResponse = await fetch('http://localhost:3001/api/users/upload/image', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        body: formDataImage,
-      });
-
-      const imageResult = await imageUploadResponse.json();
-
-      if (imageResult.status === 0) {
-        setFormData({ ...formData, img: imageResult.imageUrl });
-      } else if (imageResult.status === NO_PERMISSION) {
-        setTokenValid(false);
-      } else {
-        showPopup("Something went wrong", imageResult.error, true);
-      }
-    }
+    // Lógica para manejar el envío de la imagen
 
     const response = await fetch('http://localhost:3001/api/users/setup', {
       method: 'POST',
@@ -155,12 +136,10 @@ const RegisterForm = () => {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-
       body: JSON.stringify(formData),
     });
 
     const result = await response.json();
-    console.log(result);
     if (result.status === 0) {
       console.log('Usuario registrado con éxito');
       setUpdateUser(true);
@@ -174,43 +153,44 @@ const RegisterForm = () => {
   };
 
   function onPlaceChanged() {
-    if (ref.current.getPlace() && ref.current.getPlace().geometry)
-    setFormData({
-      ...formData,
-      city: ref.current.getPlace().formatted_address,
-      latitude: ref.current.getPlace().geometry.location.lat(),
-      longitude: ref.current.getPlace().geometry.location.lng()
-    })
+    if (ref.current.getPlace() && ref.current.getPlace().geometry) {
+      setFormData({
+        ...formData,
+        city: ref.current.getPlace().formatted_address,
+        latitude: ref.current.getPlace().geometry.location.lat(),
+        longitude: ref.current.getPlace().geometry.location.lng()
+      });
+    }
   }
 
   if (!tokenValid) {
     showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
-    return <Navigate to="/login" />
-}
+    return <Navigate to="/login" />;
+  }
 
-  return (
-    <Container className="custom-register-form">
-      <Form onSubmit={handleSubmit} encType='multipart/form-data'>
+  const steps = [
+    {
+      title: 'Datos Personales',
+      content: (
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
-            
               <InputGroup>
                 <InputGroup.Text><Person /></InputGroup.Text>
                 <Form.Control
                   type="text"
                   name="Nombre"
                   value={formData.firstName}
-                  readOnly
+                  onChange={handleChange}
+                  placeholder="Nombre"
                 />
               </InputGroup>
             </Form.Group>
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
-             
               <InputGroup>
-                <InputGroup.Text> <Person/></InputGroup.Text>
+                <InputGroup.Text><Person /></InputGroup.Text>
                 <Form.Control
                   type="text"
                   name="lastName"
@@ -221,225 +201,139 @@ const RegisterForm = () => {
               </InputGroup>
             </Form.Group>
           </Col>
-        </Row>
-        <Row>
-        <Col md={6}>
-        <Form.Group className="mb-3">
-         
-          <InputGroup>
-            <InputGroup.Text><Envelope /></InputGroup.Text>
-            <Form.Control
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder='fitmatch@gmail.com'
-
-            />
-          </InputGroup>
-        </Form.Group>
-        </Col>
-        <Col md={6}>
-        <Form.Group className="mb-3">
-       
-          <InputGroup>
-            <InputGroup.Text>+34</InputGroup.Text>
-            <Form.Control
-              type="tel"
-              name="phone"
-              value={formData.phone}
-
-              maxLength={9}
-              placeholder="697415616"
-              readOnly
-            />
-          </InputGroup>
-        </Form.Group>
-        </Col>
-        </Row>
-        <Row>
-        <Col md={6}>
-        {
-          isLoaded ? (
+          <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label><GeoAlt /> City</Form.Label>
-              <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
-                <InputGroup>
-                  <InputGroup.Text><GeoAlt /></InputGroup.Text>
-                  <Form.Control
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    placeholder="Enter your city"
-                  />
-                </InputGroup>
-              </Autocomplete>
+              <InputGroup>
+                <InputGroup.Text><Envelope /></InputGroup.Text>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder='fitmatch@gmail.com'
+                />
+              </InputGroup>
             </Form.Group>
-          ) : <></>
-        }
-        </Col>
-         <Col md={6}>
-        <Form.Group className="mb-3">
-          <Form.Label>Nivel</Form.Label>
-          <Form.Select
-            name="proficiency"
-            value={formData.proficiency}
-            onChange={handleChange}
-          >
-            <option value="Principiante">Principiante</option>
-            <option value="Intermedio">Intermedio</option>
-            <option value="Avanzado">Avanzado</option>
-          </Form.Select>
-        </Form.Group>
-        </Col>
+          </Col>
+          <Col md={6}>
+            <Form.Group className="mb-3">
+              <InputGroup>
+                <InputGroup.Text>+34</InputGroup.Text>
+                <Form.Control
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  maxLength={9}
+                  onChange={handleChange}
+                  placeholder="697415616"
+                />
+              </InputGroup>
+            </Form.Group>
+          </Col>
         </Row>
-        <Form.Group className="mb-3">
-          <Form.Label>Escribe algo especial que los demás deban saber</Form.Label>
-          <Form.Control
-            type="text"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-          />
+      )
+    },
+    {
+      title: 'Ubicación y Nivel',
+      content: (
+        <Row>
+          <Col md={6}>
+            {isLoaded ? (
+              <Form.Group className="mb-3">
+                <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
+                  <InputGroup>
+                    <InputGroup.Text><GeoAlt /></InputGroup.Text>
+                    <Form.Control
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      placeholder="Enter your city"
+                    />
+                  </InputGroup>
+                </Autocomplete>
+              </Form.Group>
+            ) : <></>}
+          </Col>
+          <Col md={6}>
+            <Form.Group className="mb-3">
+              <Form.Label>Nivel</Form.Label>
+              <Form.Select
+                name="proficiency"
+                value={formData.proficiency}
+                onChange={handleChange}
+              >
+                <option value="Principiante">Principiante</option>
+                <option value="Intermedio">Intermedio</option>
+                <option value="Avanzado">Avanzado</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+        </Row>
+      )
+    },
+    {
+      title: 'Preferencias',
+      content: (
+        <Form.Group className="mb-3 custom-preferences">
+          <Form.Label>Preferences</Form.Label>
+          <div className="d-flex flex-wrap justify-content-center">
+            {sportsInterests.map((interest) => (
+              <Button
+                key={interest}
+                className={`me-2 mb-2 custom-preferences-btn ${selectedInterests.includes(interest) ? 'custom-button-selected' : 'custom-button-unselected'}`}
+                onClick={() => handleInterestClick(interest)}
+              >
+                {interest}
+              </Button>
+            ))}
+          </div>
         </Form.Group>
-
+      )
+    },
+    {
+      title: 'Imagen de Perfil',
+      content: (
         <Form.Group className="mb-3">
-          <Form.Label><Camera /> Image Upload</Form.Label>
+          <Form.Label><Camera /> Subir Imagen</Form.Label>
           <Form.Control
             type="file"
             name="img"
             onChange={handleImageChange}
           />
         </Form.Group>
+      )
+    }
+  ];
 
-<div className='horario-entrenamiento'>
-
-  <Form.Group className="mb-3">
-  <Form.Label>Horario habitual de entrenamiento</Form.Label>
-  <div className="time-picker-container d-flex justify-content-between">
-    <InputGroup className="me-3 time-picker-group">
-      <InputGroup.Text className="time-picker-icon">
-        <Clock />
-      </InputGroup.Text>
-      <TimePicker
-        onChange={(value) => handleTimeChange('timetable1', value)}
-        value={formData.timetable1}
-        disableClock={true}
-        format="HH:mm"
-        step={30}
-       
-        className="time-picker-input"
-      />
-    </InputGroup>
-    <InputGroup className="time-picker-group">
-      <InputGroup.Text className="time-picker-icon">
-        <Clock />
-      </InputGroup.Text>
-      <TimePicker
-        onChange={(value) => handleTimeChange('timetable2', value)}
-        value={formData.timetable2}
-        disableClock={true}
-        format="HH:mm"
-        step={30}
-        className="time-picker-input"
-      />
-    </InputGroup>
-  </div>
-</Form.Group>
-</div>
-<div className='dias-semana'>
-<Form.Group className="mb-3">
-          <Form.Label>Lunes</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('monday', checked)}
-            checked={formData.monday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Martes</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('tuesday', checked)}
-            checked={formData.tuesday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Miércoles</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('wednesday', checked)}
-            checked={formData.wednesday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Jueves</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('thursday', checked)}
-            checked={formData.thursday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Viernes</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('friday', checked)}
-            checked={formData.friday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Sábado</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('saturday', checked)}
-            checked={formData.saturday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Domingo</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('sunday', checked)}
-            checked={formData.sunday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-</div>
-
-        
-        <Form.Group className="mb-3 custom-preferences">
-          <Form.Label>Preferences</Form.Label>
-          <div className="d-flex flex-wrap justify-content-center">
-            {sportsInterests.map((interest) => (
-            <Button
-            key={interest}
-            className={`me-2 mb-2 custom-preferences-btn ${selectedInterests.includes(interest) ? 'custom-button-selected' : 'custom-button-unselected'}`}
-            onClick={() => handleInterestClick(interest)}
->
-            {interest}
-            </Button>
-
-            ))}
-          </div>
-        </Form.Group>
-        <div className="d-flex justify-content-center mt-4">
-          <Button variant="success" type="submit" className="custom-submit-btn">
-            Complete
+  return (
+    <Container className="custom-register-form">
+      <Steps current={currentStep}>
+        {steps.map((item, index) => (
+          <Step key={index} title={item.title} />
+        ))}
+      </Steps>
+      <div className="steps-content">{steps[currentStep].content}</div>
+      <div className="steps-action d-flex justify-content-between mt-4">
+        {currentStep > 0 && (
+          <Button onClick={() => setCurrentStep(currentStep - 1)} className="btn-formulario">
+            Anterior
           </Button>
-        </div>
-      </Form>
+        )}
+        {currentStep < steps.length - 1 && (
+          <Button onClick={() => setCurrentStep(currentStep + 1)} className="btn-formulario">
+            Siguiente
+          </Button>
+        )}
+        {currentStep === steps.length - 1 && (
+          <Button type="submit" onClick={handleSubmit} className="btn-formulario">
+            Completar
+          </Button>
+        )}
+      </div>
     </Container>
   );
 };
 
 export default RegisterForm;
-
 

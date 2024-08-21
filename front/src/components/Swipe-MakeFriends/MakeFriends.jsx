@@ -6,6 +6,9 @@ import { Navigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { InfoCircle } from 'react-bootstrap-icons';
+import { LeftSquareOutlined, RightSquareOutlined } from '@ant-design/icons';
+
+
 
 const MakeFriends = () => {
   const [persona, setPersona] = useState([]);
