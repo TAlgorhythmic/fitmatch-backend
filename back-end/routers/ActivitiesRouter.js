@@ -278,28 +278,34 @@ router.get('/feed', tokenRequired, function (req, res, next) {
 // POST, creación de un nuevo Activities
 router.post('/create', tokenRequired, function (req, res, next) {
 
-    // Obtener la fecha de expiración del cuerpo de la solicitud
-    const expiresInput = req.body.expires ? new Date(req.body.expires) : null;
-    if (!expiresInput) {
-        res.json(buildInvalidPacket("You must specify the expiration date."));
-        return;
-    }
-
-    if (Date.now() >= expiresInput.getTime()) {
-        res.json(buildInvalidPacket("The activity cannot be expired upon creation."));
-        return;
-    }
-
     const title = req.body.title;
     if (!title) {
-        res.json(buildInvalidPacket("A title is required."));
+        res.json(buildInvalidPacket("Title is empty."));
+        return;
+    }
+    const description = req.body.description ? req.body.description : "";
+    const expires = req.body.expires ? new Date(req.body.expires) : null;
+    if (!expires) {
+        res.json(buildInvalidPacket("Expiration date is invalid."));
         return;
     }
 
-    const description = req.body.description ? req.body.description : null;
+    const placeholder = req.body.placeholder;
+    if (!placeholder) {
+        res.json(buildInvalidPacket("Placeholder is empty."));
+        return;
+    }
+    const lat = req.body.latitude;
+    const long= req.body.longitude;
+    if (!lat || !long) {
+        res.json(buildInvalidPacket("The location is not correctly set."));
+        return;
+    }
+    const latitude = typeof lat !== "string" ? lat.toString() : lat;
+    const longitude = typeof long !== "string" ? long.toString() : long;
 
     // Crear un nuevo objeto con la data recibida y añadir los campos postDate y expires
-    fitmatch.getSqlManager().createNewActivity(title, description, expiresInput, req.token.id)
+    fitmatch.getSqlManager().createNewActivity(title, description, expires, placeholder, latitude, longitude, req.token.id)
         .then(e => {
             const id = sanitizeDataReceivedForSingleObject(e);
             res.json(buildSimpleOkPacket());
@@ -328,17 +334,34 @@ router.post('/create', tokenRequired, function (req, res, next) {
  */
 router.post('/edit/:id', tokenRequired, function (req, res, next) {
     const id = req.params.id;
-    if (!id) {
-        res.json(e => buildInvalidPacket("What is this id...?"));
+
+    const title = req.body.title;
+    if (!title) {
+        res.json(buildInvalidPacket("Title is empty."));
+        return;
+    }
+    const description = req.body.description;
+    const expires = req.body.expires ? new Date(req.body.expires) : "";
+    if (!expires) {
+        res.json(buildInvalidPacket("Expiration date is invalid."));
         return;
     }
 
-    // COMPROBAR
-    const title = req.body.title;
-    const description = req.body.description;
-    const expires = req.body.expires;
+    const placeholder = req.body.placeholder;
+    if (!placeholder) {
+        res.json(buildInvalidPacket("Placeholder is empty."));
+        return;
+    }
+    const lat = req.body.latitude;
+    const long= req.body.longitude;
+    if (!lat || !long) {
+        res.json(buildInvalidPacket("The location is not correctly set."));
+        return;
+    }
+    const latitude = typeof lat !== "string" ? lat.toString() : lat;
+    const longitude = typeof long !== "string" ? long.toString() : long;
 
-    const prom = fitmatch.sqlManager.updateActivity(id, title, description, expires, res);
+    const prom = fitmatch.sqlManager.updateActivity(id, title, description, expires, placeholder, latitude, longitude, res);
 
     if (prom) {
         prom.then(e => {
