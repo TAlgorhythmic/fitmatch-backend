@@ -18,8 +18,6 @@ function OwnActivities() {
         const validateToken = async () => {
             try {
                 const response = await AuthControl.validateToken();
-
-                // Verifica si la respuesta es JSON
                 const contentType = response.headers.get('content-type');
                 if (contentType && contentType.includes('application/json')) {
                     const data = await response.json();
@@ -44,7 +42,6 @@ function OwnActivities() {
     useEffect(() => {
         async function getActivities() {
             const activitiesData = await ActivityController.getOwnActivities();
-            console.log(activitiesData);
             if (activitiesData.status === 0) {
                 if (activitiesData.data.length) setActivities(activitiesData.data);
                 else console.log("No data found (array empty).");
@@ -54,14 +51,13 @@ function OwnActivities() {
         }
 
         getActivities();
+    }, []);
 
-        if (isValidToken) {
-            getActivities();
-        }
-    }, [isValidToken]); // Dependencia añadida
+    function handleDelete(activityId) {
+        setActivities(prevActivities => prevActivities.filter(activity => activity.id !== activityId));
+    }
 
-    if (!isValidToken === null) {
-        // Renderizar un indicador de carga mientras se valida el token
+    if (isValidToken === null) {
         return <div>Loading...</div>;
     }
 
@@ -70,17 +66,15 @@ function OwnActivities() {
     }
 
     return (
-        <>
-            <div className="contenedorHome">
-                {activities.map((activity, index) => (
-                    <Row key={index}>
-                        <OwnActivityPost data={activity} />
-                    </Row>
-                ))}
-            </div>
-        </>
-
+        <div className="contenedorHome">
+            {activities.map((activity, index) => (
+                <Row key={index}>
+                    <OwnActivityPost data={activity} onDelete={handleDelete} />
+                </Row>
+            ))}
+        </div>
     );
 }
 
 export default OwnActivities;
+
