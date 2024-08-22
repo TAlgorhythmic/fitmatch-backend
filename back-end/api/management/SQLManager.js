@@ -110,10 +110,10 @@ class SQLManager {
             });
     }
 
-    createNewActivity(title, description, expires, userId) {
-        const time = new Date((new Date().getTime() + TIME_BEFORE_EXPIRES)).toISOString().slice(0, 19).replace("T", " ");
+    createNewActivity(title, description, expires, placeholder, latitude, longitude, userId) {
+        const time = new Date().toISOString().slice(0, 19).replace("T", " ");
         const expire = expires.toISOString().slice(0, 19).replace("T", " ");
-        return fitmatch.sql.query("INSERT INTO activities (title, description, postDate, expires, userId, tableVersion) VALUES(?, ?, ?, ?, ?, ?);", { replacements: [title, description, time, expire, userId, TABLES_VERSION] })
+        return fitmatch.sql.query("INSERT INTO activities (title, description, postDate, expires, placeholder, latitude, longitude, userId, tableVersion) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", { replacements: [title, description, time, expire, placeholder, latitude, longitude, userId, TABLES_VERSION] })
     }
 
     removeActivityCompletely(id) {
@@ -236,7 +236,7 @@ class SQLManager {
         })
     }
 
-    updateActivity(id, title, description, expires, res) {
+    updateActivity(id, title, description, expires, placeholder, latitude, longitude, res) {
         const validChanges = [];
         let titl;
         let desc;
@@ -248,7 +248,7 @@ class SQLManager {
             res.json(buildInvalidPacket("Every single piece of data received is invalid. Could not effectuate query."));
             return;
         }
-        return fitmatch.getSql().query(`UPDATE activities SET ${titl}, ${desc}, ${expire} WHERE id = ?`, { replacements: [title, description, expires, id], type: QueryTypes.UPDATE })
+        return fitmatch.getSql().query(`UPDATE activities SET ${titl}, ${desc}, ${expire}, placeholder = ?, latitude = ?, longitude = ? WHERE id = ?`, { replacements: [title, description, expires, placeholder, latitude, longitude, id], type: QueryTypes.UPDATE })
     }
 
     getActivityJoins(id) {
