@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
+import { Button} from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 import { showPopup } from './Utils/Utils';
 import UsersController from './controllers/UsersController';
@@ -94,7 +95,7 @@ function FriendData() {
                                 )) || []}
                             </p>
                             <p className="descripcion-perfil">{person.description}</p>
-                            <Button className="friendsButtons" variant="danger" onClick={handleRemoveFriend()}>Eliminar</Button>
+                            <Button className="friendsButtons" variant="danger" onClick={() => handleRemoveFriend()}>Eliminar</Button>
                         </div>
                     </div>
                 </div>
