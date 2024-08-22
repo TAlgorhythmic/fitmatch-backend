@@ -22,8 +22,8 @@ function FriendsList() {
         getFriends();
     }, []);
 
-    async function handleRemoveFriend(id) {
-        const response = await UserControl.removeConnection(id);
+    const handleRemoveFriend = async (id) => {
+        const response = await UserControl.removeFriend(id);
         if (response.status === 0) {
             const updatedUsers = users.filter(user => user.id !== id);
             setUsers(updatedUsers);
@@ -36,7 +36,7 @@ function FriendsList() {
         <div className="contenedorHome">
             {users.map((user, index) => (
                 <Row key={index}>
-                    <FriendsListDisplay data={user} />
+                    <FriendsListDisplay data={user} handleRemoveFriend={handleRemoveFriend}/>
                 </Row>
             ))}
         </div>)

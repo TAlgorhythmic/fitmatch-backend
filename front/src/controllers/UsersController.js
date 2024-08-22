@@ -113,7 +113,7 @@ class UsersController extends BaseController {
     }
 
     async removeFriend(id) {
-        data = {};
+        let data = {};
         await fetch(`${this.apiUrl}/friends/remove/${id}`, {
             method: 'DELETE',
             headers: {
