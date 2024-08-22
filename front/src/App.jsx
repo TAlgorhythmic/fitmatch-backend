@@ -12,6 +12,7 @@ import { setShowPopup, showPopup } from './Utils/Utils.js';
 import SubHeader from './components/Header/SubHeader.jsx';
 import { useLocation } from 'react-router-dom';
 import AuthController from "./controllers/AuthController.js";
+import { NO_PERMISSION } from './Utils/StatusCodes.js';
 
 export let setToken;
 export let setUpdateUser;
