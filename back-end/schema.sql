@@ -79,6 +79,9 @@ CREATE TABLE IF NOT EXISTS activities(
     postDate TIMESTAMP NOT NULL,
     expires DATETIME NOT NULL,
     userId INT NOT NULL,
+    placeholder VARCHAR(60) NOT NULL,
+    latitude VARCHAR(50) NOT NULL,
+    longitude VARCHAR(50) NOT NULL,
     tableVersion INT NOT NULL DEFAULT 0,
     FOREIGN KEY(userId) REFERENCES users(id),
     PRIMARY KEY(id)
