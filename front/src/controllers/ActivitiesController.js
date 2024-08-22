@@ -142,21 +142,23 @@ class ActivitiesController extends BaseController {
     }
 
     async deleteActivity(id) {
-        await fetch(`${this.apiUrl}/delete/${id}`, {
-            method: 'delete',
+    try {
+        const response = await fetch(`${this.apiUrl}/delete/${id}`, {
+            method: 'DELETE',
             headers: {
                 "Authorization": "Bearer " + this.token,
                 'Content-Type': 'application/json'
             }
-        }).then(res => res.json())
-            .then(responseData => {
-                console.log('ActivitiesController: ' + responseData.status);
-            })
-            .catch(error => {
-                console.error('Error leaveActivity: ', error);
-                throw new Error('Error al dejar la actividad');
-            });
+        });
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error leaveActivity: ', error);
+        throw new Error("Failed to delete activity: " + error.message);
     }
+}
+
+
 }
 
 export default ActivitiesController;
