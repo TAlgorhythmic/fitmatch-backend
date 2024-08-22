@@ -8,7 +8,7 @@ import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
 import { showPopup } from '../../Utils/Utils.js';
 import Switch from 'react-switch';
-import { setUpdateUser } from '../../App.jsx';
+
 
 const libraries = ["places"];
 
@@ -111,7 +111,6 @@ const RegisterForm = () => {
   };
 
   const handleInterestClick = (interest) => {
-    console.log(formData);
     let newSelectedInterests;
     if (selectedInterests.includes(interest)) {
       newSelectedInterests = selectedInterests.filter(i => i !== interest);
@@ -125,7 +124,6 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('authToken');
-
     if (imageFile) {
       const formDataImage = new FormData();
       formDataImage.append('img', imageFile);
@@ -147,8 +145,10 @@ const RegisterForm = () => {
       } else {
         showPopup("Something went wrong", imageResult.error, true);
       }
+
     }
 
+    console.log(formData); //pasar preferences otra vez a form data
     const response = await fetch('http://localhost:3001/api/users/setup', {
       method: 'POST',
       headers: {
@@ -163,8 +163,6 @@ const RegisterForm = () => {
     console.log(result);
     if (result.status === 0) {
       console.log('Usuario registrado con éxito');
-      setUpdateUser(true);
-      showPopup("Info", "Has terminado! Redirigiendo a la página principal...");
       navigate('/');
     } else if (result.status === NO_PERMISSION) {
       setTokenValid(false);
@@ -250,7 +248,7 @@ const RegisterForm = () => {
               value={formData.phone}
 
               maxLength={9}
-              placeholder="697415616"
+              placeholder="Introduce your phone number"
               readOnly
             />
           </InputGroup>
@@ -295,7 +293,7 @@ const RegisterForm = () => {
         </Col>
         </Row>
         <Form.Group className="mb-3">
-          <Form.Label>Escribe algo especial que los demás deban saber</Form.Label>
+          <Form.Label>Descripción</Form.Label>
           <Form.Control
             type="text"
             name="description"

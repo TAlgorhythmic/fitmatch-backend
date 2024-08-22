@@ -1,5 +1,4 @@
 import Header from './components/Header/Header.jsx';
-
 import { OK } from '../../back-end/api/packets/StatusCodes.js';
 import { Container } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -41,6 +40,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [isValidToken, setIsValidToken] = useState(null);
   const [updateUser, setUpdate] = useState(true);
+  const [showHeader, setShowHeader] = useState(true);
   setUpdateUser = setUpdate;
   setToken = setIsValidToken;
   const token = localStorage.getItem('authToken');
@@ -84,6 +84,14 @@ function App() {
   }, [isValidToken, location.pathname])
 
   useEffect(() => {
+    if(location.pathname === '/login' || location.pathname === '/register') {
+      setShowHeader(false);
+    } else {
+      setShowHeader(true);
+    } 
+  });
+
+  useEffect(() => {
     async function getProfile() {
       fetch('http://localhost:3001/api/users/profile', {
         method: 'GET',
@@ -125,8 +133,10 @@ function App() {
   }, [isValidToken, location.pathname, navigate, user]);
 
   useEffect(() => {
-    if (!isValidToken && isValidToken !== null) {
-      showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
+    if(location.pathname === "/register"){
+      showPopup("Welcome", "Bienvenido a la plataforma de nuevo", false);
+    }else if (!isValidToken && isValidToken !== null) {
+      showPopup("No permission", "Tu sesión ha expirado.", false);
       navigate("/login");
     }
   }, [isValidToken, navigate])
@@ -134,7 +144,9 @@ function App() {
   return (
     <>
       <div className={"contenedorPrincipal " + (popupState.isVisible ? "darkened" : "")}>
-        <Header />
+        {
+          showHeader ? <Header /> : <></>
+        }
         {
           showHome ? <SubHeader /> : <></>
         }
