@@ -117,9 +117,9 @@ class SQLManager {
     }
 
     removeActivityCompletely(id) {
-        fitmatch.sql.query(`DELETE FROM activities WHERE id = ?;`, { replacements: [id], type: QueryTypes.DELETE })
+        fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?;`, { replacements: [id], type: QueryTypes.DELETE })
         .then(e => {
-            fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?`, { replacements: [id], type: QueryTypes.DELETE })
+            fitmatch.sql.query(`DELETE FROM activities WHERE id = ?`, { replacements: [id], type: QueryTypes.DELETE })
             .then(e => {
                 console.log(`The activity with an ID of ${id} has been removed successfully!`);
             })

@@ -4,7 +4,7 @@
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(255, 102, 0, 0.7); /* Sombra con color naranja */
-    width: 300px;
+    width: 30%;
     text-align: center;
     margin: auto;
 }
@@ -18,6 +18,34 @@
 .hrOfLogin {
     border: 1px solid #ff6600; /* Línea naranja */
     margin-bottom: 30px;
+}
+.input-group {
+    position: relative; /* Set the container as a relative position context */
+    display: flex;
+    align-items: center;
+}
+
+.password {
+    width: 100%;
+    padding-right: 40px; /* Adjust the padding to make space for the icon */
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px; /* Position the icon 10px from the right edge of the input */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/* Optional: Style the icon to align vertically center */
+.toggle-password svg {
+    width: 20px; /* Adjust the size of the icon */
+    height: 20px;
+    color: #fff; /* Adjust the color of the icon */
 }
 
 .login-container input[type="text"], input[type="password"] {

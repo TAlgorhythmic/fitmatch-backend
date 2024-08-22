@@ -1,10 +1,29 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    background-image: url('https://i.pinimg.com/736x/4c/81/ab/4c81ab8a63303308523a8bf7bc1e415c.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .container-profile {
-    max-width: 800px;
+    max-width: 80%;
+    max-height: 50%;
     margin-top: 30px;
-    background-color: rgb(35, 35, 35);
+   
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
 }
 
 .form-group-profile {
@@ -13,7 +32,6 @@
 
 .input-group-text-profile {
     background-color: #ff6600 !important;
-    /* Naranja */
     color: white;
     border: none;
     border-radius: 0.375rem 0 0 0.375rem;
@@ -22,6 +40,8 @@
 .form-control-profile {
     border: 1px solid #ff6600;
     border-radius: 0 0.375rem 0.375rem 0;
+    background-color: rgba(255, 255, 255, 0.6); /* Fondo semi-transparente para inputs */
+    color: #333; /* Color del texto */
 }
 
 .form-control-profile:focus {
@@ -44,7 +64,6 @@
 
 .custom-preferences-btn:hover {
     background-color: #ff6600;
-    /* Naranja */
     color: white;
     border-color: #ff6600;
 }
@@ -66,14 +85,12 @@
 
 .custom-preferences-btn.primary {
     background-color: #ff6600;
-    /* Naranja */
     color: white;
     border-color: #ff6600;
 }
 
 .custom-preferences-btn.primary:hover {
     background-color: #b14c09;
-    /* Naranja */
     color: white;
     border-color: #ff6600;
 }
@@ -97,13 +114,11 @@ textarea.form-control {
 
 button[type="submit"] {
     background-color: #ff6600;
-    /* Naranja */
     border-color: #ff6600;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 button[type="submit"]:hover {
     background-color: #e55b00;
-    /* Un tono más oscuro de naranja */
     border-color: #e55b00;
 }
