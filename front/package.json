@@ -31,7 +31,8 @@
     "react-swipeable": "^7.0.1",
     "react-switch": "^7.0.0",
     "react-time-picker": "^7.0.0",
-    "react-tinder-card": "^1.6.4"
+    "react-tinder-card": "^1.6.4",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

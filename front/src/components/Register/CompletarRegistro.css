@@ -1,8 +1,4 @@
-/* Fondo general del body */
-body {
-  background-color: #f5f5f5; /* Fondo claro */
-  background: linear-gradient(120deg, #f5f5f5, #e0e0e0); /* Degradado sutil */
-}
+
 
 /* Estilo del contenedor del formulario */
 .custom-register-form {
