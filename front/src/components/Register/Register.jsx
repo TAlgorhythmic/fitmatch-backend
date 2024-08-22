@@ -40,19 +40,19 @@ const Register = () => {
             const errors = [];
             
             if (value.length < 8) {
-                errors.push("Debe tener al menos 8 caracteres.");
+                errors.push("Debe tener 8 caracteres.");
             }
             if (!/[A-Z]/.test(value)) {
-                errors.push("Debe contener al menos una letra mayúscula.");
+                errors.push("Debe contener una letra mayúscula.");
             }
             if (!/[a-z]/.test(value)) {
-                errors.push("Debe contener al menos una letra minúscula.");
+                errors.push("Debe contener una letra minúscula.");
             }
             if (!/[0-9]/.test(value)) {
-                errors.push("Debe contener al menos un número.");
+                errors.push("Debe contener un número.");
             }
             if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
-                errors.push("Debe contener al menos un carácter especial (!@#$%^&*).");
+                errors.push("Debe contener un carácter especial");
             }
     
             setFeedback(errors);
@@ -97,7 +97,7 @@ const Register = () => {
         return (
             <div>
                 <p style={{ color: strengthColors[score] }}>
-                    Fuerza de la contraseña: {strengthLabels[score]}
+                    Nivel de seguridad: {strengthLabels[score]}
                 </p>
                 <progress max="4" value={score} style={{ width: '100%' }}></progress>
                 <ul>
@@ -132,6 +132,17 @@ const Register = () => {
                                 </div>
                                 <div className="form-group">
                                     <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder="Introduce tu nombre"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <input
                                         type="password"
                                         id="password"
                                         name="password"
@@ -144,17 +155,6 @@ const Register = () => {
                                 <span className="toggle-password" onClick={togglePasswordVisibility}>
                                 {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                                 </span>
-                                </div>
-                                <div className="form-group">
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        required
-                                        placeholder="Introduce tu nombre"
-                                    />
                                 </div>
                                 <button type="submit" className="buttonRegister">Crear cuenta</button>
                                 <p className="link-to-login">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>

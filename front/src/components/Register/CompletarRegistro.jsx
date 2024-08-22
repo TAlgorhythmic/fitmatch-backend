@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
-import { Camera, Phone, Person, Envelope, GeoAlt, Clock } from 'react-bootstrap-icons';
+import { Camera, Person, Envelope, GeoAlt, Clock } from 'react-bootstrap-icons';
 import { useNavigate, Navigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './CompletarRegistro.css';
