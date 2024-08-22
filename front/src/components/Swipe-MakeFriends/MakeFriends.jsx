@@ -8,8 +8,6 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { InfoCircle } from 'react-bootstrap-icons';
 import { LeftSquareOutlined, RightSquareOutlined } from '@ant-design/icons';
 
-
-
 const MakeFriends = () => {
   const [persona, setPersona] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
