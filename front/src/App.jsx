@@ -41,6 +41,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [isValidToken, setIsValidToken] = useState(null);
   const [updateUser, setUpdate] = useState(true);
+  const [showHeader, setShowHeader] = useState(true);
   setUpdateUser = setUpdate;
   setToken = setIsValidToken;
   const token = localStorage.getItem('authToken');
@@ -82,6 +83,14 @@ function App() {
       setShowHome(true);
     }
   }, [isValidToken, location.pathname])
+
+  useEffect(() => {
+    if(location.pathname === '/login' || location.pathname === '/register') {
+      setShowHeader(false);
+    } else {
+      setShowHeader(true);
+    } 
+  });
 
   useEffect(() => {
     async function getProfile() {
@@ -134,7 +143,9 @@ function App() {
   return (
     <>
       <div className={"contenedorPrincipal " + (popupState.isVisible ? "darkened" : "")}>
-        <Header />
+        {
+          showHeader ? <Header /> : <></>
+        }
         {
           showHome ? <SubHeader /> : <></>
         }
