@@ -94,8 +94,28 @@ class UsersController extends BaseController {
     // Obtener datos de un usuario por su ID, sólo si es amigo
     async getProfileById(id) {
         let data = {};
-        await fetch(`${this.apiUrl}/user/${id}`, {
+        await fetch(`${this.apiUrl}/profile/${id}`, {
             method: 'GET',
+            headers: {
+                "Authorization": "Bearer " + this.token,
+                'Content-Type': 'application/json'
+            }
+        }).then(res =>
+            res.json()
+                .then(responseData => {
+                    data = responseData.data;
+                })
+                .catch(error => {
+                    console.error('Error getUserBYId:', error);
+                })
+        );
+        return data;
+    }
+
+    async removeFriend(id) {
+        let data = {};
+        await fetch(`${this.apiUrl}/friends/remove/${id}`, {
+            method: 'DELETE',
             headers: {
                 "Authorization": "Bearer " + this.token,
                 'Content-Type': 'application/json'
@@ -106,7 +126,7 @@ class UsersController extends BaseController {
                     data = responseData;
                 })
                 .catch(error => {
-                    console.error('Error getUserBYId:', error);
+                    console.error('Error removeFriend:', error);
                 })
         );
         return data;
