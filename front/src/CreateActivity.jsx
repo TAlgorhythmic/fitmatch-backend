@@ -4,12 +4,18 @@ import { showPopup } from './Utils/Utils.js';
 import ActivitiesController from './controllers/ActivitiesController.js';
 import { OK } from "./Utils/StatusCodes.js";
 import { Navigate } from "react-router-dom";
+import MapLocationPicker from './components/Maps/MapLocationPicker.jsx';
 
 function CreateActivity() {
 
     const token = localStorage.getItem('authToken');
     const ActivityController = new ActivitiesController(token);
-
+    const [location, setLocation] = useState({
+        address: "",
+        lng: null,
+        lat: null
+    });
+ 
     const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
@@ -19,8 +25,13 @@ function CreateActivity() {
             const descriptionInput = document.getElementById('description').value;
             const expiresInput = document.getElementById('expires').value;
 
+            if (!location.address || !location.lat || !location.lng) {
+                showPopup("Error al crear una actividad", "Debes especificar el lugar en donde se realizará esta actividad", true);
+                return;
+            }
+
             try {
-                const res = await ActivityController.createActivity(titleInput, descriptionInput, expiresInput);
+                const res = await ActivityController.createActivity(titleInput, descriptionInput, expiresInput, location.address, location.lat, location.lng);
                 if (res.status === OK) {
                     showPopup("¡Actividad creada correctamente!", "", false);
                     document.getElementById('title').value = "";
@@ -28,7 +39,7 @@ function CreateActivity() {
                     document.getElementById('expires').value = "";
                     setRedirect(true);
                 } else {
-                    showPopup("ERROR AL CREAR ACTIVIDAD", "", true);
+                    showPopup("Error al crear actividad", res.error, true);
                 }
             } catch (error) {
                 console.error('Error al crear la actividad:', error);
@@ -44,30 +55,30 @@ function CreateActivity() {
         return () => {
             plusButton.removeEventListener('click', getPressedButton);
         };
-    }, []);
+    }, [location]);
 
-    if (redirect) return <Navigate to="/agenda"/>;
+    if (redirect) return <Navigate to="/agenda" />;
 
     return (
         <>
             <form className='form-create-activity'>
-                <p className="title">CREATE ACTIVITY</p>
-                <div>
-                    <label>
-                        <span>Title</span>
-                        <input id="title" className="input-activity" type="text" placeholder="" required="" />
+                <h1 className="title">Crear actividad</h1>
+                <div className='flexx'>
+                    <label className='normal-width marginright'>
+                        <span>Título</span>
+                        <input id="title" className="input-activity-title" type="text" placeholder="" required="" />
                     </label>
-
-                    <label>
-                        <span>Description</span>
-                        <input id="description" className="input-activity" type="text" placeholder="" required="" />
+                    <label className='normal-width'>
+                        <span>Fecha y hora</span>
+                        <input id="expires" className="date-input" style={{ marginBottom: "10px" }} type="datetime-local" placeholder="" required="" />
                     </label>
                 </div>
 
                 <label>
-                    <span>Expires</span>
-                    <input id="expires" className="date-input" style={{ marginBottom: "10px" }} type="datetime-local" placeholder="" required="" />
+                    <span>Descripción</span>
+                    <textarea id="description" className="input-activity-description" type="text" placeholder="" required="" />
                 </label>
+                <MapLocationPicker setLocation={setLocation} location={location}/>
                 <a className="plusButton">
                     <svg className="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <g mask="url(#mask0_21_345)">
