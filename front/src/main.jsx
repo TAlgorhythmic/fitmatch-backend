@@ -12,6 +12,8 @@ import CompletarRegistro from './components/Register/CompletarRegistro.jsx'
 import CreateActivity from './CreateActivity.jsx'
 import OwnActivities from './OwnActivities.jsx';
 import EditActivity  from './EditActivity.jsx';
+import FriendsList from './FriendsList.jsx';
+import FriendData from './FriendData.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 
@@ -22,6 +24,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="agenda" element={<Agenda />} />
           <Route path='create-activity' element={<CreateActivity />} />
           <Route path="friends" element={<MakeFriends />} />
+          <Route path="friends/list" element={<FriendsList />} />
+          <Route path="friends/view/:id" element={<FriendData />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="nuevaContra" element={<ChangePassword />} />

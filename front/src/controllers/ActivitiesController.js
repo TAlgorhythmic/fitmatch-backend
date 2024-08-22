@@ -45,7 +45,7 @@ class ActivitiesController extends BaseController {
         return data;
     }
 
-    async createActivity(title, description, expires) {
+    async createActivity(title, description, expires, placeholder, latitude, longitude) {
         let data = undefined;
         await fetch(`${this.apiUrl}/create`, {
             method: 'POST',
@@ -56,7 +56,10 @@ class ActivitiesController extends BaseController {
             body: JSON.stringify({
                 title: title,
                 description: description,
-                expires: expires
+                expires: expires,
+                placeholder: placeholder,
+                latitude: latitude,
+                longitude: longitude
             })
         }).then(res => res.json())
             .then(responseData => {
@@ -93,25 +96,30 @@ class ActivitiesController extends BaseController {
     }
 
     async getOwnActivities() {
-        let data = [];
-        await fetch(`${this.apiUrl}/getown`, {
-            method: 'GET',
-            headers: {
-                "Authorization": "Bearer " + this.token,
-                'Content-Type': 'application/json'
+        try {
+            const response = await fetch(`${this.apiUrl}/getown`, {
+                method: 'GET',
+                headers: {
+                    "Authorization": "Bearer " + this.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                console.error(`Error: ${response.status} ${response.statusText}`);
+                return null;
             }
-        }).then(res =>
-            res.json()
-                .then(responseData => {
-                    console.log('ActivitiesController: ' + responseData.status);
-                    data = responseData;
-                })
-                .catch(error => {
-                    console.error('Error getOwnActivities: ', error);
-                })
-        );
-        return data;
+
+            const responseData = await response.json();
+            console.log('ActivitiesController:', responseData.status);
+
+            return responseData;
+        } catch (error) {
+            console.error('Error getOwnActivities:', error);
+            return null;
+        }
     }
+
 
     async getActivityById(id) {
         let data = {};
@@ -132,6 +140,25 @@ class ActivitiesController extends BaseController {
         );
         return data;
     }
+
+    async deleteActivity(id) {
+    try {
+        const response = await fetch(`${this.apiUrl}/delete/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Authorization": "Bearer " + this.token,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error leaveActivity: ', error);
+        throw new Error("Failed to delete activity: " + error.message);
+    }
+}
+
+
 }
 
 export default ActivitiesController;

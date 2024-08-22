@@ -12,6 +12,7 @@ import { setShowPopup, showPopup } from './Utils/Utils.js';
 import SubHeader from './components/Header/SubHeader.jsx';
 import { useLocation } from 'react-router-dom';
 import AuthController from "./controllers/AuthController.js";
+import { NO_PERMISSION } from './Utils/StatusCodes.js';
 
 export let setToken;
 export let setUpdateUser;
@@ -40,6 +41,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [isValidToken, setIsValidToken] = useState(null);
   const [updateUser, setUpdate] = useState(true);
+  const [showHeader, setShowHeader] = useState(true);
   setUpdateUser = setUpdate;
   setToken = setIsValidToken;
   const token = localStorage.getItem('authToken');
@@ -81,6 +83,14 @@ function App() {
       setShowHome(true);
     }
   }, [isValidToken, location.pathname])
+
+  useEffect(() => {
+    if(location.pathname === '/login' || location.pathname === '/register') {
+      setShowHeader(false);
+    } else {
+      setShowHeader(true);
+    } 
+  });
 
   useEffect(() => {
     async function getProfile() {
@@ -132,9 +142,20 @@ function App() {
 
   return (
     <>
-     <Header/>
-     <Outlet/>
-     
+      <div className={"contenedorPrincipal " + (popupState.isVisible ? "darkened" : "")}>
+        {
+          showHeader ? <Header /> : <></>
+        }
+        {
+          showHome ? <SubHeader /> : <></>
+        }
+        <div className='mainContainer'>
+          <div className="mainContent">
+            <Outlet />
+          </div>
+        </div>
+      </div>
+      <PopupMessage isVisible={popupState.isVisible} title={popupState.title} message={popupState.message} isError={popupState.isError} onClose={onClose} />
     </>
   );
 }
