@@ -132,18 +132,9 @@ function App() {
 
   return (
     <>
-      <div className={"contenedorPrincipal " + (popupState.isVisible ? "darkened" : "")}>
-        <Header />
-        {
-          showHome ? <SubHeader /> : <></>
-        }
-        <div className='mainContainer'>
-          <div className="mainContent">
-            <Outlet />
-          </div>
-        </div>
-      </div>
-      <PopupMessage isVisible={popupState.isVisible} title={popupState.title} message={popupState.message} isError={popupState.isError} onClose={onClose} />
+     <Header/>
+     <Outlet/>
+     
     </>
   );
 }
