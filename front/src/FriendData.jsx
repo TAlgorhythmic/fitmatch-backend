@@ -29,7 +29,7 @@ function FriendData() {
         const response = await UserControl.removeFriend(person.id);
         if (response.status === 0) {
             showPopup("Usuario eliminado correctamente", error, false);
-            navigate("/friends/list");
+            redirect("/friends/list");
         } else {
             console.log('Error: ', response);
             showPopup("Error removing User", error, true);
