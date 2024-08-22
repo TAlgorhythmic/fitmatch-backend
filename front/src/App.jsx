@@ -1,5 +1,4 @@
 import Header from './components/Header/Header.jsx';
-
 import { OK } from '../../back-end/api/packets/StatusCodes.js';
 import { Container } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -134,8 +133,10 @@ function App() {
   }, [isValidToken, location.pathname, navigate, user]);
 
   useEffect(() => {
-    if (!isValidToken && isValidToken !== null) {
-      showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
+    if(location.pathname === "/register"){
+      showPopup("Welcome", "Bienvenido a la plataforma de nuevo", false);
+    }else if (!isValidToken && isValidToken !== null) {
+      showPopup("No permission", "Tu sesión ha expirado.", false);
       navigate("/login");
     }
   }, [isValidToken, navigate])
