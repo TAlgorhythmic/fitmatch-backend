@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Row } from 'react-bootstrap';
 import UsersController from './controllers/UsersController';
 import FriendsListDisplay from './components/FriendsList/FriendsListDisplay';
+import { showPopup } from "./Utils/Utils.js"
 
 function FriendsList() {
 
@@ -26,9 +27,11 @@ function FriendsList() {
         const response = await UserControl.removeFriend(id);
         if (response.status === 0) {
             const updatedUsers = users.filter(user => user.id !== id);
+            showPopup("Usuario borrado correctamente", error, false);
             setUsers(updatedUsers);
         } else {
             console.log('Error: ', response);
+            showPopup("Error deleting User", error, true);
         }
     }
 
