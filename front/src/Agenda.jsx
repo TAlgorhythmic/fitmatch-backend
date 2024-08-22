@@ -13,8 +13,6 @@ function Agenda() {
     const token = localStorage.getItem('authToken');
 
     const [joinedActivities, setJoinedActivities] = useState([]);
-    // const [activitiesDays, setActivitiesDays] = useState([]);
-
     const AgendaController = new JoinedActivitiesController(token);
 
     const handleLeaveActivity = (activityId) => {
@@ -35,17 +33,7 @@ function Agenda() {
         }
         getJoinedActivities();
     }, []);
-
-    //Hacer función para obtener todos los días en los que hay actividades
-
-    /*function getActivitiesDays(activities) {
-        const days = [];
-        joinedActivities.forEach(activity => (
-            days.push(activity.expires)
-        ))
-        days
-    }*/
-
+    
     if (!tokenValid) {
         showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
         return <Navigate to="/login" />

@@ -25,6 +25,17 @@ function FriendData() {
         getUser();
     }, []);
 
+    const handleRemoveFriend = async () => {
+        const response = await UserControl.removeFriend(person.id);
+        if (response.status === 0) {
+            showPopup("Usuario eliminado correctamente", error, false);
+            navigate("/friends/list");
+        } else {
+            console.log('Error: ', response);
+            showPopup("Error removing User", error, true);
+        }
+    }
+
     return (
         <>
             <div className="contenedor-deslizar-perfiles" style={{ position: 'relative' }}>
@@ -83,6 +94,7 @@ function FriendData() {
                                 )) || []}
                             </p>
                             <p className="descripcion-perfil">{person.description}</p>
+                            <Button className="friendsButtons" variant="danger" onClick={handleRemoveFriend()}>Eliminar</Button>
                         </div>
                     </div>
                 </div>
