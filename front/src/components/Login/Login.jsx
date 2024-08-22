@@ -62,7 +62,7 @@ const Login = () => {
                     <div className="input-group">
                         <input
                             type="text"
-                            placeholder="Phone"
+                            placeholder="Número de teléfono"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                             required
@@ -72,7 +72,7 @@ const Login = () => {
                     <div className="input-group">
                         <input
                           type={passwordVisible ? "text" : "password"}
-                            placeholder="Password"
+                            placeholder="Contraseña"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
@@ -82,15 +82,15 @@ const Login = () => {
             {passwordVisible ? <FaEyeSlash /> : <FaEye />}
             </span>
                     </div>
-                    <button type="submit" className="buttonOfLogin">Log In</button>
+                    <button type="submit" className="buttonOfLogin">Iniciar sesión</button>
                 </form>
                 {/* Aquí cambiamos el botón por un enlace */}
                 <a href="#" onClick={handleForgotPasswordClick} className="link-to-register">
-                    Forgot your password?
+                    Olvidaste tu contraseña?
                 </a>
                 <hr className='hrOfLogin' />
                 <p className='link-to-register'>
-                    Dont have an account? <a href="/register">REGISTER</a>
+                    No tienes cuenta? <a href="/register">Sing up</a>
                 </p>
                 <h3>{resposta}</h3>
             </div>

@@ -20,7 +20,7 @@ const RegisterForm = () => {
     phone: '',
     city: '',
     country: 'Spain',
-    proficiency: '',
+    proficiency: 'Principiante',
     description: '',
     img: '',
     preferences: '',

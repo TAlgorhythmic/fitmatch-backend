@@ -123,8 +123,10 @@ function App() {
   }, [isValidToken, location.pathname, navigate, user]);
 
   useEffect(() => {
-    if (!isValidToken && isValidToken !== null) {
-      showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
+    if(location.pathname === "/register"){
+      showPopup("Welcome", "Bienvenido a la plataforma de nuevo", false);
+    }else if (!isValidToken && isValidToken !== null) {
+      showPopup("No permission", "Tu sesión ha expirado.", false);
       navigate("/login");
     }
   }, [isValidToken, navigate])
