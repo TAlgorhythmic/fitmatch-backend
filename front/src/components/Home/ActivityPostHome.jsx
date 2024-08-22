@@ -5,21 +5,18 @@ import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
 import JoinedActivitiesController from '../../controllers/JoinedActivitiesController.js';
 import { showPopup } from '../../Utils/Utils.js';
-import UsersController from '../../controllers/UsersController.js';
 
 function ActivityPostHome(props) {
 
-    const { data, friendsList } = props;
+    const { data } = props;
 
     let postDate = new Date(data.postDate);
     let expireDate = new Date(data.expires);
 
     const [isJoined, setIsJoined] = useState(false);
-    const [joinedFriends, setJoinedFriends] = useState([]);
 
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
-    const UserControl = new UsersController(token);
 
     function handleStateChange() {
         setIsJoined(!isJoined);
@@ -46,17 +43,6 @@ function ActivityPostHome(props) {
                 showPopup("Error Leaving Activity", error, false);
             });
     }
-
-    /*useEffect(() => {
-        async function filterFriends() {
-            let joinedData = data.joinedUsers;
-            console.log('amigos unidos: ' + data.joinedUsers);
-            let joinedFriends = joinedData.filter(data => friendsList.includes(data.id))
-            console.log('amigos unidos: ' + joinedFriends)
-            setJoinedFriends(joinedFriends);
-        }
-        filterFriends();
-    }, []);*/
 
     return (
         <div className="activityContainer">
