@@ -135,7 +135,9 @@ function App() {
   useEffect(() => {
     if(location.pathname === "/register"){
       showPopup("Welcome", "Bienvenido a la plataforma de nuevo", false);
-    }else if (!isValidToken && isValidToken !== null) {
+    }else if (isValidToken !== null) {
+      navigate("/login");
+    }else if(!isValidToken && isValidToken !== null){
       showPopup("No permission", "Tu sesión ha expirado.", false);
       navigate("/login");
     }
