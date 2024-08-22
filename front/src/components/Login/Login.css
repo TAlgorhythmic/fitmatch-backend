@@ -1,12 +1,12 @@
 /* Estilo general */
-.login-container {
+.login-container {  
     background-color: #1c1c1c; /* Fondo ligeramente más claro para el contenedor */
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(255, 102, 0, 0.7); /* Sombra con color naranja */
     width: 30%;
     text-align: center;
-    margin: auto;
+    margin: 100px auto !important;
 }
 
 .h2OfLogin {
