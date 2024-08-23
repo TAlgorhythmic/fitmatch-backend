@@ -1,14 +1,12 @@
 package com.fitmatch.core;
 
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.fitmatch.core.fetch.controllers.Packets;;;
+import com.fitmatch.core.fetch.controllers.Packets;
+import com.fitmatch.core.fetch.controllers.Packets.Out.PacketSetup;;;
 
 public class User {
-
-    private static final Map<Integer, User> users = new ConcurrentHashMap<>();
 
     public static User[] loadUsers() {
         try (final InputStreamReader reader = new InputStreamReader(User.class.getClassLoader().getResourceAsStream("bots.json"))) {
@@ -21,7 +19,6 @@ public class User {
         return null;
     }
 
-    private int id;
     private String name, lastname, email, description, proficiency, img, city, country;
     private final String phone;
     private String[] trainingPreferences;
@@ -46,19 +43,61 @@ public class User {
         this.password = password;
     }
 
+    public boolean isSetup() {
+        return isSetup;
+    }
+
+    public boolean isMonday() {
+        return monday;
+    }
+
+    public boolean isTuesday() {
+        return tuesday;
+    }
+
+    public boolean isWednesday() {
+        return wednesday;
+    }
+
+    public boolean isThursday() {
+        return thursday;
+    }
+
+    public boolean isFriday() {
+        return friday;
+    }
+
+    public boolean isSaturday() {
+        return saturday;
+    }
+
+    public boolean isSunday() {
+        return sunday;
+    }
+
     public void fetchToken(boolean startAfterwards) {
-        Packets.PacketInToken token = Fitmatch.getInstance().getAuthController().login(new Packets.PacketLogin(phone, password));
+        Packets.In.PacketInToken token = Fitmatch.getInstance().getClient().authController.login(new Packets.Out.PacketLogin(phone, password));
         if (token == null) {
             System.out.println("Login for " + this.email + " failed. Trying to register...");
         } else {
-            token = Fitmatch.getInstance().getAuthController().register(new Packets.PacketRegister(phone, name, password));
+            token = Fitmatch.getInstance().getClient().authController.register(new Packets.Out.PacketRegister(phone, name, password));
             if (token == null) {
                 System.out.println("Failed to register " + email + ". Aborted.");
                 return;
             }
             this.token = token.token;
-            // TODO posar setup
+            boolean setup = Fitmatch.getInstance().getClient().usersController.setup(new PacketSetup(this), this.token);
+            if (!setup) {
+                System.out.println(email + " registered but failed to setup.");
+                return;
+            }
+            System.out.println(email + " registered successfully!");
+            if (startAfterwards) startScheduling();
         }
+    }
+
+    public void startScheduling() {
+        // TODO
     }
 
     public String getCity() {
@@ -75,10 +114,6 @@ public class User {
 
     public String getEmail() {
         return email;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getImg() {

@@ -1,0 +1,346 @@
+[
+    {
+        "title": "Correr en el Parque de la Ciutadella",
+        "description": "Sesión de running de 5 km en el Parque de la Ciutadella.",
+        "expires": "2024-09-01 18:00:00",
+        "placeholder": "Parque de la Ciutadella",
+        "latitude": "41.38879",
+        "longitude": "2.19098"
+    },
+    {
+        "title": "Sesión de yoga en la Playa de la Barceloneta",
+        "description": "Una hora de yoga en la playa para relajar el cuerpo y la mente.",
+        "expires": "2024-09-02 08:00:00",
+        "placeholder": "Playa de la Barceloneta",
+        "latitude": "41.37850",
+        "longitude": "2.19292"
+    },
+    {
+        "title": "Ciclismo en el Parque del Fórum",
+        "description": "Ruta en bicicleta por el Parque del Fórum.",
+        "expires": "2024-09-03 09:00:00",
+        "placeholder": "Parque del Fórum",
+        "latitude": "41.41024",
+        "longitude": "2.21950"
+    },
+    {
+        "title": "Clase de pilates en la Rambla del Poblenou",
+        "description": "Clase de pilates al aire libre en la Rambla del Poblenou.",
+        "expires": "2024-09-04 19:00:00",
+        "placeholder": "Rambla del Poblenou",
+        "latitude": "41.40374",
+        "longitude": "2.20198"
+    },
+    {
+        "title": "Voleibol en la Playa de Gavà",
+        "description": "Partido de voleibol en la playa para pasar una tarde divertida.",
+        "expires": "2024-09-05 17:00:00",
+        "placeholder": "Playa de Gavà",
+        "latitude": "41.26332",
+        "longitude": "1.99657"
+    },
+    {
+        "title": "Partido de fútbol en el Parque del Clot",
+        "description": "Partido de fútbol amistoso en el Parque del Clot.",
+        "expires": "2024-09-06 10:00:00",
+        "placeholder": "Parque del Clot",
+        "latitude": "41.40669",
+        "longitude": "2.18750"
+    },
+    {
+        "title": "Escalada en el Rocódromo de Montjuïc",
+        "description": "Sesión de escalada en el rocódromo de Montjuïc.",
+        "expires": "2024-09-07 12:00:00",
+        "placeholder": "Rocódromo de Montjuïc",
+        "latitude": "41.36484",
+        "longitude": "2.16512"
+    },
+    {
+        "title": "Tenis en las pistas de Vall d'Hebron",
+        "description": "Partido de tenis en las pistas de Vall d'Hebron.",
+        "expires": "2024-09-08 15:00:00",
+        "placeholder": "Pistas de tenis de Vall d'Hebron",
+        "latitude": "41.42255",
+        "longitude": "2.14182"
+    },
+    {
+        "title": "Natación en la Piscina Municipal de l'Hospitalet",
+        "description": "Sesión de natación en la piscina municipal de l'Hospitalet.",
+        "expires": "2024-09-09 16:00:00",
+        "placeholder": "Piscina Municipal de l'Hospitalet",
+        "latitude": "41.36250",
+        "longitude": "2.09934"
+    },
+    {
+        "title": "Baloncesto en el Parque de la Creueta del Coll",
+        "description": "Partido de baloncesto en el parque de la Creueta del Coll.",
+        "expires": "2024-09-10 11:00:00",
+        "placeholder": "Parque de la Creueta del Coll",
+        "latitude": "41.41814",
+        "longitude": "2.15034"
+    },
+    {
+        "title": "Sesión de fitness en el Parque de la Estación del Norte",
+        "description": "Clase de fitness intenso en el Parque de la Estación del Norte.",
+        "expires": "2024-09-11 09:00:00",
+        "placeholder": "Parque de la Estación del Norte",
+        "latitude": "41.39491",
+        "longitude": "2.18369"
+    },
+    {
+        "title": "Partido de pádel en las pistas de la Villa Olímpica",
+        "description": "Partido de pádel en las pistas de la Villa Olímpica.",
+        "expires": "2024-09-12 18:00:00",
+        "placeholder": "Pistas de la Villa Olímpica",
+        "latitude": "41.38544",
+        "longitude": "2.20048"
+    },
+    {
+        "title": "Correr en la Carretera de les Aigües",
+        "description": "Running en la Carretera de les Aigües con vistas espectaculares.",
+        "expires": "2024-09-13 07:00:00",
+        "placeholder": "Carretera de les Aigües",
+        "latitude": "41.39453",
+        "longitude": "2.10691"
+    },
+    {
+        "title": "Partido de fútbol sala en el Pabellón del Guinardó",
+        "description": "Partido de fútbol sala en el Pabellón del Guinardó.",
+        "expires": "2024-09-14 17:00:00",
+        "placeholder": "Pabellón del Guinardó",
+        "latitude": "41.41832",
+        "longitude": "2.17282"
+    },
+    {
+        "title": "Boxeo en el gimnasio Gallego Prada",
+        "description": "Clase de boxeo para todos los niveles.",
+        "expires": "2024-09-15 19:00:00",
+        "placeholder": "Gimnasio Gallego Prada",
+        "latitude": "41.38802",
+        "longitude": "2.16107"
+    },
+    {
+        "title": "Entrenamiento de crossfit en Sants",
+        "description": "Entrenamiento de alta intensidad de crossfit en Sants.",
+        "expires": "2024-09-16 08:00:00",
+        "placeholder": "CrossFit Sants",
+        "latitude": "41.37516",
+        "longitude": "2.14045"
+    },
+    {
+        "title": "Voleibol en la Playa de Castelldefels",
+        "description": "Partido de voleibol en la playa de Castelldefels.",
+        "expires": "2024-09-17 16:00:00",
+        "placeholder": "Playa de Castelldefels",
+        "latitude": "41.26312",
+        "longitude": "1.97685"
+    },
+    {
+        "title": "Senderismo en el Parque Natural de Collserola",
+        "description": "Ruta de senderismo por Collserola.",
+        "expires": "2024-09-18 10:00:00",
+        "placeholder": "Parque Natural de Collserola",
+        "latitude": "41.42013",
+        "longitude": "2.12697"
+    },
+    {
+        "title": "Partido de bádminton en la Estación del Norte",
+        "description": "Partido amistoso de bádminton en la Estación del Norte.",
+        "expires": "2024-09-19 09:00:00",
+        "placeholder": "Parque de la Estación del Norte",
+        "latitude": "41.39510",
+        "longitude": "2.18532"
+    },
+    {
+        "title": "Clase de Zumba en el Parque de la Ciutadella",
+        "description": "Clase de Zumba al aire libre.",
+        "expires": "2024-09-20 18:00:00",
+        "placeholder": "Parque de la Ciutadella",
+        "latitude": "41.38999",
+        "longitude": "2.19177"
+    },
+    {
+        "title": "Escalada en La Foixarda",
+        "description": "Sesión de escalada en La Foixarda.",
+        "expires": "2024-09-21 11:00:00",
+        "placeholder": "La Foixarda",
+        "latitude": "41.36502",
+        "longitude": "2.15734"
+    },
+    {
+        "title": "Natación en el Centro Deportivo Can Dragó",
+        "description": "Sesión de natación en Can Dragó.",
+        "expires": "2024-09-22 16:00:00",
+        "placeholder": "Centro Deportivo Can Dragó",
+        "latitude": "41.43238",
+        "longitude": "2.17112"
+    },
+    {
+        "title": "Correr en el Paseo Marítimo de Badalona",
+        "description": "Carrera matutina en el Paseo Marítimo de Badalona.",
+        "expires": "2024-09-23 07:30:00",
+        "placeholder": "Paseo Marítimo de Badalona",
+        "latitude": "41.44829",
+        "longitude": "2.24742"
+    },
+    {
+        "title": "Patinaje en el Parque del Guinardó",
+        "description": "Sesión de patinaje en el Parque del Guinardó.",
+        "expires": "2024-09-24 17:00:00",
+        "placeholder": "Parque del Guinardó",
+        "latitude": "41.42021",
+        "longitude": "2.16691"
+    },
+    {
+        "title": "Clase de aeróbic en el Parque de Montjuïc",
+        "description": "Clase de aeróbic en el Parque de Montjuïc.",
+        "expires": "2024-09-25 19:00:00",
+        "placeholder": "Parque de Montjuïc",
+        "latitude": "41.36572",
+        "longitude": "2.15760"
+    },
+    {
+        "title": "Trekking en el Parque Natural del Garraf",
+        "description": "Ruta de trekking en el Parque Natural del Garraf.",
+        "expires": "2024-09-26 08:00:00",
+        "placeholder": "Parque Natural del Garraf",
+        "latitude": "41.29945",
+        "longitude": "1.89453"
+    },
+    {
+        "title": "Partido de hockey en el Club de Polo de Barcelona",
+        "description": "Partido de hockey en el Club de Polo.",
+        "expires": "2024-09-27 16:00:00",
+        "placeholder": "Club de Polo de Barcelona",
+        "latitude": "41.38068",
+        "longitude": "2.10774"
+    },
+    {
+        "title": "Ciclismo en la Carretera de les Aigües",
+        "description": "Ruta ciclista por la Carretera de les Aigües.",
+        "expires": "2024-09-28 09:00:00",
+        "placeholder": "Carretera de les Aigües",
+        "latitude": "41.39128",
+        "longitude": "2.12755"
+    },
+    {
+        "title": "Baloncesto en el Parque de Les Planes",
+        "description": "Partido de baloncesto en el Parque de Les Planes.",
+        "expires": "2024-09-29 10:00:00",
+        "placeholder": "Parque de Les Planes",
+        "latitude": "41.43948",
+        "longitude": "2.21578"
+    },
+    {
+        "title": "Entrenamiento funcional en la Playa de Ocata",
+        "description": "Entrenamiento funcional en la playa.",
+        "expires": "2024-09-30 07:00:00",
+        "placeholder": "Playa de Ocata",
+        "latitude": "41.47934",
+        "longitude": "2.31588"
+    },
+    {
+        "title": "Correr en el Parque de la Maternitat",
+        "description": "Sesión de running en el Parque de la Maternitat.",
+        "expires": "2024-10-01 08:00:00",
+        "placeholder": "Parque de la Maternitat",
+        "latitude": "41.38078",
+        "longitude": "2.12262"
+    },
+    {
+        "title": "Natación en la Playa del Bogatell",
+        "description": "Natación en la Playa del Bogatell.",
+        "expires": "2024-10-02 09:00:00",
+        "placeholder": "Playa del Bogatell",
+        "latitude": "41.39582",
+        "longitude": "2.20951"
+    },
+    {
+        "title": "Ciclismo en el Paseo de Gracia",
+        "description": "Ruta ciclista por el Paseo de Gracia.",
+        "expires": "2024-10-03 11:00:00",
+        "placeholder": "Paseo de Gracia",
+        "latitude": "41.39232",
+        "longitude": "2.16189"
+    },
+    {
+        "title": "Clase de HIIT en el Parque de la Barceloneta",
+        "description": "Clase de HIIT para quemar calorías.",
+        "expires": "2024-10-04 12:00:00",
+        "placeholder": "Parque de la Barceloneta",
+        "latitude": "41.38043",
+        "longitude": "2.18815"
+    },
+    {
+        "title": "Partido de fútbol en el Campo de la Guineueta",
+        "description": "Partido amistoso de fútbol en la Guineueta.",
+        "expires": "2024-10-05 17:00:00",
+        "placeholder": "Campo de la Guineueta",
+        "latitude": "41.43879",
+        "longitude": "2.17214"
+    },
+    {
+        "title": "Escalada en el Rocódromo Indoor Climbat",
+        "description": "Escalada en Climbat La Foixarda.",
+        "expires": "2024-10-06 13:00:00",
+        "placeholder": "Climbat La Foixarda",
+        "latitude": "41.36524",
+        "longitude": "2.15799"
+    },
+    {
+        "title": "Pilates en el Parque del Putxet",
+        "description": "Clase de pilates en el Parque del Putxet.",
+        "expires": "2024-10-07 19:00:00",
+        "placeholder": "Parque del Putxet",
+        "latitude": "41.40685",
+        "longitude": "2.14761"
+    },
+    {
+        "title": "Natación en la Playa de Sant Sebastià",
+        "description": "Sesión de natación en la Playa de Sant Sebastià.",
+        "expires": "2024-10-08 09:00:00",
+        "placeholder": "Playa de Sant Sebastià",
+        "latitude": "41.36865",
+        "longitude": "2.18993"
+    },
+    {
+        "title": "Correr en la Avenida Diagonal",
+        "description": "Sesión de running en la Avenida Diagonal.",
+        "expires": "2024-10-09 07:00:00",
+        "placeholder": "Avenida Diagonal",
+        "latitude": "41.39142",
+        "longitude": "2.16656"
+    },
+    {
+        "title": "Clase de crossfit en Poblenou",
+        "description": "Entrenamiento de crossfit en el gimnasio de Poblenou.",
+        "expires": "2024-10-10 08:00:00",
+        "placeholder": "CrossFit Poblenou",
+        "latitude": "41.39925",
+        "longitude": "2.19872"
+    },
+    {
+        "title": "Voleibol en la Playa del Prat",
+        "description": "Partido de voleibol en la Playa del Prat.",
+        "expires": "2024-10-11 17:00:00",
+        "placeholder": "Playa del Prat",
+        "latitude": "41.31318",
+        "longitude": "2.08655"
+    },
+    {
+        "title": "Correr en el Parque de la Ciudadela",
+        "description": "Running en el Parque de la Ciudadela.",
+        "expires": "2024-10-12 09:00:00",
+        "placeholder": "Parque de la Ciudadela",
+        "latitude": "41.38887",
+        "longitude": "2.19029"
+    },
+    {
+        "title": "Sesión de yoga en el Parque de Collserola",
+        "description": "Clase de yoga en plena naturaleza en Collserola.",
+        "expires": "2024-10-13 10:00:00",
+        "placeholder": "Parque de Collserola",
+        "latitude": "41.42044",
+        "longitude": "2.12655"
+    }
+]

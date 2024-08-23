@@ -1,37 +1,11 @@
 import fitmatch from "./../api/Fitmatch.js";
 import express from 'express';
-import { DataTypes } from "sequelize";
 import { tokenRequired } from "./../api/utils/Validate.js";
-import { buildInternalErrorPacket, buildInvalidPacket, buildNoDataFoundPacket, buildSendDataPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
+import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
 import User from "../api/User.js";
 import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
-import { isActivityExpired } from "../api/management/SQLManager.js";
 
-const sequelize = fitmatch.getSql();
 const sqlManager = fitmatch.getSqlManager();
-
-//DEFINICION DEL MODELO
-const Activities = sequelize.define(
-    'Activities',
-    {
-        title: DataTypes.STRING,
-        description: DataTypes.STRING,
-        postDate: DataTypes.DATE,
-        expires: DataTypes.DATE,
-        userId: DataTypes.INTEGER,
-        tableVersion: DataTypes.INTEGER
-    },
-    { tableName: 'activities', timestamps: false }
-);
-
-const Friends = sequelize.define(
-    'Friends',
-    {
-        userId1: DataTypes.INTEGER,
-        userId2: DataTypes.INTEGER,
-    },
-    { tableName: 'friends', timestamps: false }
-);
 
 const router = express.Router();
 
@@ -296,7 +270,7 @@ router.post('/create', tokenRequired, function (req, res, next) {
         return;
     }
     const lat = req.body.latitude;
-    const long= req.body.longitude;
+    const long = req.body.longitude;
     if (!lat || !long) {
         res.json(buildInvalidPacket("The location is not correctly set."));
         return;

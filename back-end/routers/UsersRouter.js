@@ -236,19 +236,6 @@ router.get('/connect', tokenRequired, function (req, res, next) {
     }
 });
 
-/**
- * Data expected:
- * token
- * body: {
- *      preferencesArray,
- *      description,
- *      img, (optional)
- *      proficiency, 
- *      city,
- *      latitude,
- *      longitude
- * }
- */
 router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
     console.log(req.body);
@@ -263,7 +250,6 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         return;
     }
     const description = req.body.description ? req.body.description : null;
-    const img = req.body.img ? req.body.img : "img1.jpg";
     const proficiency = req.body.proficiency;
     if (!proficiency) {
         res.json(buildInvalidPacket("You must select your proficiency level!"));
