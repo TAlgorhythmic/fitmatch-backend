@@ -77,7 +77,6 @@ public class User {
         Packets.In.PacketInToken token = Fitmatch.getInstance().getClient().authController.login(new Packets.Out.PacketLogin(phone, password));
         if (token == null) {
             System.out.println("Login for " + this.email + " failed. Trying to register...");
-        } else {
             token = Fitmatch.getInstance().getClient().authController.register(new Packets.Out.PacketRegister(phone, name, password));
             if (token == null) {
                 System.out.println("Failed to register " + email + ". Aborted.");
@@ -90,8 +89,9 @@ public class User {
                 return;
             }
             System.out.println(email + " registered successfully!");
-            if (startAfterwards) startScheduling();
         }
+        if (startAfterwards) startScheduling();
+        
     }
 
     public void startScheduling() {

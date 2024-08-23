@@ -14,6 +14,8 @@ import com.fitmatch.core.Activity;
 import com.fitmatch.core.Fitmatch;
 import com.fitmatch.core.ServerActivity;
 import com.fitmatch.utils.Urls;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 public class ActivitiesController {
     
@@ -27,7 +29,12 @@ public class ActivitiesController {
             post.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                if (res.getCode() == OK) Fitmatch.getInstance().getGson().fromJson(EntityUtils.toString(res.getEntity()), ServerActivity[].class);
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) Fitmatch.getInstance().getGson().fromJson(json, ServerActivity[].class);
             }
 
         } catch (Exception e) {
@@ -46,7 +53,12 @@ public class ActivitiesController {
             post.setEntity(new StringEntity(packet.toJson()));
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                if (res.getCode() == OK) return true;
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) return true;
             }
 
         } catch (Exception e) {

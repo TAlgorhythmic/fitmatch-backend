@@ -30,7 +30,12 @@ public class UsersController {
             post.setEntity(new StringEntity(packet.toJson()));
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                if (res.getCode() == OK) return true;
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) return true;
             }
 
         } catch (Exception e) {
@@ -50,9 +55,13 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                if (res.getCode() == OK) {
-                    JsonElement json = JsonParser.parseString(EntityUtils.toString(res.getEntity()));
-                    JsonElement data = json.getAsJsonObject().get("data");
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement parse = JsonParser.parseString(json);
+                int code = parse.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) {
+                    JsonElement data = parse.getAsJsonObject().get("data");
 
                     return Fitmatch.getInstance().getGson().fromJson(data, int[].class);
                 }
@@ -73,8 +82,13 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                if (res.getCode() == OK) {
-                    return Fitmatch.getInstance().getGson().fromJson(EntityUtils.toString(res.getEntity()), ServerUser[].class);
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) {
+                    return Fitmatch.getInstance().getGson().fromJson(json, ServerUser[].class);
                 }
             }
         } catch (Exception e) {
@@ -93,8 +107,13 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                if (res.getCode() == OK) {
-                    return Fitmatch.getInstance().getGson().fromJson(EntityUtils.toString(res.getEntity()), ServerUser[].class);
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) {
+                    return Fitmatch.getInstance().getGson().fromJson(json, ServerUser[].class);
                 }
             }
         } catch (Throwable e) {

@@ -1,16 +1,18 @@
 package com.fitmatch.core;
 
 import java.io.InputStreamReader;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.fitmatch.packets.IPacket;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Activity implements IPacket {
 
     static Activity[] activities;
-    public static void init(Gson gson) {
+    public static void init() {
         try (InputStreamReader reader = new InputStreamReader(Activity.class.getClassLoader().getResourceAsStream("activities.json"))) {
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             activities = gson.fromJson(reader, Activity[].class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -23,7 +25,7 @@ public class Activity implements IPacket {
     
     private String title;
     private String description;
-    private LocalDateTime expires;
+    private Date expires;
     private String placeholder;
     private double latitude;
     private double longitude;
@@ -32,7 +34,7 @@ public class Activity implements IPacket {
         return description;
     }
 
-    public LocalDateTime getExpires() {
+    public Date getExpires() {
         return expires;
     }
 

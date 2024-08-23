@@ -95,8 +95,6 @@ export function sketchyOrder(array) {
     // Get the amount of items the 25% actually is.
     const amount = Math.floor((array.length * 25) / 100);
     
-    console.log("Length: " + array.length);
-    console.log("Amount to extract: " + amount);
     const likelyMatch = [];
 
     // Push likely matches.
@@ -220,7 +218,6 @@ router.get('/connect', tokenRequired, function (req, res, next) {
             .then(e => {
                 const data = sanitizeDataReceivedForSingleObject(e);
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country);
-                console.log(user);
                 fitmatch.getUserManager().put(user.id, user);
 
                 if (!sessions.has(token.id)) {
@@ -238,7 +235,6 @@ router.get('/connect', tokenRequired, function (req, res, next) {
 
 router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
-    console.log(req.body);
 
     const email = req.body.email ? req.body.email : null;
     const preferences = Array.isArray(req.body.preferences) ? (req.body.preferences.length ? req.body.preferences : null) : typeof req.body.preferences === "string" || req.body.preferences instanceof String ? req.body.preferences.split(", ") : null;
