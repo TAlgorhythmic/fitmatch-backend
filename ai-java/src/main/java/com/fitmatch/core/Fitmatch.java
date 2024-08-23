@@ -27,8 +27,8 @@ public class Fitmatch {
 
     private Fitmatch() {
         this.gson = Deserializers.registerDeserializers();
-        Activity.init(this.gson);
-        this.scheduler = Executors.newScheduledThreadPool(6);
+        Activity.init();
+        this.scheduler = Executors.newSingleThreadScheduledExecutor();
         this.random = new Random();
         this.client = new Client();
     }

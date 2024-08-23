@@ -9,6 +9,8 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import com.fitmatch.core.fetch.controllers.Packets.In.PacketInToken;
 import com.fitmatch.utils.Urls;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import static com.fitmatch.core.fetch.controllers.StatusCodes.*;
 
@@ -25,7 +27,14 @@ public class AuthController {
             post.setEntity(new StringEntity(packet.toJson()));
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                if (res.getCode() == OK) return PacketInToken.fromJson(EntityUtils.toString(res.getEntity()));
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+                
+                if (code == OK) {
+                    return PacketInToken.fromJson(json);
+                }
             }
 
         } catch (Exception e) {
@@ -44,7 +53,12 @@ public class AuthController {
             post.setEntity(new StringEntity(packet.toJson()));
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                if (res.getCode() == OK) return PacketInToken.fromJson(EntityUtils.toString(res.getEntity()));
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) return PacketInToken.fromJson(json);
             }
 
         } catch (Exception e) {

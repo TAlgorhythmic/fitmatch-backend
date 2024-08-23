@@ -49,7 +49,6 @@ router.post('/send/:other_id', tokenRequired, function (req, res, next) {
     }
 
     fitmatch.sqlManager.getRejectionByPair(id, other_id).then(e => {
-        console.log("Rejections" + e);
         const data = sanitizeDataReceivedForSingleObject(e);
         if (data) {
             res.json(buildInvalidPacket("This user has already rejected you."));
@@ -57,7 +56,6 @@ router.post('/send/:other_id', tokenRequired, function (req, res, next) {
         }
         fitmatch.sqlManager.getFriendByPair(id, other_id)
             .then(e => {
-                console.log("Friends: " + e);
                 const data = sanitizeDataReceivedForSingleObject(e);
                 if (data) {
                     res.json(buildInvalidPacket("This user is already your friend."));
@@ -131,7 +129,6 @@ router.get('/pendings', tokenRequired, function (req, res, next) {
             res.json(buildSendDataPacket(list_of_users));
             return;
         }
-        console.log(array);
         const pendingId = array[i].sender_id;
 
 
@@ -174,7 +171,6 @@ router.post("/reject/:other_id", tokenRequired, (req, res, next) => {
     const other_id = req.params.other_id;
 
     fitmatch.sqlManager.getRejectionByPair(id, other_id).then(e => {
-        console.log("Rejections" + e);
         const data = sanitizeDataReceivedForSingleObject(e);
         if (data) {
             res.json(buildInvalidPacket("This user has already rejected you."));

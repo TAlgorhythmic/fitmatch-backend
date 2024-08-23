@@ -55,6 +55,7 @@ router.get("/google/callback", (req, res, next) => {
 router.post("/login", (request, response, next) => {
     const field = request.body.field;
     const password = request.body.password;
+
     let promise;
     if (isValidEmail(field)) {
         promise = fitmatch.getSqlManager().getUserFromEmail(field);
@@ -167,7 +168,6 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
     const password = request.body.password;
 
     if (!name || !phone || !password) {
-        console.log(`${name}, ${phone}`)
         response.json(buildInvalidPacket("There is invalid data."));
         return;
     }

@@ -55,7 +55,7 @@ class ConnectSession {
                             const friendsData = sanitizeDataReceivedForArrayOfObjects(e2, "friendId");
                             fitmatch.sqlManager.getPendingsById(this.id).then(e3 => {
                                 const pendingsData = sanitizeDataReceivedForArrayOfObjects(e3, "pendingId");
-                                console.log(pendingsData);
+
                                 const ignoreSet = new Set();
                                 rejectionsData.forEach(it => ignoreSet.add(it.friendId));
                                 friendsData.forEach(it => ignoreSet.add(it.friendId));

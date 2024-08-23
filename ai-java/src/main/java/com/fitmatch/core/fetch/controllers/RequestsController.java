@@ -12,6 +12,8 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import com.fitmatch.core.Fitmatch;
 import com.fitmatch.core.ServerUser;
 import com.fitmatch.utils.Urls;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 public class RequestsController {
 
@@ -26,7 +28,12 @@ public class RequestsController {
             post.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                if (res.getCode() == OK) return true;
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,7 +50,12 @@ public class RequestsController {
             post.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                if (res.getCode() == OK) return true;
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,7 +72,12 @@ public class RequestsController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                if (res.getCode() == OK) return Fitmatch.getInstance().getGson().fromJson(EntityUtils.toString(res.getEntity()), ServerUser[].class);
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) return Fitmatch.getInstance().getGson().fromJson(json, ServerUser[].class);
             }
         } catch (Exception e) {
             e.printStackTrace();
