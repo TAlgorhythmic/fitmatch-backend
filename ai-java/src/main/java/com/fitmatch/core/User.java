@@ -1,8 +1,6 @@
 package com.fitmatch.core;
 
 import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import com.fitmatch.core.fetch.controllers.Packets;
 import com.fitmatch.core.fetch.controllers.Packets.Out.PacketSetup;;;
 
@@ -162,9 +160,5 @@ public class User {
 
     public String[] getTrainingPreferences() {
         return trainingPreferences;
-    }
-
-    public static Map<Integer, User> getUsers() {
-        return users;
     }
 }
