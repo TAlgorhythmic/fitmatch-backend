@@ -1,13 +1,17 @@
 .contenedor-deslizar-perfiles {
   position: relative;
+  margin-top: 5%;
   width: 100%;
   height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: none;
+ background: none;
   flex-direction: column;
-}
+ background-color: transparent !important;
 
+}
 .perfil-activo {
   display: block;
 }
@@ -149,7 +153,6 @@ text-align: center;
   border-radius: 30%;
   cursor: pointer;
 }
-
 .boton-flecha:hover {
   background-color: white;
 }
