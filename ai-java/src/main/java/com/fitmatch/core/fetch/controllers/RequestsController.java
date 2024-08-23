@@ -2,8 +2,6 @@ package com.fitmatch.core.fetch.controllers;
 
 import static com.fitmatch.core.fetch.controllers.StatusCodes.OK;
 
-import java.net.http.HttpClient;
-
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;

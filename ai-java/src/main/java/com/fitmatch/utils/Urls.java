@@ -9,7 +9,6 @@ public class Urls {
     private static final String usersBaseUrl = baseUrl + "/api/users";
     private static final String joinedActivitiesBaseUrl = baseUrl + "/api/joinedactivities";
     private static final String requestsBaseUrl = baseUrl + "/api/requests";
-    private static final String credentialsBaseUrl = baseUrl + "/api/credentials";
 
     // Activities router
     public static final String ALL_ACTIVITIES = activitiesBaseUrl + "/";
