@@ -1,115 +1,187 @@
+
+
+/* Estilo del contenedor del formulario */
 .custom-register-form {
-    background-color: #2b2b2b; /* Fondo oscuro */
-    border-radius: 10px;
-    padding: 20px;
-    color: #ff6600; /* Naranja brillante para el texto */
-  }
-  
-  .custom-register-form .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .custom-register-form .input-group-text {
-    background-color: #ff6600; /* Fondo naranja */
-    border: none;
-    color: white;
-  }
-  
-  .custom-register-form .form-control {
-    background-color: #3c3c3c; /* Fondo oscuro para el input */
-    color: white;
-    border: 1px solid #ff6600; /* Borde naranja */
-    border-radius: 0;
-  }
-  
-  .custom-register-form .form-control:focus {
-    background-color: #3c3c3c;
-    color: white;
-    border-color: #ff6600;
-    box-shadow: none;
-  }
-  
-  .custom-register-form .form-select {
-    background-color: #3c3c3c;
-    color: white;
-    border: 1px solid #ff6600;
-  }
-  
-  .custom-register-form .time-picker-container {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-  }
-  
-  .custom-register-form .time-picker-group {
-    display: flex;
-    align-items: center;
-    background-color: #3c3c3c;
-    border-radius: 6px;
-    padding: 5px;
-  }
-  
-  .custom-register-form .time-picker-icon {
-    background-color: #ff6600;
-    color: white;
-    padding: 10px;
-    border-radius: 6px 0 0 6px;
-  }
-  
-  .custom-register-form .time-picker-input {
-    background-color: #000;
-    color: white;
-    border: none;
-    outline: none;
-    border-radius: 0 6px 6px 0;
-    padding: 5px 10px;
-    font-size: 1rem;
-  }
-  
-  .custom-register-form .dias-semana {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .custom-register-form .dias-semana .form-label {
-    color: #ff6600;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .custom-register-form .dias-semana .form-group {
-    flex: 1;
-    text-align: center;
-  }
-  
-  .custom-register-form .react-switch {
-    margin-top: 10px;
-  }
-  
-  .custom-register-form .custom-button-selected {
-    background-color: #ff6600;
-    color: white;
-    border: 2px solid #ff6600;
-  }
-  
-  .custom-register-form .custom-button-unselected {
-    background-color: transparent;
-    color: #ff6600;
-    border: 2px solid #ff6600;
-  }
-  
-  .custom-register-form .custom-submit-btn {
-    background-color: #ff6600;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    border-radius: 8px;
-  }
-  
-  .custom-register-form .custom-submit-btn:hover {
-    background-color: #e65a00;
-  }
-  
+  background-color: #333333; /* Fondo oscuro */
+  border-radius: 10px;
+  padding: 20px;
+  color: #ffffff; /* Texto blanco */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Grupos de formularios */
+.custom-register-form .form-group {
+  margin-bottom: 15px;
+}
+
+/* Fondo y estilo de los iconos en los inputs */
+.custom-register-form .input-group-text {
+  background-color: #ff6600; /* Fondo naranja */
+  border: none;
+  color: white;
+}
+
+/* Estilo de los inputs */
+.custom-register-form .form-control {
+  background-color: #3c3c3c; /* Fondo oscuro para el input */
+  color: white; /* Texto blanco */
+  border: 1px solid #ff6600; /* Borde naranja */
+  border-radius: 0;
+}
+
+.custom-register-form .form-control:focus {
+  background-color: #3c3c3c;
+  color: white;
+  border-color: #ff6600;
+  box-shadow: none;
+}
+
+/* Estilo del select */
+.custom-register-form .form-select {
+  background-color: #3c3c3c;
+  color: white;
+  border: 1px solid #ff6600;
+}
+
+/* Contenedor de la selección de hora */
+.custom-register-form .time-picker-container {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+/* Grupo de selección de hora */
+.custom-register-form .time-picker-group {
+  display: flex;
+  align-items: center;
+  background-color: #3c3c3c;
+  border-radius: 6px;
+  padding: 5px;
+}
+
+/* Icono de la selección de hora */
+.custom-register-form .time-picker-icon {
+  background-color: #ff6600;
+  color: white;
+  padding: 10px;
+  border-radius: 6px 0 0 6px;
+}
+
+/* Input de selección de hora */
+.custom-register-form .time-picker-input {
+  background-color: #000000;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 0 6px 6px 0;
+  padding: 5px 10px;
+  font-size: 1rem;
+}
+
+/* Contenedor de los días de la semana */
+.custom-register-form .dias-semana {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Estilo de las etiquetas de los días de la semana */
+.custom-register-form .dias-semana .form-label {
+  color: #ff6600;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Grupo de días de la semana */
+.custom-register-form .dias-semana .form-group {
+  flex: 1;
+  text-align: center;
+}
+
+/* Estilo del switch */
+.custom-register-form .react-switch {
+  margin-top: 10px;
+}
+
+/* Botón seleccionado en preferencias */
+.custom-register-form .custom-button-selected {
+  background-color: #ff6600;
+  color: white;
+  border: 2px solid #ff6600;
+}
+
+/* Botón no seleccionado en preferencias */
+.custom-register-form .custom-button-unselected {
+  background-color: transparent;
+  color: #ff6600;
+  border: 2px solid #ff6600;
+}
+
+/* Estilo del botón de envío */
+.custom-register-form .custom-submit-btn {
+  background-color: #ff6600;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+}
+
+/* Hover en el botón de envío */
+.custom-register-form .custom-submit-btn:hover {
+  background-color: #e65a00;
+}
+
+/* Botón específico de formulario */
+.btn-formulario {
+  background-color: #e65a00;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover en el botón de formulario */
+.btn-formulario:hover {
+  background-color: #cc5200;
+}
+
+/* Estilo para los pasos (Steps) de Ant Design */
+.ant-steps-item-title {
+  color: #ffffff; /* Cambia el color del texto de los pasos a blanco */
+}
+
+.ant-steps-item-description {
+  color: #ffffff; /* Cambia el color del texto de descripción de los pasos a blanco */
+}
+
+.ant-steps-item-process .ant-steps-item-icon {
+  background-color: #ff6600; /* Cambia el color del paso activo a naranja */
+}
+
+.ant-steps-item-process .ant-steps-item-icon .ant-steps-icon {
+  color: #ffffff; /* Cambia el color del icono dentro del paso activo a blanco */
+}
+
+.ant-steps-item-finish .ant-steps-item-icon {
+  background-color: #4caf50; /* Cambia el color del paso completado a verde */
+  border-color: #4caf50;
+}
+
+.ant-steps-item-wait .ant-steps-item-icon {
+  background-color: white; /* Fondo oscuro para los pasos en espera */
+  border-color: white;
+  color: #ffffff; /* Texto blanco para los pasos en espera */
+}
+
+.ant-steps-item-wait .ant-steps-item-title {
+  color: white; /* Cambia el color de los títulos de pasos en espera a gris */
+}
+
+.ant-steps-item-wait .ant-steps-item-description {
+  color: white; /* Cambia el color de las descripciones de pasos en espera a gris */
+}
+

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
 import { Person, Envelope, Phone, GeoAlt } from 'react-bootstrap-icons';
+import { Pencil } from 'react-bootstrap-icons';
 import { OK, NO_PERMISSION } from './Utils/StatusCodes';
 import { showPopup } from './Utils/Utils';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -32,7 +33,7 @@ const UserProfile = () => {
         'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'];
 
     const [selectedInterests, setSelectedInterests] = useState([]);
-
+    const [imageFile, setImageFile] = useState(null);
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
         libraries: libraries
@@ -112,6 +113,43 @@ const UserProfile = () => {
         }
     };
 
+    const handleSubmitPhoto = async (e) => {
+        e.preventDefault();
+    
+        const token = localStorage.getItem('authToken');
+    
+        if (imageFile) {
+            const formDataImage = new FormData();
+            formDataImage.append('img', imageFile);
+    
+            try {
+                const imageUploadResponse = await fetch('http://localhost:3001/api/users/upload/image', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: formDataImage,
+                });
+    
+                const imageResult = await imageUploadResponse.json();
+    
+                if (imageResult.status === 0) {
+                    // Actualiza la URL de la imagen en el estado del componente
+                    setUserData({ ...userData, img: imageResult.imageUrl });
+                    alert('Image uploaded successfully');
+                } else if (imageResult.status === NO_PERMISSION) {
+                    alert('No permission to upload the image');
+                } else {
+                    showPopup("Something went wrong", imageResult.error, true);
+                }
+            } catch (error) {
+                showPopup('Error uploading image', error, true);
+            }
+        } else {
+            alert('Please select an image to upload');
+        }
+    };    
+
     const handleInterestClick = (interest) => {
         if (selectedInterests.includes(interest)) {
             setSelectedInterests(selectedInterests.filter(i => i !== interest));
@@ -137,13 +175,16 @@ const UserProfile = () => {
 
     return (
         <Container className="container-profile">
-
             <Form onSubmit={handleSubmit}>
             <img
                      draggable="false"
                      src={`http://localhost:3001/uploads/${userData.img}`}
                         alt={userData.name}
                      className="imagen-perfil-derecha"/>
+        <button className="edit-button" onClick={handleSubmitPhoto}>
+        <Pencil size={20} />
+      </button>
+            
         <div className="horarios-gimnasio">
         <p className='uno'><strong>Entrada:</strong> {userData.timetable1}</p>
         <p className='dos'><strong>Salida:</strong> {userData.timetable2}</p>
@@ -186,7 +227,6 @@ const UserProfile = () => {
                                     type="text"
                                     value={userData.name}
                                     name="name"
-                                    onChange={handleChange}
                                     placeholder="Nombre"
                                 />
                             </InputGroup>
@@ -264,6 +304,8 @@ const UserProfile = () => {
                         as="textarea"
                         value={userData.description}
                         onChange={handleChange}
+                        type="text"
+                        name="description"
                         placeholder="Escribe una breve descripción sobre ti"
                     />
                 </Form.Group>
