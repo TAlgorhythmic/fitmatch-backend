@@ -1,12 +1,10 @@
 package com.fitmatch.core;
 
 import com.fitmatch.core.fetch.Client;
-import com.fitmatch.core.fetch.controllers.ActivitiesController;
-import com.fitmatch.core.fetch.controllers.AuthController;
+import com.fitmatch.utils.Deserializers;
 import com.google.gson.Gson;
 
 import java.util.Random;
-import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -26,16 +24,13 @@ public class Fitmatch {
     private final Client client;
     private final ScheduledExecutorService scheduler;
     private final Random random;
-    private final ActivitiesController activitiesController;
-    private final AuthController authController;
 
     private Fitmatch() {
-        this.client = new Client();
-        this.gson = new Gson();
+        this.gson = Deserializers.registerDeserializers();
+        Activity.init(this.gson);
         this.scheduler = Executors.newScheduledThreadPool(6);
         this.random = new Random();
-        this.activitiesController = new ActivitiesController(this.client);
-        this.authController = new AuthController(this.client);
+        this.client = new Client();
     }
 
     public void start(User[] users) {
@@ -56,13 +51,5 @@ public class Fitmatch {
 
     public Random getRandom() {
         return random;
-    }
-
-    public ActivitiesController getActivitiesController() {
-        return activitiesController;
-    }
-
-    public AuthController getAuthController() {
-        return authController;
     }
 }
