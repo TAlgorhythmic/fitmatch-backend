@@ -7,19 +7,21 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import com.fitmatch.core.Fitmatch;
+import com.fitmatch.core.fetch.Client;
 import com.fitmatch.utils.Urls;
 
 public class ActivitiesController {
 
-    static HttpClient client = Fitmatch.getInstance().getClient().getHttpClient();
+    private HttpClient client;
     
-    public ActivitiesController() {}
+    public ActivitiesController(Client client) {
+        this.client = client.getHttpClient();
+    }
 
-    public Object getAllActivities(String token) throws IOException, InterruptedException {
+    public Object login() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder(URI.create(Urls.ALL_ACTIVITIES))
             .GET()
             .header("Content-Type", "application/json")
-            .header("Authorization", "Bearer " + token)
             .build();
         HttpResponse<Object> res = client.send(request, null);
         if (res.statusCode() == 0) {

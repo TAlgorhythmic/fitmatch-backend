@@ -4,15 +4,15 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import com.fitmatch.core.fetch.controllers.Packets;;;
 
 public class User {
 
     private static final Map<Integer, User> users = new ConcurrentHashMap<>();
-    private static User[] inMemoryInitialUsers;
 
     public static User[] loadUsers() {
         try (final InputStreamReader reader = new InputStreamReader(User.class.getClassLoader().getResourceAsStream("bots.json"))) {
-            inMemoryInitialUsers = Fitmatch.getInstance().getGson().fromJson(reader, User[].class);
+            User[] inMemoryInitialUsers = Fitmatch.getInstance().getGson().fromJson(reader, User[].class);
             return inMemoryInitialUsers;
         } catch (Throwable e) {
             e.printStackTrace();
@@ -47,7 +47,18 @@ public class User {
     }
 
     public void fetchToken(boolean startAfterwards) {
-        
+        Packets.PacketInToken token = Fitmatch.getInstance().getAuthController().login(new Packets.PacketLogin(phone, password));
+        if (token == null) {
+            System.out.println("Login for " + this.email + " failed. Trying to register...");
+        } else {
+            token = Fitmatch.getInstance().getAuthController().register(new Packets.PacketRegister(phone, name, password));
+            if (token == null) {
+                System.out.println("Failed to register " + email + ". Aborted.");
+                return;
+            }
+            this.token = token.token;
+            // TODO posar setup
+        }
     }
 
     public String getCity() {
