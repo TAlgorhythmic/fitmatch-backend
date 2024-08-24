@@ -133,7 +133,8 @@ function register(name, lastname, provider, email, phone, password, request, res
                             const token = createToken(request.ip, user.id, user.isVerified);
                             if (!user.isVerified) {
                                 const parsedPhone = parsePhoneNumberFromString(user.phone);
-                                if (!parsedPhone.isValid()) {
+                                if (!parsedPhone || !parsedPhone.isValid()) {
+                                    console.log(parsedPhone);
                                     response.json(buildInvalidPacket("This phone number is not valid!"));
                                     return;
                                 }
@@ -214,13 +215,16 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
     const email = request.body.email ? request.body.email : null;
     const phone = request.body.phone;
     const password = request.body.password;
+    const skipVerification = request.body.skipVerification ? true : false;
+
+
 
     if (!name || !phone || !password) {
         response.json(buildInvalidPacket("There is invalid data."));
         return;
     }
 
-    register(name, lastname, LOCAL, email, phone, password, request, response, false);
+    register(name, lastname, LOCAL, email, phone, password, request, response, skipVerification);
 });
 
 router.get("/validate-token", tokenRequired, function (request, response, next) {
