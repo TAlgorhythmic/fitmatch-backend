@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Outlet, useNavigate } from 'react-router-dom';
 import 'react-time-picker/dist/TimePicker.css';
 import '@mobiscroll/react-lite/dist/css/mobiscroll.min.css';
+import 'react-step-progress-bar/styles.css';
 import { useState, useEffect } from 'react';
 import PopupMessage from './Utils/PopupMessage.jsx';
 import { setShowPopup, showPopup } from './Utils/Utils.js';
