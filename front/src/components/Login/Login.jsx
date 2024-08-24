@@ -82,7 +82,7 @@ const Login = () => {
             {passwordVisible ? <FaEyeSlash /> : <FaEye />}
             </span>
                     </div>
-                    <button type="submit" className="buttonOfLogin">Iniciar sesión</button>
+                    <button type="submit" className="buttonOfLogin" >Iniciar sesión</button>
                 </form>
                 {/* Aquí cambiamos el botón por un enlace */}
                 <a href="#" onClick={handleForgotPasswordClick} className="link-to-register">
@@ -98,5 +98,3 @@ const Login = () => {
     );
 };
 export default Login;
-
-
