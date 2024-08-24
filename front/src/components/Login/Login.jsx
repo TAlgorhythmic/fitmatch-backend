@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setToken } from '../../App';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaPhoneAlt, FaUser, FaLock } from 'react-icons/fa';
+import { Form, InputGroup } from 'react-bootstrap';
 import './Login.css';
 
 const Login = () => {
@@ -55,46 +56,55 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
-            <div className="login-box">
-                <h2 className="h2OfLogin">LOGIN</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            placeholder="Número de teléfono"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            required
-                        />
-
-                    </div>
-                    <div className="input-group">
-                        <input
-                          type={passwordVisible ? "text" : "password"}
-                            placeholder="Contraseña"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className='password'
-                        />
-            <span className="toggle-password" onClick={togglePasswordVisibility}>
-            {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-            </span>
-                    </div>
-                    <button type="submit" className="buttonOfLogin" >Iniciar sesión</button>
-                </form>
-                {/* Aquí cambiamos el botón por un enlace */}
-                <a href="#" onClick={handleForgotPasswordClick} className="link-to-register">
-                    Olvidaste tu contraseña?
-                </a>
-                <hr className='hrOfLogin' />
-                <p className='link-to-register'>
-                    No tienes cuenta? <a href="/register">Sing up</a>
-                </p>
-                <h3>{resposta}</h3>
+        <div className="auth-container">
+    <div className="auth-box">
+        <h2 className="auth-header">Te estamos esperando<br/> Inicia tu sesión</h2>
+        <form onSubmit={handleSubmit}>
+            <div className="form-group">
+                <InputGroup className="input-group-custom">
+                    <InputGroup.Text className="input-icon">
+                        <FaPhoneAlt />
+                    </InputGroup.Text>
+                    <input
+                        type="text"
+                        placeholder="Número de teléfono"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                        className="form-control input-field"
+                    />
+                </InputGroup>
             </div>
-        </div>
-    );
+            <div className="form-group">
+                <InputGroup className="input-group-custom">
+                    <InputGroup.Text className="input-icon">
+                        <FaLock />
+                    </InputGroup.Text>
+                    <input
+                        type={passwordVisible ? "text" : "password"}
+                        placeholder="Contraseña"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="form-control input-field"
+                    />
+                    <span className="toggle-password" onClick={togglePasswordVisibility}>
+                        {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                    </span>
+                </InputGroup>
+            </div>
+            <button type="submit" className="auth-buttons">Iniciar sesión</button>
+        </form>
+        <a href="#" onClick={handleForgotPasswordClick} className="link-to-auth">
+            ¿Olvidaste tu contraseña?
+        </a>
+        <hr className="auth-divider" />
+        <p className="link-to-auth">
+            ¿No tienes cuenta? <a href="/register">Sing up</a>
+        </p>
+        <h3>{resposta}</h3>
+    </div>
+</div>
+);
 };
 export default Login;
