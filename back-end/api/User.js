@@ -2,7 +2,7 @@ import f from "./Fitmatch.js";
 
 export default class User {
 
-    constructor(id, name, lastname, email, phone, description, proficiency, trainingPreferences, img, city, lat, long, isSetup, monday, tuesday, wednesday, thursday, friday, saturday, sunday, timetable1, timetable2, country) {
+    constructor(id, name, lastname, email, phone, description, proficiency, trainingPreferences, img, city, lat, long, isSetup, monday, tuesday, wednesday, thursday, friday, saturday, sunday, timetable1, timetable2, country, isVerified) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -17,6 +17,7 @@ export default class User {
         } else {
             this.trainingPreferences = null;
         }
+        this.isVerified = isVerified;
         this.img = img;
         this.city = city;
         this.latitude = parseFloat(lat);
@@ -54,6 +55,11 @@ export default class User {
         if (f.getUserManager().containsKey(this.id)) {
             f.getUserManager().get(this.id).onModify(field, value);
         }
+    }
+
+    setVerified(bool) {
+        this.isVerified = bool;
+        this.indexChange("isVerified", this.isVerified);
     }
 
     setName(name) {

@@ -89,7 +89,7 @@ public class User {
         Packets.In.PacketInToken token = Fitmatch.getInstance().getClient().authController.login(new Packets.Out.PacketLogin(this.email, password));
         if (token == null) {
             System.out.println("Login for " + this.email + " failed. Trying to register...");
-            token = Fitmatch.getInstance().getClient().authController.register(new Packets.Out.PacketRegister(this.email, name, password));
+            token = Fitmatch.getInstance().getClient().authController.register(new Packets.Out.PacketRegister(email, name, password));
             if (token == null) {
                 System.out.println("Failed to register " + email + ". Aborted.");
                 return;

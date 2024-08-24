@@ -62,7 +62,7 @@ const Login = () => {
                     <div className="input-group">
                         <input
                             type="text"
-                            placeholder="Número de teléfono"
+                            placeholder="Email/Número de teléfono"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                             required
@@ -90,7 +90,7 @@ const Login = () => {
                 </a>
                 <hr className='hrOfLogin' />
                 <p className='link-to-register'>
-                    No tienes cuenta? <a href="/register">Sing up</a>
+                    No tienes cuenta? <a href="/register">Sign up</a>
                 </p>
                 <h3>{resposta}</h3>
             </div>

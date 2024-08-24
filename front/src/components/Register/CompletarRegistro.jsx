@@ -8,6 +8,7 @@ import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
 import { showPopup } from '../../Utils/Utils.js';
 import Switch from 'react-switch';
+import { setToken, setUpdateUser } from '../../App.jsx';
 
 
 const libraries = ["places"];
@@ -79,7 +80,7 @@ const RegisterForm = () => {
         setFormData((prevFormData) => ({
           ...prevFormData,
           firstName: userData.data.name,
-          phone: userData.data.phone,
+          email: userData.data.email,
         }));
       } else if (userData.status === NO_PERMISSION) {
         setTokenValid(false);
@@ -163,6 +164,8 @@ const RegisterForm = () => {
     console.log(result);
     if (result.status === 0) {
       console.log('Usuario registrado con éxito');
+      setUpdateUser(true);
+      setToken(true);
       navigate('/');
     } else if (result.status === NO_PERMISSION) {
       setTokenValid(false);
@@ -230,9 +233,8 @@ const RegisterForm = () => {
               type="email"
               name="email"
               value={formData.email}
-              onChange={handleChange}
               placeholder='fitmatch@gmail.com'
-
+              readOnly
             />
           </InputGroup>
         </Form.Group>
@@ -246,10 +248,9 @@ const RegisterForm = () => {
               type="tel"
               name="phone"
               value={formData.phone}
-
+              onChange={handleChange}
               maxLength={9}
               placeholder="Introduce your phone number"
-              readOnly
             />
           </InputGroup>
         </Form.Group>

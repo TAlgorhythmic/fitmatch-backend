@@ -16,16 +16,19 @@ const defaultConfig = {
     google_client_id: "clientid",
     client_secret: "clientsecret",
     callbackURL: "url",
-    mapsApiKey: "key"
+    mapsApiKey: "key",
+    email: "email",
+    email_password: "passwd"
 }
 
 class Fitmatch {
     constructor() {
         // Create config file if doesn't exist.
         if (!fs.existsSync("./config.json")) {
-            fs.writeFileSync("./config.json", JSON.stringify(defaultConfig))
+            fs.writeFileSync("./config.json", JSON.stringify(defaultConfig));
             console.log("Config created with default values, you may want to edit it!");
-        };
+            process.exit(0);
+        }
         const config = JSON.parse(fs.readFileSync("./config.json"));
         this.sql = new Sequelize(
             config.database,
