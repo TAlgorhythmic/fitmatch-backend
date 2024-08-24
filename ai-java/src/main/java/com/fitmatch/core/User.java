@@ -17,8 +17,8 @@ public class User {
         return null;
     }
 
-    private String name, lastname, email, description, proficiency, img, city, country;
-    private final String phone;
+    private String name, lastname, phone, description, proficiency, img, city, country;
+    private final String email;
     private String[] trainingPreferences;
     private double latitude, longitude;
     private boolean isSetup;
@@ -77,7 +77,7 @@ public class User {
         Packets.In.PacketInToken token = Fitmatch.getInstance().getClient().authController.login(new Packets.Out.PacketLogin(phone, password));
         if (token == null) {
             System.out.println("Login for " + this.email + " failed. Trying to register...");
-            token = Fitmatch.getInstance().getClient().authController.register(new Packets.Out.PacketRegister(phone, name, password));
+            token = Fitmatch.getInstance().getClient().authController.register(new Packets.Out.PacketRegister(email, name, password));
             if (token == null) {
                 System.out.println("Failed to register " + email + ". Aborted.");
                 return;
