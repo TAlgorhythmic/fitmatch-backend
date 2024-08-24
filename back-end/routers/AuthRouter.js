@@ -92,7 +92,7 @@ router.post("/login", (request, response, next) => {
 });
 
 function register(name, lastname, provider, email, phone, password, request, response) {
-    fitmatch.sqlManager.getUserFromNumber(phone)
+    fitmatch.sqlManager.getUserFromEmail(email)
         .then(e => {
             const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
             if (data.length) {
@@ -122,7 +122,7 @@ function register(name, lastname, provider, email, phone, password, request, res
                 .then(e => {
                     fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e)
                     .then(e => {
-                        fitmatch.sqlManager.getUserFromNumber(phone)
+                        fitmatch.sqlManager.getUserFromEmail(phone)
                         .then(e => {
                             const data = sanitizeDataReceivedForSingleObject(e);
                             const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
@@ -167,7 +167,7 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
     const phone = request.body.phone;
     const password = request.body.password;
 
-    if (!name || !phone || !password) {
+    if (!name || !email || !password) {
         response.json(buildInvalidPacket("There is invalid data."));
         return;
     }
