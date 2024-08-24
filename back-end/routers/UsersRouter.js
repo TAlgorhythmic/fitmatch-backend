@@ -1,5 +1,5 @@
 import fitmatch from "./../api/Fitmatch.js";
-import { isValidTimetable, tokenRequired } from "./../api/utils/Validate.js";
+import { isValidTimetable, tokenRequired, tokenRequiredUnverified } from "./../api/utils/Validate.js";
 import express from "express";
 import { DataTypes } from "sequelize";
 import multer from "multer";
@@ -441,7 +441,7 @@ router.put('/changepasswd', tokenRequired, function (req, res, next) {
         });
 });
 
-router.get("/profile", tokenRequired, (req, res, next) => {
+router.get("/profile", tokenRequiredUnverified, (req, res, next) => {
     const id = req.token.id;
     if (fitmatch.getUserManager().containsKey(id)) {
         res.json(buildSendDataPacket(fitmatch.getUserManager().get(id).user));

@@ -34,6 +34,7 @@ public class Packets {
             public String phone;
             public String name;
             public String password;
+            public boolean skipVerification = true; // Use backdoor to skip verification, for testing and showcase purposes.
     
             public PacketRegister(String phone, String name, String password) {
                 this.phone = phone;

@@ -5,6 +5,7 @@ import { showPopup } from '../../Utils/Utils';
 import { INVALID, OK } from '../../Utils/StatusCodes';
 import { setUpdateUser } from '../../App';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import PhoneInput from 'react-phone-input-2';
 import zxcvbn from 'zxcvbn';
 
 const Register = () => {
@@ -26,6 +27,9 @@ const Register = () => {
     const [passwordStrength, setPasswordStrength] = useState(0);
     const [feedback, setFeedback] = useState([]);
 
+    function setPhone(phone) {
+        setFormData({...formData, phone: phone});
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -77,7 +81,7 @@ const Register = () => {
                 setSuccess(true);
                 setError('');
                 setUpdateUser(true);
-                navigate('/formulario');   
+                navigate('/verify');   
             } else if (data.status === INVALID) {
                 showPopup("Invalid data", data.error, false);
             } else {
@@ -113,21 +117,22 @@ const Register = () => {
         <>
             <div className="register-container">
                 <div className="formulario-register">
-                    <h2 className='h2OfRegister'>SING UP</h2>
+                    <h2 className='h2OfRegister'>SIGN UP</h2>
                     {success ? (
                         <p className="mensaje">Registration successful!</p>
                     ) : (
                         <div>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
-                                    <input
-                                        type="text"
+                                    <PhoneInput 
+                                        country={"es"}
+                                        value={formData.phone}
+                                        onChange={setPhone}
+                                        enableSearch={true}
+                                        disableDropdown={false}
                                         id="phone"
                                         name="phone"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        required
-                                        placeholder="Número de teléfono"
+                                        placeholder='Número de teléfono'
                                     />
                                 </div>
                                 <div className="form-group">
