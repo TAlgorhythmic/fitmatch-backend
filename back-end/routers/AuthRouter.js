@@ -4,7 +4,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import User from "./../api/User.js";
 import verify from "./../api/Sms.js";
-import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { parsePhoneNumberFromString,  } from "libphonenumber-js";
 import { OAuth2Client } from "google-auth-library";
 import { validateRegisterCredentials, isValidEmail, tokenRequired, tokenRequiredUnverified } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
@@ -93,7 +93,7 @@ router.post("/login", (request, response, next) => {
     });
 });
 
-function register(name, lastname, provider, email, phone, password, request, response, /*Backdoor for bots usage*/skipVerification) {
+function register(name, lastname, provider, email, phoneNumber, password, request, response, /*Backdoor for bots usage*/skipVerification) {;
     fitmatch.sqlManager.getUserFromNumber(phone)
         .then(e => {
             const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
@@ -121,6 +121,19 @@ function register(name, lastname, provider, email, phone, password, request, res
                 });
             } else {
                 const skip = skipVerification ? true : false;
+                if (!skipVerification) {
+                    console.log(phone);
+                    const parsedPhone = parsePhoneNumberFromString(phone);
+                    if (!parsedPhone || !parsedPhone.isValid()) {
+                        console.log(parsedPhone);
+                        response.json(buildInvalidPacket("This phone number is not valid!"));
+                        return;
+                    }
+                    if (!verify.createCode(phone)) {
+                        response.json(buildInternalErrorPacket("Error trying to create verification code. Check logs"));
+                        return;
+                    }
+                }
                 bcrypt.hash(password, 10)
                 .then(e => {
                     fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e, skip)
@@ -131,18 +144,7 @@ function register(name, lastname, provider, email, phone, password, request, res
                             const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                             fitmatch.userManager.put(user.id, user);
                             const token = createToken(request.ip, user.id, user.isVerified);
-                            if (!user.isVerified) {
-                                const parsedPhone = parsePhoneNumberFromString(user.phone);
-                                if (!parsedPhone || !parsedPhone.isValid()) {
-                                    console.log(parsedPhone);
-                                    response.json(buildInvalidPacket("This phone number is not valid!"));
-                                    return;
-                                }
-                                if (!verify.createCode(user.phone)) {
-                                    response.json(buildInternalErrorPacket("Error trying to create verification code. Check logs"));
-                                    return;
-                                }
-                            }
+                            
                             response.json(buildTokenPacket(token, false));
                         })
                     })
@@ -217,9 +219,7 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
     const password = request.body.password;
     const skipVerification = request.body.skipVerification ? true : false;
 
-
-
-    if (!name || !phone || !password) {
+    if (!name || !email || !password) {
         response.json(buildInvalidPacket("There is invalid data."));
         return;
     }

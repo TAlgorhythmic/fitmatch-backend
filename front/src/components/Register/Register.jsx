@@ -16,7 +16,7 @@ const Register = () => {
         const [passwordVisible, setPasswordVisible] = useState(false);
 
     const [formData, setFormData] = useState({
-        phone: '',
+        email: '',
         password: '',
         name: '',
     });
@@ -26,10 +26,6 @@ const Register = () => {
     const [success, setSuccess] = useState(false);
     const [passwordStrength, setPasswordStrength] = useState(0);
     const [feedback, setFeedback] = useState([]);
-
-    function setPhone(phone) {
-        setFormData({...formData, phone: phone});
-    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
