@@ -48,6 +48,9 @@
     padding-left: 5px;
     font-size: 16px; /* Ajusta el tamaño del texto del input */
 }
+.input-field:focus{
+outline: none !important;
+}
 
 .input-field::placeholder {
     color: #555;/* Color del texto placeholder */

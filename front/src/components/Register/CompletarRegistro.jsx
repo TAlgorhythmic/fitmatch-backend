@@ -6,13 +6,15 @@ import TimePicker from 'react-time-picker';
 import './CompletarRegistro.css';
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
-import { showPopup } from '../../Utils/Utils.js';
+import { ProgressBar, Step } from 'react-step-progress-bar';
 import Switch from 'react-switch';
+import { showPopup } from '../../Utils/Utils.js';
 
 
 const libraries = ["places"];
 
 const RegisterForm = () => {
+  const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -43,7 +45,14 @@ const RegisterForm = () => {
       [day]: checked,
     }));
   };
-        
+    
+  const handleNextStep = () => {
+    setStep((prevStep) => prevStep + 1);
+  };
+
+  const handlePrevStep = () => {
+    setStep((prevStep) => prevStep - 1);
+  };
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
     libraries: libraries
@@ -185,14 +194,44 @@ const RegisterForm = () => {
     showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
     return <Navigate to="/login" />
 }
+return (
+  <Container className="custom-register-form">
+    <ProgressBar
+      percent={(step / 2) * 100}
+      filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+    >
+      <Step transition="scale">
+        {({ accomplished }) => (
+          <div className={`indexedStep ${accomplished ? "accomplished" : null}`}>
+            1
+          </div>
+        )}
+      </Step>
+      <Step transition="scale">
+        {({ accomplished }) => (
+          <div className={`indexedStep ${accomplished ? "accomplished" : null}`}>
+            2
+          </div>
+        )}
+      </Step>
+      <Step transition="scale">
+        {({ accomplished }) => (
+          <div className={`indexedStep ${accomplished ? "accomplished" : null}`}>
+            3
+          </div>
+        )}
+      </Step>
+    </ProgressBar>
 
-  return (
-    <Container className="custom-register-form">
-      <Form onSubmit={handleSubmit} encType='multipart/form-data'>
-        <Row>
+    <Form onSubmit={handleSubmit} encType='multipart/form-data'>
+      {step === 0 && (
+        <div>
+          <div className="Titulo">Formulario de registro</div>
+          <div className="Datos"> Datos personales
+          <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
-            
+            <h1 className='mensajes'>Nombre</h1>
               <InputGroup>
                 <InputGroup.Text><Person /></InputGroup.Text>
                 <Form.Control
@@ -206,15 +245,16 @@ const RegisterForm = () => {
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
-             
+            <h1 className='mensajes'>Apellidos</h1>
               <InputGroup>
                 <InputGroup.Text> <Person/></InputGroup.Text>
+                
                 <Form.Control
                   type="text"
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleChange}
-                  placeholder='Apellidos'
+                  placeholder='Rios Aguilar'
                 />
               </InputGroup>
             </Form.Group>
@@ -223,7 +263,7 @@ const RegisterForm = () => {
         <Row>
         <Col md={6}>
         <Form.Group className="mb-3">
-         
+        <h1 className='mensajes'>Coloca tu mejor email</h1>
           <InputGroup>
             <InputGroup.Text><Envelope /></InputGroup.Text>
             <Form.Control
@@ -238,29 +278,10 @@ const RegisterForm = () => {
         </Form.Group>
         </Col>
         <Col md={6}>
-        <Form.Group className="mb-3">
-       
-          <InputGroup>
-            <InputGroup.Text>+34</InputGroup.Text>
-            <Form.Control
-              type="tel"
-              name="phone"
-              value={formData.phone}
-
-              maxLength={9}
-              placeholder="Introduce your phone number"
-              readOnly
-            />
-          </InputGroup>
-        </Form.Group>
-        </Col>
-        </Row>
-        <Row>
-        <Col md={6}>
         {
           isLoaded ? (
             <Form.Group className="mb-3">
-              <Form.Label><GeoAlt /> City</Form.Label>
+               <h1 className='mensajes'>Selecciona tu ubicación</h1>
               <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
                 <InputGroup>
                   <InputGroup.Text><GeoAlt /></InputGroup.Text>
@@ -269,7 +290,7 @@ const RegisterForm = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleChange}
-                    placeholder="Enter your city"
+                    placeholder="Barcelona"
                   />
                 </InputGroup>
               </Autocomplete>
@@ -277,45 +298,34 @@ const RegisterForm = () => {
           ) : <></>
         }
         </Col>
-         <Col md={6}>
-        <Form.Group className="mb-3">
-          <Form.Label>Nivel</Form.Label>
-          <Form.Select
-            name="proficiency"
-            value={formData.proficiency}
-            onChange={handleChange}
-          >
-            <option value="Principiante">Principiante</option>
-            <option value="Intermedio">Intermedio</option>
-            <option value="Avanzado">Avanzado</option>
-          </Form.Select>
-        </Form.Group>
-        </Col>
-        </Row>
-        <Form.Group className="mb-3">
-          <Form.Label>Descripción</Form.Label>
-          <Form.Control
-            type="text"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label><Camera /> Image Upload</Form.Label>
-          <Form.Control
-            type="file"
-            name="img"
-            onChange={handleImageChange}
-          />
-        </Form.Group>
-
-<div className='horario-entrenamiento'>
+        
+          </Row>
+          <form className="Politica" >
+        <input
+          type="checkbox"
+          id="privacyPolicy"
+          name="privacyPolicy"
+          required
+        />
+        <label htmlFor="privacyPolicy">He leído y acepto la Política de Privacidad</label>
+    </form>
+          
+          <Button variant="primary" onClick={handleNextStep}>Siguiente</Button>
+        </div>
+        </div>
+      )}
+      {step === 1 && (
+        <div>
+          {/* Paso 2: Mi Actividad */}
+          {/* Aquí se incluiría el contenido de la segunda imagen */}
+          <div className='horario-entrenamiento'>
 
   <Form.Group className="mb-3">
-  <Form.Label>Horario habitual de entrenamiento</Form.Label>
+  <h1 className='mensajes' >Mi actividad</h1>
+  <h1 className='mensajes' >Horario habitual de entrenamiento</h1>
+
   <div className="time-picker-container d-flex justify-content-between">
+  <h1 className='mensajes'> Entrada: </h1>
     <InputGroup className="me-3 time-picker-group">
       <InputGroup.Text className="time-picker-icon">
         <Clock />
@@ -331,6 +341,7 @@ const RegisterForm = () => {
       />
     </InputGroup>
     <InputGroup className="time-picker-group">
+    <h1 className='mensajes'> Salida: </h1>
       <InputGroup.Text className="time-picker-icon">
         <Clock />
       </InputGroup.Text>
@@ -347,6 +358,7 @@ const RegisterForm = () => {
 </Form.Group>
 </div>
 <div className='dias-semana'>
+<h1 className='mensajes'> Mi rutina diaria: </h1>
 <Form.Group className="mb-3">
           <Form.Label>Lunes</Form.Label>
           <Switch
@@ -411,10 +423,21 @@ const RegisterForm = () => {
           />
         </Form.Group>
 </div>
+<Form.Group className="mb-3">
+<h1 className='mensajes'> Mi nivel: </h1>
+          <Form.Select
+            name="proficiency"
+            value={formData.proficiency}
+            onChange={handleChange}
+          >
+            <option value="Principiante">Principiante</option>
+            <option value="Intermedio">Intermedio</option>
+            <option value="Avanzado">Avanzado</option>
+          </Form.Select>
+        </Form.Group>
 
-        
-        <Form.Group className="mb-3 custom-preferences">
-          <Form.Label>Preferences</Form.Label>
+<Form.Group className="mb-3 custom-preferences">
+<h1 className='mensajes'> Actividades favoritas: </h1>
           <div className="d-flex flex-wrap justify-content-center">
             {sportsInterests.map((interest) => (
             <Button
@@ -428,16 +451,42 @@ const RegisterForm = () => {
             ))}
           </div>
         </Form.Group>
-        <div className="d-flex justify-content-center mt-4">
+          <Button variant="secondary" onClick={handlePrevStep}>Anterior</Button>
+          <Button variant="primary" onClick={handleNextStep}>Siguiente</Button>
+        </div>
+      )}
+
+      {step === 2 && (
+        <div>
+          {/* Paso 3: Mi Perfil */}
+          <h1 className='mensajes'> Mi perfil </h1>
+          <Form.Group className="mb-3">
+          <h1 className='mensajes'> Sobre mí: </h1>
+          <Form.Control
+            type="text"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <h1 className='mensajes'> Foto de perfil, sonríe </h1>
+          <Form.Control
+            type="file"
+            name="img"
+            onChange={handleImageChange}
+          />
+        </Form.Group>
+          <Button variant="secondary" onClick={handlePrevStep}>Anterior</Button>
           <Button variant="success" type="submit" className="custom-submit-btn">
-            Complete
+            Completar
           </Button>
         </div>
-      </Form>
-    </Container>
-  );
+      )}
+    </Form>
+  </Container>
+);
 };
-
 export default RegisterForm;
-
 
