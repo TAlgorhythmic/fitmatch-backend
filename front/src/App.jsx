@@ -1,6 +1,5 @@
 import Header from './components/Header/Header.jsx';
 import { OK } from '../../back-end/api/packets/StatusCodes.js';
-import { Container } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Outlet, useNavigate } from 'react-router-dom';
 import 'react-time-picker/dist/TimePicker.css';
@@ -11,7 +10,6 @@ import { setShowPopup, showPopup } from './Utils/Utils.js';
 import SubHeader from './components/Header/SubHeader.jsx';
 import { useLocation } from 'react-router-dom';
 import AuthController from "./controllers/AuthController.js";
-import { NO_PERMISSION } from './Utils/StatusCodes.js';
 
 export let setToken;
 export let setUpdateUser;
