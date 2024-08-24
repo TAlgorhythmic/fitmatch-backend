@@ -3,8 +3,10 @@
 
 .contenedor-deslizar-perfiles {
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 750px;
+  margin-top: 1%;
+ margin-left: 19%;
+ margin-right: 20%;
   position: relative;
   display: flex;
   justify-content: center;
@@ -16,7 +18,7 @@
 /* Estilos para los perfiles */
 .contenedor-perfil {
   width: 100%;
-  max-width: 600px;
+  max-width: 475px;
   background-color: whitesmoke;
   border-radius: 15px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
@@ -92,7 +94,7 @@
 .nivel-texto {
   text-align: center;
   font-family: 'Poppins', sans-serif; /* Fuente moderna y destacada */
-  font-size: 25px; /* Tamaño grande para destacar */
+  font-size: 17px; /* Tamaño grande para destacar */
   font-weight: 700; /* Negrita para enfatizar */
   color: #000; /* Color negro sólido */
   margin: 0; /* Quitar márgenes */
@@ -121,14 +123,15 @@
 /* Estilo para cada preferencia */
 .etiqueta-preferencia {
   background-color: #ff9800;
+  padding-top: 1%;
+  padding-bottom:1%;
   color: white;
-  padding: 10px 20px;
   border-radius: 8px;
   font-family: 'Poppins', sans-serif;
   font-size: 14px;
   margin-right: 10px; /* Espacio entre preferencias */
   text-align: center;
-  flex: 1 1 20%; /* Hace que cada preferencia ocupe hasta el 25% del ancho de la fila */
+  flex: 1 1 25%; /* Hace que cada preferencia ocupe hasta el 25% del ancho de la fila */
   max-width: 25%; /* Limita el ancho máximo de cada preferencia */
   box-sizing: border-box; /* Asegura que el padding se incluya en el tamaño total */
 }
@@ -140,7 +143,7 @@
 }
 
 .descripcion-perfil {
-  font-size: 14px;
+  font-size: 18px;
   color: #555;
   line-height: 1.6;
 }
@@ -154,7 +157,8 @@
 }
 
 .flecha-izquierda {
-  left: 10px;
+  left: 5%;
+
 }
 .dias-semana {
   display: flex;
@@ -166,16 +170,16 @@
 }
 
 .etiqueta-preferencia-semana {
-  width: 50px;
-  height: 50px;
+  width: 50%;
+  height: 50%;
   background-color: #fff; /* Fondo blanco por defecto */
   color: #000; /* Texto en negro */
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 8px; /* Bordes redondeados */
+  border-radius: 5px; /* Bordes redondeados */
   font-family: 'Poppins', sans-serif; /* Fuente moderna */
-  font-size: 18px; /* Tamaño de la fuente */
+  font-size: 14px; /* Tamaño de la fuente */
   font-weight: bold; /* Texto en negrita */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
   margin-right: 5px; /* Margen derecho para separar los días */
@@ -184,38 +188,24 @@
 }
 
 .dia-seleccionado {
-  border: 2px solid #6200ea; /* Bordes destacados para los días seleccionados */
-  background-color: #d1c4e9; /* Fondo diferente para los días seleccionados */
+  border: 2px solid #ff9800; /* Bordes destacados para los días seleccionados */
+  background-color: #e9d9c3; /* Fondo diferente para los días seleccionados */
   transform: scale(1.1); /* Aumenta ligeramente el tamaño para los días seleccionados */
 }
 
 .flecha-derecha {
-  right: 10px;
-}
-
-.boton-flecha {
-  background-color: #ffffff;
-  border: none;
-  padding: 10px;
-  border-radius: 50%;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.boton-flecha:hover {
-  background-color: #f0f0f0;
+  right: 5%;
 }
 
 .texto-flecha {
-  font-size: 14px;
+  font-size: 20%;
   color: #888;
   margin-top: 5px
 }
 
 .horarios-gimnasio {
   text-align: center; /* Asegura que el texto esté alineado a la izquierda */
-  margin: 10px 0;
+  margin: 0;
 }
 
 .horarios {
@@ -223,7 +213,7 @@
   font-size: 16px;
   color: #333;
   margin: 0;
-  font-weight: 400;
+  font-weight: 0;
 }
 
 .horarios strong {
@@ -233,6 +223,16 @@
 .hora-uno,
 .hora-dos {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+  font-weight: 0;
   color: #000;
+}
+.boton-flecha {
+  background-color: transparent; /* Elimina el color de fondo */
+  padding: 20px;
+  border-radius: 20px;
+  border:transparent; /* Puedes agregar un borde si lo deseas */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700; /* Texto en negrita */
 }

@@ -231,13 +231,13 @@ const MakeFriends = () => {
       {/* Flechas de navegación */}
       <div className="flecha-contenedor flecha-izquierda">
         <button className="boton-flecha" onClick={() => handleSwipe('left')} title="Desliza a la izquierda">
-          <FaArrowLeft />
+          <FaArrowLeft  size={60} color="white" />
         </button>
         <p className="texto-flecha">Rechazar</p>
       </div>
       <div className="flecha-contenedor flecha-derecha">
         <button className="boton-flecha" onClick={() => handleSwipe('right')} title="Desliza a la derecha">
-          <FaArrowRight />
+          <FaArrowRight   size={60} color="white"/>
         </button>
         <p className="texto-flecha">Aceptar</p>
       </div>
