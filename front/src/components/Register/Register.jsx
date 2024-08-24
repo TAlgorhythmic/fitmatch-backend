@@ -4,28 +4,27 @@ import { useNavigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
 import { INVALID, OK } from '../../Utils/StatusCodes';
 import { setUpdateUser } from '../../App';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaPhoneAlt, FaUser, FaLock } from 'react-icons/fa';
+import { Form, InputGroup } from 'react-bootstrap';
 import zxcvbn from 'zxcvbn';
 
 const Register = () => {
-
-    const togglePasswordVisibility = () => {
-        setPasswordVisible(!passwordVisible);
-      };
-        const [passwordVisible, setPasswordVisible] = useState(false);
-
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const [formData, setFormData] = useState({
         phone: '',
         password: '',
         name: '',
     });
-    const navigate = useNavigate();
-
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
     const [passwordStrength, setPasswordStrength] = useState(0);
     const [feedback, setFeedback] = useState([]);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
 
+    const navigate = useNavigate();
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,12 +32,13 @@ const Register = () => {
             ...formData,
             [name]: value
         });
+        
         if (name === 'password') {
             const result = zxcvbn(value);
             setPasswordStrength(result.score);
-    
+
             const errors = [];
-            
+
             if (value.length < 8) {
                 errors.push("Debe tener 8 caracteres.");
             }
@@ -52,9 +52,9 @@ const Register = () => {
                 errors.push("Debe contener un número.");
             }
             if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
-                errors.push("Debe contener un carácter especial");
+                errors.push("Debe contener un carácter especial.");
             }
-    
+
             setFeedback(errors);
         }
     };
@@ -89,11 +89,11 @@ const Register = () => {
             setError('Error during registration. Please try again.');
         }
     };
+
     const PasswordStrengthMeter = ({ score, errors }) => {
-    
         const strengthLabels = ["Muy débil", "Débil", "Regular", "Fuerte", "Muy fuerte"];
         const strengthColors = ["#ff0000", "#ff4500", "#ffa500", "#32cd32", "#008000"];
-    
+
         return (
             <div>
                 <p style={{ color: strengthColors[score] }}>
@@ -110,27 +110,19 @@ const Register = () => {
     };
 
     return (
-        <>
-            <div className="register-container">
-                <div className="formulario-register">
-                    <h2 className='h2OfRegister'>SING UP</h2>
-                    {success ? (
-                        <p className="mensaje">Registration successful!</p>
-                    ) : (
-                        <div>
-                            <form onSubmit={handleSubmit}>
-                                <div className="form-group">
-                                    <input
-                                        type="text"
-                                        id="phone"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        required
-                                        placeholder="Número de teléfono"
-                                    />
-                                </div>
-                                <div className="form-group">
+        <div className="register-container">
+            <div className="formulario-register">
+                <h2 className='Cabezera'>Únete a la comunidad Fitmatch</h2>
+                {success ? (
+                    <p className="mensaje">¡Registro exitoso!</p>
+                ) : (
+                    <div>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <InputGroup className="input-group-custom">
+                                    <InputGroup.Text className="input-icon">
+                                        <FaUser />
+                                    </InputGroup.Text>
                                     <input
                                         type="text"
                                         id="name"
@@ -138,33 +130,57 @@ const Register = () => {
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
-                                        placeholder="Introduce tu nombre"
+                                        placeholder="Username"
+                                        className="form-control input-field" 
                                     />
-                                </div>
-                                <div className="form-group">
+                                </InputGroup>
+                            </div>
+                            <div className="form-group">
+                                <InputGroup className="input-group-custom">
+                                    <InputGroup.Text className="input-icon">
+                                        <FaPhoneAlt />
+                                    </InputGroup.Text>
                                     <input
-                                        type="password"
+                                        type="text"
+                                        id="phone"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder="Mobile Number"
+                                        className="form-control input-field" 
+                                    />
+                                </InputGroup>
+                            </div>
+                            <div className="form-group">
+                                <InputGroup className="input-group-custom">
+                                    <InputGroup.Text className="input-icon">
+                                        <FaLock />
+                                    </InputGroup.Text>
+                                    <input
+                                        type={passwordVisible ? "text" : "password"}
                                         id="password"
                                         name="password"
                                         value={formData.password}
                                         onChange={handleChange}
                                         required
-                                        placeholder="Crea una contraseña segura" 
+                                        placeholder="Password"
+                                        className="form-control input-field"
                                     />
+                                    <span className="toggle-password" onClick={togglePasswordVisibility}>
+                                        {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                                    </span>
+                                </InputGroup>
                                 <PasswordStrengthMeter score={passwordStrength} errors={feedback} />
-                                <span className="toggle-password" onClick={togglePasswordVisibility}>
-                                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-                                </span>
-                                </div>
-                                <button type="submit" className="buttonRegister">Crear cuenta</button>
-                                <p className="link-to-login">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
-                                {error && <p className="error-message">{error}</p>}
-                            </form>
-                        </div>
-                    )}
-                </div>
+                            </div>
+                            <button type="submit" className="buttonRegister">Crear cuenta</button>
+                            <p className="link-to-login">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
+                            {error && <p className="error-message">{error}</p>}
+                        </form>
+                    </div>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 
