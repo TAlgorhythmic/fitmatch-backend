@@ -31,13 +31,12 @@ public class Packets {
     public static class Out {
         public static class PacketRegister implements IPacket {
 
-            public String phone;
+            public String email;
             public String name;
             public String password;
-            public boolean skipVerification = true; // Use backdoor to skip verification, for testing and showcase purposes.
     
-            public PacketRegister(String phone, String name, String password) {
-                this.phone = phone;
+            public PacketRegister(String email, String name, String password) {
+                this.email = email;
                 this.name = name;
                 this.password = password;
             }
@@ -58,7 +57,7 @@ public class Packets {
     
         public static class PacketSetup implements IPacket {
     
-            public String email;
+            public String phone;
             public String[] preferences;
             public String lastName;
             public String description;
@@ -77,7 +76,7 @@ public class Packets {
             public int timetable2;
     
             public PacketSetup(User user) {
-                this.email = user.getEmail();
+                this.phone = user.getPhone();
                 this.preferences = user.getTrainingPreferences();
                 this.lastName = user.getLastname();
                 this.description = user.getDescription();
