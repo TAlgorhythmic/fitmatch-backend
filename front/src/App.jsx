@@ -129,19 +129,15 @@ function App() {
       if (location.pathname === "/formulario") {
         navigate("/");
       }
+    } else {
+      if(location.pathname === "/register"){
+        showPopup("Welcome", "Bienvenido a la plataforma de nuevo", false);
+      }else if (isValidToken !== null) {
+        showPopup("No permission", "Tu sesión ha expirado.", false);
+        navigate("/login");
+      }
     }
   }, [isValidToken, location.pathname, navigate, user]);
-
-  useEffect(() => {
-    if(location.pathname === "/register"){
-      showPopup("Welcome", "Bienvenido a la plataforma de nuevo", false);
-    }else if (isValidToken !== null) {
-      navigate("/login");
-    }else if(!isValidToken && isValidToken !== null){
-      showPopup("No permission", "Tu sesión ha expirado.", false);
-      navigate("/login");
-    }
-  }, [isValidToken, navigate])
 
   return (
     <>
