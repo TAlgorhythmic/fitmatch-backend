@@ -172,10 +172,10 @@ class SQLManager {
         return fitmatch.getSql().query(`SELECT * FROM users WHERE phone = ?;`, { replacements: [number], type: QueryTypes.SELECT });
     }
 
-    createNewUser(name, lastname, provider, email, phone, hash) {
+    createNewUser(name, lastname, provider, email, phone, hash, isVerified) {
         const ln = lastname ? lastname : null;
         const ph = phone ? phone : null;
-        return fitmatch.getSql().query(`INSERT INTO users(name, lastname, provider, email, phone, pwhash, tableVersion) VALUES(?, ?, ?, ?, ?, ?, ${TABLES_VERSION});`, { replacements: [name, ln, provider, email, ph, hash], type: QueryTypes.INSERT })
+        return fitmatch.getSql().query(`INSERT INTO users(name, lastname, provider, email, phone, pwhash, tableVersion, isVerified) VALUES(?, ?, ?, ?, ?, ?, ${TABLES_VERSION}, ?);`, { replacements: [name, ln, provider, email, ph, hash, isVerified], type: QueryTypes.INSERT })
     }
 
     updateUser(user) {

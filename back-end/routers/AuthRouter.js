@@ -3,8 +3,10 @@ import bcrypt from "bcrypt";
 import express from "express";
 import jwt from "jsonwebtoken";
 import User from "./../api/User.js";
+import verify from "./../api/Sms.js";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { OAuth2Client } from "google-auth-library";
-import { validateRegisterCredentials, isValidEmail, tokenRequired } from "./../api/utils/Validate.js";
+import { validateRegisterCredentials, isValidEmail, tokenRequired, tokenRequiredUnverified } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
 import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
 
@@ -34,7 +36,7 @@ router.post("/google", async (req, res, next) => {
     const lastname = payload.family_name;
     const email = payload.email;
 
-    register(name, lastname, GOOGLE, email, null, null, req, res);
+    register(name, lastname, GOOGLE, email, null, null, req, res, true);
 });
 
 router.get("/google/callback", (req, res, next) => {
@@ -75,9 +77,9 @@ router.post("/login", (request, response, next) => {
         const hash = data.pwhash;
         bcrypt.compare(password, hash).then(e => {
             if (e) {
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                 fitmatch.getUserManager().put(user.id, user);
-                response.json(buildTokenPacket(createToken(request.ip, user.id), user.isSetup));
+                response.json(buildTokenPacket(createToken(request.ip, user.id, user.isVerified), user.isSetup));
                 return;
             } else {
                 response.json(buildInvalidPacket("The data introduced is incorrect."));
@@ -91,7 +93,7 @@ router.post("/login", (request, response, next) => {
     });
 });
 
-function register(name, lastname, provider, email, phone, password, request, response) {
+function register(name, lastname, provider, email, phone, password, request, response, /*Backdoor for bots usage*/skipVerification) {
     fitmatch.sqlManager.getUserFromNumber(phone)
         .then(e => {
             const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
@@ -100,14 +102,14 @@ function register(name, lastname, provider, email, phone, password, request, res
                 return;
             }
             if (provider === GOOGLE) {
-                fitmatch.getSqlManager().createNewUser(name, lastname, provider, email, phone, password)
+                fitmatch.getSqlManager().createNewUser(name, lastname, provider, email, phone, password, true)
                 .then(e => {
                     fitmatch.getSqlManager().getUserFromEmail(email)
                     .then(e => {
                         const data = sanitizeDataReceivedForSingleObject(e);
-                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences.split(";"), data.img, data.city, parseFloat(data.latitude), parseFloat(data.longitude), data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences.split(";"), data.img, data.city, parseFloat(data.latitude), parseFloat(data.longitude), data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                         fitmatch.userManager.put(user.id, user);
-                        const token = createToken(request.ip, user.id);
+                        const token = createToken(request.ip, user.id, user.isVerified);
                         response.json(buildTokenPacket(token, false));
                         return;
                     })
@@ -118,16 +120,28 @@ function register(name, lastname, provider, email, phone, password, request, res
                     return;
                 });
             } else {
+                const skip = skipVerification ? true : false;
                 bcrypt.hash(password, 10)
                 .then(e => {
-                    fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e)
+                    fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e, skip)
                     .then(e => {
                         fitmatch.sqlManager.getUserFromNumber(phone)
                         .then(e => {
                             const data = sanitizeDataReceivedForSingleObject(e);
-                            const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                            const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                             fitmatch.userManager.put(user.id, user);
-                            const token = createToken(request.ip, user.id);
+                            const token = createToken(request.ip, user.id, user.isVerified);
+                            if (!user.isVerified) {
+                                const parsedPhone = parsePhoneNumberFromString(user.phone);
+                                if (!parsedPhone.isValid()) {
+                                    response.json(buildInvalidPacket("This phone number is not valid!"));
+                                    return;
+                                }
+                                if (!verify.createCode(user.phone)) {
+                                    response.json(buildInternalErrorPacket("Error trying to create verification code. Check logs"));
+                                    return;
+                                }
+                            }
                             response.json(buildTokenPacket(token, false));
                         })
                     })
@@ -146,6 +160,40 @@ function register(name, lastname, provider, email, phone, password, request, res
         });
 };
 
+router.post("/verify", tokenRequiredUnverified, async (req, res, next) => {
+    const id = req.token.id;
+
+    let user;
+
+    if (fitmatch.userManager.containsKey(id)) {
+        user = fitmatch.userManager.get(id).user;
+    } else {
+        try {
+            const e = await fitmatch.sqlManager.getUserFromId(id);
+            const data = await sanitizeDataReceivedForSingleObject(e);
+            if (!data) {
+                res.json(buildInternalErrorPacket("The user with id " + id + " does not exist in the database. Likely a backend error."));
+                return;
+            }
+            user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
+            fitmatch.userManager.put(id, user);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    if (!user) {
+        res.json(buildInternalErrorPacket("Backend internal error. User is undefined."));
+        return;
+    }
+
+    const code = req.body.code;
+    const verified = verify.verifyCode(user.phone, code);
+
+    if (verified) {
+        user.setVerified(true);
+        res.json(buildTokenPacket(createToken(req.ip, id, true)));
+    } else res.json(buildInvalidPacket("Token is not valid."));
+});
 
 /**
  * Data this endpoint expects:
@@ -172,18 +220,19 @@ router.post("/register", validateRegisterCredentials, (request, response, next) 
         return;
     }
 
-    register(name, lastname, LOCAL, email, phone, password, request, response);
+    register(name, lastname, LOCAL, email, phone, password, request, response, false);
 });
 
 router.get("/validate-token", tokenRequired, function (request, response, next) {
     response.json(buildSimpleOkPacket());
 });
 
-function createToken(ip, userId) {
+function createToken(ip, userId, isVerified) {
     return jwt.sign({
         ip: ip,
         id: userId,
-        expiredAt: new Date().getTime() + TOKEN_EXPIRE_TIME
+        isVerified: isVerified,
+        expiredAt: Date.now() + TOKEN_EXPIRE_TIME
     }, fitmatch.config.tokenSecretKey);
 }
 

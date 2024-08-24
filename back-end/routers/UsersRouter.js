@@ -62,7 +62,7 @@ router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, nex
         fitmatch.sqlManager.getUserFromId(id)
             .then(e => {
                 const data = sanitizeDataReceivedForSingleObject(e);
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                 if (user.img && user.img !== "img1.jpg") {
                     if (fs.existsSync("./uploads/" + user.img)) fs.rmSync("./uploads/" + user.img);
                 }
@@ -186,7 +186,7 @@ router.get('/connections', tokenRequired, function (req, res, next) {
                 fitmatch.sqlManager.getUserFromId(data[i].friendId)
                 .then(e => {
                     const data = sanitizeDataReceivedForSingleObject(e);
-                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country);
+                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                     users.push(user);
                     i++;
                     recursive();
@@ -307,7 +307,7 @@ router.post("/setup", tokenRequired, (req, res, next) => {
         fitmatch.getSqlManager().getUserFromId(id)
             .then(e => {
                 const data = sanitizeDataReceivedForSingleObject(e);
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                 fitmatch.userManager.put(user.id, user);
                 user.setEmail(email)
                 user.setIsSetup(true);
@@ -394,7 +394,7 @@ router.post('/edit', tokenRequired, function (req, res, next) {
         fitmatch.getSqlManager().getUserFromId(req.token.id)
             .then(e => {
                 const data = sanitizeDataReceivedForSingleObject(e);
-                user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country);
+                user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                 fitmatch.userManager.put(user.id, user);
                 update();
                 res.json(buildSimpleOkPacket());
@@ -449,7 +449,7 @@ router.get("/profile", tokenRequired, (req, res, next) => {
         fitmatch.getSqlManager().getUserFromId(id)
             .then(e => {
                 const data = sanitizeDataReceivedForSingleObject(e);
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                 fitmatch.getUserManager().put(user.id, user);
                 res.json(buildSendDataPacket(user));
             })
@@ -477,7 +477,7 @@ router.get("/profile/:id", tokenRequired, (req, res, next) => {
             fitmatch.getSqlManager().getUserFromId(other_id)
                 .then(e => {
                     const data = sanitizeDataReceivedForSingleObject(e);
-                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                    const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                     fitmatch.getUserManager().put(user.id, user);
                     res.json(buildSendDataPacket(user));
                 })
