@@ -57,7 +57,7 @@ public class Packets {
     
         public static class PacketSetup implements IPacket {
     
-            public String email;
+            public String phone;
             public String[] preferences;
             public String lastName;
             public String description;
@@ -76,7 +76,7 @@ public class Packets {
             public int timetable2;
     
             public PacketSetup(User user) {
-                this.email = user.getEmail();
+                this.phone = user.getPhone();
                 this.preferences = user.getTrainingPreferences();
                 this.lastName = user.getLastname();
                 this.description = user.getDescription();
