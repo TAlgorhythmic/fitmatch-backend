@@ -3,8 +3,6 @@ import bcrypt from "bcrypt";
 import express from "express";
 import jwt from "jsonwebtoken";
 import User from "./../api/User.js";
-import verify from "./../api/Sms.js";
-import { parsePhoneNumberFromString,  } from "libphonenumber-js";
 import { OAuth2Client } from "google-auth-library";
 import { validateRegisterCredentials, isValidEmail, tokenRequired, tokenRequiredUnverified } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSimpleOkPacket, buildTokenPacket } from "./../api/packets/PacketBuilder.js";
@@ -93,16 +91,16 @@ router.post("/login", (request, response, next) => {
     });
 });
 
-function register(name, lastname, provider, email, phoneNumber, password, request, response, /*Backdoor for bots usage*/skipVerification) {;
-    fitmatch.sqlManager.getUserFromNumber(phone)
-        .then(e => {
+async function register(name, lastname, provider, email, phone, password, request, response) {;
+    fitmatch.sqlManager.getUserFromEmail(email)
+        .then(async e => {
             const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
             if (data.length) {
                 response.json(buildInvalidPacket("This number is already in use."));
                 return;
             }
             if (provider === GOOGLE) {
-                fitmatch.getSqlManager().createNewUser(name, lastname, provider, email, phone, password, true)
+                fitmatch.getSqlManager().createNewUser(name, lastname, provider, email, phone, password)
                 .then(e => {
                     fitmatch.getSqlManager().getUserFromEmail(email)
                     .then(e => {
@@ -120,25 +118,11 @@ function register(name, lastname, provider, email, phoneNumber, password, reques
                     return;
                 });
             } else {
-                const skip = skipVerification ? true : false;
-                if (!skipVerification) {
-                    console.log(phone);
-                    const parsedPhone = parsePhoneNumberFromString(phone);
-                    if (!parsedPhone || !parsedPhone.isValid()) {
-                        console.log(parsedPhone);
-                        response.json(buildInvalidPacket("This phone number is not valid!"));
-                        return;
-                    }
-                    if (!verify.createCode(phone)) {
-                        response.json(buildInternalErrorPacket("Error trying to create verification code. Check logs"));
-                        return;
-                    }
-                }
                 bcrypt.hash(password, 10)
                 .then(e => {
-                    fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e, skip)
+                    fitmatch.sqlManager.createNewUser(name, lastname, provider, email, phone, e)
                     .then(e => {
-                        fitmatch.sqlManager.getUserFromNumber(phone)
+                        fitmatch.sqlManager.getUserFromEmail(email)
                         .then(e => {
                             const data = sanitizeDataReceivedForSingleObject(e);
                             const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
@@ -163,6 +147,7 @@ function register(name, lastname, provider, email, phoneNumber, password, reques
         });
 };
 
+// Does not work
 router.post("/verify", tokenRequiredUnverified, async (req, res, next) => {
     const id = req.token.id;
 
@@ -211,11 +196,11 @@ router.post("/verify", tokenRequiredUnverified, async (req, res, next) => {
  *      }
  * }
  */
-router.post("/register", validateRegisterCredentials, (request, response, next) => {
+router.post("/register", validateRegisterCredentials, async (request, response, next) => {
     const name = request.body.name;
     const lastname = request.body.lastname ? request.body.lastname : null;
-    const email = request.body.email ? request.body.email : null;
-    const phone = request.body.phone;
+    const email = request.body.email;
+    const phone = request.body.phone ? request.body.phone : null;
     const password = request.body.password;
     const skipVerification = request.body.skipVerification ? true : false;
 

@@ -25,13 +25,13 @@ export function hasNumber(input) {
 // Middleware for register endpoint
 export function validateRegisterCredentials(req, res, next) {
     const name = req.body.name;
-    const phone = req.body.phone;
+    const email = req.body.email;
     const password = req.body.password;
     if (!name) {
         res.json(buildInvalidPacket("A name must be specified."));
         return;
     }
-    if (!phone) {
+    if (!email) {
         res.json(buildInvalidPacket("The phone is invalid."))
     }
     if (!isValidPassword(password)) {
@@ -68,10 +68,6 @@ export function tokenRequired(req, res, next) {
             res.json(buildInternalErrorPacket("Internal error when trying to verify token: " + err));
         } else {
             const expiredAt = decoded.expiredAt;
-            if (!decoded.isVerified) {
-                res.json(buildNoVerifiedPacket());
-                return;
-            }
             if (expiredAt > new Date().getTime() && decoded.ip === req.ip) {
                 req.token = decoded;
                 next();
