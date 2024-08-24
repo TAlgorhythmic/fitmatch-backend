@@ -31,12 +31,12 @@ public class Packets {
     public static class Out {
         public static class PacketRegister implements IPacket {
 
-            public String phone;
+            public String email;
             public String name;
             public String password;
     
-            public PacketRegister(String phone, String name, String password) {
-                this.phone = phone;
+            public PacketRegister(String email, String name, String password) {
+                this.email = email;
                 this.name = name;
                 this.password = password;
             }

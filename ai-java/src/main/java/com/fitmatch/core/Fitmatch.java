@@ -45,7 +45,7 @@ public class Fitmatch {
         return client;
     }
 
-    public ExecutorService getScheduler() {
+    public ScheduledExecutorService getScheduler() {
         return scheduler;
     }
 

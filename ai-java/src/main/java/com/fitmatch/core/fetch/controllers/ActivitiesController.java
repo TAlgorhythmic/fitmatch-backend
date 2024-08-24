@@ -67,4 +67,27 @@ public class ActivitiesController {
 
         return false;
     }
+
+    public boolean join(String token, int other_id) {
+
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+
+            HttpPost post = new HttpPost(Urls.JOIN_ACTIVITY_BY_ID);
+            post.setHeader("Content-Type", "application/json");
+            post.setHeader("Authorization", "Bearer " + token);
+            
+            try (CloseableHttpResponse res = client.execute(post)) {
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }
