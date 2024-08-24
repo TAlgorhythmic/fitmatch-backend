@@ -8,7 +8,7 @@ import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
 import { showPopup } from '../../Utils/Utils.js';
 import Switch from 'react-switch';
-import { setUpdateUser } from '../../App.jsx';
+import { setToken, setUpdateUser } from '../../App.jsx';
 
 
 const libraries = ["places"];
@@ -165,6 +165,7 @@ const RegisterForm = () => {
     if (result.status === 0) {
       console.log('Usuario registrado con éxito');
       setUpdateUser(true);
+      setToken(true);
       navigate('/');
     } else if (result.status === NO_PERMISSION) {
       setTokenValid(false);
