@@ -3,17 +3,16 @@ import './Register.css';
 import { useNavigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
 import { INVALID, OK } from '../../Utils/StatusCodes';
-import { setUpdateUser } from '../../App';
+import { setToken, setUpdateUser } from '../../App';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import PhoneInput from 'react-phone-input-2';
 import zxcvbn from 'zxcvbn';
 
 const Register = () => {
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
-      };
-        const [passwordVisible, setPasswordVisible] = useState(false);
+    };
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const [formData, setFormData] = useState({
         email: '',
@@ -36,9 +35,9 @@ const Register = () => {
         if (name === 'password') {
             const result = zxcvbn(value);
             setPasswordStrength(result.score);
-    
+
             const errors = [];
-            
+
             if (value.length < 8) {
                 errors.push("Debe tener 8 caracteres.");
             }
@@ -54,7 +53,7 @@ const Register = () => {
             if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
                 errors.push("Debe contener un carácter especial");
             }
-    
+
             setFeedback(errors);
         }
     };
@@ -77,7 +76,8 @@ const Register = () => {
                 setSuccess(true);
                 setError('');
                 setUpdateUser(true);
-                navigate('/verify');   
+                setToken(true);
+                navigate('/formulario');
             } else if (data.status === INVALID) {
                 showPopup("Invalid data", data.error, false);
             } else {
@@ -90,10 +90,10 @@ const Register = () => {
         }
     };
     const PasswordStrengthMeter = ({ score, errors }) => {
-    
+
         const strengthLabels = ["Muy débil", "Débil", "Regular", "Fuerte", "Muy fuerte"];
         const strengthColors = ["#ff0000", "#ff4500", "#ffa500", "#32cd32", "#008000"];
-    
+
         return (
             <div>
                 <p style={{ color: strengthColors[score] }}>
@@ -120,15 +120,14 @@ const Register = () => {
                         <div>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
-                                    <PhoneInput 
-                                        country={"es"}
-                                        value={formData.phone}
-                                        onChange={setPhone}
-                                        enableSearch={true}
-                                        disableDropdown={false}
-                                        id="phone"
-                                        name="phone"
-                                        placeholder='Número de teléfono'
+                                    <input
+                                        type="text"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder="Email"
                                     />
                                 </div>
                                 <div className="form-group">
@@ -150,12 +149,12 @@ const Register = () => {
                                         value={formData.password}
                                         onChange={handleChange}
                                         required
-                                        placeholder="Crea una contraseña segura" 
+                                        placeholder="Crea una contraseña segura"
                                     />
-                                <PasswordStrengthMeter score={passwordStrength} errors={feedback} />
-                                <span className="toggle-password" onClick={togglePasswordVisibility}>
-                                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-                                </span>
+                                    <PasswordStrengthMeter score={passwordStrength} errors={feedback} />
+                                    <span className="toggle-password" onClick={togglePasswordVisibility}>
+                                        {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                                    </span>
                                 </div>
                                 <button type="submit" className="buttonRegister">Crear cuenta</button>
                                 <p className="link-to-login">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>

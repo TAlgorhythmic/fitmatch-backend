@@ -17,8 +17,8 @@ const defaultConfig = {
     client_secret: "clientsecret",
     callbackURL: "url",
     mapsApiKey: "key",
-    twilio_sid: "sid",
-    twilio_token: "token"
+    email: "email",
+    email_password: "passwd"
 }
 
 class Fitmatch {
