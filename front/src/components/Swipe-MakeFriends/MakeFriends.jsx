@@ -20,6 +20,17 @@ const MakeFriends = () => {
     }
     return result;
   };
+
+  const daysOfWeek = [
+    { label: "L", day: "monday"},
+    { label: "M", day: "tuesday"},
+    { label: "M", day: "wednesday"},
+    { label: "J", day: "thursday"},
+    { label: "V", day: "friday"},
+    { label: "S", day: "saturday"},
+    { label: "D", day: "sunday"}
+  ];
+  
   
   async function getUsers() {
     try {
@@ -174,17 +185,18 @@ const MakeFriends = () => {
 </div>
 
             {/* Días de la semana */}
-            <div className="dias-horarios">
-              <div className="dias-semana">
-                {person.monday && <span className="etiqueta-preferencia me-2 mb-2">L</span>}
-                {person.tuesday && <span className="etiqueta-preferencia me-2 mb-2" >M</span>}
-                {person.wednesday && <span className="etiqueta-preferencia me-2 mb-2">M</span>}
-                {person.thursday && <span className="etiqueta-preferencia me-2 mb-2">J</span>}
-                {person.friday && <span className="etiqueta-preferencia me-2 mb-2">V</span>}
-                {person.saturday && <span className="etiqueta-preferencia me-2 mb-2">S</span>}
-                {person.sunday && <span className="etiqueta-preferencia me-2 mb-2">D</span>}
-              </div>
-            </div>
+        <div className="dias-semana">
+      {daysOfWeek.map((day, index) => (
+        <span
+          key={index}
+          className={`etiqueta-preferencia-semana me-2 mb-2 ${
+            person[day.day] ? "dia-seleccionado" : ""
+          }`}
+        >
+          {day.label}
+        </span>
+      ))}
+    </div>
   
             {/* Horarios debajo de los días */}
             <div className="horarios-gimnasio"><p className="horarios">
