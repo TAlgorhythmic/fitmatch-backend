@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import fitmatch from "./../Fitmatch.js";
-import { buildNoPermissionPacket, buildInvalidPacket, buildInternalErrorPacket } from "../packets/PacketBuilder.js";
+import { buildNoPermissionPacket, buildInvalidPacket, buildInternalErrorPacket, buildNoVerifiedPacket } from "../packets/PacketBuilder.js";
 
 const numberRegex = /\d/;
 
@@ -54,6 +54,35 @@ export function isValidTimetable(int) {
 
 // Middleware
 export function tokenRequired(req, res, next) {
+    let token = req.headers.authorization || "";
+
+    if (!token) {
+        res.json(buildNoPermissionPacket("A token is required."));
+        return;
+    }
+    const split = token.split(" ");
+    token = split[split.length - 1];
+
+    jwt.verify(token, fitmatch.getConfig().tokenSecretKey, (err, decoded) => {
+        if (err) {
+            res.json(buildInternalErrorPacket("Internal error when trying to verify token: " + err));
+        } else {
+            const expiredAt = decoded.expiredAt;
+            if (!decoded.isVerified) {
+                res.json(buildNoVerifiedPacket());
+                return;
+            }
+            if (expiredAt > new Date().getTime() && decoded.ip === req.ip) {
+                req.token = decoded;
+                next();
+            } else {
+                res.json(buildNoPermissionPacket("This token is expired/invalid!"))
+            }
+        }
+    })
+}
+
+export function tokenRequiredUnverified(req, res, next) {
     let token = req.headers.authorization || "";
 
     if (!token) {

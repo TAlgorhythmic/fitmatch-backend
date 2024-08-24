@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS users(
     sunday BOOLEAN NOT NULL DEFAULT FALSE,
     timetable1 INT,
     timetable2 INT,
+    isVerified BOOLEAN NOT NULL,
     PRIMARY KEY(id)
 );
 ///
