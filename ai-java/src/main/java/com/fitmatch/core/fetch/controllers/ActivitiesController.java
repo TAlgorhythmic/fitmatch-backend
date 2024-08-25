@@ -22,6 +22,7 @@ public class ActivitiesController {
     public ActivitiesController() {}
 
     public ServerActivity[] feed(String token) {
+
         try(CloseableHttpClient client = HttpClients.createDefault()) {
 
             HttpGet post = new HttpGet(Urls.FEED);
@@ -31,10 +32,16 @@ public class ActivitiesController {
             try (CloseableHttpResponse res = client.execute(post)) {
                 String json = EntityUtils.toString(res.getEntity());
 
+                System.out.println("prev");
                 JsonElement jsonElement = JsonParser.parseString(json);
+                System.out.println("post");
+
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
 
-                if (code == OK) Fitmatch.getInstance().getGson().fromJson(json, ServerActivity[].class);
+                System.out.println(code);
+
+                if (code == OK) return Fitmatch.getInstance().getGson().fromJson(json, ServerActivity[].class);
+                else System.out.println(json);
             }
 
         } catch (Exception e) {
@@ -54,7 +61,7 @@ public class ActivitiesController {
 
             try (CloseableHttpResponse res = client.execute(post)) {
                 String json = EntityUtils.toString(res.getEntity());
-
+                
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
 
@@ -72,7 +79,7 @@ public class ActivitiesController {
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
 
-            HttpPost post = new HttpPost(Urls.JOIN_ACTIVITY_BY_ID);
+            HttpPost post = new HttpPost(Urls.JOIN_ACTIVITY_BY_ID + other_id);
             post.setHeader("Content-Type", "application/json");
             post.setHeader("Authorization", "Bearer " + token);
             

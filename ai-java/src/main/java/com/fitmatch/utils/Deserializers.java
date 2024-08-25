@@ -13,7 +13,7 @@ import com.google.gson.JsonParseException;
 
 public class Deserializers {
 
-    static Gson preventiveGson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").create();
+    public static Gson preventiveGson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").create();
     static UsersArray usersArray = new UsersArray();
     static UserObject userObject = new UserObject();
     static ActivityObject activityObject = new ActivityObject();
@@ -21,7 +21,7 @@ public class Deserializers {
 
     public static Gson registerDeserializers() {
         return new GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .registerTypeAdapter(ServerUser.class, userObject)
             .registerTypeAdapter(ServerUser[].class, usersArray)
             .registerTypeAdapter(ServerActivity.class, activityObject)

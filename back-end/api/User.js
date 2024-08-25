@@ -2,7 +2,7 @@ import f from "./Fitmatch.js";
 
 export default class User {
 
-    constructor(id, name, lastname, email, phone, description, proficiency, trainingPreferences, img, city, lat, long, isSetup, monday, tuesday, wednesday, thursday, friday, saturday, sunday, timetable1, timetable2, country, isVerified) {
+    constructor(id, name, lastname, email, phone, description, proficiency, trainingPreferences, img, city, lat, long, isSetup, monday, tuesday, wednesday, thursday, friday, saturday, sunday, timetable1, timetable2, country) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -17,19 +17,18 @@ export default class User {
         } else {
             this.trainingPreferences = null;
         }
-        this.isVerified = isVerified;
         this.img = img;
         this.city = city;
         this.latitude = parseFloat(lat);
         this.longitude = parseFloat(long);
-        this.isSetup = isSetup;
-        this.monday = monday;
-        this.tuesday = tuesday;
-        this.wednesday = wednesday;
-        this.thursday = thursday;
-        this.friday = friday;
-        this.saturday = saturday;
-        this.sunday = sunday;
+        this.isSetup = isSetup ? true : false;
+        this.monday = monday ? true : false;
+        this.tuesday = tuesday ? true : false;
+        this.wednesday = wednesday ? true : false;
+        this.thursday = thursday ? true : false;
+        this.friday = friday ? true : false;
+        this.saturday = saturday ? true : false;
+        this.sunday = sunday ? true : false;
         if (typeof timetable1 === "number" || timetable1 instanceof Number) {
             const extraMinutesTemp = timetable1 % 60;
             const hoursTemp = Math.floor(timetable1 / 60);

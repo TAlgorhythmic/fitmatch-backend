@@ -1,7 +1,6 @@
 package com.fitmatch.core;
 
 import java.io.InputStreamReader;
-import java.util.Date;
 
 import com.fitmatch.packets.IPacket;
 import com.google.gson.Gson;
@@ -25,7 +24,7 @@ public class Activity implements IPacket {
     
     private String title;
     private String description;
-    private Date expires;
+    private String expires;
     private String placeholder;
     private double latitude;
     private double longitude;
@@ -34,7 +33,7 @@ public class Activity implements IPacket {
         return description;
     }
 
-    public Date getExpires() {
+    public String getExpires() {
         return expires;
     }
 

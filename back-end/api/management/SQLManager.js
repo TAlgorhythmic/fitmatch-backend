@@ -112,6 +112,7 @@ class SQLManager {
 
     createNewActivity(title, description, expires, placeholder, latitude, longitude, userId) {
         const time = new Date().toISOString().slice(0, 19).replace("T", " ");
+        console.log(expires);
         const expire = expires.toISOString().slice(0, 19).replace("T", " ");
         return fitmatch.sql.query("INSERT INTO activities (title, description, postDate, expires, placeholder, latitude, longitude, userId, tableVersion) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", { replacements: [title, description, time, expire, placeholder, latitude, longitude, userId, TABLES_VERSION] })
     }

@@ -1,15 +1,12 @@
 package com.fitmatch.core;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-
 public class ServerActivity {
     
     public int id;
     public String title;
     public String description;
-    public Timestamp postDate;
-    public LocalDateTime expires;
+    public String postDate;
+    public String expires;
     public int userId;
     public String placeholder;
     public double latitude;
