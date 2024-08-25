@@ -3,10 +3,10 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     height: 100vh;
-    background-image: url('https://i.pinimg.com/736x/4c/81/ab/4c81ab8a63303308523a8bf7bc1e415c.jpg');
+    /*background-image: url('https://i.pinimg.com/736x/4c/81/ab/4c81ab8a63303308523a8bf7bc1e415c.jpg');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;*/
     display: flex;
     justify-content: center;
     align-items: center;

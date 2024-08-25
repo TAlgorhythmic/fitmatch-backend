@@ -5,8 +5,9 @@
     --color-principal: #5922ff;
     --color-secundario: #4CAF50;
     --color-terciario: #e4e4e4;
-    --color-fondo-secundario: #76c1ff;
-    --color-texto-principal: #afbadf;
+    --color-fondo-principal: #202020;
+    --color-fondo-secundario: #535353;
+    --color-texto-principal: #ffffff;
     --color-texto-secundario: #757575;
     --color-error: #F44336;
     --color-éxito: #8BC34A;
@@ -32,10 +33,10 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     height: 100vh;
-    background-image: url('https://i.pinimg.com/736x/4c/81/ab/4c81ab8a63303308523a8bf7bc1e415c.jpg'); /* Imagen de fondo */
-    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
-    background-position: center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    /*background-image: url('https://i.pinimg.com/736x/4c/81/ab/4c81ab8a63303308523a8bf7bc1e415c.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;*/
     display: flex;
     justify-content: center;
     align-items: center;
