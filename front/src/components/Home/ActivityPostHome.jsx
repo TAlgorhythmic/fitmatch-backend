@@ -65,6 +65,16 @@ function ActivityPostHome(props) {
                                 </span>
                             ))}</p>
                         </div>
+                        <div>
+                            {/* <iframe
+                                width="100"
+                                height="200"
+                                loading="lazy"
+                                allowfullscreen
+                                referrerpolicy="no-referrer-when-downgrade"
+                                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc&q=${data.latitude},${data.longitude}`}>
+                            </iframe> */}
+                        </div>
                         <div className="dateCheck">
                             <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>
                             {isJoined ? <Button variant="danger" onClick={leaveActivity}>Abandonar</Button> : <Button variant="primary" onClick={joinActivity}>Unirse</Button>}
