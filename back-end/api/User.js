@@ -21,14 +21,14 @@ export default class User {
         this.city = city;
         this.latitude = parseFloat(lat);
         this.longitude = parseFloat(long);
-        this.isSetup = isSetup;
-        this.monday = monday;
-        this.tuesday = tuesday;
-        this.wednesday = wednesday;
-        this.thursday = thursday;
-        this.friday = friday;
-        this.saturday = saturday;
-        this.sunday = sunday;
+        this.isSetup = isSetup ? true : false;
+        this.monday = monday ? true : false;
+        this.tuesday = tuesday ? true : false;
+        this.wednesday = wednesday ? true : false;
+        this.thursday = thursday ? true : false;
+        this.friday = friday ? true : false;
+        this.saturday = saturday ? true : false;
+        this.sunday = sunday ? true : false;
         if (typeof timetable1 === "number" || timetable1 instanceof Number) {
             const extraMinutesTemp = timetable1 % 60;
             const hoursTemp = Math.floor(timetable1 / 60);
@@ -54,6 +54,11 @@ export default class User {
         if (f.getUserManager().containsKey(this.id)) {
             f.getUserManager().get(this.id).onModify(field, value);
         }
+    }
+
+    setVerified(bool) {
+        this.isVerified = bool;
+        this.indexChange("isVerified", this.isVerified);
     }
 
     setName(name) {

@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS users(
     provider ENUM("local", "google"),
     name VARCHAR(32) NOT NULL,
     lastname VARCHAR(36),
-    email VARCHAR(40),
-    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(40) NOT NULL,
+    phone VARCHAR(20),
     description VARCHAR(250),
     proficiency ENUM("Principiante", "Intermedio", "Avanzado"),
     trainingPreferences VARCHAR(300),
@@ -74,7 +74,7 @@ END;
 -- Independent table, 1 to m relation with users, plus another relation n to m for activity joins
 CREATE TABLE IF NOT EXISTS activities(
     id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(40) NOT NULL,
+    title VARCHAR(100) NOT NULL,
     description VARCHAR(250),
     postDate TIMESTAMP NOT NULL,
     expires DATETIME NOT NULL,

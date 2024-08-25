@@ -88,7 +88,7 @@ const RegisterForm = () => {
         setFormData((prevFormData) => ({
           ...prevFormData,
           firstName: userData.data.name,
-          phone: userData.data.phone,
+          email: userData.data.email,
         }));
       } else if (userData.status === NO_PERMISSION) {
         setTokenValid(false);
@@ -272,9 +272,8 @@ return (
               type="email"
               name="email"
               value={formData.email}
-              onChange={handleChange}
               placeholder='fitmatch@gmail.com'
-
+              readOnly
             />
           </InputGroup>
         </Form.Group>

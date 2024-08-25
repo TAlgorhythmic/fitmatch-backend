@@ -135,7 +135,7 @@ router.get('/pendings', tokenRequired, function (req, res, next) {
         fitmatch.sqlManager.getUserFromId(pendingId)
             .then(e => {
                 const data = sanitizeDataReceivedForSingleObject(e);
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                 list_of_users.push(user);
                 nextIt(array);
             })
@@ -193,7 +193,7 @@ router.post("/reject/:other_id", tokenRequired, (req, res, next) => {
             fitmatch.sqlManager.getUserFromId(id)
             .then(e => {
                 const data = sanitizeDataReceivedForSingleObject(e);
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                 fitmatch.userManager.put(id, user);
                 if (!sessions.has(id)) {
                     sessions.set(id, new ConnectSession(user));

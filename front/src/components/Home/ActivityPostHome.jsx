@@ -55,18 +55,18 @@ function ActivityPostHome(props) {
                         <h5 className='actUserName'>{data.user.name} {data.user.lastname} <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
                         <hr />
                         <Alert.Heading>{data.title}</Alert.Heading>
-                        <p>{data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} {data.description} </p>
-                        <div className="dateCheck">
-                            <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>
-                            {isJoined ? <Button variant="danger" onClick={leaveActivity}>Abandonar</Button> : <Button variant="primary" onClick={joinActivity}>Unirse</Button>}
-                        </div>
+                        <p>{data.description}</p>
                         <div className="joinedUsers">
                             <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
                             <p>{data.joinedUsers.map((user, index) => (
                                 <span key={user.id}>
-                                    <Link to="/">{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
+                                    <Link to={`/friends/view/${user.id}`}>{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
                                 </span>
                             ))}</p>
+                        </div>
+                        <div className="dateCheck">
+                            <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>
+                            {isJoined ? <Button variant="danger" onClick={leaveActivity}>Abandonar</Button> : <Button variant="primary" onClick={joinActivity}>Unirse</Button>}
                         </div>
                     </Col>
                 </Row>

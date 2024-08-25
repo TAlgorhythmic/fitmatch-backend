@@ -14,6 +14,7 @@ import OwnActivities from './OwnActivities.jsx';
 import EditActivity  from './EditActivity.jsx';
 import FriendsList from './FriendsList.jsx';
 import FriendData from './FriendData.jsx';
+import Verify from "./components/Register/Verify.jsx";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 
@@ -27,6 +28,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="friends/list" element={<FriendsList />} />
           <Route path="friends/view/:id" element={<FriendData />} />
           <Route path="register" element={<Register />} />
+          <Route path="verify" element={<Verify />} />
           <Route path="login" element={<Login />} />
           <Route path="nuevaContra" element={<ChangePassword />} />
           <Route path="user/profile" element={<UserProfile />} />
