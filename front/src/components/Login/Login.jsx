@@ -10,7 +10,7 @@ const Login = () => {
     setPasswordVisible(!passwordVisible);
   };
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [resposta, setResposta] = useState('');
     const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Login = () => {
         e.preventDefault();
 
         const loginData = {
-            field: phone,
+            field: email,
             password: password
         };
 
@@ -67,9 +67,9 @@ const Login = () => {
                     </InputGroup.Text>
                     <input
                         type="text"
-                        placeholder="Número de teléfono"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                         className="form-control input-field"
                     />
