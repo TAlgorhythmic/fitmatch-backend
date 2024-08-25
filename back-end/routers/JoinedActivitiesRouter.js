@@ -30,8 +30,8 @@ router.post("/leave/:id", tokenRequired, (req, res, next) => {
 })
 
 router.post('/join/:id', tokenRequired, function (req, res, next) {
-    const id = parseInt(req.token.id);
-    const activityId = parseInt(req.params.id);
+    const id = req.token.id;
+    const activityId = req.params.id;
     
     f.getSqlManager().getActivityFromId(activityId)
     .then(e => {

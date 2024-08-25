@@ -5,9 +5,7 @@ import com.fitmatch.utils.Deserializers;
 import com.google.gson.Gson;
 
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.Timer;
 
 public class Fitmatch {
 
@@ -22,13 +20,13 @@ public class Fitmatch {
 
     private final Gson gson;
     private final Client client;
-    private final ScheduledExecutorService scheduler;
+    private final Timer scheduler;
     private final Random random;
 
     private Fitmatch() {
         this.gson = Deserializers.registerDeserializers();
         Activity.init();
-        this.scheduler = Executors.newSingleThreadScheduledExecutor();
+        this.scheduler = new Timer();
         this.random = new Random();
         this.client = new Client();
     }
@@ -45,7 +43,7 @@ public class Fitmatch {
         return client;
     }
 
-    public ScheduledExecutorService getScheduler() {
+    public Timer getScheduler() {
         return scheduler;
     }
 

@@ -74,7 +74,7 @@ END;
 -- Independent table, 1 to m relation with users, plus another relation n to m for activity joins
 CREATE TABLE IF NOT EXISTS activities(
     id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(40) NOT NULL,
+    title VARCHAR(100) NOT NULL,
     description VARCHAR(250),
     postDate TIMESTAMP NOT NULL,
     expires DATETIME NOT NULL,

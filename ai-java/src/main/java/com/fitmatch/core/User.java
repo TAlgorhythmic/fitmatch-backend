@@ -1,16 +1,17 @@
 package com.fitmatch.core;
 
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import com.fitmatch.core.engine.AIBot;
 import com.fitmatch.core.fetch.controllers.Packets;
-import com.fitmatch.core.fetch.controllers.Packets.Out.PacketSetup;;;
+import com.fitmatch.core.fetch.controllers.Packets.Out.PacketSetup;
 
 public class User {
 
-    static ConcurrentMap<Integer, User> memoryUsers = new ConcurrentHashMap<>();
+    static Map<Integer, User> memoryUsers = Collections.synchronizedMap(new ConcurrentHashMap<>());
 
     public static User getUserFromId(int id) {
         return memoryUsers.get(id);
@@ -27,7 +28,7 @@ public class User {
         return null;
     }
 
-    private int id;
+    private volatile int id;
     private String name, lastname, phone, description, proficiency, img, city, country;
     private final String email;
     private String[] trainingPreferences;
@@ -36,8 +37,8 @@ public class User {
     private boolean monday, tuesday, wednesday, thursday, friday, saturday, sunday;
     private int timetable1, timetable2;
     private final String password;
-    private String token = null;
-    private AIBot bot;
+    private volatile String token = null;
+    private volatile AIBot bot;
 
     public User(String name, String lastname, String email, String phone, String password, String description, String proficiency, String[] trainingPreferences, String img, String city, double lat, double longitude, boolean isSetup, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, int timetable1, int timetable2, String country) {
         this.name = name; this.lastname = lastname;
@@ -94,16 +95,21 @@ public class User {
                 System.out.println("Failed to register " + email + ". Aborted.");
                 return;
             }
-            this.token = token.token;
-            boolean setup = Fitmatch.getInstance().getClient().usersController.setup(new PacketSetup(this), this.token);
+            boolean setup = Fitmatch.getInstance().getClient().usersController.setup(new PacketSetup(this), token.token);
             if (!setup) {
                 System.out.println(email + " registered but failed to setup.");
                 return;
             }
             System.out.println(email + " registered successfully!");
+        } else {
+            System.out.println("Login for " + email + " success!");
         }
-        ServerUser user = Fitmatch.getInstance().getClient().usersController.profile(this.token);
+        this.token = token.token;
+        System.out.println("Fetching user profile id for " + this.email);
+        ServerUser user = Fitmatch.getInstance().getClient().usersController.profile(token.token);
+        if (user == null) return;
         memoryUsers.put(user.id, this);
+
         this.id = user.id;
         if (startAfterwards) startScheduling();
         

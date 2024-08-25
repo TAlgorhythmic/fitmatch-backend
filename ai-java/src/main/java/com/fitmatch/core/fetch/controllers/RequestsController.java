@@ -53,9 +53,9 @@ public class RequestsController {
                 String json = EntityUtils.toString(res.getEntity());
 
                 JsonElement jsonElement = JsonParser.parseString(json);
-                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+                boolean code = jsonElement.getAsJsonObject().get("ok").getAsBoolean();
 
-                if (code == OK) return true;
+                if (code) return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,6 +78,7 @@ public class RequestsController {
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
 
                 if (code == OK) return Fitmatch.getInstance().getGson().fromJson(json, ServerUser[].class);
+                else System.out.println(json);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,7 +1,7 @@
 package com.fitmatch.core.engine;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
+import java.util.TimerTask;
 
 import com.fitmatch.core.Activity;
 import com.fitmatch.core.Fitmatch;
@@ -28,20 +28,24 @@ public class AIBot {
     }
 
     public void startRandom() {
-        int random = Fitmatch.getInstance().getRandom().nextInt(15) + 15;
-        Fitmatch.getInstance().getScheduler().scheduleAtFixedRate(() -> {
-            doRandomAction();
-        }, random, random, TimeUnit.SECONDS);
+        long random = (Fitmatch.getInstance().getRandom().nextInt(30) + 30) * 1000;
+        Fitmatch.getInstance().getScheduler().scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                doRandomAction();
+            };
+        }, random, random);
     }
 
     public void startAcceptingRequests() {
-        Fitmatch.getInstance().getScheduler().scheduleAtFixedRate(() -> {
-
-            ServerUser[] users = Fitmatch.getInstance().getClient().requestsController.getPendings(this.user.getToken());
-            Arrays.stream(users).forEach(user -> {
-                Fitmatch.getInstance().getClient().requestsController.acceptFriendRequest(this.user.getToken(), user.id);
-            });
-        }, 10L, 10L, TimeUnit.SECONDS);
+        Fitmatch.getInstance().getScheduler().scheduleAtFixedRate(new TimerTask() {
+            
+            public void run() {
+                ServerUser[] users = Fitmatch.getInstance().getClient().requestsController.getPendings(AIBot.this.user.getToken());
+                Arrays.stream(users).forEach(user -> {
+                    Fitmatch.getInstance().getClient().requestsController.acceptFriendRequest(AIBot.this.user.getToken(), user.id);
+                });
+            };
+        }, 30000L, 30000L);
     }
 
     public void doRandomAction() {
@@ -51,6 +55,11 @@ public class AIBot {
             case FEED: {
                 System.out.println(this.user.getEmail() + " is issuing a feed request. Joining all activities posible...");
                 ServerActivity[] activities = Fitmatch.getInstance().getClient().activitiesController.feed(this.user.getToken());
+                
+                if (activities == null) {
+                    System.out.println("activities is null");
+                    return;
+                }
                 Arrays.stream(activities).forEach(activity -> {
                     boolean joined = Fitmatch.getInstance().getClient().activitiesController.join(this.user.getToken(), activity.id);
                     if (!joined) System.out.println(this.user.getEmail() + " failed to join activity with id " + activity.id);
@@ -66,6 +75,10 @@ public class AIBot {
             case CONNECT: {
                 System.out.println(this.user.getEmail() + " is issuing a connect request. Sending all friend requests possible...");
                 ServerUser[] users = Fitmatch.getInstance().getClient().usersController.connect(this.user.getToken());
+                if (users == null) {
+                    System.out.println(this.user.getEmail() + " has a lot of friends.");
+                    return;
+                }
                 Arrays.stream(users).forEach(user -> {
                     boolean sent = Fitmatch.getInstance().getClient().requestsController.sendFriendRequest(this.user.getToken(), user.id);
                     if (!sent) System.out.println(this.user.getEmail() + " failed to send a friend request.");
