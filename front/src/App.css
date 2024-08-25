@@ -4,9 +4,10 @@
 :root {
     --color-principal: #5922ff;
     --color-secundario: #4CAF50;
+    --color-fondo-principal: #464646;
     --color-fondo-secundario: #76c1ff;
     --color-texto-principal: #afbadf;
-    --color-texto-secundario: #757575;
+    --color-texto-secundario: #dfdfdf;
     --color-error: #F44336;
     --color-éxito: #8BC34A;
     --color-info: #03A9F4;
@@ -18,7 +19,7 @@
     left: 0;
     width: 100%;
     height: fit-content;
-    background-color: var(--color-fondo-principal);
+    /*background-color: var(--color-fondo-principal);*/
     filter: brightness(100%);
     transition-duration: 0.3s;
 }
@@ -35,9 +36,14 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.mainContent {
+    padding-top: 50px;
 }
 
 /* Estilo para asegurar que el contenedor principal tenga una altura mínima */

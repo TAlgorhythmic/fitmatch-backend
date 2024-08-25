@@ -9,18 +9,10 @@ import { showPopup } from '../../Utils/Utils.js';
 function ActivityPostHome(props) {
 
     const { data } = props;
-
     let postDate = new Date(data.postDate);
     let expireDate = new Date(data.expires);
-
-    const [isJoined, setIsJoined] = useState(false);
-
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
-
-    function handleStateChange() {
-        setIsJoined(!isJoined);
-    };
 
     async function joinActivity() {
         await AgendaController.joinActivity(data.id)
@@ -60,7 +52,7 @@ function ActivityPostHome(props) {
                             <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
                             <p>{data.joinedUsers.map((user, index) => (
                                 <span key={user.id}>
-                                    <Link to={`/friends/view/${user.id}`}>{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
+                                    <Link className="customActLink" to={`/friends/view/${user.id}`}>{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
                                 </span>
                             ))}</p>
                         </div>

@@ -5,6 +5,11 @@
     box-shadow: 0px 0px 12px 0px var(--color-terciario);
     padding: 30px;
     margin-bottom: 30px;
+    color: var(--color-texto-secundario)
+}
+
+.customAlert .customActLink {
+    color: var(--color-texto-principal);
 }
 
 .activityUserImage {
@@ -28,13 +33,13 @@
 
 .actUserName span {
     font-weight: 400;
-    color: var(--color-texto-secundario);
+    color: var(--color-texto-principal);
 }
 
 .actExpireDate {
     font-size: 1em;
     font-weight: 400;
-    color: var(--color-texto-secundario);
+    color: var(--color-texto-principal);
     text-align: right;
     margin-right: 20px;
 }
