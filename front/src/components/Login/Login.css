@@ -1,89 +1,108 @@
-/* Estilo general */
-.login-container {  
-    background-color: #1c1c1c; /* Fondo ligeramente más claro para el contenedor */
-    padding: 30px;
+/* Contenedor General para Register y Login */
+.auth-container {
+    background-color: #1c1c1c;
+    padding: 2%;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255, 102, 0, 0.7); /* Sombra con color naranja */
+    box-shadow: 0 0 15px rgba(255, 102, 0, 0.7);
     width: 30%;
     text-align: center;
-    margin: 100px auto !important;
+    margin: auto;
+    margin-top: 1%;
 }
 
-.h2OfLogin {
-    color: #ff6600; /* Naranja para el título */
-    margin-bottom: 30px;
-    font-size: 28px;
+/* Caja para el Contenido del Formulario */
+.auth-box {
+    /* No necesita más estilos ya que hereda de .auth-container */
 }
 
-.hrOfLogin {
-    border: 1px solid #ff6600; /* Línea naranja */
-    margin-bottom: 30px;
+/* Cabecera de los Formularios (Register y Login) */
+.auth-header {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 110%;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 10%;
 }
-.input-group {
-    position: relative; /* Set the container as a relative position context */
+
+/* Grupo de Formulario (Reutilizable) */
+.form-group {
+    margin-bottom: 3%; /* Espacio entre los campos del formulario */
+}
+
+/* Grupo de Entrada Personalizado */
+.input-group-custom {
     display: flex;
     align-items: center;
+    border-radius: 25px;
+    background-color: #f2f4f7;
+    padding: 3% 5%;
 }
 
-.password {
-    width: 100%;
-    padding-right: 40px; /* Adjust the padding to make space for the icon */
-    box-sizing: border-box;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 10px; /* Position the icon 10px from the right edge of the input */
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-}
-
-/* Optional: Style the icon to align vertically center */
-.toggle-password svg {
-    width: 20px; /* Adjust the size of the icon */
-    height: 20px;
-    color: #fff; /* Adjust the color of the icon */
-}
-
-.login-container input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    background-color: #333;
+/* Iconos en los Inputs */
+.input-icon {
+    background-color: transparent;
     border: none;
-    border-radius: 5px;
-    color: #fff; /* Texto blanco en el input */
+    color: #bfc8e4;
+    font-size: 110%;
+    padding-right: 10px;
+}
+
+/* Campos de Entrada */
+.input-field {
+    border: none;
+    background-color: transparent;
+    color: #555;
+    width: 100%;
+    padding-left: 5px;
     font-size: 16px;
 }
 
-.login-container input[type="text"]:focus, input[type="password"]:focus {
-    outline: none;
-    border: 2px solid #ff6600; /* Borde naranja al enfocar */
+.input-field::placeholder {
+    color: #555;
 }
 
-.buttonOfLogin {
+.input-field:focus {
+    outline: none;
+}
+
+/* Toggle para Mostrar/Ocultar Contraseña */
+.toggle-password {
+    color: #9098B1;
+    cursor: pointer;
+    padding-left: 10px;
+    font-size: 18px;
+}
+
+/* Botones de Autenticación (Crear cuenta y Iniciar sesión) */
+.auth-buttons {
     background-color: #ff6600;
-    color: #000;
+    color: #ffffff;
     padding: 12px;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     width: 100%;
+    margin-top: 8%;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.buttonOfLogin:hover {
-    background-color: #e65c00; /* Oscurecer el botón al pasar el mouse */
+.auth-buttons:hover {
+    background-color: #e65c00;
 }
 
-.link-to-register {
+/* Enlaces para Cambiar de Formulario */
+.link-to-auth {
     color: #ff6600;
     text-decoration: none;
     display: block;
     margin-top: 20px;
     font-size: 14px;
+}
+
+/* Divider de Autenticación (Línea Naranja) */
+.auth-divider {
+    border: 1px solid #ff6600;
+    margin-top: 20px;
 }

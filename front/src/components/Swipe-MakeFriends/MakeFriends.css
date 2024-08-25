@@ -1,168 +1,238 @@
+/* Contenedor principal */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Poppins:wght@700&display=swap');
+
 .contenedor-deslizar-perfiles {
-  position: relative;
-  margin-top: 5%;
   width: 100%;
-  height: auto;
+  max-width: 750px;
+  margin-top: 1%;
+ margin-left: 20%;
+ margin-right: 30%;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: none;
- background: none;
-  flex-direction: column;
- background-color: transparent !important;
-
+  height: 100vh;
+  background-color: transparent;
 }
+
+/* Estilos para los perfiles */
+.contenedor-perfil {
+  width: 100%;
+  max-width: 475px;
+  background-color: whitesmoke;
+  border-radius: 15px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Perfil activo e inactivo */
 .perfil-activo {
-  display: block;
+  transform: scale(1);
+  opacity: 1;
+  z-index: 2;
 }
 
 .perfil-inactivo {
-  display: none;
+  transform: scale(0.95);
+  opacity: 0;
+  z-index: 1;
 }
 
-.tarjeta-perfil {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 20px;
-  max-width: 600px;
-  width: 100%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-
+/* Cabecera del perfil */
 .cabecera-perfil {
   display: flex;
   justify-content: space-between;
-  flex-direction: row;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .nombre-perfil {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  color: #000;  /* Color negro sólido */
   margin: 0;
 }
 
-.nivel-perfil {
-  font-size: 16px;
-  color: #666;
+.icono-info {
+  font-size: 100%;
+  color: black;
+  cursor: pointer;
 }
-.contenido-perfil {
+
+/* Imagen centrada del perfil */
+.imagen-centro {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-direction: row-reverse; /* Esto mueve la imagen a la izquierda y la información a la derecha */
+  justify-content: center;
+  margin: 20px 0;
 }
 
-.informacion-horarios {
-  text-align: right; /* Alinea el texto del horario a la derecha */
-text-align: center;
-}
-
-.imagen-perfil-derecha {
-  width: 150px;
-  height: 150px;
+.imagen-perfil-central {
+  width: 35%;
+  height: 35%;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 20px; /* Añade espacio entre la imagen y el contenido de la derecha */
+  border: 2px solid #ddd;
 }
 
-.informacion-horarios h5 {
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: #333;
-  text-align: center;
-}
-
-.dias-horarios {
+/* Nivel debajo de la imagen */
+/* Contenedor general para alinear verticalmente */
+/* Contenedor para alinear horizontalmente */
+.nivel-contenedor-horizontal {
+  justify-content: center;
   display: flex;
-  flex-direction: column;
+  align-items: center; /* Alinea verticalmente los elementos en el centro */
+  gap: 10px; /* Espacio entre "Level:" y "Principiante" */
 }
 
-.dias-semana {
+/* Estilo para el texto "Level:" */
+.nivel-texto {
   text-align: center;
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-
+  font-family: 'Poppins', sans-serif; /* Fuente moderna y destacada */
+  font-size: 17px; /* Tamaño grande para destacar */
+  font-weight: 700; /* Negrita para enfatizar */
+  color: #000; /* Color negro sólido */
+  margin: 0; /* Quitar márgenes */
 }
 
+/* Estilo para el valor del nivel (ej. "Principiante") */
+.nivel-valor {
+  font-family: 'Montserrat', sans-serif; /* Fuente más ligera y sofisticada */
+  font-size: 18px; /* Tamaño más pequeño */
+  font-weight: 400; /* Peso normal para menor contraste con "nivel" */
+  color: #333; /* Color gris oscuro para un contraste suave */
+}
+
+/* Estilo para la fila de preferencias */
+.fila-preferencias {
+  display: flex;
+  justify-content: flex-start; /* Alineación por defecto a la izquierda */
+  margin-bottom: 10px; /* Espacio entre filas */
+}
+
+/* Estilo para centrar filas con menos de 4 elementos */
+.fila-centrada {
+  justify-content: center; /* Centra la fila si tiene menos de 4 elementos */
+}
+
+/* Estilo para cada preferencia */
 .etiqueta-preferencia {
-  background-color: #ff6600;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
+  background-color: #ff9800;
+  padding-top: 1%;
+  padding-bottom:1%;
+  color: white;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
   font-size: 14px;
-  display: inline-block;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin-right: 10px; /* Espacio entre preferencias */
+  text-align: center;
+  flex: 1 1 25%; /* Hace que cada preferencia ocupe hasta el 25% del ancho de la fila */
+  max-width: 25%; /* Limita el ancho máximo de cada preferencia */
+  box-sizing: border-box; /* Asegura que el padding se incluya en el tamaño total */
 }
 
-
-.horarios-gimnasio p {
-  margin: 5px 0;
-  font-size: 14px;
-  color: #333;
-  display: inline;
-}
-
+/* Información adicional del perfil */
 .informacion-perfil {
   margin-top: 20px;
   text-align: center;
 }
 
-.preferencias-perfil {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Esto centrará los elementos dentro del contenedor */
-  margin-bottom: 10px;
-}
-
 .descripcion-perfil {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.5;
-  text-align: justify;
-  
+  font-size: 18px;
+  color: #555;
+  line-height: 1.6;
 }
 
+/* Flechas de navegación */
 .flecha-contenedor {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 3;
 }
 
 .flecha-izquierda {
-  left: 200px;
-  color: #333;
+  left: 5%;
+
+}
+.dias-semana {
+  display: flex;
+  justify-content: center; /* Centra los días horizontalmente */
+  align-items: center; /* Alinea verticalmente los días en el centro */
+  flex-wrap: nowrap; /* Evita que los días se envuelvan a una nueva fila */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.etiqueta-preferencia-semana {
+  width: 10%;
+  height: 50%;
+  background-color: #fff; /* Fondo blanco por defecto */
+  color: #000; /* Texto en negro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px; /* Bordes redondeados */
+  font-family: 'Poppins', sans-serif; /* Fuente moderna */
+  font-size: 14px; /* Tamaño de la fuente */
+  font-weight: bold; /* Texto en negrita */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  margin-right: 5px; /* Margen derecho para separar los días */
+  margin-bottom: 0; /* Elimina el margen inferior para alinearlos mejor */
+  transition: transform 0.2s ease, background-color 0.3s ease; /* Transiciones suaves */
+}
+
+.dia-seleccionado {
+  border: 2px solid #ff9800; /* Bordes destacados para los días seleccionados */
+  background-color: #e9d9c3; /* Fondo diferente para los días seleccionados */
+  transform: scale(1.1); /* Aumenta ligeramente el tamaño para los días seleccionados */
 }
 
 .flecha-derecha {
-  right: 200px;
-  color: #333;
-}
-
-.boton-flecha {
-  color: black;
-  border: none;
-  padding: 10px;
-  border-radius: 30%;
-  cursor: pointer;
-}
-.boton-flecha:hover {
-  background-color: white;
+  right: 5%;
 }
 
 .texto-flecha {
-  color: #333;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 5px;
+  font-size: 20%;
+  color: #888;
+  margin-top: 5px
 }
-.horarios-gimnasio p:first-child {
-  margin-right: 10px; /* Ajusta este valor según el espacio que necesites */
+
+.horarios-gimnasio {
+  text-align: center; /* Asegura que el texto esté alineado a la izquierda */
+  margin: 0;
+}
+
+.horarios {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  font-weight: 0;
+}
+
+.horarios strong {
+  font-weight: 700; /* Negrita para "Horario habitual:" */
+}
+
+.hora-uno,
+.hora-dos {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 0;
+  color: #000;
+}
+.boton-flecha {
+  background-color: transparent; /* Elimina el color de fondo */
+  padding: 20px;
+  border-radius: 20px;
+  border:transparent; /* Puedes agregar un borde si lo deseas */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700; /* Texto en negrita */
 }
