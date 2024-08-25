@@ -6,6 +6,7 @@ import { INVALID, OK } from '../../Utils/StatusCodes';
 import { setUpdateUser } from '../../App';
 import { FaEye, FaEyeSlash, FaPhoneAlt, FaUser, FaLock } from 'react-icons/fa';
 import { Form, InputGroup } from 'react-bootstrap';
+import { setToken } from '../../App';
 import zxcvbn from 'zxcvbn';
 
 const Register = () => {
@@ -77,6 +78,7 @@ const Register = () => {
             if (data.status === OK) {
                 const token = data.token;
                 localStorage.setItem('authToken', token);
+                setToken(true);
                 navigate("/formulario");
                 setSuccess(true);
                 setError('');
@@ -153,7 +155,7 @@ const Register = () => {
                                         value={formData.email}
                                         onChange={handleChange}
                                         required
-                                        placeholder="Mobile Number"
+                                        placeholder="Tu mejor gmail"
                                         className="form-control input-field" 
                                     />
                                 </InputGroup>
