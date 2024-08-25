@@ -1,55 +1,89 @@
-/* Estilo general */
 .register-container {
-    background-color: #1c1c1c; /* Fondo ligeramente más claro para el contenedor */
-    padding: 30px;
+    background-color: #1c1c1c;
+    padding: 2%;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255, 102, 0, 0.7); /* Sombra con color naranja */
+    box-shadow: 0 0 15px rgba(255, 102, 0, 0.7);
     width: 30%;
     text-align: center;
-    margin: 100px auto;
+    margin: auto;
+    margin-top: 1%;
+}
+.form-control {
+    padding: 1%;
+}
+.Cabezera {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 110%; /* Ajuste del tamaño de fuente */
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 10%; /* Añadir un poco de espacio debajo del título */
+}
+.form-group {
+    margin-bottom: 3%; /* Espacio entre los campos del formulario */
 }
 
-.h2OfRegister {
-    color: #ff6600; /* Naranja para el título */
-    margin-bottom: 30px;
-    font-size: 28px;
+.input-group-custom {
+    display: flex;
+    align-items: center;
+    border-radius: 25px; /* Redondea las esquinas del grupo de entrada */
+    background-color: #f2f4f7; /* Fondo similar al de la imagen */
+    padding: 3% 5%;
 }
 
-.hrOfLogin {
-    border: 1px solid #ff6600; /* Línea naranja */
-    margin-bottom: 30px;
-}
-
-.register-container input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    background-color: #333;
+.input-icon {
+    background-color: transparent;
     border: none;
-    border-radius: 5px;
-    color: #fff; /* Texto blanco en el input */
-    font-size: 16px;
+    color: #bfc8e4; /* Color del icono */
+    font-size: 110%; /* Tamaño del icono */
+    padding-right: 10px;
 }
 
-.register-container input[type="text"]:focus, input[type="password"]:focus {
+.input-field {
+    border: none;
+    background-color: transparent;
+    color: #555;
+    width: 100%;
+    margin: transparent;
+    padding-left: 5px;
+    font-size: 16px; /* Ajusta el tamaño del texto del input */
+}
+.input-field:focus{
+outline: none !important;
+}
+
+.input-field::placeholder {
+    color: #555;/* Color del texto placeholder */
+    border: transparent;
+    margin: transparent;
+}
+
+.input-field:focus {
     outline: none;
-    border: 2px solid #ff6600; /* Borde naranja al enfocar */
+}
+
+.toggle-password {
+    color: #9098B1;
+    cursor: pointer;
+    padding-left: 10px;
+    font-size: 18px;
 }
 
 .buttonRegister {
     background-color: #ff6600;
-    color: #000;
+    color: #ffffff;
     padding: 12px;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     width: 100%;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+
 }
 
 .buttonRegister:hover {
-    background-color: #e65c00; /* Oscurecer el botón al pasar el mouse */
+    background-color: #e65c00;
 }
 
 .link-to-login {
@@ -57,5 +91,11 @@
     text-decoration: none;
     display: block;
     margin-top: 20px;
+    font-size: 14px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
     font-size: 14px;
 }

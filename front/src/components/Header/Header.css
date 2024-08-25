@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Poppins:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
 /*Navbar*/
 .customNavbar {
     width: 100%;
@@ -16,16 +19,23 @@
 }
 
 .customNavLinkSubHeader {
-    margin: 10px;
+    margin: 0;
+    border: transparent;
     display: block;
     padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
-    font-size: var(--bs-nav-link-font-size);
-    font-weight: var(--bs-nav-link-font-weight);
-    color: var(--bs-nav-link-color);
+    font-family: 'Poppins', sans-serif; /* Cambia la fuente a Poppins */
+    font-weight: 700;
+    color: #ffffff; /* Texto blanco */
+    -webkit-text-stroke: 0.5px black; /* Contorno negro */
+    padding: 10px 20px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px; /* Espaciado entre letras */
     text-decoration: none;
     background: 0 0;
     position: relative;
 }
+
 
 .customNavLinkSubHeader::after {
     content: '';
@@ -88,12 +98,13 @@
 }
 
 .customTextLogo {
-    text-align: center;
     
-    color: #ff6600;
-    font-family: 'Pacifico', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 2em ;
-    
+        font-family: 'Poppins', sans-serif; /* Fuente Poppins */
+        font-weight: 1000; /* Negrita extra */
+        font-size: 170%; /* Tamaño grande para destacar */
+        color: white; /* Color negro sólido */
+        letter-spacing: -0.5px; /* Espaciado ligeramente reducido entre letras */
+        text-transform: uppercase; /* Para mantener todo en mayúsculas, si es necesario */
 }
 
 .customNavbar a:hover svg {
