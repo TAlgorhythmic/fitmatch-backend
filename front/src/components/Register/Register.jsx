@@ -77,11 +77,12 @@ const Register = () => {
             if (data.status === OK) {
                 const token = data.token;
                 localStorage.setItem('authToken', token);
+                navigate("/formulario");
                 setSuccess(true);
                 setError('');
                 setUpdateUser(true);
-                setToken(true);
-                navigate('/formulario');
+                showPopup("Info", "¡Te has verificado con éxito!");
+               
             } else if (data.status === INVALID) {
                 showPopup("Invalid data", data.error, false);
             } else {

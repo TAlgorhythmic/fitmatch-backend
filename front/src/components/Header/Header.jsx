@@ -64,7 +64,6 @@ function Header() {
 
                         <Dropdown.Menu>
                             <Dropdown.Item href="/user/profile">Ver Perfil</Dropdown.Item>
-                            <Dropdown.Item href="/user/settings">Configuración</Dropdown.Item>
                             <Dropdown.Item href="#" onClick={logoutButtonOnClick}>Cerrar Sesión</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
