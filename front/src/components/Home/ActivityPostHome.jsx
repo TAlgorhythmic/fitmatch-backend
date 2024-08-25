@@ -41,8 +41,6 @@ function ActivityPostHome(props) {
             });
     }
 
-    console.log(data)
-
     return (
         <div className="activityContainer">
             <Alert variant="info" className='customAlert'>
@@ -66,14 +64,14 @@ function ActivityPostHome(props) {
                             ))}</p>
                         </div>
                         <div>
-                            {/* <iframe
-                                width="100"
-                                height="200"
+                            <iframe className="customIframeGoogleMaps"
+                                width="100%"
+                                height="100"
                                 loading="lazy"
                                 allowfullscreen
                                 referrerpolicy="no-referrer-when-downgrade"
                                 src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc&q=${data.latitude},${data.longitude}`}>
-                            </iframe> */}
+                            </iframe>
                             <h5 className='actUserName'>Localización: {data.latitude},{data.longitude}</h5>
                         </div>
                         <div className="dateCheck">
