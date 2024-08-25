@@ -9,10 +9,15 @@ import { showPopup } from '../../Utils/Utils.js';
 function ActivityPostHome(props) {
 
     const { data } = props;
+    const [isJoined, setIsJoined] = useState(false);
     let postDate = new Date(data.postDate);
     let expireDate = new Date(data.expires);
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
+
+    function handleStateChange() {
+        setIsJoined(!isJoined);
+    };
 
     async function joinActivity() {
         await AgendaController.joinActivity(data.id)
@@ -36,6 +41,8 @@ function ActivityPostHome(props) {
             });
     }
 
+    console.log(data)
+
     return (
         <div className="activityContainer">
             <Alert variant="info" className='customAlert'>
@@ -44,10 +51,12 @@ function ActivityPostHome(props) {
                         <Image src={`http://localhost:3001/uploads/${data.user.img}`} alt="userImage" className="activityUserImage" roundedCircle />
                     </Col>
                     <Col md={10}>
-                        <h5 className='actUserName'>{data.user.name} {data.user.lastname} <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
+                        <h5 className='actUserName'><a href={`/friends/view/${data.user.id}`}>{data.user.name} {data.user.lastname}</a> <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
                         <hr />
-                        <Alert.Heading>{data.title}</Alert.Heading>
-                        <p>{data.description}</p>
+                        <div className="actPostBody">
+                            <Alert.Heading>{data.title}</Alert.Heading>
+                            <p>{data.description}</p>
+                        </div>
                         <div className="joinedUsers">
                             <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
                             <p>{data.joinedUsers.map((user, index) => (

@@ -10,6 +10,15 @@
     z-index: 1000;
 }
 
+.customNavbar a img {
+    margin-right: 10px;
+}
+
+.customNavbar a {
+    align-items: center;
+    display: flex;
+}
+
 /* subheader styles */
 
 .subHeaderCustom {

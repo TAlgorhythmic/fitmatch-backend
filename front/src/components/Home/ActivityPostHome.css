@@ -31,8 +31,18 @@
     margin-bottom: 0;
 }
 
+.actUserName a {
+    color: var(--color-texto-secundario);
+    text-decoration: none;
+}
+
 .actUserName span {
     font-weight: 400;
+    color: var(--color-texto-principal);
+}
+
+.actPostBody p {
+    font-size: 1.1em;
     color: var(--color-texto-principal);
 }
 
@@ -52,6 +62,10 @@
 
 .actCheckIcon {
     cursor: pointer;
+}
+
+.joinedUsers {
+    margin-top: 1.7em;
 }
 
 .joinedUsers p{
