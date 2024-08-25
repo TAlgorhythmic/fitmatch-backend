@@ -82,11 +82,11 @@ function App() {
   }, [isValidToken, location.pathname])
 
   useEffect(() => {
-    if(location.pathname === '/login' || location.pathname === '/register' || location.pathname === "/formulario" || location.pathname === "/verify") {
+    if (location.pathname === '/login' || location.pathname === '/register' || location.pathname === "/formulario" || location.pathname === "/verify") {
       setShowHeader(false);
     } else {
       setShowHeader(true);
-    } 
+    }
   });
 
   useEffect(() => {
@@ -118,7 +118,7 @@ function App() {
     }
   }, [isValidToken, updateUser, token]);
 
-  useEffect(() => {  
+  useEffect(() => {
     if (isValidToken && user && !user.isSetup) {
       if (location.pathname !== "/formulario" && location.pathname !== "/register" && location.pathname !== "/login") {
         navigate("/formulario");
@@ -128,9 +128,9 @@ function App() {
         navigate("/");
       }
     } else {
-      if(location.pathname === "/register"){
+      if (location.pathname === "/register") {
         showPopup("Welcome", "Bienvenido a la plataforma de nuevo", false);
-      }else if (!isValidToken && isValidToken !== null) {
+      } else if (!isValidToken && isValidToken !== null) {
         showPopup("No permission", "Tu sesión ha expirado.", false);
         navigate("/login");
       }
@@ -146,10 +146,8 @@ function App() {
         {
           showHome ? <SubHeader /> : <></>
         }
-        <div className='mainContainer'>
-          <div className="mainContent">
-            <Outlet />
-          </div>
+        <div className="mainContent">
+          <Outlet />
         </div>
       </div>
       <PopupMessage isVisible={popupState.isVisible} title={popupState.title} message={popupState.message} isError={popupState.isError} onClose={onClose} />
