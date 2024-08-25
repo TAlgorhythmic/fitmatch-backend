@@ -9,6 +9,8 @@ import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
 import { ProgressBar, Step } from 'react-step-progress-bar';
 import Switch from 'react-switch';
 import { showPopup } from '../../Utils/Utils.js';
+import { setToken } from '../../App';
+import { setUpdateUser } from '../../App';
 
 
 const libraries = ["places"];
@@ -175,11 +177,10 @@ const RegisterForm = () => {
       setUpdateUser(true);
       setToken(true);
       navigate('/');
-    } else if (result.status === NO_PERMISSION) {
+    } else  {
       setTokenValid(false);
-    } else {
       showPopup("Something went wrong", result.error, true);
-    }
+    } 
   };
 
   function onPlaceChanged() {
