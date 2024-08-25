@@ -307,7 +307,7 @@ return (
           name="privacyPolicy"
           required
         />
-        <label htmlFor="privacyPolicy">He leído y acepto la Política de Privacidad</label>
+        <h1 className='politica'>He leído y acepto la Política de Privacidad</h1>
     </form>
           
           <Button variant="primary" onClick={handleNextStep}>Siguiente</Button>
@@ -323,9 +323,8 @@ return (
   <Form.Group className="mb-3">
   <h1 className='mensajes' >Mi actividad</h1>
   <h1 className='mensajes' >Horario habitual de entrenamiento</h1>
-
-  <div className="time-picker-container d-flex justify-content-between">
   <h1 className='mensajes'> Entrada: </h1>
+  <div className="time-picker-container d-flex justify-content-between">
     <InputGroup className="me-3 time-picker-group">
       <InputGroup.Text className="time-picker-icon">
         <Clock />
@@ -340,8 +339,8 @@ return (
         className="time-picker-input"
       />
     </InputGroup>
-    <InputGroup className="time-picker-group">
     <h1 className='mensajes'> Salida: </h1>
+    <InputGroup className="time-picker-group">
       <InputGroup.Text className="time-picker-icon">
         <Clock />
       </InputGroup.Text>
@@ -423,7 +422,7 @@ return (
           />
         </Form.Group>
 </div>
-<Form.Group className="mb-3">
+<Form.Group className="niveles">
 <h1 className='mensajes'> Mi nivel: </h1>
           <Form.Select
             name="proficiency"
@@ -436,7 +435,7 @@ return (
           </Form.Select>
         </Form.Group>
 
-<Form.Group className="mb-3 custom-preferences">
+<Form.Group className="actividades">
 <h1 className='mensajes'> Actividades favoritas: </h1>
           <div className="d-flex flex-wrap justify-content-center">
             {sportsInterests.map((interest) => (
