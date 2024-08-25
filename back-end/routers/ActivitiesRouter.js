@@ -101,117 +101,69 @@ router.get('/', tokenRequired, function (req, res, next) {
         });
 });
 
-router.get('/feed', tokenRequired, function (req, res, next) {
+router.get('/feed', tokenRequired, async function (req, res, next) {
     const id = req.token.id;
 
-    sqlManager.getFriendsById(id).then(e => {
-        const feed = new Map();
-        const friendsData = sanitizeDataReceivedForArrayOfObjects(e, "friendId");
-        function lastFilterActivities() {
-            sqlManager.getRawJoinedActivities(id)
-            .then(e => {
-                const joinsData = sanitizeDataReceivedForArrayOfObjects(e, "userId");
-                joinsData.forEach(item => feed.delete(item.postId));
-                res.json(buildSendDataPacket(Array.from(feed.values())))
-            })
-            .catch(err => {
-                console.log(err);
-                res.json(buildInternalErrorPacket("Backend internal error. Check logs"));
-            })
-        }
-        let indexx = 0;
-        function recursiveFriends() {
-            if (!friendsData[indexx]) {
-                lastFilterActivities();
-                return;
-            }
-            const friendId = friendsData[indexx].friendId;
-            // get all activities
-            sqlManager.getActivitiesFromUserId(friendId)
-            .then(activities => {
-                // sanitize data
-                const data = sanitizeDataReceivedForArrayOfObjects(activities, "id");
-                // filter activities and remove expired ones.
-                const filtered = sqlManager.filterActivities(data);
-                // Index
-                let i = 0;
-                // Inject activity creator
-                function recursive() {
-                    if (!filtered[i]) {
-                        filtered.forEach(item => feed.set(item.id, item));
-                        indexx++;
-                        recursiveFriends();
-                        return;
-                    }
-                    fitmatch.getSqlManager().getUserFromId(filtered[i].userId)
-                    .then(e => {
-                        const data = sanitizeDataReceivedForSingleObject(e);
-                        const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
-                        filtered[i].user = user;
-                        inject2();
-                    })
-                    function inject2() {
-                        // Inject every user object to
-                        if (!filtered[i]) {
-                            recursive();
-                            return;
-                        }
-                        fitmatch.getSqlManager().getActivityJoins(filtered[i].id)
-                        .then(e => {
-                            const joinsData = sanitizeDataReceivedForArrayOfObjects(e, "userId");
-                            const obj = [];
-                            let index = 0;
-                            function userRecursive() {
-                                if (!joinsData[index]) {
-                                    filtered[i].joinedUsers = obj;
-                                    i++;
-                                    recursive();
-                                    return;
-                                }
-                                function recursiveNext() {
-                                    index++;
-                                    userRecursive();
-                                }
-                                const userId = joinsData[index].userId;
-                                if (fitmatch.userManager.containsKey(userId)) {
-                                    const user = fitmatch.userManager.get(userId).user;
-                                    obj.push(user);
-                                    recursiveNext();
-                                } else {
-                                    fitmatch.sqlManager.getUserFromId(userId)
-                                    .then(e => {
-                                        const innerUserData = sanitizeDataReceivedForSingleObject(e);
-                                        const user = new User(innerUserData.id, innerUserData.name, innerUserData.lastname, innerUserData.email, innerUserData.phone, innerUserData.description, innerUserData.proficiency, innerUserData.trainingPreferences, innerUserData.img, innerUserData.city, innerUserData.latitude, innerUserData.longitude, innerUserData.isSetup, innerUserData.monday, innerUserData.tuesday, innerUserData.wednesday, innerUserData.thursday, innerUserData.friday, innerUserData.saturday, innerUserData.sunday, innerUserData.timetable1, innerUserData.timetable2, innerUserData.country);
-                                        obj.push(user);
-                                        recursiveNext();
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-                                    })
-                                }
-                            }
-                            userRecursive();
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
-                        })
-                }
-            }
-            // Run recursive
-            recursive();
+    try {
+        const fd = await sqlManager.getFriendsById(id);
+        const friendsData = sanitizeDataReceivedForArrayOfObjects(fd, "friendId");
     
-        })
-        .catch(error => {
-            console.log(error);
-            res.json(
-                buildInvalidPacket("Backend internal error.")
-            )
-        });
+        const feed = [];
+    
+        const f0 = await sqlManager.getRawJoinedActivities(id);
+        const raw0 = new Set();
+    
+        const temp = sanitizeDataReceivedForArrayOfObjects(f0, "userId");
+        console.log(temp);
+        temp.forEach(e => raw0.add(e.postId));
+
+        // Can be optimized
+        for (const item of friendsData) {
+            const friendId = item.friendId;
+            const af = await sqlManager.getActivitiesFromUserId(friendId);
+            const activitiesFriend = sanitizeDataReceivedForArrayOfObjects(af, "id");
+
+            const filtered0 = activitiesFriend.filter(item => !raw0.has(item.id));
+
+            const filtered = sqlManager.filterActivities(filtered0);
+
+            for (const activity of filtered) {
+                const usr = await sqlManager.getUserFromId(activity.userId);
+                const data = sanitizeDataReceivedForSingleObject(usr);
+                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+                activity.user = user;
+
+                const jns = await sqlManager.getActivityJoins(activity.id);
+                const joins = sanitizeDataReceivedForArrayOfObjects(jns, "userId");
+                console.log(joins);
+                const obj = [];
+
+                for (const join of joins) {
+                    const joinUsr = await sqlManager.getUserFromId(join.userId);
+                    const joinedUser = sanitizeDataReceivedForSingleObject(joinUsr);
+                    const user = new User(joinedUser.id, joinedUser.name, joinedUser.lastname, joinedUser.email, joinedUser.phone, joinedUser.description, joinedUser.proficiency, joinedUser.trainingPreferences, joinedUser.img, joinedUser.city, joinedUser.latitude, joinedUser.longitude, joinedUser.isSetup, joinedUser.monday, joinedUser.tuesday, joinedUser.wednesday, joinedUser.thursday, joinedUser.friday, joinedUser.saturday, joinedUser.sunday, joinedUser.timetable1, joinedUser.timetable2);
+                    if (user.id !== activity.userId) obj.push(user);
+                }
+
+
+                activity.joinedUsers = obj;
+            }
+
+            filtered.forEach(item => feed.push(item));
         }
-        recursiveFriends();
-    })
+
+        feed.sort((a, b) => {
+            const dateA = new Date(a.postDate).getTime();
+            const dateB = new Date(b.postDate).getTime();
+
+            return dateA - dateB;
+        });
+        res.json(buildSendDataPacket(feed));
+    } catch (err) {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+    }
+
 });
 
 /*router.get("/feed", tokenRequired, async function (req, res, next) {
@@ -284,10 +236,10 @@ router.post('/create', tokenRequired, function (req, res, next) {
             const id = sanitizeDataReceivedForSingleObject(e);
             res.json(buildSimpleOkPacket());
             fitmatch.sqlManager.joinActivity(req.token.id, id)
-            .catch(err => {
-                console.warn("Warning! Failed to join recently created activity, might result in unexpected behaviour.");
-                console.warn(err);
-            })
+                .catch(err => {
+                    console.warn("Warning! Failed to join recently created activity, might result in unexpected behaviour.");
+                    console.warn(err);
+                })
 
         }).catch(err => {
             console.log(err);
@@ -327,7 +279,7 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
         return;
     }
     const lat = req.body.latitude;
-    const long= req.body.longitude;
+    const long = req.body.longitude;
     if (!lat || !long) {
         res.json(buildInvalidPacket("The location is not correctly set."));
         return;

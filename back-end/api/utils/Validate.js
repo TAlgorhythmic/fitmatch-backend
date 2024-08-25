@@ -33,6 +33,7 @@ export function validateRegisterCredentials(req, res, next) {
     }
     if (!email) {
         res.json(buildInvalidPacket("The phone is invalid."))
+        return;
     }
     if (!isValidPassword(password)) {
         res.json("The password must include: numbers, special characters, uppercase and lowercase charachters.");

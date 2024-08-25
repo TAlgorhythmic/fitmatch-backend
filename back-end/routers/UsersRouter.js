@@ -236,7 +236,7 @@ router.get('/connect', tokenRequired, function (req, res, next) {
 router.post("/setup", tokenRequired, (req, res, next) => {
     const id = req.token.id;
 
-    const email = req.body.email ? req.body.email : null;
+    const phone = req.body.phone ? req.body.phone : null;
     const preferences = Array.isArray(req.body.preferences) ? (req.body.preferences.length ? req.body.preferences : null) : typeof req.body.preferences === "string" || req.body.preferences instanceof String ? req.body.preferences.split(", ") : null;
     if (preferences.length > 1 && !preferences[0]) preferences.shift();
     
@@ -284,7 +284,7 @@ router.post("/setup", tokenRequired, (req, res, next) => {
 
     if (fitmatch.getUserManager().containsKey(req.token.id)) {
         const user = fitmatch.getUserManager().get(req.token.id).user;
-        user.setEmail(email)
+        user.setPhone(phone)
         user.setIsSetup(true);
         user.setTrainingPreferences(preferences);
         user.setLastName(lastname);
@@ -309,7 +309,7 @@ router.post("/setup", tokenRequired, (req, res, next) => {
                 const data = sanitizeDataReceivedForSingleObject(e);
                 const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2, data.country, data.isVerified);
                 fitmatch.userManager.put(user.id, user);
-                user.setEmail(email)
+                user.setPhone(phone)
                 user.setIsSetup(true);
                 user.setTrainingPreferences(preferences);
                 user.setLastName(lastname);
