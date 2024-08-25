@@ -7,13 +7,12 @@ import ActivitiesController from './controllers/ActivitiesController';
 import UsersController from './controllers/UsersController';
 
 function Home() {
+
     const [activities, setActivities] = useState([]);
-    
     const [friends, setFriends] = useState([]);
     const token = localStorage.getItem('authToken');
     const ActivityControl = new ActivitiesController(token);
     const usersControl = new UsersController(token);
-
 
     useEffect(() => {
         async function getActivities() {

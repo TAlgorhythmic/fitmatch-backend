@@ -25,7 +25,7 @@ public class Client {
 
     public void fetchUsers(User[] users) {
         Arrays.stream(users).forEach(item -> {
-            Fitmatch.getInstance().getScheduler().submit(() -> item.fetchToken(true));
+            item.fetchToken(true);
         });
     }
 }

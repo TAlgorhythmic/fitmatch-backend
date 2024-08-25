@@ -121,4 +121,30 @@ public class UsersController {
         }
         return null;
     }
+
+    public ServerUser profile(String token) {
+
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+
+            HttpGet get = new HttpGet(Urls.GET_OWN_PROFILE);
+
+            get.setHeader("Content-Type", "application/json");
+            get.setHeader("Authorization", "Bearer " + token);
+
+            try (CloseableHttpResponse res = client.execute(get)) {
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
+
+                if (code == OK) {
+                    return Fitmatch.getInstance().getGson().fromJson(json, ServerUser.class);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

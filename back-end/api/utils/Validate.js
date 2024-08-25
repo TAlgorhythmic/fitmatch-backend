@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import fitmatch from "./../Fitmatch.js";
-import { buildNoPermissionPacket, buildInvalidPacket, buildInternalErrorPacket } from "../packets/PacketBuilder.js";
+import { buildNoPermissionPacket, buildInvalidPacket, buildInternalErrorPacket, buildNoVerifiedPacket } from "../packets/PacketBuilder.js";
 
 const numberRegex = /\d/;
 
@@ -25,14 +25,15 @@ export function hasNumber(input) {
 // Middleware for register endpoint
 export function validateRegisterCredentials(req, res, next) {
     const name = req.body.name;
-    const phone = req.body.phone;
+    const email = req.body.email;
     const password = req.body.password;
     if (!name) {
         res.json(buildInvalidPacket("A name must be specified."));
         return;
     }
-    if (!phone) {
+    if (!email) {
         res.json(buildInvalidPacket("The phone is invalid."))
+        return;
     }
     if (!isValidPassword(password)) {
         res.json("The password must include: numbers, special characters, uppercase and lowercase charachters.");
@@ -54,6 +55,31 @@ export function isValidTimetable(int) {
 
 // Middleware
 export function tokenRequired(req, res, next) {
+    let token = req.headers.authorization || "";
+
+    if (!token) {
+        res.json(buildNoPermissionPacket("A token is required."));
+        return;
+    }
+    const split = token.split(" ");
+    token = split[split.length - 1];
+
+    jwt.verify(token, fitmatch.getConfig().tokenSecretKey, (err, decoded) => {
+        if (err) {
+            res.json(buildInternalErrorPacket("Internal error when trying to verify token: " + err));
+        } else {
+            const expiredAt = decoded.expiredAt;
+            if (expiredAt > new Date().getTime() && decoded.ip === req.ip) {
+                req.token = decoded;
+                next();
+            } else {
+                res.json(buildNoPermissionPacket("This token is expired/invalid!"))
+            }
+        }
+    })
+}
+
+export function tokenRequiredUnverified(req, res, next) {
     let token = req.headers.authorization || "";
 
     if (!token) {

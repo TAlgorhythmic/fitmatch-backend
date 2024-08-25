@@ -1,0 +1,77 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f7f9fc; /* Fondo suave */
+    padding: 20px;
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  }
+  
+  /* Icono superior */
+  .icono-seguridad {
+    font-size: 40px;
+    color: #4a90e2; /* Azul suave */
+    margin-bottom: 20px;
+  }
+  
+  /* Título principal */
+  .titulo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  /* Subtítulo */
+  .subtitulo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #777;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  /* Contenedor de los campos de entrada */
+  .input-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Campos de entrada individuales */
+  .input-digit {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 24px;
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Estilo al enfocar un campo */
+  .input-digit:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+  }
+  
+  /* Contador de dígitos restantes */
+  .digit-counter {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #777;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #eef0f5;
+    text-align: center;
+  }
