@@ -38,7 +38,7 @@ function App() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
-  const [isValidToken, setIsValidToken] = useState(false);
+  const [isValidToken, setIsValidToken] = useState(null);
   const [updateUser, setUpdate] = useState(true);
   const [showHeader, setShowHeader] = useState(true);
   setUpdateUser = setUpdate;
@@ -68,8 +68,6 @@ function App() {
 
     if (token) {
       validateToken();
-    } else {
-      setIsValidToken(false);
     }
   }, []);
 
@@ -81,15 +79,7 @@ function App() {
     )) {
       setShowHome(true);
     }
-  }, [isValidToken, location.pathname])
-
-  useEffect(() => {
-    if (location.pathname === '/login' || location.pathname === '/register' || location.pathname === "/formulario" || location.pathname === "/verify") {
-      setShowHeader(false);
-    } else {
-      setShowHeader(true);
-    }
-  });
+  }, [isValidToken, location.pathname]);
 
   useEffect(() => {
     async function getProfile() {
@@ -125,15 +115,19 @@ function App() {
       setShowHeader(false);
     } else {
       setShowHeader(true);
-      if (isValidToken && user && !user.isSetup) {
-        navigate("/formulario");
+      if (token && isValidToken !== null) {
+        if (isValidToken) {
+          if (user && !user.isSetup) navigate("/formulario");
+          return;
+        } else {
+          showPopup("No permission", "Tu sesión ha expirado.", false);
+          navigate("/login");
+          return;
+        }
       }
-      if (!token) {
-        navigate("/register");
-      } else {
-        showPopup("No permission", "Tu sesión ha expirado.", false);
-        navigate("/login");
-      }
+      
+      if (!token) navigate("/register");
+
     }
   }, [isValidToken, location.pathname, navigate, user]);
 

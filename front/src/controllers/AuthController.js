@@ -6,13 +6,14 @@ class AuthController extends BaseController {
     }
 
     async validateToken() {
+        console.log(this.token);
         const response = await fetch(`${this.apiUrl}/validate-token`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': "Bearer " + this.token
             }
-        })
+        });
         return response;
     }
 }

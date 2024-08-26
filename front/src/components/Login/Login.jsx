@@ -37,8 +37,8 @@ const Login = () => {
                 if (response.status === 0) {
                     setResposta('Login successful');
                     const token = response.token;
-                    setToken(true);
                     localStorage.setItem('authToken', token);
+                    setToken(true);
                     navigate('/');
                 } else {
                     setResposta('error: ');
