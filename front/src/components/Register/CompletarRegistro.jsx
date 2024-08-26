@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
-import { Camera, Person, Envelope, GeoAlt, Clock } from 'react-bootstrap-icons';
+import { Camera, Person, Envelope, GeoAlt, Clock,Phone  } from 'react-bootstrap-icons';
 import { useNavigate, Navigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './CompletarRegistro.css';
@@ -37,7 +37,7 @@ const StyledButton = styled(Button)`
   width: 20%;
   text-align: center;
   &:hover {
-    background-color: ${(props) => props.hoverColor || '#f0a51e'};
+     background-color: ${(props) => props.hoverColor || '#f0a51e'} !important;
   }
 `;
 
@@ -286,7 +286,7 @@ return (
                   <InputGroup.Text><Person /></InputGroup.Text>
                   <Form.Control
                     type="text"
-                    name="Nom"
+                    name="firstName"
                     value={formData.firstName}
                     readOnly
                   />
@@ -300,10 +300,9 @@ return (
                   <InputGroup.Text><Person /></InputGroup.Text>
                   <Form.Control
                     type="text"
-                    name="Cognoms"
+                    name="lastName"
                     value={formData.lastName}
                     onChange={handleChange}
-                    placeholder="Rios Aguilar"
                   />
                 </InputGroup>
               </Form.Group>
@@ -312,14 +311,14 @@ return (
           <Row>
             <Col md={6}>
               <Form.Group className="mb-3">
-                <h1 className="correo">Introduce tu mejor gmail</h1>
+                <h1 className="correo">Introduce tu mejor numero</h1>
                 <InputGroup>
-                  <InputGroup.Text><Envelope /></InputGroup.Text>
+                  <InputGroup.Text><Phone /></InputGroup.Text>
                   <Form.Control
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    placeholder="fitmatch@gmail.com"
+                    type="text"
+                    name="phone"
+                    value={formData.phone}
+                    placeholder="697415616"
                     readOnly
                   />
                 </InputGroup>
@@ -355,10 +354,10 @@ return (
               name="politicaPrivacitat"
               required
             />
-            <PrivacyLabel>He llegit i accepto la Política de Privacitat</PrivacyLabel>
+            <PrivacyLabel>He leído y acepto la Política de Privacidad</PrivacyLabel>
           </PrivacyCheckboxContainer>
           <StyledButton bgColor="#f0bb31" hoverColor="#f0a51e" onClick={handleNextStep}>
-            Següent
+            Siguiente
           </StyledButton>
         </div>
       )}
@@ -367,8 +366,8 @@ return (
         <div className="formulari-activitat-personalitzat">
           <div className="horari-entrenament">
             <Form.Group className="mb-3">
-              <h1 className="actividad">La meva activitat</h1>
-              <h1 className="horario-habitual">Horari habitual entrenament</h1>
+              <h1 className="actividad">Mi actividad</h1>
+              <h1 className="horario-habitual">Horario habitual de entrenamiento</h1>
               <div className="contenidor-time-picker d-flex justify-content-between">
               <h1 className="entrada">Entrada:</h1>
                 <InputGroup className="me-3 grup-time-picker">
@@ -420,21 +419,21 @@ return (
 </div>
 
           <Form.Group className="nivell-entrenament">
-            <h1 className="nivel">El meu nivell:</h1>
+            <h1 className="nivel">Mi nivel:</h1>
             <Form.Select
               name="proficiency"
               value={formData.proficiency}
               onChange={handleChange}
               className="select-nivell"
             >
-              <option value="Principiant">Principiant</option>
-              <option value="Intermedi">Intermedi</option>
-              <option value="Avançat">Avançat</option>
+              <option value="Principiante">Principiante</option>
+              <option value="Intermedio">Intermedio</option>
+              <option value="Avanzado">Avanzado</option>
             </Form.Select>
           </Form.Group>
 
           <Form.Group className="activitats-favorites">
-            <h1 className="actividades-favoritas">Activitats favorites:</h1>
+            <h1 className="actividades-favoritas">Actividades favoritas:</h1>
             <div className="botones-intereses">
               {sportsInterests.map((interest) => (
                 <StyledButton
@@ -465,16 +464,6 @@ return (
         <div>
           <h1 className="miperfil">Mi perfil</h1>
           <Form.Group className="mb-3">
-            <h1 className="sobremi">Sobre mí:</h1>
-            <Form.Control
-              type="text"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
             <h1 className="sonrie">Foto de perfil, sonríe!</h1>
             <Form.Control
               type="file"
@@ -482,10 +471,23 @@ return (
               onChange={handleImageChange}
             />
           </Form.Group>
+
+          <Form.Group className="mb-3">
+            <h1 className="sobremi">Sobre mí:</h1>
+            <Form.Control
+              type="text"
+              as="textarea"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="En este campo explica datos que te diferencian de los demás :)"
+            />
+          </Form.Group>
+
           <StyledButton bgColor="#333" textColor="#fff" hoverColor="#555" onClick={handlePrevStep}>
             Anterior
           </StyledButton>
-          <StyledButton bgColor="#f0bb31" hoverColor="#f0a51e"  type="submit">
+          <StyledButton bgColor="#f0bb31 !important" hoverColor="#f0a51e"  type="submit">
             Completar
           </StyledButton>
         </div>

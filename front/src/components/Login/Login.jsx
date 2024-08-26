@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setToken } from '../../App';
-import { FaEye, FaEyeSlash, FaPhoneAlt, FaUser, FaLock } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
 import { Form, InputGroup } from 'react-bootstrap';
 import './Login.css';
 
@@ -63,11 +63,11 @@ const Login = () => {
             <div className="form-group">
                 <InputGroup className="input-group-custom">
                     <InputGroup.Text className="input-icon">
-                        <FaPhoneAlt />
+                    <FaEnvelope/>
                     </InputGroup.Text>
                     <input
                         type="text"
-                        placeholder="email"
+                        placeholder="fitmatch@gmail.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
