@@ -46,10 +46,14 @@ function ActivityPostHome(props) {
             <Alert variant="info" className='customAlert'>
                 <Row>
                     <Col md={2}>
-                        <Image src={`http://localhost:3001/uploads/${data.user.img}`} alt="userImage" className="activityUserImage" roundedCircle />
+                        <a href={`/friendsView/${data.user.id}`}>
+                            <Image src={`http://localhost:3001/uploads/${data.user.img}`} alt="userImage" className="activityUserImage" roundedCircle />
+                        </a>
                     </Col>
                     <Col md={10}>
-                        <h5 className='actUserName'><a href={`/friendsView/${data.user.id}`}>{data.user.name} {data.user.lastname}</a> <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
+                        <h5 className='actUserName'>
+                            <a href={`/friendsView/${data.user.id}`}>{data.user.name} {data.user.lastname}</a> <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span>
+                        </h5>
                         <hr />
                         <div className="actPostBody">
                             <Alert.Heading>{data.title}</Alert.Heading>
