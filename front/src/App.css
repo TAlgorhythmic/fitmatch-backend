@@ -8,9 +8,7 @@
     --color-fondo-secundario: #76c1ff;
     --color-texto-principal: #afbadf;
     --color-texto-secundario: #dfdfdf;
-    --color-error: #F44336;
-    --color-éxito: #8BC34A;
-    --color-info: #03A9F4;
+    --color-botones: #ff6600;
 }
 /*Principales*/
 .contenedorPrincipal {
