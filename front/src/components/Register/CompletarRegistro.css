@@ -1,123 +1,135 @@
-@font-face {
-  font-family: 'Decalotype';
-  src: url('/path-to-your-font-file/Decalotype.ttf') format('truetype');
+h1{
+  font-family: Arial, sans-serif; /* Usa Arial o cualquier fuente sans-serif similar */
+  font-size: 24px; /* Tamaño de la fuente */
+  font-weight: bold; /* Estilo en negrita */
+  color: #ffffff; /* Color del texto en blanco */
+  margin: 0; /* Sin márgenes */
+  padding: 0; /* Sin relleno */
+  letter-spacing: 0.5px; /* Ligera separación entre las letras */
 }
-
-.custom-register-form {
-  max-width: 80%;
-  background-color: #f8f9fa;
-  padding: 4%;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+h1.nombre{
+  font-size: 15px;
+  margin-bottom: 5px;
 }
-
-.Titulo {
-  text-align: center;
-  font-size: 25px;
-  font-weight: bold;
-  margin-top: 2%;
-  margin-bottom: 1%;
-  position: relative;
+h1.apellidos{
+  font-size: 15px;
+  margin-bottom: 5px;
 }
-.Datos {
+h1.correo{
+  font-size: 15px;
+ 
+  margin-bottom: 5px;
+}
+h1.ubicacion{
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+h1.actividad{
+margin-top: 20px;
+text-align: center;
+font-weight: bold;
+margin-bottom: 20px;
+}
+h1.horario-habitual{
+  text-align: center; 
   font-size: 18px;
-  font-weight: bold;
+  margin-bottom: 10px;
+}
+h1.entrada{
+  font-size: 15px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  margin-top: 8px;
+  
+}
+h1.rutina{
   text-align: center;
-  margin-bottom: 2%;
-}
-
-.mb-3 {
-  margin-bottom: 1.5rem;
-}
-.mensajes{
-  font-family: 'Decalotype', sans-serif;
-  font-size: 80%;
-  color: #110101;
-  margin-bottom: 20px;
-  letter-spacing: 1px;
-}
-.InputGroup {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.InputGroup.Text {
-  background-color: #e9ecef;
-  border-radius: 50px;
-}
-.Politica{
-  font-family: 'Decalotype', sans-serif;
-  font-size: 100%;
-  color: #110101;
-  text-align: center;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.Form.Control {
-  border-radius: 50px;
-  padding: 10px 20px;
-  background-color: #e9ecef;
-  border: 1px solid #ced4da;
-}
-
-.time-picker-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.time-picker-group {
-  flex-grow: 1;
-}
-
-.time-picker-input {
-  width: 100%;
-  border-radius: 50px;
-  border: 1px solid #ced4da;
-  padding: 5px 10px;
-}
-
-.dias-semana {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-bottom: 15px;
-}
-
-.custom-preferences-btn {
-  border-radius: 50px;
-  padding: 1% 2%;
-  background-color: #ff6600;
-  color: #fff;
-  border: none;
-}
-
-.custom-button-selected {
-  background-color: #eaad84;
-  color: #fff;
-}
-
-.custom-submit-btn {
-  display: inline;
-  text-align: center;
-  width: 100%;
-  background-color: #ff6600;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  border-radius: 50px;
   font-size: 18px;
+
+}
+.rutina-diaria-container {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias filas */
+  justify-content: space-between; /* Alinea los elementos con espacio entre ellos */
+  gap: 10px; /* Espaciado entre los elementos */
+}
+
+.rutina-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: calc(1% - 1px); /* Ocupa un 25% del ancho menos el espacio de gap */
+  min-width: 80px; /* Ancho mínimo para asegurar que los elementos no se reduzcan demasiado */
+  margin-bottom: 10px; /* Espacio inferior para cuando se envuelvan en filas */
+}
+
+.rutina-label {
+  font-family: Arial, sans-serif;
+  font-size: 15px; /* Tamaño del texto */
+  color: #ff6600; /* Color del texto */
+  margin-bottom: 5px; /* Espacio entre el texto y el interruptor */
+  text-align: center; /* Centra el texto en cada caja */
+}
+h1.nivel{
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+h1.actividades-favoritas{
+  margin-top: 10px;
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.botones-intereses {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los botones se envuelvan en varias filas si es necesario */
+  justify-content: center; /* Centra los botones horizontalmente */
+  gap: 10px; /* Espaciado entre los botones */
+}
+
+.botones-intereses .styled-button {
+  background-color: #333; /* Color de fondo por defecto */
+  color: #fff; /* Color del texto */
+  border: none;
+  border-radius: 20px; /* Bordes redondeados */
+  padding: 10px 20px; /* Espaciado interno para el botón */
+  flex: 1 1 calc(25% - 20px); /* Ocupa un 25% del ancho del contenedor menos espacio para el gap */
+  max-width: calc(25% - 20px); /* Asegura que no se expandan demasiado */
+  text-align: center; /* Centra el texto dentro del botón */
+  font-size: 14px;
   cursor: pointer;
+  transition: background-color 0.3s ease; /* Transición suave en hover */
+  box-sizing: border-box; /* Incluye el padding y borde en el cálculo del ancho */
 }
 
-.custom-submit-btn:hover {
-  background-color: #fa853c;
+.botones-intereses .styled-button.selected {
+  background-color: #ff6600; /* Color de fondo cuando está seleccionado */
 }
-.politica{
-  font-size:60%;
+
+.botones-intereses .styled-button:hover {
+  background-color: #555; /* Color de fondo en hover */
+}
+.button[type="submit"] {
+  background-color: #f0bb31;
+}
+h1.miperfil{
+  margin-top: 15px;
+  margin-bottom: 10px;
   text-align: center;
-  display:block;
 }
+h1.sobremi{
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+h1.sonrie{
+  text-align: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+
+
