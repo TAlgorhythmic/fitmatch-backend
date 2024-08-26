@@ -82,6 +82,7 @@ h1.rutina{
   color: #ff6600; /* Color del texto */
   margin-bottom: 5px; /* Espacio entre el texto y el interruptor */
   margin-top: 5px;
+  font-weight: 900;
   text-align: center; /* Centra el texto en cada caja */
 }
 h1.nivel{
