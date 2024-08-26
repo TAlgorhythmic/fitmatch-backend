@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { Row } from 'react-bootstrap';
+import { Row, Button } from 'react-bootstrap';
 import ActivityPostHome from './components/Home/ActivityPostHome';
 import './Home.css';
 import ActivitiesController from './controllers/ActivitiesController';
 import UsersController from './controllers/UsersController';
+import { Link } from "react-router-dom";
 
 function Home() {
 
@@ -40,9 +41,27 @@ function Home() {
             }
         }
         getFriends();
-        console.log(friends);
     }, []);
-    
+
+    if (activities.length === 0) {
+        return (
+            <div className="contenedorHome">
+                <div className="homeDisclaimer">
+                    <h6>Aún no hay actividades nuevas de tus compañeros</h6>
+                    <Link to="/create-activity"><Button>Publica una actividad</Button></Link>
+                </div>
+            </div>
+        );
+    } else if (friends.length === 0) {
+        return (
+            <div className="contenedorHome">
+                <h6>Aún no has agregado a nuevos compañeros</h6>
+                <Link to="/friends"><Button>Conecta con gente</Button></Link>
+            </div>
+        );
+
+    }
+
 
     return (
         <>

@@ -1,6 +1,6 @@
 import { Alert, Row, Col, Image, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
 import JoinedActivitiesController from '../../controllers/JoinedActivitiesController.js';
@@ -49,7 +49,7 @@ function ActivityPostHome(props) {
                         <Image src={`http://localhost:3001/uploads/${data.user.img}`} alt="userImage" className="activityUserImage" roundedCircle />
                     </Col>
                     <Col md={10}>
-                        <h5 className='actUserName'><a href={`/friends/view/${data.user.id}`}>{data.user.name} {data.user.lastname}</a> <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
+                        <h5 className='actUserName'><a href={`/friendsView/${data.user.id}`}>{data.user.name} {data.user.lastname}</a> <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
                         <hr />
                         <div className="actPostBody">
                             <Alert.Heading>{data.title}</Alert.Heading>
@@ -59,7 +59,7 @@ function ActivityPostHome(props) {
                             <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
                             <p>{data.joinedUsers.map((user, index) => (
                                 <span key={user.id}>
-                                    <Link className="customActLink" to={`/friends/view/${user.id}`}>{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
+                                    <Link className="customActLink" to={`/friendsView/${user.id}`}>{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
                                 </span>
                             ))}</p>
                         </div>
@@ -68,11 +68,11 @@ function ActivityPostHome(props) {
                                 width="100%"
                                 height="100"
                                 loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
+                                allowFullScreen
+                                referrerPolicy="no-referrer-when-downgrade"
                                 src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc&q=${data.latitude},${data.longitude}`}>
                             </iframe>
-                            <h5 className='actUserName'>Localización: {data.latitude},{data.longitude}</h5>
+                            <h5 className='actUserName'>Localización: {data.placeholder}</h5>
                         </div>
                         <div className="dateCheck">
                             <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>
