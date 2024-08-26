@@ -49,7 +49,7 @@ function ActivityPostHome(props) {
                         <Image src={`http://localhost:3001/uploads/${data.user.img}`} alt="userImage" className="activityUserImage" roundedCircle />
                     </Col>
                     <Col md={10}>
-                        <h5 className='actUserName'><a href={`/friends/view/${data.user.id}`}>{data.user.name} {data.user.lastname}</a> <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
+                        <h5 className='actUserName'><a href={`/friendsView/${data.user.id}`}>{data.user.name} {data.user.lastname}</a> <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
                         <hr />
                         <div className="actPostBody">
                             <Alert.Heading>{data.title}</Alert.Heading>
@@ -59,7 +59,7 @@ function ActivityPostHome(props) {
                             <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
                             <p>{data.joinedUsers.map((user, index) => (
                                 <span key={user.id}>
-                                    <Link className="customActLink" to={`/friends/view/${user.id}`}>{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
+                                    <Link className="customActLink" to={`/friendsView/${user.id}`}>{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
                                 </span>
                             ))}</p>
                         </div>

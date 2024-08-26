@@ -25,13 +25,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="agenda" element={<Agenda />} />
           <Route path='create-activity' element={<CreateActivity />} />
           <Route path="friends" element={<MakeFriends />} />
-          <Route path="friends/list" element={<FriendsList />} />
-          <Route path="friends/view/:id" element={<FriendData />} />
+          <Route path="friendsList" element={<FriendsList />} />
+          <Route path="friendsView/:id" element={<FriendData />} />
           <Route path="register" element={<Register />} />
           <Route path="verify" element={<Verify />} />
           <Route path="login" element={<Login />} />
           <Route path="nuevaContra" element={<ChangePassword />} />
-          <Route path="user/profile" element={<UserProfile />} />
+          <Route path="userProfile" element={<UserProfile />} />
           <Route path="formulario" element={<CompletarRegistro />} />
           <Route path="own-activities" element={<OwnActivities />} />
           <Route path="activities/edit/:id" element={<EditActivity />} />

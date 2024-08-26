@@ -26,7 +26,7 @@ function FriendsList(props) {
                         </Col>
                         <Col md={2}>
                             <Button className="friendsButtons" variant="danger" onClick={() => handleRemoveFriend(data.id)}>Eliminar</Button>
-                            <Link to={`/friends/view/${data.id}`}>
+                            <Link to={`/friendsView/${data.id}`}>
                                 <Button className="friendsButtons" variant="primary">Ver</Button>
                             </Link>
                         </Col>
