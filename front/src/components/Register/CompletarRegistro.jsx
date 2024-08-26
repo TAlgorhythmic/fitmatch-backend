@@ -286,7 +286,7 @@ return (
                   <InputGroup.Text><Person /></InputGroup.Text>
                   <Form.Control
                     type="text"
-                    name="nom"
+                    name="firstName"
                     value={formData.firstName}
                     readOnly
                   />
@@ -300,6 +300,7 @@ return (
                   <InputGroup.Text><Person /></InputGroup.Text>
                   <Form.Control
                     type="text"
+                    name="lastName"
                     value={formData.lastName}
                     onChange={handleChange}
                   />
@@ -365,8 +366,8 @@ return (
         <div className="formulari-activitat-personalitzat">
           <div className="horari-entrenament">
             <Form.Group className="mb-3">
-              <h1 className="actividad">La meva activitat</h1>
-              <h1 className="horario-habitual">Horari habitual entrenament</h1>
+              <h1 className="actividad">Mi actividad</h1>
+              <h1 className="horario-habitual">Horario habitual de entrenamiento</h1>
               <div className="contenidor-time-picker d-flex justify-content-between">
               <h1 className="entrada">Entrada:</h1>
                 <InputGroup className="me-3 grup-time-picker">
@@ -432,7 +433,7 @@ return (
           </Form.Group>
 
           <Form.Group className="activitats-favorites">
-            <h1 className="actividades-favoritas">Activitats favorites:</h1>
+            <h1 className="actividades-favoritas">Actividades favoritas:</h1>
             <div className="botones-intereses">
               {sportsInterests.map((interest) => (
                 <StyledButton
@@ -469,6 +470,7 @@ return (
               name="description"
               value={formData.description}
               onChange={handleChange}
+              placeholder="En este campo explica datos que te diferencian de los demás :)"
             />
           </Form.Group>
 

@@ -33,13 +33,12 @@ margin-bottom: 20px;
 h1.horario-habitual{
   text-align: center; 
   font-size: 18px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 h1.entrada{
   font-size: 15px;
-  margin-bottom: 5px;
-  margin-right: 5px;
-  margin-top: 8px;
+  margin-bottom: 15px;
+  margin-left: 20px;
   
 }
 h1.rutina{
@@ -52,6 +51,7 @@ h1.rutina{
   flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias filas */
   justify-content: space-between; /* Alinea los elementos con espacio entre ellos */
   gap: 10px; /* Espaciado entre los elementos */
+  margin-bottom: 10px;
 }
 
 .rutina-item {
@@ -63,12 +63,25 @@ h1.rutina{
   min-width: 80px; /* Ancho mínimo para asegurar que los elementos no se reduzcan demasiado */
   margin-bottom: 10px; /* Espacio inferior para cuando se envuelvan en filas */
 }
+.contenidor-time-picker {
+  display: flex;
+  justify-content: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Alinea los elementos verticalmente si es necesario */
+  gap: 20px; /* Espacio entre los elementos */;
+}
+.react-time-picker__inputGroup {
+  min-width: calc((4px* 3) + 0.54em* 6 + 0.217em* 2);
+  flex-grow: 1;
+  padding: 0 10px;
+  box-sizing: content-box;
+}
 
 .rutina-label {
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 15px; /* Tamaño del texto */
   color: #ff6600; /* Color del texto */
   margin-bottom: 5px; /* Espacio entre el texto y el interruptor */
+  margin-top: 5px;
   text-align: center; /* Centra el texto en cada caja */
 }
 h1.nivel{
