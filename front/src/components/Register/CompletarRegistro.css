@@ -7,13 +7,25 @@ h1{
   padding: 0; /* Sin relleno */
   letter-spacing: 0.5px; /* Ligera separación entre las letras */
 }
+.iiRYUU {
+  background-color: #f0bb31;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+  width: 30%;
+  text-align: center;
+  margin-left: 35% !important;
+}
 
 .hOkdQb {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 20px !important;
 }
 .jgkupB {
   background-color: #f0bb31;
@@ -39,6 +51,18 @@ h1{
   margin-top: 20px;
   width: 30%;
   margin-left: 35%;
+  text-align: center;
+}
+.fVrrnn {
+  background-color: #f0bb31 !important;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+  width: 30%;
+  margin-left: 40%;
   text-align: center;
 }
 
