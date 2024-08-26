@@ -464,17 +464,6 @@ return (
         <div>
           <h1 className="miperfil">Mi perfil</h1>
           <Form.Group className="mb-3">
-            <h1 className="sobremi">Sobre mí:</h1>
-            <Form.Control
-              type="text"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="En este campo explica datos que te diferencian de los demás :)"
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
             <h1 className="sonrie">Foto de perfil, sonríe!</h1>
             <Form.Control
               type="file"
@@ -482,6 +471,19 @@ return (
               onChange={handleImageChange}
             />
           </Form.Group>
+
+          <Form.Group className="mb-3">
+            <h1 className="sobremi">Sobre mí:</h1>
+            <Form.Control
+              type="text"
+              as="textarea"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="En este campo explica datos que te diferencian de los demás :)"
+            />
+          </Form.Group>
+
           <StyledButton bgColor="#333" textColor="#fff" hoverColor="#555" onClick={handlePrevStep}>
             Anterior
           </StyledButton>
