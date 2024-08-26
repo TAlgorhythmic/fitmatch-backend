@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
-import { Camera, Person, Envelope, GeoAlt, Clock } from 'react-bootstrap-icons';
+import { Camera, Person, Envelope, GeoAlt, Clock,Phone  } from 'react-bootstrap-icons';
 import { useNavigate, Navigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './CompletarRegistro.css';
@@ -311,14 +311,14 @@ return (
           <Row>
             <Col md={6}>
               <Form.Group className="mb-3">
-                <h1 className="correo">Introduce tu mejor gmail</h1>
+                <h1 className="correo">Introduce tu mejor numero</h1>
                 <InputGroup>
-                  <InputGroup.Text><Envelope /></InputGroup.Text>
+                  <InputGroup.Text><Phone /></InputGroup.Text>
                   <Form.Control
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    placeholder="fitmatch@gmail.com"
+                    type="text"
+                    name="phone"
+                    value={formData.phone}
+                    placeholder="697415616"
                     readOnly
                   />
                 </InputGroup>
