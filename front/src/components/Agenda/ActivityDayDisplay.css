@@ -16,10 +16,25 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    border-right: 2px solid var(--color-terciario);
+    border-right: 2px solid var(--color-texto-principal);
     padding-right: 20px;
 }
 
-.actDayRightVisor span{
-    font-weight: 500;
+.actDayRightVisor h5 {
+    font-size: 1.4em;
+    color: var(--color-texto-principal);
+}
+
+.actDayRightVisor span {
+    font-weight: 600;
+    color: var(--color-texto-secundario);
+}
+
+.actDayRightVisor .customIframeGoogleMaps {
+    margin-top: 20px;
+}
+
+.actDayLeaveButton {
+    display: flex;
+    justify-content: flex-end;
 }

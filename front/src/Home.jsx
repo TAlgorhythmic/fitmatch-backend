@@ -41,7 +41,6 @@ function Home() {
             }
         }
         getFriends();
-        console.log(friends);
     }, []);
 
     if (activities.length === 0) {

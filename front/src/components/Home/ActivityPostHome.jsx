@@ -68,11 +68,11 @@ function ActivityPostHome(props) {
                                 width="100%"
                                 height="100"
                                 loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
+                                allowFullScreen
+                                referrerPolicy="no-referrer-when-downgrade"
                                 src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc&q=${data.latitude},${data.longitude}`}>
                             </iframe>
-                            <h5 className='actUserName'>Localización: {data.latitude},{data.longitude}</h5>
+                            <h5 className='actUserName'>Localización: {data.placeholder}</h5>
                         </div>
                         <div className="dateCheck">
                             <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>
