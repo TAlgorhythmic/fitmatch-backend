@@ -4,9 +4,9 @@
 .contenedor-deslizar-perfiles {
   width: 100%;
   max-width: 750px;
-  margin-top: 1%;
  margin-left: 20%;
- margin-right: 30%;
+ margin-right: 50%;
+ margin-bottom: 20%;
   position: relative;
   display: flex;
   justify-content: center;
@@ -151,7 +151,7 @@
 /* Flechas de navegación */
 .flecha-contenedor {
   position: absolute;
-  top: 50%;
+  top: 45%;
   transform: translateY(-50%);
   z-index: 3;
 }
@@ -198,9 +198,13 @@
 }
 
 .texto-flecha {
-  font-size: 20%;
-  color: #888;
-  margin-top: 5px
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 100%;
+  color: white;
+  margin-top: 5px;
+  margin-right: 10px;
+  margin-left: 20px;
 }
 
 .horarios-gimnasio {
