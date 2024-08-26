@@ -10,22 +10,21 @@ import credentialsRouter from "./routers/CredentialsRouter.js";
 import e from "express";
 import { removeGarbage } from "./api/management/SQLManager.js";
 
-let i = 0;
-
 function executeQueriesRecursively(queries) {
     if (queries.length > 0) {
+        let i = 0;
+
         fitmatch.sql.query(queries[i])
-            .then(e => console.log("Success!"))
-            .catch(err => {
-                console.log("Your SQL configuration is wrong. Check config.json. Error: " + err)
-                process.exit(-1);
-            })
-            .finally(e => {
-                i++;
-                if (i < queries.length) {
-                    executeQueriesRecursively(queries);
-                }
-            })
+        .then(e => console.log("Success!"))
+        .catch(err => {
+            console.log("Your SQL schema is wrong. Check schema.sql. Error: " + err)
+        })
+        .finally(e => {
+            i++;
+            if (i < queries.length) {
+                executeQueriesRecursively(queries);
+            }
+        });
     }
 }
 
