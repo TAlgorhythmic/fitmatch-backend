@@ -184,12 +184,6 @@ const UserProfile = () => {
         <button className="edit-button" onClick={handleSubmitPhoto}>
         <Pencil size={20} />
       </button>
-            
-        <div className="horarios-gimnasio">
-        <p className='uno'><strong>Entrada:</strong> {userData.timetable1}</p>
-        <p className='dos'><strong>Salida:</strong> {userData.timetable2}</p>
-                  </div>
-                  <h5>Mi horario</h5>
                 <div className="dias-horarios">
                   <div className="dias-semana">
                     {userData.monday ? (
