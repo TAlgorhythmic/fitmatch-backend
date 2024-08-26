@@ -1,7 +1,8 @@
 import { PersonFillAdd, PersonCircle, People } from 'react-bootstrap-icons';
 import Notifications from '../Notifications/Notifications.jsx';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Button } from 'react-bootstrap';
 import './Header.css';
+import { Link, Navigate } from "react-router-dom";
 
 function Header() {
     function logoutButtonOnClick() {
@@ -43,16 +44,16 @@ function Header() {
 
                 <div className='navbar-icons-middle'>
                     <button className='buttonMakeFriends'>
-                        <a href="/friends" className='makeFriends'>
+                        <Link to="/friends" className='makeFriends'>
                             <span>
                                 <PersonFillAdd size={32} color='#ff6600' />
                             </span>
-                        </a>
+                        </Link>
                     </button>
                 </div>
 
                 <div className='navbar-icons-right'>
-                    <a href="/friends/list">
+                    <a href="/friendsList">
                         <People size={32} color='#ff6600' />
                     </a>
                     <Notifications />
@@ -63,7 +64,7 @@ function Header() {
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
-                            <Dropdown.Item href="/user/profile">Ver Perfil</Dropdown.Item>
+                            <Dropdown.Item href="/userProfile">Ver Perfil</Dropdown.Item>
                             <Dropdown.Item href="#" onClick={logoutButtonOnClick}>Cerrar Sesión</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
