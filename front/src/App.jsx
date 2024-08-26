@@ -84,7 +84,7 @@ function App() {
   }, [isValidToken, location.pathname])
 
   useEffect(() => {
-    if (location.pathname === '/login' || location.pathname === '/register' || location.pathname === "/formulario" || location.pathname === "/verify") {
+    if (location.pathname === '/login' || location.pathname === '/register' || location.pathname === "/formulario" ) {
       setShowHeader(false);
     } else {
       setShowHeader(true);

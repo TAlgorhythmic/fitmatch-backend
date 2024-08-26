@@ -34,7 +34,7 @@ const StyledButton = styled(Button)`
   padding: 10px 10px;
   border-radius: 5px;
   margin-top: ${(props) => props.marginTop || '20px'};
-  width: 20%;
+  width: 30%;
   text-align: center;
   &:hover {
      background-color: ${(props) => props.hoverColor || '#f0a51e'} !important;
@@ -455,7 +455,7 @@ return (
               Anterior
             </StyledButton>
             <StyledButton bgColor="#f0bb31" hoverColor="#f0a51e" onClick={handleNextStep}>
-              Següent
+              Siguiente
             </StyledButton>
           </div>
         </div>
