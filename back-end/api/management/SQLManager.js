@@ -43,71 +43,84 @@ class SQLManager {
     }
 
     sendConnectionRequest(id, other_id) {
+        if (isNaN(parseInt(id) || isNaN(parseInt(other_id)))) return null;
         return fitmatch.sql.query("INSERT INTO pending(sender_id, receiver_id) VALUES(?, ?);", { replacements: [id, other_id], type: QueryTypes.INSERT });
     }
 
     getPendingsFromReceiver(id) {
+        if (isNaN(parseInt(id))) return null;
         return fitmatch.sql.query("SELECT * FROM pending WHERE receiver_id = ?;", { replacements: [id], type: QueryTypes.SELECT })
     }
 
     removeFriendEntry(id, other_id) {
+        if (isNaN(parseInt(id) || isNaN(parseInt(other_id)))) return null;
         return fitmatch.sql.query("DELETE FROM friends WHERE (userId1 = ? AND userId2 = ?) OR (userId1 = ? AND userId2 = ?);", { replacements: [id, other_id, other_id, id], type: QueryTypes.DELETE });
     }
 
     leaveActivity(id, activityId, res) {
+        if (isNaN(parseInt(id) || isNaN(parseInt(activityId)))) {
+            res.json(buildInvalidPacket("Are you trying to sql inject? That will be a no."));
+            return null;
+        }
         this.getJoinedActivity(id, activityId)
+        .then(e => {
+            const data = sanitizeDataReceivedForSingleObject(e);
+            if (!data) {
+                res.json(buildInvalidPacket("You can't leave an activity you didn't join."));
+                return;
+            }
+            fitmatch.getSql().query("DELETE FROM joins_activities WHERE userId = ? AND postId = ?;", { replacements: [id, activityId], type: QueryTypes.DELETE })
             .then(e => {
-                const data = sanitizeDataReceivedForSingleObject(e);
-                if (!data) {
-                    res.json(buildInvalidPacket("You can't leave an activity you didn't join."));
-                    return;
-                }
-                fitmatch.getSql().query("DELETE FROM joins_activities WHERE userId = ? AND postId = ?;", { replacements: [id, activityId], type: QueryTypes.DELETE })
-                    .then(e => {
-                        res.json(buildSimpleOkPacket());
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-                    })
+                res.json(buildSimpleOkPacket());
             })
             .catch(err => {
                 console.log(err);
                 res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-            });
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
+        });
     }
 
     getJoinedActivity(id, activityId) {
+        if (isNaN(parseInt(id) || isNaN(parseInt(activityId)))) {
+            return null;
+        }
         return fitmatch.getSql().query("SELECT * FROM joins_activities WHERE userId = ? AND postId = ?;", { replacements: [id, activityId], type: QueryTypes.SELECT });
     }
 
     getReceiverPendingsFromId(id) {
+        if (isNaN(parseInt(id))) return null;
         return fitmatch.sql.query("SELECT * FROM pending WHERE receiver_id = ?;", { replacements: [id], type: QueryTypes.SELECT });
     }
 
     getJoinedActivities(id) {
+        if (isNaN(parseInt(id))) return null;
         return fitmatch.sql.query(`SELECT activities.* FROM joins_activities INNER JOIN activities ON joins_activities.postId = activities.id WHERE joins_activities.userId = ?;`, { replacements: [id], type: QueryTypes.SELECT });
     }
 
     getRawJoinedActivities(id) {
+        if (isNaN(parseInt(id))) return null;
         return fitmatch.sql.query(`SELECT * FROM joins_activities WHERE userId = ?;`, { replacements: [id], type: QueryTypes.SELECT });
     };
 
     putFriends(id1, id2) {
+        if (isNaN(parseInt(id1)) || isNaN(parseInt(id2))) return null;
         return fitmatch.sql.query("INSERT INTO friends(userId1, userId2) VALUES(?, ?);", { replacements: [id1, id2], type: QueryTypes.INSERT });
     }
 
+    // Needs fix, this is actually not used anywhere
     destroyUserCompletely(id) {
+        if (isNaN(parseInt(id))) return null;
         fitmatch.getSql().query("DELETE FROM users WHERE id = ?;", { replacements: [id], type: QueryTypes.DELETE })
-            .then(e => {
-                fitmatch.getSql().query("DELETE FROM days_of_week WHERE userId = ?;", { replacements: [id], type: QueryTypes.DELETE })
-                    .then(e => {
-                        fitmatch.getSql()
-                    })
-            })
-            .catch(e => {
-                console.log("Operation destroy user failed. Error: " + e);
-            });
+        .then(e => {
+            fitmatch.getSql().query("DELETE FROM days_of_week WHERE userId = ?;", { replacements: [id], type: QueryTypes.DELETE })
+        })
+        .catch(e => {
+            console.log("Operation destroy user failed. Error: " + e);
+        });
     }
 
     createNewActivity(title, description, expires, placeholder, latitude, longitude, userId) {
