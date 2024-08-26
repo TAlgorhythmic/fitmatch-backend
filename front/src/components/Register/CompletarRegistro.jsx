@@ -4,14 +4,13 @@ import { Camera, Person, Envelope, GeoAlt, Clock,Phone  } from 'react-bootstrap-
 import { useNavigate, Navigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './CompletarRegistro.css';
-import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+import { Autocomplete } from "@react-google-maps/api";
 import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
 import { ProgressBar, Step } from 'react-step-progress-bar';
 import Switch from 'react-switch';
 import { showPopup } from '../../Utils/Utils.js';
 import styled from 'styled-components';
-import { setToken } from '../../App';
-import { setUpdateUser } from '../../App';
+import { isApiLoaded, setUpdateUser } from '../../App';
 
 
 const libraries = ["places"];
@@ -113,10 +112,6 @@ const RegisterForm = () => {
   const handlePrevStep = () => {
     setStep((prevStep) => prevStep - 1);
   };
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
-    libraries: libraries
-  });
 
   const ref = useRef(null)
 
@@ -234,7 +229,6 @@ const RegisterForm = () => {
       
       console.log('Usuario registrado con éxito');
       setUpdateUser(true);
-      setToken(true);
       navigate('/');
     } else  {
       setTokenValid(false);
@@ -326,7 +320,7 @@ return (
               </Form.Group>
             </Col>
             <Col md={6}>
-              {isLoaded ? (
+              {isApiLoaded ? (
                 <Form.Group className="mb-3">
                   <h1 className="ubicacion">Selecciona la teva ubicació</h1>
                   <Autocomplete
