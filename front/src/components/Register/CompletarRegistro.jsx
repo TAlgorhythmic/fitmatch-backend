@@ -231,6 +231,7 @@ const RegisterForm = () => {
     const result = await response.json();
     console.log(result);
     if (result.status === 0) {
+      
       console.log('Usuario registrado con éxito');
       setUpdateUser(true);
       setToken(true);
@@ -318,8 +319,8 @@ return (
                     type="text"
                     name="phone"
                     value={formData.phone}
+                    onChange={handleChange}
                     placeholder="697415616"
-                    readOnly
                   />
                 </InputGroup>
               </Form.Group>
@@ -404,7 +405,7 @@ return (
           <div className="dies-setmana">
   <h1 className="rutina">Mi rutina diaria:</h1>
   <div className="rutina-diaria-container">
-    {['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'].map((day) => (
+    {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => (
       <Form.Group className="mb-3 rutina-item" key={day}>
         <Form.Label className="rutina-label">{day.charAt(0).toUpperCase() + day.slice(1)}</Form.Label>
         <Switch
@@ -487,7 +488,8 @@ return (
           <StyledButton bgColor="#333" textColor="#fff" hoverColor="#555" onClick={handlePrevStep}>
             Anterior
           </StyledButton>
-          <StyledButton bgColor="#f0bb31 !important" hoverColor="#f0a51e"  type="submit">
+          <StyledButton bgColor="#f0bb31 !important" hoverColor="#f0a51e"  type="submit" onClick={handleSubmit}>
+            
             Completar
           </StyledButton>
         </div>
