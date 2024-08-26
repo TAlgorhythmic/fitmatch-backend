@@ -9,12 +9,70 @@ import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
 import { ProgressBar, Step } from 'react-step-progress-bar';
 import Switch from 'react-switch';
 import { showPopup } from '../../Utils/Utils.js';
+import styled from 'styled-components';
 import { setToken } from '../../App';
 import { setUpdateUser } from '../../App';
 
 
 const libraries = ["places"];
+const FormContainer = styled(Container)`
+  background-color: #1b1b1b;
+  padding: 20px;
+  border-radius: 8px;
+  color: #fff;
+  max-width: 680px;
+  margin: auto;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+  font-family: 'Roboto', sans-serif;
+`;
 
+const StyledButton = styled(Button)`
+  background-color: ${(props) => props.bgColor || '#f0bb31'};
+  border: none;
+  color: ${(props) => props.textColor || '#000'};
+  font-weight: bold;
+  padding: 10px 10px;
+  border-radius: 5px;
+  margin-top: ${(props) => props.marginTop || '20px'};
+  width: 20%;
+  text-align: center;
+  &:hover {
+    background-color: ${(props) => props.hoverColor || '#f0a51e'};
+  }
+`;
+
+const PrivacyCheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  color: #fff;
+`;
+
+const PrivacyLabel = styled.h1`
+  font-size: 12px;
+  margin-left: 10px;
+  font-family: 'Roboto', sans-serif;
+`;
+
+const StyledTitle = styled.div`
+  font-size: ${(props) => props.fontSize || '24px'};
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+`;
+
+const StepIndicator = styled.div`
+  color: #fff;
+  background-color: ${(props) => (props.accomplished ? '#f0bb31' : '#333')};
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+`;
 const RegisterForm = () => {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
@@ -198,295 +256,242 @@ const RegisterForm = () => {
     return <Navigate to="/login" />
 }
 return (
-  <Container className="custom-register-form">
+  <FormContainer>
     <ProgressBar
+      className="progress-bar"
       percent={(step / 2) * 100}
       filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
     >
       <Step transition="scale">
-        {({ accomplished }) => (
-          <div className={`indexedStep ${accomplished ? "accomplished" : null}`}>
-            1
-          </div>
-        )}
+        {({ accomplished }) => <StepIndicator accomplished={accomplished}>1</StepIndicator>}
       </Step>
       <Step transition="scale">
-        {({ accomplished }) => (
-          <div className={`indexedStep ${accomplished ? "accomplished" : null}`}>
-            2
-          </div>
-        )}
+        {({ accomplished }) => <StepIndicator accomplished={accomplished}>2</StepIndicator>}
       </Step>
       <Step transition="scale">
-        {({ accomplished }) => (
-          <div className={`indexedStep ${accomplished ? "accomplished" : null}`}>
-            3
-          </div>
-        )}
+        {({ accomplished }) => <StepIndicator accomplished={accomplished}>3</StepIndicator>}
       </Step>
     </ProgressBar>
 
-    <Form onSubmit={handleSubmit} encType='multipart/form-data'>
+    <Form onSubmit={handleSubmit} encType="multipart/form-data">
       {step === 0 && (
         <div>
-          <div className="Titulo">Formulario de registro</div>
-          <div className="Datos"> Datos personales
+          <StyledTitle>Formulario de registro</StyledTitle>
+          <StyledTitle fontSize="18px">Datos personales</StyledTitle>
           <Row>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-            <h1 className='mensajes'>Nombre</h1>
-              <InputGroup>
-                <InputGroup.Text><Person /></InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  name="Nombre"
-                  value={formData.firstName}
-                  readOnly
-                />
-              </InputGroup>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-            <h1 className='mensajes'>Apellidos</h1>
-              <InputGroup>
-                <InputGroup.Text> <Person/></InputGroup.Text>
-                
-                <Form.Control
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  placeholder='Rios Aguilar'
-                />
-              </InputGroup>
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-        <Col md={6}>
-        <Form.Group className="mb-3">
-        <h1 className='mensajes'>Coloca tu mejor email</h1>
-          <InputGroup>
-            <InputGroup.Text><Envelope /></InputGroup.Text>
-            <Form.Control
-              type="email"
-              name="email"
-              value={formData.email}
-              placeholder='fitmatch@gmail.com'
-              readOnly
-            />
-          </InputGroup>
-        </Form.Group>
-        </Col>
-        <Col md={6}>
-        {
-          isLoaded ? (
-            <Form.Group className="mb-3">
-               <h1 className='mensajes'>Selecciona tu ubicación</h1>
-              <Autocomplete onLoad={a => ref.current = a} onPlaceChanged={() => onPlaceChanged()}>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <h1 className="nombre">Nombre</h1>
                 <InputGroup>
-                  <InputGroup.Text><GeoAlt /></InputGroup.Text>
+                  <InputGroup.Text><Person /></InputGroup.Text>
                   <Form.Control
                     type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    placeholder="Barcelona"
+                    name="Nom"
+                    value={formData.firstName}
+                    readOnly
                   />
                 </InputGroup>
-              </Autocomplete>
-            </Form.Group>
-          ) : <></>
-        }
-        </Col>
-        
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <h1 className="apellidos">Apellidos</h1>
+                <InputGroup>
+                  <InputGroup.Text><Person /></InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    name="Cognoms"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    placeholder="Rios Aguilar"
+                  />
+                </InputGroup>
+              </Form.Group>
+            </Col>
           </Row>
-          <form className="Politica" >
-        <input
-          type="checkbox"
-          id="privacyPolicy"
-          name="privacyPolicy"
-          required
-        />
-        <h1 className='politica'>He leído y acepto la Política de Privacidad</h1>
-    </form>
-          
-          <Button variant="primary" onClick={handleNextStep}>Siguiente</Button>
-        </div>
+          <Row>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <h1 className="correo">Introduce tu mejor gmail</h1>
+                <InputGroup>
+                  <InputGroup.Text><Envelope /></InputGroup.Text>
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    placeholder="fitmatch@gmail.com"
+                    readOnly
+                  />
+                </InputGroup>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              {isLoaded ? (
+                <Form.Group className="mb-3">
+                  <h1 className="ubicacion">Selecciona la teva ubicació</h1>
+                  <Autocomplete
+                    onLoad={(a) => (ref.current = a)}
+                    onPlaceChanged={() => onPlaceChanged()}
+                  >
+                    <InputGroup>
+                      <InputGroup.Text><GeoAlt /></InputGroup.Text>
+                      <Form.Control
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        placeholder="Barcelona"
+                      />
+                    </InputGroup>
+                  </Autocomplete>
+                </Form.Group>
+              ) : null}
+            </Col>
+          </Row>
+          <PrivacyCheckboxContainer>
+            <input
+              type="checkbox"
+              id="politicaPrivacitat"
+              name="politicaPrivacitat"
+              required
+            />
+            <PrivacyLabel>He llegit i accepto la Política de Privacitat</PrivacyLabel>
+          </PrivacyCheckboxContainer>
+          <StyledButton bgColor="#f0bb31" hoverColor="#f0a51e" onClick={handleNextStep}>
+            Següent
+          </StyledButton>
         </div>
       )}
+
       {step === 1 && (
-        <div>
-          {/* Paso 2: Mi Actividad */}
-          {/* Aquí se incluiría el contenido de la segunda imagen */}
-          <div className='horario-entrenamiento'>
-
-  <Form.Group className="mb-3">
-  <h1 className='mensajes' >Mi actividad</h1>
-  <h1 className='mensajes' >Horario habitual de entrenamiento</h1>
-  <h1 className='mensajes'> Entrada: </h1>
-  <div className="time-picker-container d-flex justify-content-between">
-    <InputGroup className="me-3 time-picker-group">
-      <InputGroup.Text className="time-picker-icon">
-        <Clock />
-      </InputGroup.Text>
-      <TimePicker
-        onChange={(value) => handleTimeChange('timetable1', value)}
-        value={formData.timetable1}
-        disableClock={true}
-        format="HH:mm"
-        step={30}
-       
-        className="time-picker-input"
-      />
-    </InputGroup>
-    <h1 className='mensajes'> Salida: </h1>
-    <InputGroup className="time-picker-group">
-      <InputGroup.Text className="time-picker-icon">
-        <Clock />
-      </InputGroup.Text>
-      <TimePicker
-        onChange={(value) => handleTimeChange('timetable2', value)}
-        value={formData.timetable2}
-        disableClock={true}
-        format="HH:mm"
-        step={30}
-        className="time-picker-input"
-      />
-    </InputGroup>
-  </div>
-</Form.Group>
-</div>
-<div className='dias-semana'>
-<h1 className='mensajes'> Mi rutina diaria: </h1>
-<Form.Group className="mb-3">
-          <Form.Label>Lunes</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('monday', checked)}
-            checked={formData.monday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Martes</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('tuesday', checked)}
-            checked={formData.tuesday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Miércoles</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('wednesday', checked)}
-            checked={formData.wednesday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Jueves</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('thursday', checked)}
-            checked={formData.thursday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Viernes</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('friday', checked)}
-            checked={formData.friday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Sábado</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('saturday', checked)}
-            checked={formData.saturday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Domingo</Form.Label>
-          <Switch
-            onChange={(checked) => handleSwitchChange('sunday', checked)}
-            checked={formData.sunday}
-            offColor="#0000"
-            onColor="#ff6600"
-          />
-        </Form.Group>
-</div>
-<Form.Group className="niveles">
-<h1 className='mensajes'> Mi nivel: </h1>
-          <Form.Select
-            name="proficiency"
-            value={formData.proficiency}
-            onChange={handleChange}
-          >
-            <option value="Principiante">Principiante</option>
-            <option value="Intermedio">Intermedio</option>
-            <option value="Avanzado">Avanzado</option>
-          </Form.Select>
-        </Form.Group>
-
-<Form.Group className="actividades">
-<h1 className='mensajes'> Actividades favoritas: </h1>
-          <div className="d-flex flex-wrap justify-content-center">
-            {sportsInterests.map((interest) => (
-            <Button
-            key={interest}
-            className={`me-2 mb-2 custom-preferences-btn ${selectedInterests.includes(interest) ? 'custom-button-selected' : 'custom-button-unselected'}`}
-            onClick={() => handleInterestClick(interest)}
->
-            {interest}
-            </Button>
-
-            ))}
+        <div className="formulari-activitat-personalitzat">
+          <div className="horari-entrenament">
+            <Form.Group className="mb-3">
+              <h1 className="actividad">La meva activitat</h1>
+              <h1 className="horario-habitual">Horari habitual entrenament</h1>
+              <div className="contenidor-time-picker d-flex justify-content-between">
+              <h1 className="entrada">Entrada:</h1>
+                <InputGroup className="me-3 grup-time-picker">
+                  <InputGroup.Text className="icona-time-picker">
+                    <Clock />
+                  </InputGroup.Text>
+                  <TimePicker
+                    onChange={(value) => handleTimeChange('timetable1', value)}
+                    value={formData.timetable1}
+                    disableClock={true}
+                    format="HH:mm"
+                    step={30}
+                    className="input-time-picker"
+                  />
+                </InputGroup>
+                <h1 className="entrada">Salida:</h1>
+                <InputGroup className="grup-time-picker">
+                  <InputGroup.Text className="icona-time-picker">
+                    <Clock />
+                  </InputGroup.Text>
+                  <TimePicker
+                    onChange={(value) => handleTimeChange('timetable2', value)}
+                    value={formData.timetable2}
+                    disableClock={true}
+                    format="HH:mm"
+                    step={30}
+                    className="input-time-picker"
+                  />
+                </InputGroup>
+              </div>
+            </Form.Group>
           </div>
-        </Form.Group>
-          <Button variant="secondary" onClick={handlePrevStep}>Anterior</Button>
-          <Button variant="primary" onClick={handleNextStep}>Siguiente</Button>
+
+          <div className="dies-setmana">
+  <h1 className="rutina">Mi rutina diaria:</h1>
+  <div className="rutina-diaria-container">
+    {['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'].map((day) => (
+      <Form.Group className="mb-3 rutina-item" key={day}>
+        <Form.Label className="rutina-label">{day.charAt(0).toUpperCase() + day.slice(1)}</Form.Label>
+        <Switch
+          onChange={(checked) => handleSwitchChange(day, checked)}
+          checked={formData[day]}
+          offColor="#000000"
+          onColor="#ff6600"
+        />
+      </Form.Group>
+    ))}
+  </div>
+</div>
+
+          <Form.Group className="nivell-entrenament">
+            <h1 className="nivel">El meu nivell:</h1>
+            <Form.Select
+              name="proficiency"
+              value={formData.proficiency}
+              onChange={handleChange}
+              className="select-nivell"
+            >
+              <option value="Principiant">Principiant</option>
+              <option value="Intermedi">Intermedi</option>
+              <option value="Avançat">Avançat</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="activitats-favorites">
+            <h1 className="actividades-favoritas">Activitats favorites:</h1>
+            <div className="botones-intereses">
+              {sportsInterests.map((interest) => (
+                <StyledButton
+                  key={interest}
+                  bgColor={selectedInterests.includes(interest) ? '#ff6600' : '#333'}
+                  textColor={selectedInterests.includes(interest) ? '#fff' : '#fff'}
+                  hoverColor={selectedInterests.includes(interest) ? '#e65c00' : '#555'}
+                  onClick={() => handleInterestClick(interest)}
+                >
+                  {interest}
+                </StyledButton>
+              ))}
+            </div>
+          </Form.Group>
+
+          <div className="grup-botons d-flex justify-content-between">
+            <StyledButton bgColor="#333" textColor="#fff" hoverColor="#555" onClick={handlePrevStep}>
+              Anterior
+            </StyledButton>
+            <StyledButton bgColor="#f0bb31" hoverColor="#f0a51e" onClick={handleNextStep}>
+              Següent
+            </StyledButton>
+          </div>
         </div>
       )}
 
       {step === 2 && (
         <div>
-          {/* Paso 3: Mi Perfil */}
-          <h1 className='mensajes'> Mi perfil </h1>
+          <h1 className="miperfil">Mi perfil</h1>
           <Form.Group className="mb-3">
-          <h1 className='mensajes'> Sobre mí: </h1>
-          <Form.Control
-            type="text"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-          />
-        </Form.Group>
+            <h1 className="sobremi">Sobre mí:</h1>
+            <Form.Control
+              type="text"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+            />
+          </Form.Group>
 
-        <Form.Group className="mb-3">
-        <h1 className='mensajes'> Foto de perfil, sonríe </h1>
-          <Form.Control
-            type="file"
-            name="img"
-            onChange={handleImageChange}
-          />
-        </Form.Group>
-          <Button variant="secondary" onClick={handlePrevStep}>Anterior</Button>
-          <Button variant="success" type="submit" className="custom-submit-btn">
+          <Form.Group className="mb-3">
+            <h1 className="sonrie">Foto de perfil, sonríe!</h1>
+            <Form.Control
+              type="file"
+              name="img"
+              onChange={handleImageChange}
+            />
+          </Form.Group>
+          <StyledButton bgColor="#333" textColor="#fff" hoverColor="#555" onClick={handlePrevStep}>
+            Anterior
+          </StyledButton>
+          <StyledButton bgColor="#f0bb31" hoverColor="#f0a51e"  type="submit">
             Completar
-          </Button>
+          </StyledButton>
         </div>
       )}
     </Form>
-  </Container>
+  </FormContainer>
 );
 };
 export default RegisterForm;
