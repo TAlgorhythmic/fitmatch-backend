@@ -136,7 +136,7 @@ function App() {
       }
     } else {
       if (!isValidToken && isValidToken !== null) {
-        if (!token || location.pathname === "/register" || location.pathname === "/login") {
+        if (!token && location.pathname !== "/register" && location.pathname !== "/login") {
           navigate("/register");
         } else {
           showPopup("No permission", "Tu sesión ha expirado.", false);
