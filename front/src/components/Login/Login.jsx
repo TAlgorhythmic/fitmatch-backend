@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setToken } from '../../App';
 import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
 import { Form, InputGroup } from 'react-bootstrap';
 import './Login.css';
@@ -38,7 +37,6 @@ const Login = () => {
                     setResposta('Login successful');
                     const token = response.token;
                     localStorage.setItem('authToken', token);
-                    setToken(true);
                     navigate('/');
                 } else {
                     setResposta('error: ');
