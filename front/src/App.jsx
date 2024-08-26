@@ -38,7 +38,7 @@ function App() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
-  const [isValidToken, setIsValidToken] = useState(null);
+  const [isValidToken, setIsValidToken] = useState(false);
   const [updateUser, setUpdate] = useState(true);
   const [showHeader, setShowHeader] = useState(true);
   setUpdateUser = setUpdate;
@@ -125,23 +125,14 @@ function App() {
       setShowHeader(false);
     } else {
       setShowHeader(true);
-    }
-    if (isValidToken && user && !user.isSetup) {
-      if (location.pathname !== "/formulario" && location.pathname !== "/register" && location.pathname !== "/login") {
+      if (isValidToken && user && !user.isSetup) {
         navigate("/formulario");
       }
-    } else if (isValidToken && user && user.isSetup) {
-      if (location.pathname === "/formulario") {
-        navigate("/");
-      }
-    } else {
-      if (!isValidToken && isValidToken !== null) {
-        if (!token && location.pathname !== "/register" && location.pathname !== "/login") {
-          navigate("/register");
-        } else {
-          showPopup("No permission", "Tu sesión ha expirado.", false);
-          navigate("/login");
-        }
+      if (!token) {
+        navigate("/register");
+      } else {
+        showPopup("No permission", "Tu sesión ha expirado.", false);
+        navigate("/login");
       }
     }
   }, [isValidToken, location.pathname, navigate, user]);
