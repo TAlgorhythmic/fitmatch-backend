@@ -121,6 +121,11 @@ function App() {
   }, [isValidToken, updateUser, token]);
 
   useEffect(() => {
+    if (location.pathname === "/formulario" || location.pathname === "/login" || location.pathname === "/register" ) {
+      setShowHeader(false);
+    } else {
+      setShowHeader(true);
+    }
     if (isValidToken && user && !user.isSetup) {
       if (location.pathname !== "/formulario" && location.pathname !== "/register" && location.pathname !== "/login") {
         navigate("/formulario");
@@ -130,11 +135,13 @@ function App() {
         navigate("/");
       }
     } else {
-      if (location.pathname === "/register") {
-        showPopup("Welcome", "Bienvenido a la plataforma de nuevo", false);
-      } else if (!isValidToken && isValidToken !== null) {
-        showPopup("No permission", "Tu sesión ha expirado.", false);
-        navigate("/login");
+      if (!isValidToken && isValidToken !== null) {
+        if (!token) {
+          navigate("/register");
+        } else {
+          showPopup("No permission", "Tu sesión ha expirado.", false);
+          navigate("/login");
+        }
       }
     }
   }, [isValidToken, location.pathname, navigate, user]);
