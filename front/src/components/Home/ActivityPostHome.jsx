@@ -1,6 +1,6 @@
 import { Alert, Row, Col, Image, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
 import JoinedActivitiesController from '../../controllers/JoinedActivitiesController.js';
