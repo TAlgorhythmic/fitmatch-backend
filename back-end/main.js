@@ -9,7 +9,9 @@ import requestRouter from "./routers/RequestsRouter.js";
 import credentialsRouter from "./routers/CredentialsRouter.js";
 import e from "express";
 import { removeGarbage } from "./api/management/SQLManager.js";
+
 let i = 0;
+
 function executeQueriesRecursively(queries) {
     if (queries.length > 0) {
 

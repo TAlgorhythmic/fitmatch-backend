@@ -82,9 +82,7 @@ const Register = () => {
                 navigate("/formulario");
                 setSuccess(true);
                 setError('');
-                setUpdateUser(true);
-                showPopup("Info", "¡Te has verificado con éxito!");
-               
+                setUpdateUser(true);               
             } else if (data.status === INVALID) {
                 showPopup("Invalid data", data.error, false);
             } else {

@@ -2,3 +2,26 @@
     margin: 0 auto;
     width: 600px;
 }
+
+.homeDisclaimer {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.homeDisclaimer h6 {
+    font-size: 2em;
+    margin-bottom: 40px;
+    color: var(--color-texto-secundario);
+}
+
+.homeDisclaimer Button {
+    background-color: black;
+    border: 2px solid var(--color-botones);
+    color: var(--color-botones);
+}
+
+.homeDisclaimer Button:hover {
+    background-color: var(--color-botones);
+    border: 2px solid var(--color-botones);
+    color: black;
+}

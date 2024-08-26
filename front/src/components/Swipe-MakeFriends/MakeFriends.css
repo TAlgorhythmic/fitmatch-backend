@@ -4,9 +4,7 @@
 .contenedor-deslizar-perfiles {
   width: 100%;
   max-width: 750px;
- margin-left: 20%;
- margin-right: 50%;
- margin-bottom: 20%;
+  margin: 0 auto;
   position: relative;
   display: flex;
   justify-content: center;

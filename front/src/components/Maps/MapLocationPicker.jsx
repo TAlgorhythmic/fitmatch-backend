@@ -7,6 +7,7 @@ export default function MapLocationPicker(props) {
 
     const setLocation = props.setLocation;
     const location = props.location;
+    const onChange = props.onChange;
     const i = React.useRef(null);
     const iMap = React.useRef(null);
     const geocoder = React.useRef(null);
@@ -97,7 +98,10 @@ export default function MapLocationPicker(props) {
                         id="search"
                         className="search-input"
                         name="search"
-                        onChange={handleChange}
+                        onChange={e => {
+                            handleChange(e);
+                            onChange(e);
+                        }}
                         value={location.address}
                         type="text"
                         placeholder="Buscar ubicaciones"
