@@ -8,9 +8,7 @@ import { showPopup } from '../../Utils/Utils.js';
 function ActivityDayDisplay(props) {
 
     const { data, handleLeaveActivity } = props;
-
     let expireDate = new Date(data.expires);
-
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
 
@@ -23,8 +21,6 @@ function ActivityDayDisplay(props) {
             showPopup("Error Leaving Activity", error, false);
         }
     }
-
-    console.log(data);
 
     return (
         <>
