@@ -37,7 +37,7 @@ const StyledButton = styled(Button)`
   width: 20%;
   text-align: center;
   &:hover {
-    background-color: ${(props) => props.hoverColor || '#f0a51e'};
+     background-color: ${(props) => props.hoverColor || '#f0a51e'} !important;
   }
 `;
 
@@ -286,7 +286,7 @@ return (
                   <InputGroup.Text><Person /></InputGroup.Text>
                   <Form.Control
                     type="text"
-                    name="Nom"
+                    name="nom"
                     value={formData.firstName}
                     readOnly
                   />
@@ -300,10 +300,8 @@ return (
                   <InputGroup.Text><Person /></InputGroup.Text>
                   <Form.Control
                     type="text"
-                    name="Cognoms"
                     value={formData.lastName}
                     onChange={handleChange}
-                    placeholder="Rios Aguilar"
                   />
                 </InputGroup>
               </Form.Group>
@@ -355,10 +353,10 @@ return (
               name="politicaPrivacitat"
               required
             />
-            <PrivacyLabel>He llegit i accepto la Política de Privacitat</PrivacyLabel>
+            <PrivacyLabel>He leído y acepto la Política de Privacidad</PrivacyLabel>
           </PrivacyCheckboxContainer>
           <StyledButton bgColor="#f0bb31" hoverColor="#f0a51e" onClick={handleNextStep}>
-            Següent
+            Siguiente
           </StyledButton>
         </div>
       )}
@@ -420,16 +418,16 @@ return (
 </div>
 
           <Form.Group className="nivell-entrenament">
-            <h1 className="nivel">El meu nivell:</h1>
+            <h1 className="nivel">Mi nivel:</h1>
             <Form.Select
               name="proficiency"
               value={formData.proficiency}
               onChange={handleChange}
               className="select-nivell"
             >
-              <option value="Principiant">Principiant</option>
-              <option value="Intermedi">Intermedi</option>
-              <option value="Avançat">Avançat</option>
+              <option value="Principiante">Principiante</option>
+              <option value="Intermedio">Intermedio</option>
+              <option value="Avanzado">Avanzado</option>
             </Form.Select>
           </Form.Group>
 
@@ -485,7 +483,7 @@ return (
           <StyledButton bgColor="#333" textColor="#fff" hoverColor="#555" onClick={handlePrevStep}>
             Anterior
           </StyledButton>
-          <StyledButton bgColor="#f0bb31" hoverColor="#f0a51e"  type="submit">
+          <StyledButton bgColor="#f0bb31 !important" hoverColor="#f0a51e"  type="submit">
             Completar
           </StyledButton>
         </div>
