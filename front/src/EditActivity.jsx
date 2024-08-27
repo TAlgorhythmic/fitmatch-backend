@@ -23,7 +23,8 @@ function EditActivity() {
 
     useEffect(() => {
         async function getActivity() {
-            const data = await ActivityController.getActivityById(id)
+            console.log(id);
+            const data = await ActivityController.getActivityById(parseInt(id))
             console.log(data);
             setActivity({ ...data, expires: new Date(data.expires) });
             setLocation({
@@ -62,7 +63,7 @@ function EditActivity() {
         }
     }
 
-    if (redirect) return <Navigate to="/agenda" />;
+    if (redirect) return <Navigate to="/" />;
 
     function formatDate(fechaObj) {
         // Extraer los componentes de la fecha
@@ -102,7 +103,7 @@ function EditActivity() {
                             name='expires'
                             onChange={onChange}
                             value={activity ?
-                                formatDate(activity.expires) : ""}
+                            formatDate(activity.expires) : ""}
                             className="date-input"
                             style={{ marginBottom: "10px" }}
                             type="datetime-local"

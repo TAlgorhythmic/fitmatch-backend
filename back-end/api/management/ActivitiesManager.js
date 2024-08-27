@@ -29,7 +29,7 @@ class ActivitiesManager {
         sqlManager.getAllActivities()
         .then(e => {
             const data = sanitizeDataReceivedForArrayOfObjects(e, "id");
-            data.forEach(item => this.map.set(item.id, new Ref(new Activity(item.id, item.title, item.description, item.postDate, item.expires, item.userId, item.placeholder, item.latitude, item.longitude), this.map)));
+            data.forEach(item => {return this.put(item.id, new Activity(item.id, item.title, item.description, item.postDate, item.expires, item.userId, item.placeholder, item.latitude, item.longitude), this.map);});
             console.log("Activities initialized!");
         }).catch(err => {
             console.log("Failed to initialize activities: " + err);
