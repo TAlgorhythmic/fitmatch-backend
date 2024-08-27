@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
 import { INVALID, OK } from '../../Utils/StatusCodes';
 import { setUpdateUser } from '../../App';
-import { FaEye, FaEyeSlash, FaPhoneAlt, FaUser, FaLock } from 'react-icons/fa';
-import { Form, InputGroup } from 'react-bootstrap';
+import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
+import { InputGroup } from 'react-bootstrap';
 import zxcvbn from 'zxcvbn';
 
 const Register = () => {
@@ -147,7 +147,7 @@ const Register = () => {
                             <div className="form-group">
                                 <InputGroup className="input-group-custom">
                                     <InputGroup.Text className="input-icon">
-                                        <FaPhoneAlt />
+                                        <FaEnvelope />
                                     </InputGroup.Text>
                                     <input
                                         type="text"
