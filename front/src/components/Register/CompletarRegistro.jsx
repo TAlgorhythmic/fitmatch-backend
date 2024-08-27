@@ -229,7 +229,6 @@ const RegisterForm = () => {
       navigate('/');
       console.log('Usuario registrado con éxito');
       setUpdateUser(true);
-      navigate('/');
     } else  {
       setTokenValid(false);
       showPopup("Something went wrong", result.error, true);
