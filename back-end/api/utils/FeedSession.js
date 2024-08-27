@@ -33,9 +33,7 @@ class FeedSession {
         const sendData = this.array.slice(this.position - ACTIVITIES_PER_REQUEST, ACTIVITIES_PER_REQUEST);
 
         if (this.position >= this.array.length) this.isEnded = true;
-
-        console.log(this.array);
-
+        
         return sendData;
     }
 }
