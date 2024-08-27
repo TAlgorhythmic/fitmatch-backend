@@ -20,7 +20,7 @@ const SideSheet = () => {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', position: "sticky", top: "0"}}>
       {/* Sidebar */}
       <Drawer
         anchor="left"
