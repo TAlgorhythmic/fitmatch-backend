@@ -5,8 +5,6 @@ import ActivitiesController from './controllers/ActivitiesController.js';
 import { OK } from "./Utils/StatusCodes.js";
 import { Navigate } from "react-router-dom";
 import MapLocationPicker from './components/Maps/MapLocationPicker.jsx';
-import { isApiLoaded } from './App.jsx';
-
 
 function CreateActivity() {
 
