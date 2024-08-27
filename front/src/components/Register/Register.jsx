@@ -27,6 +27,11 @@ const Register = () => {
         setPasswordVisible(!passwordVisible);
     };
 
+    const handleNavigate = (event) => {
+        event.preventDefault();  // Previene el comportamiento por defecto del enlace
+        navigate('/login');  // Redirige a la ruta /login
+      };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -180,7 +185,7 @@ const Register = () => {
                                 <PasswordStrengthMeter score={passwordStrength} errors={feedback} />
                             </div>
                             <button type="submit" className="buttonRegister">Crear cuenta</button>
-                            <p className="link-to-login">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
+                            <p className="link-to-login">¿Ya tienes una cuenta?  <a href="/login" onClick={handleNavigate}>Iniciar Sesión</a></p>
                             {error && <p className="error-message">{error}</p>}
                         </form>
                     </div>

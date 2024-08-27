@@ -15,6 +15,11 @@ const Login = () => {
     const [resposta, setResposta] = useState('');
     const navigate = useNavigate();
 
+    const handleNavigate = (event) => {
+        event.preventDefault();  // Previene el comportamiento por defecto del enlace
+        navigate('/register');  // Redirige a la ruta /login
+      };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -100,7 +105,7 @@ const Login = () => {
         </a>
         <hr className="auth-divider" />
         <p className="link-to-auth">
-            ¿No tienes cuenta? <a href="/register">Sing up</a>
+            ¿No tienes cuenta? <a href="/register" onClick={handleNavigate}>Sing up</a>
         </p>
         <h3>{resposta}</h3>
     </div>

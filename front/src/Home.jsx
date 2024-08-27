@@ -15,6 +15,7 @@ function Home() {
     const ActivityControl = new ActivitiesController(token);
     const usersControl = new UsersController(token);
 
+    
     useEffect(() => {
         async function getActivities() {
             const activitiesData = await ActivityControl.getFeed();
@@ -60,15 +61,14 @@ function Home() {
             </div>
         );
 
-    }
-
+    } 
 
     return (
         <>
             <div className="contenedorHome">
                 {activities.map((activity, index) => (
                     <Row key={index}>
-                        <ActivityPostHome data={activity} friendsList={friends} />
+                        <ActivityPostHome data={activity} friendsList={friends}  />
                     </Row>
                 ))}
             </div>
