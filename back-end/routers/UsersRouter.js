@@ -348,7 +348,6 @@ router.post('/edit', tokenRequired, function (req, res, next) {
         console.warn("Warning! proficiency for " + name + " is null when it shouldn't!")
     }
     const trainingPreferences = Array.isArray(req.body.trainingPreferences) ? req.body.trainingPreferences : null;
-    const img = req.body.img ? req.body.img : "img1.jpg";
     const country = req.body.country ? req.body.country : null;
     const city = req.body.city ? req.body.city : null;
     const latitude = req.body.latitude ? req.body.latitude : null;
@@ -374,7 +373,6 @@ router.post('/edit', tokenRequired, function (req, res, next) {
         user.setEmail(email);
         user.setDescription(description);
         user.setTrainingPreferences(trainingPreferences);
-        user.setImg(img);
         user.setCountry(country);
         user.setLocation(city, latitude, longitude);
         user.setMonday(monday);

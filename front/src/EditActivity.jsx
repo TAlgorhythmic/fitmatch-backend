@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './CreateActivity.css';
+import './components/CreateActivity/CreateActivity.css';
 import { showPopup } from './Utils/Utils.js';
 import ActivitiesController from './controllers/ActivitiesController.js';
 import { OK } from "./Utils/StatusCodes.js";
