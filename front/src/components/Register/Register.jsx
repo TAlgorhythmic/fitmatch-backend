@@ -4,9 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { showPopup } from '../../Utils/Utils';
 import { INVALID, OK } from '../../Utils/StatusCodes';
 import { setUpdateUser } from '../../App';
-import { FaEye, FaEyeSlash, FaPhoneAlt, FaUser, FaLock } from 'react-icons/fa';
-import { Form, InputGroup } from 'react-bootstrap';
-import { setToken } from '../../App';
+import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
+import { InputGroup } from 'react-bootstrap';
 import zxcvbn from 'zxcvbn';
 
 const Register = () => {
@@ -26,6 +25,11 @@ const Register = () => {
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     };
+
+    const handleNavigate = (event) => {
+        event.preventDefault();  // Previene el comportamiento por defecto del enlace
+        navigate('/login');  // Redirige a la ruta /login
+      };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -78,13 +82,10 @@ const Register = () => {
             if (data.status === OK) {
                 const token = data.token;
                 localStorage.setItem('authToken', token);
-                setToken(true);
                 navigate("/formulario");
                 setSuccess(true);
                 setError('');
-                setUpdateUser(true);
-                showPopup("Info", "¡Te has verificado con éxito!");
-               
+                setUpdateUser(true);               
             } else if (data.status === INVALID) {
                 showPopup("Invalid data", data.error, false);
             } else {
@@ -146,7 +147,7 @@ const Register = () => {
                             <div className="form-group">
                                 <InputGroup className="input-group-custom">
                                     <InputGroup.Text className="input-icon">
-                                        <FaPhoneAlt />
+                                        <FaEnvelope />
                                     </InputGroup.Text>
                                     <input
                                         type="text"
@@ -182,7 +183,7 @@ const Register = () => {
                                 <PasswordStrengthMeter score={passwordStrength} errors={feedback} />
                             </div>
                             <button type="submit" className="buttonRegister">Crear cuenta</button>
-                            <p className="link-to-login">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
+                            <p className="link-to-login">¿Ya tienes una cuenta?  <a href="/login" onClick={handleNavigate}>Iniciar Sesión</a></p>
                             {error && <p className="error-message">{error}</p>}
                         </form>
                     </div>

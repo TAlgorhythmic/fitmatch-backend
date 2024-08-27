@@ -1,6 +1,7 @@
 import express from "express";
 import { Sequelize } from "sequelize";
 import userManager from "./management/UserManager.js";
+import activitiesManager from "./management/ActivitiesManager.js";
 import queryManager from "./management/SQLManager.js";
 import helmet from "helmet";
 import fs from "fs";
@@ -54,6 +55,7 @@ class Fitmatch {
         }))
         this.sqlManager = queryManager;
         this.userManager = userManager;
+        this.activitiesManager = activitiesManager;
     }
 
     /**

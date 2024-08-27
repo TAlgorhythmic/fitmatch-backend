@@ -1,20 +1,21 @@
 import React from "react";
 import { Autocomplete, GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 
-const libs = ["places", "maps", "marker"];
+const libs = ["maps", "marker", "places"];
 
 export default function MapLocationPicker(props) {
 
     const setLocation = props.setLocation;
     const location = props.location;
+    const onChange = props.onChange;
     const i = React.useRef(null);
     const iMap = React.useRef(null);
     const geocoder = React.useRef(null);
 
-    const { isLoaded } = useJsApiLoader({
+    const isApiLoaded = useJsApiLoader({
         googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
         libraries: libs
-    })
+      }).isLoaded;
 
     // Centre d'espanya aprox
     const center = {
@@ -22,7 +23,7 @@ export default function MapLocationPicker(props) {
         lng: -3.74922
     };
 
-    if (!isLoaded) {
+    if (!isApiLoaded) {
         return <></>;
     }
 
@@ -71,6 +72,8 @@ export default function MapLocationPicker(props) {
         })
     }
 
+    if (!isApiLoaded) return <></>;
+
     return (
         <>
             <GoogleMap
@@ -97,7 +100,10 @@ export default function MapLocationPicker(props) {
                         id="search"
                         className="search-input"
                         name="search"
-                        onChange={handleChange}
+                        onChange={e => {
+                            handleChange(e);
+                            if (onChange) onChange(e);
+                        }}
                         value={location.address}
                         type="text"
                         placeholder="Buscar ubicaciones"

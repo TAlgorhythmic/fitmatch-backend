@@ -7,6 +7,67 @@ h1{
   padding: 0; /* Sin relleno */
   letter-spacing: 0.5px; /* Ligera separación entre las letras */
 }
+.iiRYUU {
+  background-color: #f0bb31;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+  width: 30%;
+  text-align: center;
+  margin-left: 35% !important;
+}
+
+.hOkdQb {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  margin-top: 20px !important;
+}
+.jgkupB {
+  background-color: #f0bb31;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+  width: 30% !important;
+  margin-left: 35%;
+}
+.jbvTfX {
+ margin-left:40% !important;
+}
+.cwtnrE {
+  background-color: #f0bb31;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+  width: 30%;
+  margin-left: 35%;
+  text-align: center;
+}
+.fVrrnn {
+  background-color: #f0bb31 !important;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+  width: 30%;
+  margin-left: 40%;
+  text-align: center;
+}
+
+
+
 h1.nombre{
   font-size: 15px;
   margin-bottom: 5px;
@@ -82,6 +143,7 @@ h1.rutina{
   color: #ff6600; /* Color del texto */
   margin-bottom: 5px; /* Espacio entre el texto y el interruptor */
   margin-top: 5px;
+  font-weight: 900;
   text-align: center; /* Centra el texto en cada caja */
 }
 h1.nivel{

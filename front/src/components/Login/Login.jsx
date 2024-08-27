@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setToken } from '../../App';
-import { FaEye, FaEyeSlash, FaPhoneAlt, FaUser, FaLock } from 'react-icons/fa';
-import { Form, InputGroup } from 'react-bootstrap';
+import { FaEye, FaEyeSlash, FaLock, FaEnvelope } from 'react-icons/fa';
+import { InputGroup } from 'react-bootstrap';
 import './Login.css';
 
 const Login = () => {
@@ -14,6 +13,11 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [resposta, setResposta] = useState('');
     const navigate = useNavigate();
+
+    const handleNavigate = (event) => {
+        event.preventDefault();  // Previene el comportamiento por defecto del enlace
+        navigate('/register');  // Redirige a la ruta /login
+      };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -37,7 +41,6 @@ const Login = () => {
                 if (response.status === 0) {
                     setResposta('Login successful');
                     const token = response.token;
-                    setToken(true);
                     localStorage.setItem('authToken', token);
                     navigate('/');
                 } else {
@@ -63,11 +66,11 @@ const Login = () => {
             <div className="form-group">
                 <InputGroup className="input-group-custom">
                     <InputGroup.Text className="input-icon">
-                        <FaPhoneAlt />
+                    <FaEnvelope/>
                     </InputGroup.Text>
                     <input
                         type="text"
-                        placeholder="email"
+                        placeholder="fitmatch@gmail.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -100,7 +103,7 @@ const Login = () => {
         </a>
         <hr className="auth-divider" />
         <p className="link-to-auth">
-            ¿No tienes cuenta? <a href="/register">Sing up</a>
+            ¿No tienes cuenta? <a href="/register" onClick={handleNavigate}>Sing up</a>
         </p>
         <h3>{resposta}</h3>
     </div>

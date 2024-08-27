@@ -1,20 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap';
-import { Camera, Person, Envelope, GeoAlt, Clock } from 'react-bootstrap-icons';
+import { Camera, Person, Envelope, GeoAlt, Clock,Phone  } from 'react-bootstrap-icons';
 import { useNavigate, Navigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './CompletarRegistro.css';
-import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
 import { ProgressBar, Step } from 'react-step-progress-bar';
 import Switch from 'react-switch';
 import { showPopup } from '../../Utils/Utils.js';
 import styled from 'styled-components';
-import { setToken } from '../../App';
 import { setUpdateUser } from '../../App';
 
+const libs = ["maps", "marker", "places"];
 
-const libraries = ["places"];
 const FormContainer = styled(Container)`
   background-color: #1b1b1b;
   padding: 20px;
@@ -34,7 +33,7 @@ const StyledButton = styled(Button)`
   padding: 10px 10px;
   border-radius: 5px;
   margin-top: ${(props) => props.marginTop || '20px'};
-  width: 20%;
+  width: 30%;
   text-align: center;
   &:hover {
      background-color: ${(props) => props.hoverColor || '#f0a51e'} !important;
@@ -99,6 +98,11 @@ const RegisterForm = () => {
     sunday: false,
   });
 
+  const isApiLoaded = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+    libraries: libs
+  }).isLoaded;
+
   const handleSwitchChange = (day, checked) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -113,10 +117,6 @@ const RegisterForm = () => {
   const handlePrevStep = () => {
     setStep((prevStep) => prevStep - 1);
   };
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
-    libraries: libraries
-  });
 
   const ref = useRef(null)
 
@@ -231,10 +231,9 @@ const RegisterForm = () => {
     const result = await response.json();
     console.log(result);
     if (result.status === 0) {
+      navigate('/');
       console.log('Usuario registrado con éxito');
       setUpdateUser(true);
-      setToken(true);
-      navigate('/');
     } else  {
       setTokenValid(false);
       showPopup("Something went wrong", result.error, true);
@@ -311,21 +310,21 @@ return (
           <Row>
             <Col md={6}>
               <Form.Group className="mb-3">
-                <h1 className="correo">Introduce tu mejor gmail</h1>
+                <h1 className="correo">Introduce tu mejor numero</h1>
                 <InputGroup>
-                  <InputGroup.Text><Envelope /></InputGroup.Text>
+                  <InputGroup.Text><Phone /></InputGroup.Text>
                   <Form.Control
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    placeholder="fitmatch@gmail.com"
-                    readOnly
+                    type="text"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="697415616"
                   />
                 </InputGroup>
               </Form.Group>
             </Col>
             <Col md={6}>
-              {isLoaded ? (
+              {isApiLoaded ? (
                 <Form.Group className="mb-3">
                   <h1 className="ubicacion">Selecciona la teva ubicació</h1>
                   <Autocomplete
@@ -404,7 +403,7 @@ return (
           <div className="dies-setmana">
   <h1 className="rutina">Mi rutina diaria:</h1>
   <div className="rutina-diaria-container">
-    {['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'].map((day) => (
+    {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => (
       <Form.Group className="mb-3 rutina-item" key={day}>
         <Form.Label className="rutina-label">{day.charAt(0).toUpperCase() + day.slice(1)}</Form.Label>
         <Switch
@@ -454,7 +453,7 @@ return (
               Anterior
             </StyledButton>
             <StyledButton bgColor="#f0bb31" hoverColor="#f0a51e" onClick={handleNextStep}>
-              Següent
+              Siguiente
             </StyledButton>
           </div>
         </div>
@@ -464,17 +463,6 @@ return (
         <div>
           <h1 className="miperfil">Mi perfil</h1>
           <Form.Group className="mb-3">
-            <h1 className="sobremi">Sobre mí:</h1>
-            <Form.Control
-              type="text"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="En este campo explica datos que te diferencian de los demás :)"
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
             <h1 className="sonrie">Foto de perfil, sonríe!</h1>
             <Form.Control
               type="file"
@@ -482,10 +470,24 @@ return (
               onChange={handleImageChange}
             />
           </Form.Group>
+
+          <Form.Group className="mb-3">
+            <h1 className="sobremi">Sobre mí:</h1>
+            <Form.Control
+              type="text"
+              as="textarea"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="En este campo explica datos que te diferencian de los demás :)"
+            />
+          </Form.Group>
+
           <StyledButton bgColor="#333" textColor="#fff" hoverColor="#555" onClick={handlePrevStep}>
             Anterior
           </StyledButton>
-          <StyledButton bgColor="#f0bb31 !important" hoverColor="#f0a51e"  type="submit">
+          <StyledButton bgColor="#f0bb31 !important" hoverColor="#f0a51e"  type="submit" onClick={handleSubmit}>
+            
             Completar
           </StyledButton>
         </div>

@@ -1,6 +1,6 @@
 import { Alert, Row, Col, Image, Button } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from "react-router-dom";
+import { useState } from 'react';
+import { Link } from "react-router-dom";
 import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
 import JoinedActivitiesController from '../../controllers/JoinedActivitiesController.js';
@@ -8,16 +8,28 @@ import { showPopup } from '../../Utils/Utils.js';
 
 function ActivityPostHome(props) {
 
-    const { data } = props;
+    const { data, friendsSet } = props;
     const [isJoined, setIsJoined] = useState(false);
     let postDate = new Date(data.postDate);
     let expireDate = new Date(data.expires);
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
 
+    const friends = data.joinedUsers.filter(user => friendsSet.has(user.id));
+
+    const shownUsers = [];
+
+    for (let i = 0; i < 6; i++) {
+        const user = friends[i];
+        if (!user) break;
+        shownUsers.push(user);
+    }
+
+    let isLimited = shownUsers.length < friends.length;
+
     function handleStateChange() {
         setIsJoined(!isJoined);
-    };
+    }
 
     async function joinActivity() {
         await AgendaController.joinActivity(data.id)
@@ -46,10 +58,14 @@ function ActivityPostHome(props) {
             <Alert variant="info" className='customAlert'>
                 <Row>
                     <Col md={2}>
-                        <Image src={`http://localhost:3001/uploads/${data.user.img}`} alt="userImage" className="activityUserImage" roundedCircle />
+                        <a href={`/friendsView/${data.user.id}`}>
+                            <Image src={`http://localhost:3001/uploads/${data.user.img}`} alt="userImage" className="activityUserImage" roundedCircle />
+                        </a>
                     </Col>
                     <Col md={10}>
-                        <h5 className='actUserName'><a href={`/friends/view/${data.user.id}`}>{data.user.name} {data.user.lastname}</a> <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span> </h5>
+                        <h5 className='actUserName'>
+                            <a href={`/friendsView/${data.user.id}`}>{data.user.name} {data.user.lastname}</a> <span>posteó el {postDate.getDate()} de {meses[postDate.getMonth()]} de {postDate.getFullYear()}</span>
+                        </h5>
                         <hr />
                         <div className="actPostBody">
                             <Alert.Heading>{data.title}</Alert.Heading>
@@ -57,22 +73,22 @@ function ActivityPostHome(props) {
                         </div>
                         <div className="joinedUsers">
                             <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
-                            <p>{data.joinedUsers.map((user, index) => (
+                            <p>{shownUsers.map((user, index) => (
                                 <span key={user.id}>
-                                    <Link className="customActLink" to={`/friends/view/${user.id}`}>{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
+                                    <Link className="customActLink" to={`/friendsView/${user.id}`}>{user.name} {user.lastname}</Link>{index !== shownUsers.length - 1 ? ", " : ""}
                                 </span>
-                            ))}</p>
+                            ))}{isLimited ? "..." : ""}</p>
                         </div>
                         <div>
                             <iframe className="customIframeGoogleMaps"
                                 width="100%"
                                 height="100"
                                 loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
+                                allowFullScreen
+                                referrerPolicy="no-referrer-when-downgrade"
                                 src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc&q=${data.latitude},${data.longitude}`}>
                             </iframe>
-                            <h5 className='actUserName'>Localización: {data.latitude},{data.longitude}</h5>
+                            <h5 className='actUserName'>Localización: {data.placeholder}</h5>
                         </div>
                         <div className="dateCheck">
                             <h5 className='actExpireDate'>{expireDate.getDate()} de {meses[expireDate.getMonth()]} de {expireDate.getFullYear()}</h5>

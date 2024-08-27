@@ -14,7 +14,6 @@ let i = 0;
 
 function executeQueriesRecursively(queries) {
     if (queries.length > 0) {
-        //let i = 0;
 
         fitmatch.sql.query(queries[i])
         .then(e => console.log("Success!"))
@@ -25,6 +24,9 @@ function executeQueriesRecursively(queries) {
             i++;
             if (i < queries.length) {
                 executeQueriesRecursively(queries);
+            } else {
+                console.log("Initializing activities...");
+                fitmatch.activitiesManager.init();
             }
         });
     }

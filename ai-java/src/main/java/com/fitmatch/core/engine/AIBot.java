@@ -16,6 +16,7 @@ public class AIBot {
     private static final int CONNECT = 2;
 
     private User user;
+    private boolean isSessionCreated = false;
     
     public AIBot(User user) {
         this.user = user;
@@ -54,7 +55,14 @@ public class AIBot {
         switch (action) {
             case FEED: {
                 System.out.println(this.user.getEmail() + " is issuing a feed request. Joining all activities posible...");
-                ServerActivity[] activities = Fitmatch.getInstance().getClient().activitiesController.feed(this.user.getToken());
+
+                ServerActivity[] activities;
+                if (!this.isSessionCreated) {
+                    activities = Fitmatch.getInstance().getClient().activitiesController.feedSession(this.user.getToken());
+                    this.isSessionCreated = activities != null;
+                } else {
+                    activities = Fitmatch.getInstance().getClient().activitiesController.feed(this.user.getToken());
+                }
                 
                 if (activities == null) {
                     System.out.println("activities is null");
