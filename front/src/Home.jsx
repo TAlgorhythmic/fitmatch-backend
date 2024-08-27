@@ -78,9 +78,9 @@ function Home() {
     } else if (activities.length === 0) {
         return (
             <div className="contenedorHome">
-                <div className="homeDisclaimer">
+                <div className="Noactividades">
                     <h6>Aún no hay actividades nuevas de tus compañeros</h6>
-                    <Link to="/create-activity"><Button>Publica una actividad</Button></Link>
+                    <Link to="/create-activity" className='BotonNoActividades'><Button>Publica una actividad</Button></Link>
                 </div>
             </div>
         );
