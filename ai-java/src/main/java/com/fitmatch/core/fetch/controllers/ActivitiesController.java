@@ -2,6 +2,8 @@ package com.fitmatch.core.fetch.controllers;
 
 import static com.fitmatch.core.fetch.controllers.StatusCodes.OK;
 
+import java.nio.charset.StandardCharsets;
+
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -30,7 +32,7 @@ public class ActivitiesController {
             post.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
 
@@ -55,7 +57,7 @@ public class ActivitiesController {
             post.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
 
@@ -81,7 +83,7 @@ public class ActivitiesController {
             post.setEntity(new StringEntity(packet.toJson()));
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
                 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
@@ -106,7 +108,7 @@ public class ActivitiesController {
             post.setHeader("Authorization", "Bearer " + token);
             
             try (CloseableHttpResponse res = client.execute(post)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();

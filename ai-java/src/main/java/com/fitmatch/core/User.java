@@ -1,6 +1,7 @@
 package com.fitmatch.core;
 
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -181,5 +182,10 @@ public class User {
 
     public String[] getTrainingPreferences() {
         return trainingPreferences;
+    }
+
+    @Override
+    public String toString() {
+        return name + lastname + description;
     }
 }
