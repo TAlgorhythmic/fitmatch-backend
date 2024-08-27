@@ -55,7 +55,7 @@ function CreateActivity() {
         return () => {
             plusButton.removeEventListener('click', getPressedButton);
         };
-    }, []);
+    }, [location/*NO QUITAR ESTA DEPENDENCIA, QUITARLO HACE QUE NO FUNCIONE*/]);
 
     if (redirect) return <Navigate to="/" />;
 
@@ -72,22 +72,25 @@ function CreateActivity() {
                             id="title"
                             name="title"
                             required
-                            placeholder="Username"
+                            placeholder=""
                             className="input-activity-title"
                         />
                     </label>
 
                     <label className='normal-width'>
                         <span>Fecha y hora</span>
-                        <input id="expires" className="date-input" style={{ marginBottom: "10px" }} type="datetime-local" placeholder="" required="" />
+                        <input
+                        id="expires"
+                        className="date-input"
+                        style={{ marginBottom: "10px" }}
+                        type="datetime-local"
+                        placeholder=""
+                        required="" 
+                    />
                     </label>
                 </div>
                 <div className='flexx'>
-
-                    {
-                        <MapLocationPicker setLocation={setLocation} location={location} className="maps" />
-                    }
-
+                    <MapLocationPicker setLocation={setLocation} location={location} className="maps" />
                     <label>
                         <span>Descripción</span>
                         <textarea id="description" className="input-activity-description" type="text" placeholder="" required="" />
