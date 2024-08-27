@@ -24,6 +24,9 @@ function executeQueriesRecursively(queries) {
             i++;
             if (i < queries.length) {
                 executeQueriesRecursively(queries);
+            } else {
+                console.log("Initializing activities...");
+                fitmatch.activitiesManager.init();
             }
         });
     }

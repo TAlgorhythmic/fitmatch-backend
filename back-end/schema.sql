@@ -75,7 +75,7 @@ END;
 CREATE TABLE IF NOT EXISTS activities(
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
-    description VARCHAR(250),
+    description VARCHAR(350),
     postDate TIMESTAMP NOT NULL,
     expires DATETIME NOT NULL,
     userId INT NOT NULL,

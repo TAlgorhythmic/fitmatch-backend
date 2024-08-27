@@ -17,7 +17,6 @@ class ConnectSession {
         this.position = 0;
         this.isCancelled = false;
         this.modified = new Date();
-        this.temp;
         this.user = user;
         this.attempt = 0;
     }
@@ -29,7 +28,6 @@ class ConnectSession {
         });
     }
 
-    // TODO ARREGLAR
     sendMore(response) {
         if (this.attempt > 1) {
             console.log("No data found for " + this.user.name + ". Aborting...");

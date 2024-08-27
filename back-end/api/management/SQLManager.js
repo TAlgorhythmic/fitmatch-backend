@@ -3,6 +3,8 @@ import fitmatch from "./../Fitmatch.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from "../packets/PacketBuilder.js";
 import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../utils/Sanitizers.js";
 import User from "../User.js";
+import Activity from "../Activity.js";
+import activitiesManager from "./ActivitiesManager.js";
 
 const TABLES_VERSION = 0;
 const TIME_BEFORE_EXPIRES = 48 * 60 * 60 * 1000;
@@ -27,6 +29,7 @@ export function removeGarbage(millis) {
                 console.log(err);
             } finally {
                 removeGarbage(millis);
+                activitiesManager.map.delete(itemToRemove.id);
             }
         }
         recursive();
@@ -131,6 +134,7 @@ class SQLManager {
     }
 
     removeActivityCompletely(id) {
+        activitiesManager.map.delete(id);
         fitmatch.sql.query(`DELETE FROM joins_activities WHERE postId = ?;`, { replacements: [id], type: QueryTypes.DELETE })
         .then(e => {
             fitmatch.sql.query(`DELETE FROM activities WHERE id = ?`, { replacements: [id], type: QueryTypes.DELETE })
@@ -199,16 +203,31 @@ class SQLManager {
         )
     }
 
+    selectivelyUpdateActivity(activity, map) {
+        let str = "";
+        const injects = [];
+        let i = 0;
+        map.forEach((value, key) => {
+            str += `${key} = ?`;
+
+            injects.push(value);
+            
+            if (i + 1 < map.size) {
+                str += ", ";
+            }
+            i++;
+        });
+        injects.push(activity.id);
+        return fitmatch.getSql().query(`UPDATE activities SET ${str} WHERE id = ?`, { replacements: injects, type: QueryTypes.UPDATE });
+    }
+
     selectivelyUpdateUser(user, map) {
         let str = "";
         const injects = [];
         let i = 0;
         map.forEach((value, key) => {
             str += `${key} = ?`;
-            //TODO
-            if (key === "trainingPreferences") {
-                injects.push(value);
-            } else if ((key === "timetable1" || key === "timetable2") && (typeof value === "string" || value instanceof String)) {
+            if ((key === "timetable1" || key === "timetable2") && (typeof value === "string" || value instanceof String)) {
                 const split = value.split(":");
                 const hour = parseInt(split[0]);
                 const mins = parseInt(split[1]);
