@@ -84,9 +84,9 @@ function CreateActivity() {
                 </div>
                 <div className='flexx'> 
 
-                {
+                
                  <MapLocationPicker setLocation={setLocation} location={location} className="maps"/>
-                }
+                
 
                 <label>
                     <span>Descripción</span>
