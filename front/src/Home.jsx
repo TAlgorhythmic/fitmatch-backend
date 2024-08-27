@@ -76,8 +76,8 @@ function Home() {
 
     if (friends.length === 0) {
         return (
-            <div className="contenedorHome">
-                <h6>Aún no has agregado a nuevos compañeros</h6>
+            <div className="contenedorHome" style={{margin: 'auto'}}>
+                <h6 style={{color: 'white'}}>Aún no has agregado a nuevos compañeros</h6>
                 <Link to="/friends"><Button>Conecta con gente</Button></Link>
             </div>
         );
