@@ -5,6 +5,7 @@ import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
@@ -14,6 +15,7 @@ import com.fitmatch.utils.Urls;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import static com.fitmatch.core.fetch.controllers.StatusCodes.*;
+
 
 public class UsersController {
     
@@ -27,10 +29,10 @@ public class UsersController {
             HttpPost post = new HttpPost(Urls.SETUP);
             post.setHeader("Content-Type", "application/json");
             post.setHeader("Authorization", "Bearer " + token);
-            post.setEntity(new StringEntity(packet.toJson()));
+            post.setEntity(new StringEntity(packet.toJson(), ContentType.APPLICATION_JSON.withCharset("UTF-8")));
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
@@ -55,7 +57,7 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement parse = JsonParser.parseString(json);
                 int code = parse.getAsJsonObject().get("status").getAsInt();
@@ -82,7 +84,7 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
@@ -107,7 +109,7 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
@@ -132,7 +134,7 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();

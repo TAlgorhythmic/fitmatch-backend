@@ -28,7 +28,7 @@ public class RequestsController {
             post.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
@@ -50,7 +50,7 @@ public class RequestsController {
             post.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 boolean code = jsonElement.getAsJsonObject().get("ok").getAsBoolean();
@@ -72,7 +72,7 @@ public class RequestsController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();

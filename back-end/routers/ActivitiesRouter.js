@@ -5,9 +5,7 @@ import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buil
 import User from "../api/User.js";
 import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
 import Activity from "../api/Activity.js";
-import activitiesManager from "../api/management/ActivitiesManager.js";
 import FeedSession, { feedSessions } from "../api/utils/FeedSession.js";
-import userManager from "../api/management/UserManager.js";
 
 const sqlManager = fitmatch.getSqlManager();
 
@@ -124,7 +122,7 @@ const id = req.token.id;
 
         let user;
 
-        if (userManager.containsKey(id)) user = userManager.get(id).user;
+        if (fitmatch.userManager.containsKey(id)) user = fitmatch.userManager.get(id).user;
         else {
             const uD = await sqlManager.getUserFromId(id);
             const userData = sanitizeDataReceivedForSingleObject(uD);
@@ -138,7 +136,7 @@ const id = req.token.id;
         for (const activity of feed) {
             let user;
 
-            if (userManager.containsKey(activity.userId)) user = userManager.get(activity.userId).user;
+            if (fitmatch.userManager.containsKey(activity.userId)) user = fitmatch.userManager.get(activity.userId).user;
             else {
                 const usr = await sqlManager.getUserFromId(activity.userId);
                 const data = sanitizeDataReceivedForSingleObject(usr);
@@ -183,7 +181,7 @@ router.get('/feed', tokenRequired, async function (req, res, next) {
 
             let user;
 
-            if (userManager.containsKey(activity.userId)) user = userManager.get(activity.userId).user;
+            if (fitmatch.userManager.containsKey(activity.userId)) user = fitmatch.userManager.get(activity.userId).user;
             else {
                 const usr = await sqlManager.getUserFromId(activity.userId);
                 const data = sanitizeDataReceivedForSingleObject(usr);
@@ -247,7 +245,7 @@ router.post('/create', tokenRequired, function (req, res, next) {
         .then(e => {
             const id = sanitizeDataReceivedForSingleObject(e);
             const activity = new Activity(id, title, description, new Date(), expires, req.token.id, placeholder, latitude, longitude);
-            activitiesManager.put(id, activity);
+            fitmatch.activitiesManager.put(id, activity);
             res.json(buildSimpleOkPacket());
             fitmatch.sqlManager.joinActivity(req.token.id, id)
                 .catch(err => {
@@ -273,9 +271,9 @@ router.post('/create', tokenRequired, function (req, res, next) {
  * }
  */
 router.post('/edit/:id', tokenRequired, function (req, res, next) {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
 
-    if (!activitiesManager.containsKey(id)) {
+    if (!fitmatch.activitiesManager.containsKey(id)) {
         res.json(buildInvalidPacket("This activity does not exist."));
         return;
     }
@@ -285,7 +283,7 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
         res.json(buildInvalidPacket("Title is empty."));
         return;
     }
-    const description = req.body.description;
+    const description = req.body.description ? req.body.description : null;
     const expires = req.body.expires ? new Date(req.body.expires) : "";
     if (!expires) {
         res.json(buildInvalidPacket("Expiration date is invalid."));
@@ -306,7 +304,7 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
     const latitude = typeof lat !== "string" && !(lat instanceof String) ? lat.toString() : lat;
     const longitude = typeof long !== "string" && !(long instanceof String) ? long.toString() : long;
 
-    const activity = activitiesManager.get(id).activity;
+    const activity = fitmatch.activitiesManager.get(id).activity;
     activity.setTitle(title);
     activity.setDescription(description);
     activity.setExpires(expires);
@@ -318,17 +316,14 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
 });
 
 router.get("/get/:id", tokenRequired, (req, res, next) => {
-    const activityId = req.params.id;
+    const activityId = parseInt(req.params.id);
 
-    console.log(activitiesManager.map.get(activityId));
-
-    if (!activitiesManager.containsKey(activityId)) {
+    if (!fitmatch.activitiesManager.containsKey(activityId)) {
         res.json(buildInvalidPacket("This activity does not exist."));
         return;
     }
-    console.log(activitiesManager.get(activityId).activity);
-    res.json(buildSendDataPacket(activitiesManager.get(activityId).activity));
-    
+
+    res.json(buildSendDataPacket(fitmatch.activitiesManager.get(activityId).activity));
 })
 
 router.get("/getown", tokenRequired, (req, res, next) => {
