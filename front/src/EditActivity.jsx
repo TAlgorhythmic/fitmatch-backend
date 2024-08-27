@@ -1,4 +1,4 @@
-import { act, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './CreateActivity.css';
 import { showPopup } from './Utils/Utils.js';
 import ActivitiesController from './controllers/ActivitiesController.js';
