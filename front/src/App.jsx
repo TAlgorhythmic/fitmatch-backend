@@ -12,6 +12,7 @@ import { setShowPopup, showPopup } from './Utils/Utils.js';
 import { useLocation } from 'react-router-dom';
 import AuthController from "./controllers/AuthController.js";
 import Sidebar from './Sidebar.jsx';
+import { useJsApiLoader } from '@react-google-maps/api';
 
 
 export let setUpdateUser;
