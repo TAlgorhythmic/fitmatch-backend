@@ -61,7 +61,7 @@ const SideSheet = () => {
       </Drawer>
 
       {/* Main Content */}
-      <div style={{ marginLeft: '70px', padding: '20px', width: '100%' }}>
+      <div style={{ marginLeft: '10%', padding: '100%', width: '100%',height:'100%' }}>
        
         {/* Aquí puedes tener un contenido por defecto o dinámico */}
       </div>
@@ -72,12 +72,12 @@ const SideSheet = () => {
           role="presentation"
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
-          style={{ width: '800px', padding: '16px' }}
+          style={{ width: '630px', padding: '10px' }}
         >
           {drawerContent} {/* Aquí se renderiza el componente dinámico */}
         </div>
       </Drawer>
-      <div style={{ marginLeft: '70px', padding: '20px', width: '100%', height:'100%' }}>
+      <div style={{ marginLeft: '10%', padding: '100%', width: '100%', height:'100%' }}>
         {selectedComponent} {/* Muestra el componente seleccionado o la Home si ninguno está seleccionado */}
       </div>
     </div>

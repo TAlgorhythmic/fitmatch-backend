@@ -5,8 +5,6 @@ import ActivitiesController from './controllers/ActivitiesController.js';
 import { OK } from "./Utils/StatusCodes.js";
 import { Navigate } from "react-router-dom";
 import MapLocationPicker from './components/Maps/MapLocationPicker.jsx';
-import { isApiLoaded } from './App.jsx';
-
 
 function CreateActivity() {
 
@@ -87,16 +85,13 @@ function CreateActivity() {
                 <div className='flexx'> 
 
                 {
-                    isApiLoaded ? <MapLocationPicker setLocation={setLocation} location={location} className="maps"/> : <></>
+                 <MapLocationPicker setLocation={setLocation} location={location} className="maps"/>
                 }
 
                 <label>
                     <span>Descripción</span>
                     <textarea id="description" className="input-activity-description" type="text" placeholder="" required="" />
                 </label>
-                {
-                    isApiLoaded ? <MapLocationPicker setLocation={setLocation} location={location}/> : <></>
-                }
                 <a className="plusButton">
                     <svg className="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <g mask="url(#mask0_21_345)">

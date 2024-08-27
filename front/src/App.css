@@ -39,7 +39,6 @@ body {
     justify-content: center;
     align-items: center;
 }
-
 .mainContent {
     padding-top: 20px;
 }
@@ -48,3 +47,4 @@ body {
 html, body {
     min-height: 100%;
 }
+  
