@@ -4,6 +4,8 @@ import { tokenRequired } from "./../api/utils/Validate.js";
 import { buildInternalErrorPacket, buildInvalidPacket, buildSendDataPacket, buildSimpleOkPacket } from "../api/packets/PacketBuilder.js";
 import User from "../api/User.js";
 import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
+import Activity from "../api/Activity.js";
+import activitiesManager from "../api/management/ActivitiesManager.js";
 
 const sqlManager = fitmatch.getSqlManager();
 
@@ -105,6 +107,7 @@ router.get('/feed', tokenRequired, async function (req, res, next) {
     const id = req.token.id;
 
     try {
+        // TODO
         const fd = await sqlManager.getFriendsById(id);
         const friendsData = sanitizeDataReceivedForArrayOfObjects(fd, "friendId");
     
@@ -234,6 +237,8 @@ router.post('/create', tokenRequired, function (req, res, next) {
     fitmatch.getSqlManager().createNewActivity(title, description, expires, placeholder, latitude, longitude, req.token.id)
         .then(e => {
             const id = sanitizeDataReceivedForSingleObject(e);
+            const activity = new Activity(id, title, description, postDate, expires, req.token.id, placeholder, latitude, longitude);
+            activitiesManager.put(id, activity);
             res.json(buildSimpleOkPacket());
             fitmatch.sqlManager.joinActivity(req.token.id, id)
                 .catch(err => {
@@ -261,6 +266,11 @@ router.post('/create', tokenRequired, function (req, res, next) {
 router.post('/edit/:id', tokenRequired, function (req, res, next) {
     const id = req.params.id;
 
+    if (!activitiesManager.containsKey(id)) {
+        res.json(buildInvalidPacket("This activity does not exist."));
+        return;
+    }
+
     const title = req.body.title;
     if (!title) {
         res.json(buildInvalidPacket("Title is empty."));
@@ -284,30 +294,29 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
         res.json(buildInvalidPacket("The location is not correctly set."));
         return;
     }
-    const latitude = typeof lat !== "string" ? lat.toString() : lat;
-    const longitude = typeof long !== "string" ? long.toString() : long;
+    const latitude = typeof lat !== "string" && !(lat instanceof String) ? lat.toString() : lat;
+    const longitude = typeof long !== "string" && !(long instanceof String) ? long.toString() : long;
 
-    const prom = fitmatch.sqlManager.updateActivity(id, title, description, expires, placeholder, latitude, longitude, res);
+    const activity = activitiesManager.get(id).activity;
+    activity.setTitle(title);
+    activity.setDescription(description);
+    activity.setExpires(expires);
+    activity.setPlaceholder(placeholder);
+    activity.setLatitude(latitude);
+    activity.setLongitude(longitude)
 
-    if (prom) {
-        prom.then(e => {
-            res.json(buildSimpleOkPacket());
-        })
-            .catch(err => {
-                console.log(err);
-                res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
-            });
-    }
+    res.json(buildSimpleOkPacket());
 });
 
 router.get("/get/:id", tokenRequired, (req, res, next) => {
     const activityId = req.params.id;
 
-    fitmatch.sqlManager.getActivityFromId(activityId)
-        .then(e => {
-            const data = sanitizeDataReceivedForSingleObject(e);
-            res.json(buildSendDataPacket(data));
-        })
+    if (!activitiesManager.containsKey(activityId)) {
+        res.json(buildInvalidPacket("This activity does not exist."));
+        return;
+    }
+
+    res.json(buildSendDataPacket(activitiesManager.get(activityId).activity));
 })
 
 router.get("/getown", tokenRequired, (req, res, next) => {
