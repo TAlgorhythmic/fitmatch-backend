@@ -97,7 +97,9 @@ function CreateActivity() {
                     <span>Descripción</span>
                     <textarea id="description" className="input-activity-description" type="text" placeholder="" required="" />
                 </label>
-                </div>
+                {
+                    isApiLoaded ? <MapLocationPicker setLocation={setLocation} location={location}/> : <></>
+                }
                 <a className="plusButton">
                     <svg className="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <g mask="url(#mask0_21_345)">
