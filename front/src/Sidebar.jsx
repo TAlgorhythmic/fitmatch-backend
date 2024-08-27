@@ -66,20 +66,25 @@ const SideSheet = () => {
       {/* Drawer para mostrar contenido dinámico */}
       <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
   <div
+  //transparente, efecto blur
     role="presentation"
     onClick={toggleDrawer(false)}
     onKeyDown={toggleDrawer(false)}
     style={{ 
       width: '650px', 
       padding: '20px', 
-      backgroundColor: '#FFE8CC', 
+      backgroundColor:'rgba(50, 50, 50, 1)', // Fondo 100% transparente
+      backdropFilter: 'blur(10px)',
+      textAlign: 'center',
       height: '100%'  // Asegura que el fondo cubra toda la altura del Drawer
     }}
   >
     <div style={{ 
-      backgroundColor: '#FFE8CC', 
-      padding: '15px', 
-      borderBottom: '2px solid #FF6A00'  // Puedes ajustar el color del borde según tu preferencia
+       backgroundColor: 'transparent', // Fondo 100% transparente
+       backdropFilter: 'blur(10px)', 
+
+       padding: '15px', 
+       borderBottom: '2px solid #FF6A00'  // Puedes ajustar el color del borde según tu preferencia
     }}>
       <h2 style={{ 
         margin: 0, 

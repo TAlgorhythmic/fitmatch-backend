@@ -33,7 +33,7 @@ function Header() {
 
                 <div className='navbar-icons-right'>
                     <span onClick={() => navigate('/friendsList')}>
-                        <People size={32} color='#ff6600' />
+                        <People size={32} color='#ff6600'  />
                     </span>
                     <Notifications />
                     <Dropdown align="end">

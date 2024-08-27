@@ -77,17 +77,20 @@ function Home() {
     if (friends.length === 0) {
         return (
             <div className="contenedorHome">
+                <div className="homeDisclaimer">
                 <h6>Aún no has agregado a nuevos compañeros</h6>
                 <Link to="/friends"><Button>Conecta con gente</Button></Link>
+            </div>
             </div>
         );
     } else if (activities.length === 0) {
         return (
+           
             <div className="contenedorHome">
-                <div className="Noactividades">
+                <div className="homeDisclaimer">
                     <h6>Aún no hay actividades nuevas de tus compañeros</h6>
                     <Link to="/create-activity" className='BotonNoActividades'><Button>Publica una actividad</Button></Link>
-                </div>
+            </div>
             </div>
         );
     }
