@@ -151,6 +151,7 @@ class ActivitiesController extends BaseController {
             res.json()
                 .then(responseData => {
                     data = responseData.data;
+                    console.log(data);
                 })
                 .catch(error => {
                     console.error('Error getActivity: ', error);

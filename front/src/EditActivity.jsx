@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import './CreateActivity.css';
 import { showPopup } from './Utils/Utils.js';
 import ActivitiesController from './controllers/ActivitiesController.js';
-
 import { OK } from "./Utils/StatusCodes.js";
 import { Navigate, useParams } from "react-router-dom";
 import MapLocationPicker from './components/Maps/MapLocationPicker.jsx';
@@ -85,7 +84,15 @@ function EditActivity() {
                 <div className='flexx'>
                     <label className='normal-width marginright'>
                         <span>Título</span>
-                        <input id="title" name='title' onChange={onChange} value={activity ? activity.title : ""} className="input-activity-title" type="text" placeholder="" required="" />
+                          <input
+                                        type="text"
+                                        id="title"
+                                        name="title"
+                                        onChange={onChange} value={activity ? activity.title : ""}
+                                        required
+                                        className="input-activity-title" 
+                                        //required
+                                    />
                     </label>
                     <label className='normal-width'>
                         <span>Fecha y hora</span>

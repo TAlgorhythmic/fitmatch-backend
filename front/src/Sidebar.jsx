@@ -66,15 +66,36 @@ const SideSheet = () => {
 
       {/* Drawer para mostrar contenido dinámico */}
       <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
-        <div
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-          style={{ width: '630px', padding: '10px' }}
-        >
-          {drawerContent} {/* Aquí se renderiza el componente dinámico */}
-        </div>
-      </Drawer>
+  <div
+    role="presentation"
+    onClick={toggleDrawer(false)}
+    onKeyDown={toggleDrawer(false)}
+    style={{ 
+      width: '650px', 
+      padding: '20px', 
+      backgroundColor: '#FFE8CC', 
+      height: '100%'  // Asegura que el fondo cubra toda la altura del Drawer
+    }}
+  >
+    <div style={{ 
+      backgroundColor: '#FFE8CC', 
+      padding: '15px', 
+      borderBottom: '2px solid #FF6A00'  // Puedes ajustar el color del borde según tu preferencia
+    }}>
+      <h2 style={{ 
+        margin: 0, 
+        color: '#FFF' // Ajusta el color del texto del título
+      }}>
+        Mi agenda
+      </h2>
+    </div>
+    <div style={{ 
+      marginTop: '20px'  // Espacio entre el título y los componentes
+    }}>
+      {drawerContent} {/* Aquí se renderiza el componente dinámico */}
+    </div>
+  </div>
+</Drawer>
       <div style={{ marginLeft: '20px', padding: '5px', width: '100%', height:'100%' }}>
         {selectedComponent} {/* Muestra el componente seleccionado o la Home si ninguno está seleccionado */}
       </div>

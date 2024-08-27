@@ -324,8 +324,9 @@ router.get("/get/:id", tokenRequired, (req, res, next) => {
         res.json(buildInvalidPacket("This activity does not exist."));
         return;
     }
-
+    console.log(activitiesManager.get(activityId).activity);
     res.json(buildSendDataPacket(activitiesManager.get(activityId).activity));
+    
 })
 
 router.get("/getown", tokenRequired, (req, res, next) => {
