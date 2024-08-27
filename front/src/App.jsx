@@ -102,13 +102,13 @@ function App() {
         {
           showHeader ? <Header /> : <></>
         }
-         {
-          sideBar ? <Sidebar /> : <></>
-        }
         <div className="mainContent">
           <Outlet />
         </div>
       </div>
+      {
+          sideBar ? <Sidebar /> : <></>
+        }
       <PopupMessage isVisible={popupState.isVisible} title={popupState.title} message={popupState.message} isError={popupState.isError} onClose={onClose} />
     </>
   );
