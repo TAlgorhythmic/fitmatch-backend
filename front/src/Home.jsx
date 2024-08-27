@@ -68,7 +68,7 @@ function Home() {
             <div className="contenedorHome">
                 {activities.map((activity, index) => (
                     <Row key={index}>
-                        <ActivityPostHome data={activity} friendsList={friends} />
+                        <ActivityPostHome data={activity} friendsSet={new Set(friends)} />
                     </Row>
                 ))}
             </div>
