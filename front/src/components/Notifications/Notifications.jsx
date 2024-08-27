@@ -9,26 +9,34 @@ function Notifications() {
     const boxRef = useRef(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        fetch('http://localhost:3001/api/requests/pendings', {
-            method: "GET",
-            headers: {
-                'Content-Type': "application/json",
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                response.json()
-                    .then(data => {
-                        if (data.status !== 0) {
-                            console.log("Fatal error fetching pendings.");
-                            return;
-                        }
-                        setNotifications(data.data);
-                    })
-
+        function recursive() {
+            const token = localStorage.getItem('authToken');
+            fetch('http://localhost:3001/api/requests/pendings', {
+                method: "GET",
+                headers: {
+                    'Content-Type': "application/json",
+                    'Authorization': `Bearer ${token}`
+                }
             })
-            .catch(error => console.error(error));
+                .then(response => {
+                    response.json()
+                        .then(data => {
+                            if (data.status !== 0) {
+                                console.log("Fatal error fetching pendings.");
+                                return;
+                            }
+                            setNotifications(data.data);
+                        })
+                })
+                .catch(error => console.error(error))
+                .finally(e => {
+                    setTimeout(() => {
+                        recursive();
+                    }, 12000);
+                })
+        }
+        
+        recursive();
     }, [updateList]);
 
     useEffect(() => {
