@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users(
     trainingPreferences VARCHAR(300),
     img VARCHAR(60) NOT NULL DEFAULT "img1.jpg",
     country VARCHAR(60),
-    city VARCHAR(45),
+    city VARCHAR(120),
     latitude VARCHAR(50),
     longitude VARCHAR(50),
     isSetup BOOLEAN NOT NULL DEFAULT FALSE,
