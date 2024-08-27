@@ -8,12 +8,10 @@ import 'react-step-progress-bar/styles.css';
 import { useState, useEffect } from 'react';
 import PopupMessage from './Utils/PopupMessage.jsx';
 import { setShowPopup, showPopup } from './Utils/Utils.js';
-import SubHeader from './components/Header/SubHeader.jsx';
-import { useLocation } from 'react-router-dom';
-import AuthController from "./controllers/AuthController.js";
-import SideSheet from './Sidesheet.jsx';
 
-export let setToken;
+import { useLocation } from 'react-router-dom';
+import Sidebar from './Sidebar.jsx';
+
 export let setUpdateUser;
 
 function App() {
@@ -38,58 +36,22 @@ function App() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
-  const [isValidToken, setIsValidToken] = useState(null);
   const [updateUser, setUpdate] = useState(true);
   const [showHeader, setShowHeader] = useState(true);
   setUpdateUser = setUpdate;
-  setToken = setIsValidToken;
   const token = localStorage.getItem('authToken');
-  const AuthControl = new AuthController(token);
-
-  useEffect(() => {
-    const validateToken = async () => {
-      try {
-        const response = await AuthControl.validateToken();
-
-        // Verifica si la respuesta es JSON
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const data = await response.json();
-          setIsValidToken(data.status === OK ? true : false);
-        } else {
-          console.error('Expected JSON, but got:', contentType);
-          setIsValidToken(false);
-        }
-      } catch (error) {
-        console.error('Error validating token', error);
-        setIsValidToken(false);
-      }
-    };
-
-    if (token) {
-      validateToken();
-    } else {
-      setIsValidToken(false);
-    }
-  }, []);
 
   const [showHome, setShowHome] = useState(false);
+  const [sideBar, setSideBar] = useState(false);
 
   useEffect(() => {
-    if (isValidToken && (location.pathname === '/' || location.pathname === '/create-activity'
+    if (token && (location.pathname === '/' || location.pathname === '/create-activity'
       || location.pathname === '/agenda' || location.pathname === '/own-activities'
     )) {
       setShowHome(true);
+     
     }
-  }, [isValidToken, location.pathname])
-
-  useEffect(() => {
-    if (location.pathname === '/login' || location.pathname === '/register' || location.pathname === "/formulario" || location.pathname === "/verify") {
-      setShowHeader(false);
-    } else {
-      setShowHeader(true);
-    }
-  });
+  }, [token, location.pathname]);
 
   useEffect(() => {
     async function getProfile() {
@@ -114,30 +76,25 @@ function App() {
         });
     }
 
-    if (isValidToken && updateUser) {
+    if (token && updateUser) {
       getProfile();
       setUpdateUser(false);
     }
-  }, [isValidToken, updateUser, token]);
+  }, [updateUser, token]);
 
   useEffect(() => {
-    if (isValidToken && user && !user.isSetup) {
-      if (location.pathname !== "/formulario" && location.pathname !== "/register" && location.pathname !== "/login") {
-        navigate("/formulario");
-      }
-    } else if (isValidToken && user && user.isSetup) {
-      if (location.pathname === "/formulario") {
-        navigate("/");
-      }
+    if (location.pathname === "/formulario" || location.pathname === "/login" || location.pathname === "/register" ) {
+      setShowHeader(false);
+      setSideBar(false);
     } else {
-      if (location.pathname === "/register") {
-        showPopup("Welcome", "Bienvenido a la plataforma de nuevo", false);
-      } else if (!isValidToken && isValidToken !== null) {
-        showPopup("No permission", "Tu sesión ha expirado.", false);
-        navigate("/login");
-      }
+      setShowHeader(true);
+      setSideBar(true);
+      
+      
+      if (!token) navigate("/register");
+
     }
-  }, [isValidToken, location.pathname, navigate, user]);
+  }, [location.pathname, navigate, user]);
 
   return (
     <>
@@ -145,14 +102,13 @@ function App() {
         {
           showHeader ? <Header /> : <></>
         }
-        {
-          showHome ? <SubHeader /> : <></>
-        }
-         <SideSheet />
         <div className="mainContent">
           <Outlet />
         </div>
       </div>
+      {
+          sideBar ? <Sidebar /> : <></>
+        }
       <PopupMessage isVisible={popupState.isVisible} title={popupState.title} message={popupState.message} isError={popupState.isError} onClose={onClose} />
     </>
   );

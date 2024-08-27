@@ -13,6 +13,7 @@ public class Urls {
     // Activities router
     public static final String ALL_ACTIVITIES = activitiesBaseUrl + "/";
     public static final String FEED = activitiesBaseUrl + "/feed";
+    public static final String FEED_SESSION = activitiesBaseUrl + "/feedsession";
     public static final String CREATE_ACTIVITY = activitiesBaseUrl + "/create";
     public static final String EDIT_ACTIVITY_BY_ID = activitiesBaseUrl + "/edit/"; // ID Needed!
     public static final String ACTIVITY_BY_ID = activitiesBaseUrl + "/get/"; // ID Needed!

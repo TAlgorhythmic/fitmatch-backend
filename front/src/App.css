@@ -8,9 +8,7 @@
     --color-fondo-secundario: #76c1ff;
     --color-texto-principal: #afbadf;
     --color-texto-secundario: #dfdfdf;
-    --color-error: #F44336;
-    --color-éxito: #8BC34A;
-    --color-info: #03A9F4;
+    --color-botones: #ff6600;
 }
 /*Principales*/
 .contenedorPrincipal {
@@ -41,12 +39,13 @@ body {
     justify-content: center;
     align-items: center;
 }
-
 .mainContent {
-    padding-top: 50px;
+    padding-top: 5px;
+    
 }
 
 /* Estilo para asegurar que el contenedor principal tenga una altura mínima */
 html, body {
     min-height: 100%;
 }
+  

@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users(
     trainingPreferences VARCHAR(300),
     img VARCHAR(60) NOT NULL DEFAULT "img1.jpg",
     country VARCHAR(60),
-    city VARCHAR(45),
+    city VARCHAR(120),
     latitude VARCHAR(50),
     longitude VARCHAR(50),
     isSetup BOOLEAN NOT NULL DEFAULT FALSE,
@@ -75,7 +75,7 @@ END;
 CREATE TABLE IF NOT EXISTS activities(
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
-    description VARCHAR(250),
+    description VARCHAR(350),
     postDate TIMESTAMP NOT NULL,
     expires DATETIME NOT NULL,
     userId INT NOT NULL,

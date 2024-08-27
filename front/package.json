@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.13.0",
     "@material/web": "^2.1.0",
     "@mobiscroll/react-lite": "^4.10.9",
+    "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@react-google-maps/api": "^2.19.3",
     "@react-oauth/google": "^0.12.1",

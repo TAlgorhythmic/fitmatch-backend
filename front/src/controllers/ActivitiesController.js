@@ -25,6 +25,26 @@ class ActivitiesController extends BaseController {
         return data;
     }
 
+    async getCreateFeedSession() {
+        let data = {};
+        await fetch(`${this.apiUrl}/feedsession`, {
+            method: 'GET',
+            headers: {
+                "Authorization": "Bearer " + this.token,
+                'Content-Type': 'application/json'
+            }
+        }).then(res =>
+            res.json()
+                .then(responseData => {
+                    data = responseData;
+                })
+                .catch(error => {
+                    console.error('Error getFeed:', error);
+                })
+        );
+        return data;
+    }
+
     async getFeed() {
         let data = {};
         await fetch(`${this.apiUrl}/feed`, {
@@ -73,8 +93,8 @@ class ActivitiesController extends BaseController {
         return data;
     }
 
-    async updateActivity(id, title, description, expires) {
-        await fetch(`${this.apiUrl}/edit/${id}`, {
+    async updateActivity(id, title, description, expires, address, latitude, longitude) {
+        const res = await fetch(`${this.apiUrl}/edit/${id}`, {
             method: 'POST',
             headers: {
                 "Authorization": "Bearer " + this.token,
@@ -83,16 +103,14 @@ class ActivitiesController extends BaseController {
             body: JSON.stringify({
                 title: title,
                 description: description,
-                expires: expires
+                expires: expires,
+                placeholder: address,
+                latitude: latitude,
+                longitude: longitude
             })
-        }).then(res => res.json())
-            .then(responseData => {
-                console.log('ActivitiesController: ' + responseData.status);
-            })
-            .catch(error => {
-                console.error('Error updateActivity: ', error);
-                throw new Error('Error al actualizar la actividad');
-            });
+        });
+        const data = await res.json();
+        return data;
     }
 
     async getOwnActivities() {
