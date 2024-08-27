@@ -25,8 +25,8 @@ function Header() {
 
                 <div className='navbar-icons-middle'>
                     <button className='buttonMakeFriends'>
-                        <span onClick={() => navigate('/friends')} className='makeFriends'>
-                            <PersonFillAdd size={32} color='#ff6600' />
+                        <span onClick={() => navigate('/friends')} className='makeFriends' style={{ position: 'relative', zIndex: 9 }}>
+                            <PersonFillAdd size={32} color='#ff6600' style={{ position: 'relative', zIndex: 10 }}/>
                         </span>
                     </button>
                 </div>
