@@ -150,6 +150,7 @@ class ActivitiesController extends BaseController {
         }).then(res =>
             res.json()
                 .then(responseData => {
+                    console.log(responseData);
                     data = responseData.data;
                     console.log(data);
                 })

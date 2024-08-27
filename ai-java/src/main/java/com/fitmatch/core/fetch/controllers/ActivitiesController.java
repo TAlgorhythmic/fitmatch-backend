@@ -87,6 +87,7 @@ public class ActivitiesController {
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
 
                 if (code == OK) return true;
+                else System.out.println(json);
             }
 
         } catch (Exception e) {
