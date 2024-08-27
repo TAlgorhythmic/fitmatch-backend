@@ -8,7 +8,7 @@ import Login from './components/Login/Login.jsx'
 import UserProfile from './UserProfile.jsx'
 import ChangePassword from './components/Login/CambioContra.jsx'
 import CompletarRegistro from './components/Register/CompletarRegistro.jsx'
-import CreateActivity from './CreateActivity.jsx';
+import CreateActivity from './components/CreateActivity/CreateActivity.jsx';
 import EditActivity  from './EditActivity.jsx';
 import FriendsList from './FriendsList.jsx';
 import FriendData from './FriendData.jsx';

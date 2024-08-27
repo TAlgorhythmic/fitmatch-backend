@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Drawer, List, ListItem, ListItemIcon, Button } from '@mui/material';
 import { FaPlus, FaCalendarAlt, FaList } from 'react-icons/fa';
-import CreateActivity from './CreateActivity';
 import OwnActivities from './OwnActivities';
 import { useNavigate } from 'react-router-dom'; 
 import Home from './Home';
