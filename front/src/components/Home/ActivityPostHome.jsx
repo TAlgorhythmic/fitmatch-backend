@@ -1,5 +1,5 @@
 import { Alert, Row, Col, Image, Button } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from "react-router-dom";
 import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
@@ -8,16 +8,28 @@ import { showPopup } from '../../Utils/Utils.js';
 
 function ActivityPostHome(props) {
 
-    const { data } = props;
+    const { data, friendsSet } = props;
     const [isJoined, setIsJoined] = useState(false);
     let postDate = new Date(data.postDate);
     let expireDate = new Date(data.expires);
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
 
+    const friends = data.joinedUsers.filter(user => friendsSet.has(user.id));
+
+    const shownUsers = [];
+
+    for (let i = 0; i < 6; i++) {
+        const user = friends[i];
+        if (!user) break;
+        shownUsers.push(user);
+    }
+
+    let isLimited = shownUsers.length < friends.length;
+
     function handleStateChange() {
         setIsJoined(!isJoined);
-    };
+    }
 
     async function joinActivity() {
         await AgendaController.joinActivity(data.id)
@@ -61,11 +73,11 @@ function ActivityPostHome(props) {
                         </div>
                         <div className="joinedUsers">
                             <h5 className='actUserName'>Participantes: {data.joinedUsers.length} {data.joinedUsers.length !== 1 ? 'usuarios' : 'usuario'}</h5>
-                            <p>{data.joinedUsers.map((user, index) => (
+                            <p>{shownUsers.map((user, index) => (
                                 <span key={user.id}>
-                                    <Link className="customActLink" to={`/friendsView/${user.id}`}>{user.name} {user.lastname}</Link>{index !== data.joinedUsers.length - 1 ? ", " : ""}
+                                    <Link className="customActLink" to={`/friendsView/${user.id}`}>{user.name} {user.lastname}</Link>{index !== shownUsers.length - 1 ? ", " : ""}
                                 </span>
-                            ))}</p>
+                            ))}{isLimited ? "..." : ""}</p>
                         </div>
                         <div>
                             <iframe className="customIframeGoogleMaps"
