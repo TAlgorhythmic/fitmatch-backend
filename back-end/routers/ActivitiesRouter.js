@@ -320,6 +320,8 @@ router.post('/edit/:id', tokenRequired, function (req, res, next) {
 router.get("/get/:id", tokenRequired, (req, res, next) => {
     const activityId = req.params.id;
 
+    console.log(activitiesManager.map.get(activityId));
+
     if (!activitiesManager.containsKey(activityId)) {
         res.json(buildInvalidPacket("This activity does not exist."));
         return;
