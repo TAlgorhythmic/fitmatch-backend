@@ -10,15 +10,9 @@ import PopupMessage from './Utils/PopupMessage.jsx';
 import { setShowPopup, showPopup } from './Utils/Utils.js';
 
 import { useLocation } from 'react-router-dom';
-import AuthController from "./controllers/AuthController.js";
 import Sidebar from './Sidebar.jsx';
-import { useJsApiLoader } from '@react-google-maps/api';
-
 
 export let setUpdateUser;
-export let isApiLoaded;
-
-const libs = ["maps", "marker", "places"];
 
 function App() {
 
@@ -37,13 +31,6 @@ function App() {
       isVisible: false
     })
   }
-
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
-    libraries: libs
-  })
-
-  isApiLoaded = isLoaded;
 
   const location = useLocation();
   const navigate = useNavigate();

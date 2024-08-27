@@ -4,16 +4,16 @@ import { Camera, Person, Envelope, GeoAlt, Clock,Phone  } from 'react-bootstrap-
 import { useNavigate, Navigate } from 'react-router-dom';
 import TimePicker from 'react-time-picker';
 import './CompletarRegistro.css';
-import { Autocomplete } from "@react-google-maps/api";
+import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 import { NO_PERMISSION, OK } from "./../../Utils/StatusCodes.js";
 import { ProgressBar, Step } from 'react-step-progress-bar';
 import Switch from 'react-switch';
 import { showPopup } from '../../Utils/Utils.js';
 import styled from 'styled-components';
-import { isApiLoaded, setUpdateUser } from '../../App';
+import { setUpdateUser } from '../../App';
 
+const libs = ["maps", "marker", "places"];
 
-const libraries = ["places"];
 const FormContainer = styled(Container)`
   background-color: #1b1b1b;
   padding: 20px;
@@ -97,6 +97,11 @@ const RegisterForm = () => {
     saturday: false,
     sunday: false,
   });
+
+  const isApiLoaded = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+    libraries: libs
+  }).isLoaded;
 
   const handleSwitchChange = (day, checked) => {
     setFormData((prevState) => ({
