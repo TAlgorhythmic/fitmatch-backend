@@ -28,16 +28,13 @@ const SideSheet = () => {
         open
         sx={{
           '& .MuiDrawer-paper': {
-            width: '70px',
+            width: '5%',
             boxSizing: 'border-box',
             backgroundColor: '#000',
             color: '#fff',
-            height: {
-              xs: '100%',  // Small screens
-              sm: '120%',  // Medium screens
-              md: '170%',  // Large screens and up
-            },
-            textAlign: 'center',
+            height: '100%',
+            marginTop: '10%',
+         
           },
         }}
       >
@@ -61,7 +58,7 @@ const SideSheet = () => {
       </Drawer>
 
       {/* Main Content */}
-      <div style={{ marginLeft: '10%', padding: '100%', width: '100%',height:'100%' }}>
+      <div style={{ marginLeft: '5px', padding: '5px', width: '100%',height:'100%' }}>
        
         {/* Aquí puedes tener un contenido por defecto o dinámico */}
       </div>
@@ -77,7 +74,7 @@ const SideSheet = () => {
           {drawerContent} {/* Aquí se renderiza el componente dinámico */}
         </div>
       </Drawer>
-      <div style={{ marginLeft: '10%', padding: '100%', width: '100%', height:'100%' }}>
+      <div style={{ marginLeft: '20px', padding: '5px', width: '100%', height:'100%' }}>
         {selectedComponent} {/* Muestra el componente seleccionado o la Home si ninguno está seleccionado */}
       </div>
     </div>
