@@ -218,6 +218,7 @@ class SQLManager {
             i++;
         });
         injects.push(activity.id);
+        console.log(injects);
         return fitmatch.getSql().query(`UPDATE activities SET ${str} WHERE id = ?`, { replacements: injects, type: QueryTypes.UPDATE });
     }
 

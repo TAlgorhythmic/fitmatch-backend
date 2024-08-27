@@ -16,7 +16,7 @@ export default class Activity {
 
     setExpires(expires) {
         this.expires = new Date(expires);
-        this.indexChange(this.expires);
+        this.indexChange("expires", this.expires);
     }
 
     setTitle(title) {
