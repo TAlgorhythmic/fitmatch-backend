@@ -40,7 +40,8 @@ body {
     align-items: center;
 }
 .mainContent {
-    padding-top: 20px;
+    padding-top: 5px;
+    
 }
 
 /* Estilo para asegurar que el contenedor principal tenga una altura mínima */

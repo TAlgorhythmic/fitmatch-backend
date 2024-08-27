@@ -8,7 +8,8 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import './UserProfile.css';
 
-const libraries = ["places"];
+const libs = ["maps", "marker", "places"];
+
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({
@@ -36,7 +37,7 @@ const UserProfile = () => {
     const [imageFile, setImageFile] = useState(null);
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
-        libraries: libraries
+        libraries: libs
     });
 
     const ref = useRef(null);
