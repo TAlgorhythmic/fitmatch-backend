@@ -6,6 +6,8 @@ import User from "../api/User.js";
 import { sanitizeDataReceivedForArrayOfObjects, sanitizeDataReceivedForSingleObject } from "../api/utils/Sanitizers.js";
 import Activity from "../api/Activity.js";
 import activitiesManager from "../api/management/ActivitiesManager.js";
+import FeedSession, { feedSessions } from "../api/utils/FeedSession.js";
+import userManager from "../api/management/UserManager.js";
 
 const sqlManager = fitmatch.getSqlManager();
 
@@ -103,106 +105,113 @@ router.get('/', tokenRequired, function (req, res, next) {
         });
 });
 
-router.get('/feed', tokenRequired, async function (req, res, next) {
-    const id = req.token.id;
+router.get("/feedsession", tokenRequired, async (req, res, next) => {
+const id = req.token.id;
 
     try {
-        // TODO
         const fd = await sqlManager.getFriendsById(id);
         const friendsData = sanitizeDataReceivedForArrayOfObjects(fd, "friendId");
-    
-        const feed = [];
-    
+
+        const include = new Set();
+        friendsData.forEach(item => include.add(item.friendId));
+        
         const f0 = await sqlManager.getRawJoinedActivities(id);
         const raw0 = new Set();
     
         const temp = sanitizeDataReceivedForArrayOfObjects(f0, "userId");
-        console.log(temp);
+
         temp.forEach(e => raw0.add(e.postId));
 
-        // Can be optimized
-        for (const item of friendsData) {
-            const friendId = item.friendId;
-            const af = await sqlManager.getActivitiesFromUserId(friendId);
-            const activitiesFriend = sanitizeDataReceivedForArrayOfObjects(af, "id");
+        let user;
 
-            const filtered0 = activitiesFriend.filter(item => !raw0.has(item.id));
-
-            const filtered = sqlManager.filterActivities(filtered0);
-
-            for (const activity of filtered) {
-                const usr = await sqlManager.getUserFromId(activity.userId);
-                const data = sanitizeDataReceivedForSingleObject(usr);
-                const user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
-                activity.user = user;
-
-                const jns = await sqlManager.getActivityJoins(activity.id);
-                const joins = sanitizeDataReceivedForArrayOfObjects(jns, "userId");
-                console.log(joins);
-                const obj = [];
-
-                for (const join of joins) {
-                    const joinUsr = await sqlManager.getUserFromId(join.userId);
-                    const joinedUser = sanitizeDataReceivedForSingleObject(joinUsr);
-                    const user = new User(joinedUser.id, joinedUser.name, joinedUser.lastname, joinedUser.email, joinedUser.phone, joinedUser.description, joinedUser.proficiency, joinedUser.trainingPreferences, joinedUser.img, joinedUser.city, joinedUser.latitude, joinedUser.longitude, joinedUser.isSetup, joinedUser.monday, joinedUser.tuesday, joinedUser.wednesday, joinedUser.thursday, joinedUser.friday, joinedUser.saturday, joinedUser.sunday, joinedUser.timetable1, joinedUser.timetable2);
-                    if (user.id !== activity.userId) obj.push(user);
-                }
-
-
-                activity.joinedUsers = obj;
-            }
-
-            filtered.forEach(item => feed.push(item));
+        if (userManager.containsKey(id)) user = userManager.get(id).user;
+        else {
+            const uD = await sqlManager.getUserFromId(id);
+            const userData = sanitizeDataReceivedForSingleObject(uD);
+            user = new User(userData.id, userData.name, userData.lastname, userData.email, userData.phone, userData.description, userData.proficiency, )
         }
 
-        feed.sort((a, b) => {
-            const dateA = new Date(a.postDate).getTime();
-            const dateB = new Date(b.postDate).getTime();
+        feedSessions.set(id, new FeedSession(user, include, raw0));
 
-            return dateA - dateB;
-        });
+        const feed = feedSessions.get(id).getMore();
+            
+        for (const activity of feed) {
+            let user;
+
+            if (userManager.containsKey(activity.userId)) user = userManager.get(activity.userId).user;
+            else {
+                const usr = await sqlManager.getUserFromId(activity.userId);
+                const data = sanitizeDataReceivedForSingleObject(usr);
+                user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+            }
+
+            activity.user = user;
+
+            const jns = await sqlManager.getActivityJoins(activity.id);
+            const joins = sanitizeDataReceivedForArrayOfObjects(jns, "userId");
+            const obj = [];
+
+            for (const join of joins) {
+                const joinUsr = await sqlManager.getUserFromId(join.userId);
+                const joinedUser = sanitizeDataReceivedForSingleObject(joinUsr);
+                const user = new User(joinedUser.id, joinedUser.name, joinedUser.lastname, joinedUser.email, joinedUser.phone, joinedUser.description, joinedUser.proficiency, joinedUser.trainingPreferences, joinedUser.img, joinedUser.city, joinedUser.latitude, joinedUser.longitude, joinedUser.isSetup, joinedUser.monday, joinedUser.tuesday, joinedUser.wednesday, joinedUser.thursday, joinedUser.friday, joinedUser.saturday, joinedUser.sunday, joinedUser.timetable1, joinedUser.timetable2);
+                if (user.id !== activity.userId) obj.push(user);
+            }
+
+            activity.joinedUsers = obj;
+        }
+
         res.json(buildSendDataPacket(feed));
     } catch (err) {
         console.log(err);
         res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
     }
-
 });
 
-/*router.get("/feed", tokenRequired, async function (req, res, next) {
-    const id_user = req.token.id;
-    
+router.get('/feed', tokenRequired, async function (req, res, next) {
+    const id = req.token.id;
+
+    if (!feedSessions.has(id)) {
+        res.json(buildInvalidPacket("You have to create a feed session first!"));
+        return;
+    }
+
     try {
-        // Obtiene las actividades del feed
-        const activities = await sqlManager.getActivitiesFeed(id_user);
-        
-        if (activities && activities.length > 0) {
-            // Crea un array para almacenar las promesas
-            const friendsDataPromises = activities.map(async (activity) => {
-                // Obtiene los datos de los amigos para cada actividad
-                const friendsData = await sqlManager.getActivitiesFeedFriends(id_user, activity.activity_id);
-                return {
-                    ...activity,
-                    friendsData
-                };
-            });
+        const feed = feedSessions.get(id).getMore();
+            
+        for (const activity of feed) {
 
-            // Espera a que todas las promesas se resuelvan
-            const activitiesWithFriendsData = await Promise.all(friendsDataPromises);
+            let user;
 
-            // Envía la respuesta con los datos completos
-            res.json(buildSendDataPacket(activitiesWithFriendsData));
-        } else {
-            // Responde cuando no hay actividades en el feed
-            res.json(buildNoDataFoundPacket());
+            if (userManager.containsKey(activity.userId)) user = userManager.get(activity.userId).user;
+            else {
+                const usr = await sqlManager.getUserFromId(activity.userId);
+                const data = sanitizeDataReceivedForSingleObject(usr);
+                user = new User(data.id, data.name, data.lastname, data.email, data.phone, data.description, data.proficiency, data.trainingPreferences, data.img, data.city, data.latitude, data.longitude, data.isSetup, data.monday, data.tuesday, data.wednesday, data.thursday, data.friday, data.saturday, data.sunday, data.timetable1, data.timetable2);
+            }
+
+            activity.user = user;
+
+            const jns = await sqlManager.getActivityJoins(activity.id);
+            const joins = sanitizeDataReceivedForArrayOfObjects(jns, "userId");
+            const obj = [];
+
+            for (const join of joins) {
+                const joinUsr = await sqlManager.getUserFromId(join.userId);
+                const joinedUser = sanitizeDataReceivedForSingleObject(joinUsr);
+                const user = new User(joinedUser.id, joinedUser.name, joinedUser.lastname, joinedUser.email, joinedUser.phone, joinedUser.description, joinedUser.proficiency, joinedUser.trainingPreferences, joinedUser.img, joinedUser.city, joinedUser.latitude, joinedUser.longitude, joinedUser.isSetup, joinedUser.monday, joinedUser.tuesday, joinedUser.wednesday, joinedUser.thursday, joinedUser.friday, joinedUser.saturday, joinedUser.sunday, joinedUser.timetable1, joinedUser.timetable2);
+                if (user.id !== activity.userId) obj.push(user);
+            }
+
+            activity.joinedUsers = obj;
         }
-    } catch (error) {
-        console.log(error);
-        res.json(buildInternalErrorPacket("Backend internal error. Check logs."))
+
+        res.json(buildSendDataPacket(feed));
+    } catch (err) {
+        console.log(err);
+        res.json(buildInternalErrorPacket("Backend internal error. Check logs."));
     }
 });
-*/
-
 
 // POST, creación de un nuevo Activities
 router.post('/create', tokenRequired, function (req, res, next) {
@@ -237,7 +246,7 @@ router.post('/create', tokenRequired, function (req, res, next) {
     fitmatch.getSqlManager().createNewActivity(title, description, expires, placeholder, latitude, longitude, req.token.id)
         .then(e => {
             const id = sanitizeDataReceivedForSingleObject(e);
-            const activity = new Activity(id, title, description, postDate, expires, req.token.id, placeholder, latitude, longitude);
+            const activity = new Activity(id, title, description, new Date(), expires, req.token.id, placeholder, latitude, longitude);
             activitiesManager.put(id, activity);
             res.json(buildSimpleOkPacket());
             fitmatch.sqlManager.joinActivity(req.token.id, id)

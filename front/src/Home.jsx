@@ -14,11 +14,12 @@ function Home() {
     const token = localStorage.getItem('authToken');
     const ActivityControl = new ActivitiesController(token);
     const usersControl = new UsersController(token);
+    const [isEnded, setEnded] = useState(false);
+    const [isLoading, setLoading] = useState(false);
 
-    
     useEffect(() => {
         async function getActivities() {
-            const activitiesData = await ActivityControl.getFeed();
+            const activitiesData = await ActivityControl.getCreateFeedSession();
             console.log(activitiesData);
             if (activitiesData.status === 0) {
                 if (activitiesData.data.length) setActivities(activitiesData.data);
@@ -27,8 +28,31 @@ function Home() {
                 console.log('Error: ', activitiesData);
             }
         }
+
+        async function handleScroll() {
+            const scrollPos = window.scrollY + window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+
+            if (scrollPos >= documentHeight - 100) {
+                setLoading(true);
+                const activitiesData = await ActivityControl.getFeed();
+                console.log(activitiesData);
+                if (activitiesData.status === 0) {
+                    if (activitiesData.data.length) setActivities([...activities, ...activitiesData.data]);
+                    else setEnded(true);
+                } else {
+                    console.log('Error: ', activitiesData);
+                }
+            }
+        }
+
+        window.addEventListener("scroll", handleScroll);
+
         getActivities();
 
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        }
     }, []); // Dependencia añadida
 
     useEffect(() => {
@@ -44,7 +68,14 @@ function Home() {
         getFriends();
     }, []);
 
-    if (activities.length === 0) {
+    if (friends.length === 0) {
+        return (
+            <div className="contenedorHome">
+                <h6>Aún no has agregado a nuevos compañeros</h6>
+                <Link to="/friends"><Button>Conecta con gente</Button></Link>
+            </div>
+        );
+    } else if (activities.length === 0) {
         return (
             <div className="contenedorHome">
                 <div className="homeDisclaimer">
@@ -53,15 +84,7 @@ function Home() {
                 </div>
             </div>
         );
-    } else if (friends.length === 0) {
-        return (
-            <div className="contenedorHome">
-                <h6>Aún no has agregado a nuevos compañeros</h6>
-                <Link to="/friends"><Button>Conecta con gente</Button></Link>
-            </div>
-        );
-
-    } 
+    }
 
     return (
         <>
@@ -69,6 +92,12 @@ function Home() {
                 {activities.map((activity, index) => (
                     <Row key={index}>
                         <ActivityPostHome data={activity} friendsSet={new Set(friends)} />
+                        <span className={isLoading ? "loader" : "hidden"}></span>
+                        {
+                            isEnded ? <div className="homeDisclaimer">
+                                <h6>Esto es todo por ahora...</h6>
+                            </div> : <></>
+                        }
                     </Row>
                 ))}
             </div>

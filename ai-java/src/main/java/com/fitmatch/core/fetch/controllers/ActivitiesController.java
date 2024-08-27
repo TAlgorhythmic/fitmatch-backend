@@ -32,13 +32,34 @@ public class ActivitiesController {
             try (CloseableHttpResponse res = client.execute(post)) {
                 String json = EntityUtils.toString(res.getEntity());
 
-                System.out.println("prev");
                 JsonElement jsonElement = JsonParser.parseString(json);
-                System.out.println("post");
 
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
 
-                System.out.println(code);
+                if (code == OK) return Fitmatch.getInstance().getGson().fromJson(json, ServerActivity[].class);
+                else System.out.println(json);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ServerActivity[] feedSession(String token) {
+
+        try(CloseableHttpClient client = HttpClients.createDefault()) {
+
+            HttpGet post = new HttpGet(Urls.FEED_SESSION);
+            post.setHeader("Content-Type", "application/json");
+            post.setHeader("Authorization", "Bearer " + token);
+
+            try (CloseableHttpResponse res = client.execute(post)) {
+                String json = EntityUtils.toString(res.getEntity());
+
+                JsonElement jsonElement = JsonParser.parseString(json);
+
+                int code = jsonElement.getAsJsonObject().get("status").getAsInt();
 
                 if (code == OK) return Fitmatch.getInstance().getGson().fromJson(json, ServerActivity[].class);
                 else System.out.println(json);

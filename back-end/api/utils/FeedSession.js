@@ -1,29 +1,24 @@
 import activitiesManager from "../management/ActivitiesManager.js";
-import { buildInternalErrorPacket, buildInvalidPacket, buildNoDataFoundPacket, buildSendDataPacket } from "../packets/PacketBuilder.js";
-import User from "../User.js";
-import fitmatch from "./../Fitmatch.js";
-import { areCompatible } from './Algorithms.js';
-import { sanitizeDataReceivedForArrayOfObjects } from "./Sanitizers.js";
+import sqlManager from "../management/SQLManager.js";
 
 const ACTIVITIES_PER_REQUEST = 10;
 
 export const feedSessions = new Map();
 
 class FeedSession {
-    constructor(user, friendsSet) {
+    constructor(user, friendsSet, excludeSet) {
         if (!user || !user.id) throw new Error("User cannot be undefined.");
         this.id = user.id;
         this.position = 0;
         this.modified = new Date();
-        this.activity = activity;
+        this.user = user;
         this.isEnded = false;
-        this.array = [...activitiesManager.map.values()].filter(item => friendsSet.has(item.userId));
-    }
+        this.array = sqlManager.filterActivities([...activitiesManager.map.values()].filter(item => friendsSet.has(item.userId) && item.userId !== user.id && !excludeSet.has(item.id)));
+        this.array.sort((a, b) => {
+            const dateA = new Date(a);
+            const dateB = new Date(b);
 
-    filterActivities(array, ignore) {
-        return array.filter(item => {
-            if (!item || item.id === this.id || ignore.has(item.id)) return false;
-            return true;
+            return dateA.getTime() - dateB.getTime();
         });
     }
 
@@ -35,6 +30,8 @@ class FeedSession {
         const sendData = this.array.slice(this.position - ACTIVITIES_PER_REQUEST, ACTIVITIES_PER_REQUEST);
 
         if (this.position >= this.array.length) this.isEnded = true;
+
+        console.log(this.array);
 
         return sendData;
     }
