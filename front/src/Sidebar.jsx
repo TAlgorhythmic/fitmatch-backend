@@ -34,23 +34,24 @@ const SideSheet = () => {
             color: '#fff',
             height: '100%',
             marginTop: '10%',
-         
+            paddingTop: '5%',
+            paddingBottom: '5%',
           },
         }}
       >
         <List>
         <ListItem button onClick={() => navigate('/create-activity')}>
-            <ListItemIcon style={{ color: '#fff', justifyContent: 'center' }}>
+            <ListItemIcon style={{ color: '#fff', justifyContent: 'center', paddingRight: '60%', marginBottom: '10%' }}>
               <FaPlus size={24} />
             </ListItemIcon>
           </ListItem>
           <ListItem button onClick={toggleDrawer(true, <Agenda />)}>
-            <ListItemIcon style={{ color: '#fff', justifyContent: 'center' }}>
+            <ListItemIcon style={{ color: '#fff', justifyContent: 'center', paddingRight: '60%',marginBottom: '10%'}}>
               <FaCalendarAlt size={24} />
             </ListItemIcon>
           </ListItem>
           <ListItem button onClick={toggleDrawer(true, <OwnActivities />)}>
-            <ListItemIcon style={{ color: '#fff', justifyContent: 'center' }}>
+            <ListItemIcon style={{ color: '#fff', justifyContent: 'center', paddingRight: '60%',marginBottom: '10%'}}>
               <FaList size={24} />
             </ListItemIcon>
           </ListItem>
