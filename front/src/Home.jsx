@@ -38,8 +38,14 @@ function Home() {
                 const activitiesData = await ActivityControl.getFeed();
                 console.log(activitiesData);
                 if (activitiesData.status === 0) {
-                    if (activitiesData.data.length) setActivities([...activities, ...activitiesData.data]);
-                    else setEnded(true);
+                    if (activitiesData.data.length) {
+                        setActivities([...activities, ...activitiesData.data])
+                        setLoading(false);
+                    }
+                    else {
+                        setEnded(true);
+                        setLoading(false)
+                    }
                 } else {
                     console.log('Error: ', activitiesData);
                 }
@@ -92,14 +98,14 @@ function Home() {
                 {activities.map((activity, index) => (
                     <Row key={index}>
                         <ActivityPostHome data={activity} friendsSet={new Set(friends)} />
-                        <span className={isLoading ? "loader" : "hidden"}></span>
-                        {
-                            isEnded ? <div className="homeDisclaimer">
-                                <h6>Esto es todo por ahora...</h6>
-                            </div> : <></>
-                        }
                     </Row>
                 ))}
+                <span className={isLoading ? "loader" : "hidden"}></span>
+                {
+                    isEnded ? <div className="homeDisclaimer">
+                        <h6>Esto es todo por ahora...</h6>
+                    </div> : <></>
+                }
             </div>
         </>
 
