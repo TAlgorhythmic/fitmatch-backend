@@ -5,6 +5,8 @@ import ActivityDayDisplay from './components/Agenda/ActivityDayDisplay';
 import { Navigate } from "react-router-dom";
 import { NO_PERMISSION, OK } from "./Utils/StatusCodes.js";
 import { showPopup } from "./Utils/Utils.js"
+import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 import './Agenda.css';
 
 function Agenda() {
@@ -37,7 +39,16 @@ function Agenda() {
         showPopup("No permission", "Tu sesión ha expirado. Debes iniciar sesión.", false);
         return <Navigate to="/login" />
     }
-    
+    if(joinedActivities.length === 0){
+        return (
+            <div className="contenedorHome">
+                <div className="homeDisclaimer">
+                    <h6>Aún no te has suscrito a ninguna actividad</h6>
+                    <Link to="/create-activity"><Button>Publica tu primera actividad</Button></Link>
+                </div>
+            </div>
+        );
+    }
     return (
         <>
             <div className="contenedorHome">

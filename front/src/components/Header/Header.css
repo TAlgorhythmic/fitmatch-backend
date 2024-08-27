@@ -141,6 +141,7 @@
     text-decoration: none;
     font-weight: 600;
     font-size: 20px;
+    
 }
 
 .makeFriends::before {
@@ -178,7 +179,9 @@
 
 .makeFriends span {
     position: relative;
-    z-index: 3;
+    z-index: 1;
+    margin-right: 20%;
+
 }
 
 .buttonMakeFriends {
