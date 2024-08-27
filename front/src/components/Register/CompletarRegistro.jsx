@@ -226,10 +226,9 @@ const RegisterForm = () => {
     const result = await response.json();
     console.log(result);
     if (result.status === 0) {
-      
+      navigate('/');
       console.log('Usuario registrado con éxito');
       setUpdateUser(true);
-      navigate('/');
     } else  {
       setTokenValid(false);
       showPopup("Something went wrong", result.error, true);

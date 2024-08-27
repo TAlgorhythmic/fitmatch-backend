@@ -58,7 +58,7 @@ function CreateActivity() {
         };
     }, []);
 
-    if (redirect) return <Navigate to="/agenda" />;
+    if (redirect) return <Navigate to="/" />;
 
     return (
         <>

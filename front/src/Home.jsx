@@ -15,6 +15,7 @@ function Home() {
     const ActivityControl = new ActivitiesController(token);
     const usersControl = new UsersController(token);
 
+    
     useEffect(() => {
         async function getActivities() {
             const activitiesData = await ActivityControl.getFeed();
@@ -60,8 +61,7 @@ function Home() {
             </div>
         );
 
-    }
-
+    } 
 
     return (
         <>
