@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import { Navigate, useParams } from 'react-router-dom';
 import OwnActivityPost from './components/OwnActivities/OwnActivityPost';
 import ActivitiesController from './controllers/ActivitiesController';
 import AuthController from './controllers/AuthController';
 import './OwnActivities.css';
+import { Link } from "react-router-dom";
 
 function OwnActivities() {
     const [activities, setActivities] = useState([]);
+    
     const [isValidToken, setIsValidToken] = useState(null);
     const token = localStorage.getItem('authToken');
     const ActivityController = new ActivitiesController(token);
     const AuthControl = new AuthController(token);
+
+    
 
     useEffect(() => {
         const validateToken = async () => {
@@ -52,6 +56,17 @@ function OwnActivities() {
 
         getActivities();
     }, []);
+
+    if(activities.length === 0){
+        return (
+            <div className="contenedorHome">
+                <div className="homeDisclaimer">
+                    <h6>Aún no has publicado actividades propias</h6>
+                    <Link to="/create-activity"><Button>Publica tu primera actividad</Button></Link>
+                </div>
+            </div>
+        );
+    }
 
     function handleDelete(activityId) {
         setActivities(prevActivities => prevActivities.filter(activity => activity.id !== activityId));

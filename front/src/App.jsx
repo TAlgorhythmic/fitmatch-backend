@@ -8,9 +8,12 @@ import 'react-step-progress-bar/styles.css';
 import { useState, useEffect } from 'react';
 import PopupMessage from './Utils/PopupMessage.jsx';
 import { setShowPopup, showPopup } from './Utils/Utils.js';
-import SubHeader from './components/Header/SubHeader.jsx';
+
 import { useLocation } from 'react-router-dom';
+import AuthController from "./controllers/AuthController.js";
+import Sidebar from './Sidebar.jsx';
 import { useJsApiLoader } from '@react-google-maps/api';
+
 
 export let setUpdateUser;
 export let isApiLoaded;
@@ -52,12 +55,14 @@ function App() {
   const token = localStorage.getItem('authToken');
 
   const [showHome, setShowHome] = useState(false);
+  const [sideBar, setSideBar] = useState(false);
 
   useEffect(() => {
     if (token && (location.pathname === '/' || location.pathname === '/create-activity'
       || location.pathname === '/agenda' || location.pathname === '/own-activities'
     )) {
       setShowHome(true);
+     
     }
   }, [token, location.pathname]);
 
@@ -107,10 +112,9 @@ function App() {
         {
           showHeader ? <Header /> : <></>
         }
-        {
-          showHome ? <SubHeader /> : <></>
+         {
+          sideBar ? <Sidebar /> : <></>
         }
-        
         <div className="mainContent">
           <Outlet />
         </div>
