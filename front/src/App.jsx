@@ -98,8 +98,11 @@ function App() {
   useEffect(() => {
     if (location.pathname === "/formulario" || location.pathname === "/login" || location.pathname === "/register" ) {
       setShowHeader(false);
+      setSideBar(false);
     } else {
       setShowHeader(true);
+      setSideBar(true);
+      
       
       if (!token) navigate("/register");
 
