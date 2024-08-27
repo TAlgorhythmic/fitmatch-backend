@@ -6,6 +6,10 @@ import { OK } from "./Utils/StatusCodes.js";
 import { Navigate } from "react-router-dom";
 import MapLocationPicker from './components/Maps/MapLocationPicker.jsx';
 import { isApiLoaded } from './App.jsx';
+import { FaHeading } from 'react-icons/fa';
+import { FaAlignLeft } from 'react-icons/fa';
+
+
 
 function CreateActivity() {
 
@@ -65,23 +69,35 @@ function CreateActivity() {
             <form className='form-create-activity'>
                 <h1 className="title">Crear actividad</h1>
                 <div className='flexx'>
-                    <label className='normal-width marginright'>
-                        <span>Título</span>
-                        <input id="title" className="input-activity-title" type="text" placeholder="" required="" />
-                    </label>
+                <label className='normal-width marginright'>
+                <span>Título</span>
+                                   
+                                    <input
+                                        type="textarea"
+                                        id="title"
+                                        name="title"
+                                        required
+                                        placeholder="Username"
+                                        className="input-activity-title" 
+                                    />
+               </label>
+                        
                     <label className='normal-width'>
                         <span>Fecha y hora</span>
                         <input id="expires" className="date-input" style={{ marginBottom: "10px" }} type="datetime-local" placeholder="" required="" />
                     </label>
                 </div>
+                <div className='flexx'> 
+
+                {
+                    isApiLoaded ? <MapLocationPicker setLocation={setLocation} location={location} className="maps"/> : <></>
+                }
 
                 <label>
                     <span>Descripción</span>
                     <textarea id="description" className="input-activity-description" type="text" placeholder="" required="" />
                 </label>
-                {
-                    isApiLoaded ? <MapLocationPicker setLocation={setLocation} location={location}/> : <></>
-                }
+                </div>
                 <a className="plusButton">
                     <svg className="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <g mask="url(#mask0_21_345)">
@@ -89,6 +105,7 @@ function CreateActivity() {
                         </g>
                     </svg>
                 </a>
+                
             </form>
         </>
     )
