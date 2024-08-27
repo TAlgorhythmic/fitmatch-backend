@@ -2,13 +2,12 @@ package com.fitmatch.core.fetch.controllers;
 
 import static com.fitmatch.core.fetch.controllers.StatusCodes.OK;
 
-import java.nio.charset.StandardCharsets;
-
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
@@ -80,7 +79,7 @@ public class ActivitiesController {
             HttpPost post = new HttpPost(Urls.CREATE_ACTIVITY);
             post.setHeader("Content-Type", "application/json");
             post.setHeader("Authorization", "Bearer " + token);
-            post.setEntity(new StringEntity(packet.toJson()));
+            post.setEntity(new StringEntity(packet.toJson(), ContentType.APPLICATION_JSON.withCharset("UTF-8")));
 
             try (CloseableHttpResponse res = client.execute(post)) {
                 String json = EntityUtils.toString(res.getEntity(), "UTF-8");
