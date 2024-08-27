@@ -15,6 +15,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import static com.fitmatch.core.fetch.controllers.StatusCodes.*;
 
+
 public class UsersController {
     
     public UsersController() {
@@ -30,7 +31,7 @@ public class UsersController {
             post.setEntity(new StringEntity(packet.toJson()));
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
@@ -55,7 +56,7 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement parse = JsonParser.parseString(json);
                 int code = parse.getAsJsonObject().get("status").getAsInt();
@@ -82,7 +83,7 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
@@ -107,7 +108,7 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
@@ -132,7 +133,7 @@ public class UsersController {
             get.setHeader("Authorization", "Bearer " + token);
 
             try (CloseableHttpResponse res = client.execute(get)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();

@@ -27,7 +27,7 @@ public class AuthController {
             post.setEntity(new StringEntity(packet.toJson()));
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
@@ -53,7 +53,7 @@ public class AuthController {
             post.setEntity(new StringEntity(packet.toJson()));
 
             try (CloseableHttpResponse res = client.execute(post)) {
-                String json = EntityUtils.toString(res.getEntity());
+                String json = EntityUtils.toString(res.getEntity(), "UTF-8");
 
                 JsonElement jsonElement = JsonParser.parseString(json);
                 int code = jsonElement.getAsJsonObject().get("status").getAsInt();
