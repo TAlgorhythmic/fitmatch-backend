@@ -27,11 +27,11 @@ function FriendsList() {
         const response = await UserControl.removeFriend(id);
         if (response.status === 0) {
             const updatedUsers = users.filter(user => user.id !== id);
-            showPopup("Usuario borrado correctamente", error, false);
+            showPopup("Usuario borrado correctamente", "", false);
             setUsers(updatedUsers);
         } else {
             console.log('Error: ', response);
-            showPopup("Error deleting User", error, true);
+            showPopup("Error deleting User", "", true);
         }
     }
 
