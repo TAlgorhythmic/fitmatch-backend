@@ -53,7 +53,7 @@ class Ref {
     periodicallySave() {
         setTimeout(() => {
             this.save();
-            if (this.map.has(this.user.id)) {
+            if (this.map.has(this.activity.id)) {
                 this.periodicallySave();
             } else return;
         }, 20000);
