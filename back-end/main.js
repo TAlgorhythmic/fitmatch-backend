@@ -10,9 +10,11 @@ import credentialsRouter from "./routers/CredentialsRouter.js";
 import e from "express";
 import { removeGarbage } from "./api/management/SQLManager.js";
 
+let i = 0;
+
 function executeQueriesRecursively(queries) {
     if (queries.length > 0) {
-        let i = 0;
+        //let i = 0;
 
         fitmatch.sql.query(queries[i])
         .then(e => console.log("Success!"))
