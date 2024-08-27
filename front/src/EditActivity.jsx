@@ -19,14 +19,14 @@ function EditActivity() {
         lat: null
     });
     const [activity, setActivity] = useState(null);
- 
+
     const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
         async function getActivity() {
             const data = await ActivityController.getActivityById(id)
             console.log(data);
-            setActivity({...data, expires: new Date(data.expires)});
+            setActivity({ ...data, expires: new Date(data.expires) });
             setLocation({
                 address: data.placeholder,
                 lat: parseFloat(data.latitude),
@@ -38,9 +38,9 @@ function EditActivity() {
     }, []);
 
     function onChange(e) {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
 
-        setActivity({...activity, [name]: value});
+        setActivity({ ...activity, [name]: value });
     }
 
     async function onClick() {
@@ -72,7 +72,7 @@ function EditActivity() {
         let dia = String(fechaObj.getDate()).padStart(2, '0');
         let horas = String(fechaObj.getHours()).padStart(2, '0');
         let minutos = String(fechaObj.getMinutes()).padStart(2, '0');
-    
+
         // Construir la cadena en el formato requerido
         let fechaConvertida = `${año}-${mes}-${dia}T${horas}:${minutos}`;
         return fechaConvertida;
@@ -85,19 +85,43 @@ function EditActivity() {
                 <div className='flexx'>
                     <label className='normal-width marginright'>
                         <span>Título</span>
-                        <input id="title" name='title' onChange={onChange} value={activity ? activity.title : ""} className="input-activity-title" type="text" placeholder="" required="" />
+                        <input
+                            id="title"
+                            name='title'
+                            onChange={onChange}
+                            value={activity ? activity.title : ""}
+                            className="input-activity-title"
+                            type="text"
+                            placeholder=""
+                            required=""
+                        />
                     </label>
                     <label className='normal-width'>
                         <span>Fecha y hora</span>
-                        <input id="expires" name='expires' onChange={onChange} value={activity ? formatDate(activity.expires) : ""} className="date-input" style={{ marginBottom: "10px" }} type="datetime-local" placeholder="" required="" />
+                        <input
+                            id="expires"
+                            name='expires'
+                            onChange={onChange}
+                            value={activity ?
+                                formatDate(activity.expires) : ""}
+                            className="date-input"
+                            style={{ marginBottom: "10px" }}
+                            type="datetime-local"
+                            placeholder=""
+                            required=""
+                        />
                     </label>
                 </div>
 
-                <label>
-                    <span>Descripción</span>
-                    <textarea id="description" name='description' onChange={onChange} value={activity ? activity.description : ""} className="input-activity-description" type="text" placeholder="" required="" />
-                </label>
-                <MapLocationPicker setLocation={setLocation} location={location} onChange={onChange}/>
+                <div className='flexx'>
+                    <MapLocationPicker setLocation={setLocation} location={location} onChange={onChange} />
+                    <label>
+                        <span>Descripción</span>
+                        <textarea id="description" name='description' onChange={onChange} value={activity ? activity.description : ""} className="input-activity-description" type="text" placeholder="" required="" />
+                    </label>
+                </div>
+
+                
                 <button className="plusButton" onClick={onClick}>
                     <svg className="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <g mask="url(#mask0_21_345)">

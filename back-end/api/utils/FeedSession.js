@@ -12,11 +12,10 @@ class FeedSession {
         this.position = 0;
         this.modified = new Date();
         this.user = user;
-        // Fix this.
         this.isEnded = false;
         this.array = [];
         [...activitiesManager.map.values()].forEach(ref => this.array.push(ref.activity));
-        this.array = sqlManager.filterActivities([...this.array].filter(item => friendsSet.has(item.userId) && item.userId !== user.id && !excludeSet.has(item.id)));
+        this.array = sqlManager.filterActivities([...this.array].filter(item => {console.log(item); return item && friendsSet.has(item.userId) && item.userId !== user.id && !excludeSet.has(item.id);}));
         this.array.sort((a, b) => {
             const dateA = new Date(a);
             const dateB = new Date(b);
@@ -33,7 +32,7 @@ class FeedSession {
         const sendData = this.array.slice(this.position - ACTIVITIES_PER_REQUEST, ACTIVITIES_PER_REQUEST);
 
         if (this.position >= this.array.length) this.isEnded = true;
-        
+
         return sendData;
     }
 }
