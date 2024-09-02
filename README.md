@@ -54,5 +54,3 @@ npm run dev
 ```
     
 Once both servers are running, open your browser and go to `http://localhost:3000` to use the application.
-    
-```
