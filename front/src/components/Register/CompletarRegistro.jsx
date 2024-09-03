@@ -10,7 +10,7 @@ import { ProgressBar, Step } from 'react-step-progress-bar';
 import Switch from 'react-switch';
 import { showPopup } from '../../Utils/Utils.js';
 import styled from 'styled-components';
-import { setUpdateUser } from '../../App';
+import { apiKey, setUpdateUser } from '../../App';
 
 const libs = ["maps", "marker", "places"];
 
@@ -98,8 +98,10 @@ const RegisterForm = () => {
     sunday: false,
   });
 
+  const token = localStorage.getItem('authToken');
+
   const isApiLoaded = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+    googleMapsApiKey: apiKey,
     libraries: libs
   }).isLoaded;
 
@@ -135,7 +137,6 @@ const RegisterForm = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem('authToken');
 
       const response = await fetch('http://localhost:3001/api/users/profile', {
         method: 'GET',

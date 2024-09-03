@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { meses } from '../../data/meses';
 import JoinedActivitiesController from '../../controllers/JoinedActivitiesController';
 import { showPopup } from '../../Utils/Utils.js';
+import { OK } from '../../Utils/StatusCodes.js';
 
 function ActivityDayDisplay(props) {
 
@@ -11,6 +12,21 @@ function ActivityDayDisplay(props) {
     let expireDate = new Date(data.expires);
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
+
+    const [apiKey, setApiKey] = useState("");
+
+    useEffect(() => {
+
+        fetch("http://localhost:3001/api/credentials/mapskey", {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            }
+        }).then(raw => raw.json()).then(res => {
+            if (res.status === OK) setApiKey(res.data);
+            else showPopup("Error", "Error fetching maps api key.", true);
+        });
+    });
 
     async function leaveActivity() {
         try {
@@ -29,7 +45,7 @@ function ActivityDayDisplay(props) {
                     <Col md={2}>
                         <div className='actDayLeftVisor'>
                             <h3 className='actDayNumber'>{expireDate.getDate()}</h3>
-                            <h5 classname="actDayMonth">{meses[expireDate.getMonth()]}</h5>
+                            <h5 className="actDayMonth">{meses[expireDate.getMonth()]}</h5>
                         </div>
                     </Col>
                     <Col md={10}>
@@ -41,7 +57,7 @@ function ActivityDayDisplay(props) {
                                 loading="lazy"
                                 allowFullScreen
                                 referrerPolicy="no-referrer-when-downgrade"
-                                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc&q=${data.latitude},${data.longitude}`}>
+                                src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${data.latitude},${data.longitude}`}>
                             </iframe>
                             <p className='actUserName'>Localización: {data.placeholder}</p>
                             <div className="actDayLeaveButton">

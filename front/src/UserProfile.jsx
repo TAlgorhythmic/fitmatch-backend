@@ -7,6 +7,7 @@ import { showPopup } from './Utils/Utils';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import './UserProfile.css';
+import { apiKey } from './App';
 
 const libs = ["maps", "marker", "places"];
 
@@ -26,7 +27,7 @@ const UserProfile = () => {
         longitude: ''
     });
 
-    const navigate = useNavigate();
+    const token = localStorage.getItem('authToken');
 
     const sportsInterests = [
         'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
@@ -34,9 +35,11 @@ const UserProfile = () => {
         'Weightlifting', 'Cardio', 'Zumba', 'Spinning', 'Martial Arts'];
 
     const [selectedInterests, setSelectedInterests] = useState([]);
+    
+
     const [imageFile, setImageFile] = useState(null);
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+        googleMapsApiKey: apiKey,
         libraries: libs
     });
 
@@ -45,7 +48,6 @@ const UserProfile = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
 
         fetch('http://localhost:3001/api/users/profile', {
             method: 'GET',
