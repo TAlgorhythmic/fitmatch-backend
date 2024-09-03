@@ -1,10 +1,11 @@
 import React from "react";
 import { Autocomplete, GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { apiKey } from "../../App";
 
 const libs = ["maps", "marker", "places"];
 
 export default function MapLocationPicker(props) {
-
+    
     const setLocation = props.setLocation;
     const location = props.location;
     const onChange = props.onChange;
@@ -13,7 +14,7 @@ export default function MapLocationPicker(props) {
     const geocoder = React.useRef(null);
 
     const isApiLoaded = useJsApiLoader({
-        googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+        googleMapsApiKey: apiKey,
         libraries: libs
       }).isLoaded;
 

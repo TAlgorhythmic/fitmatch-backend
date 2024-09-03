@@ -25,6 +25,7 @@
     "antd": "^5.20.2",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "dotenv": "^16.4.5",
     "helmet": "^7.1.0",
     "mobiscroll": "^3.0.0-beta6",
     "react": "^18.3.1",

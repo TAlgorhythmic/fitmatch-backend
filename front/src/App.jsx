@@ -13,6 +13,7 @@ import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar.jsx';
 
 export let setUpdateUser;
+export let apiKey = "";
 
 function App() {
 
@@ -40,6 +41,26 @@ function App() {
   const [showHeader, setShowHeader] = useState(true);
   setUpdateUser = setUpdate;
   const token = localStorage.getItem('authToken');
+
+  const [mapsApiKey, setApiKey] = useState("");
+
+  useEffect(() => {
+
+      if (!user) return;
+
+      fetch("http://localhost:3001/api/credentials/mapskey", {
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": token
+          }
+      }).then(raw => raw.json()).then(res => {
+          if (res.status === OK) {
+            setApiKey(res.data);
+            apiKey = res.data;
+          }
+          else showPopup("Error", "Error fetching maps api key.", true);
+      });
+  }, [user, token]);
 
   const [showHome, setShowHome] = useState(false);
   const [sideBar, setSideBar] = useState(false);
@@ -103,7 +124,7 @@ function App() {
           showHeader ? <Header /> : <></>
         }
         <div className="mainContent">
-          <Outlet />
+          {mapsApiKey ? <Outlet /> : <></>}
         </div>
       </div>
       {
