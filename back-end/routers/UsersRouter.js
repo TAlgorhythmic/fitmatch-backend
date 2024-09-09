@@ -87,9 +87,10 @@ router.post("/upload/image", tokenRequired, upload.single("img"), (req, res, nex
 });*/
 
 export function sketchyOrder(array) {
+    
     // inverse sort to extract the 25% of the most likely matches users.
     array.sort((a, b) => {
-        return b.matchPercent - a.matchPercent;
+        return a.matchPercent - b.matchPercent;
     });
 
     // Get the amount of items the 25% actually is.
@@ -102,13 +103,18 @@ export function sketchyOrder(array) {
         likelyMatch.push(array.pop());
     }
 
+    console.log("Likely match: ");
+    console.log(likelyMatch);
+    console.log("Leftover match: ");
+    console.log(array);
+
     const feed = [];
     // Sketchy sort.
 
     if (!array.length && !likelyMatch.length) return feed;
 
     if (likelyMatch.length) feed.push(likelyMatch.pop());
-    let i = 0;
+    let i = 1;
     while (array.length || likelyMatch.length) {
         if (i % 4 === 0 && likelyMatch.length) {
             const pop = likelyMatch.pop();
