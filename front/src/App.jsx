@@ -13,6 +13,7 @@ import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar.jsx';
 
 export let setUpdateUser;
+export let apiKey = "";
 
 function App() {
 
@@ -41,17 +42,27 @@ function App() {
   setUpdateUser = setUpdate;
   const token = localStorage.getItem('authToken');
 
-  const [showHome, setShowHome] = useState(false);
+  const [mapsApiKey, setApiKey] = useState("");
+
   const [sideBar, setSideBar] = useState(false);
 
   useEffect(() => {
-    if (token && (location.pathname === '/' || location.pathname === '/create-activity'
-      || location.pathname === '/agenda' || location.pathname === '/own-activities'
-    )) {
-      setShowHome(true);
-     
-    }
-  }, [token, location.pathname]);
+
+    if (!user || !token) return;
+
+    fetch("http://localhost:3001/api/credentials/mapskey", {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+        }
+    }).then(raw => raw.json()).then(res => {
+        if (res.status === OK) {
+          setApiKey(res.data);
+          apiKey = res.data;
+        }
+        else showPopup("Error", "Error fetching maps api key.", true);
+    });
+}, [user]);
 
   useEffect(() => {
     async function getProfile() {
@@ -90,11 +101,9 @@ function App() {
       setShowHeader(true);
       setSideBar(true);
       
-      
       if (!token) navigate("/register");
-
     }
-  }, [location.pathname, navigate, user]);
+  }, [location.pathname, navigate, user, token]);
 
   return (
     <>

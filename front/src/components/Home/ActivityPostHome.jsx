@@ -1,10 +1,11 @@
 import { Alert, Row, Col, Image, Button } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import './ActivityPostHome.css';
 import { meses } from '../../data/meses';
 import JoinedActivitiesController from '../../controllers/JoinedActivitiesController.js';
 import { showPopup } from '../../Utils/Utils.js';
+import { OK } from '../../Utils/StatusCodes.js';
 
 function ActivityPostHome(props) {
 
@@ -14,6 +15,21 @@ function ActivityPostHome(props) {
     let expireDate = new Date(data.expires);
     const token = localStorage.getItem('authToken');
     const AgendaController = new JoinedActivitiesController(token);
+
+    const [apiKey, setApiKey] = useState("");
+
+    useEffect(() => {
+
+        fetch("http://localhost:3001/api/credentials/mapskey", {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            }
+        }).then(raw => raw.json()).then(res => {
+            if (res.status === OK) setApiKey(res.data);
+            else showPopup("Error", "Error fetching maps api key.", true);
+        });
+    });
 
     const friends = data.joinedUsers.filter(user => friendsSet.has(user.id));
 
@@ -86,7 +102,7 @@ function ActivityPostHome(props) {
                                 loading="lazy"
                                 allowFullScreen
                                 referrerPolicy="no-referrer-when-downgrade"
-                                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDRX596iAVeF6aX9PT3PkgeN-GK0ytG99A&q=${data.latitude},${data.longitude}`}>
+                                src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${data.latitude},${data.longitude}`}>
                             </iframe>
                             <h5 className='actUserName'>Localización: {data.placeholder}</h5>
                         </div>
