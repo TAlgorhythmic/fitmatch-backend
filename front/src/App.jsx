@@ -44,35 +44,25 @@ function App() {
 
   const [mapsApiKey, setApiKey] = useState("");
 
-  useEffect(() => {
-
-      if (!user) return;
-
-      fetch("http://localhost:3001/api/credentials/mapskey", {
-          headers: {
-              "Content-Type": "application/json",
-              "Authorization": token
-          }
-      }).then(raw => raw.json()).then(res => {
-          if (res.status === OK) {
-            setApiKey(res.data);
-            apiKey = res.data;
-          }
-          else showPopup("Error", "Error fetching maps api key.", true);
-      });
-  }, [user, token]);
-
-  const [showHome, setShowHome] = useState(false);
   const [sideBar, setSideBar] = useState(false);
 
   useEffect(() => {
-    if (token && (location.pathname === '/' || location.pathname === '/create-activity'
-      || location.pathname === '/agenda' || location.pathname === '/own-activities'
-    )) {
-      setShowHome(true);
-     
-    }
-  }, [token, location.pathname]);
+
+    if (!user || !token) return;
+
+    fetch("http://localhost:3001/api/credentials/mapskey", {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+        }
+    }).then(raw => raw.json()).then(res => {
+        if (res.status === OK) {
+          setApiKey(res.data);
+          apiKey = res.data;
+        }
+        else showPopup("Error", "Error fetching maps api key.", true);
+    });
+}, [user]);
 
   useEffect(() => {
     async function getProfile() {
@@ -111,11 +101,9 @@ function App() {
       setShowHeader(true);
       setSideBar(true);
       
-      
       if (!token) navigate("/register");
-
     }
-  }, [location.pathname, navigate, user]);
+  }, [location.pathname, navigate, user, token]);
 
   return (
     <>
@@ -124,7 +112,7 @@ function App() {
           showHeader ? <Header /> : <></>
         }
         <div className="mainContent">
-          {mapsApiKey ? <Outlet /> : <></>}
+          <Outlet />
         </div>
       </div>
       {
