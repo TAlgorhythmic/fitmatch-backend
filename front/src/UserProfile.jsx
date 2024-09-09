@@ -18,13 +18,14 @@ const UserProfile = () => {
         email: '',
         phone: '',
         description: '',
-        proficiency: '',
+        proficiency: 'Principiante',
         trainingPreferences: [],
         img: '',
         city: '',
         latitude: '',
         longitude: ''
     });
+    const token = localStorage.getItem('authToken');
 
     const navigate = useNavigate();
 
@@ -36,7 +37,7 @@ const UserProfile = () => {
     const [selectedInterests, setSelectedInterests] = useState([]);
     const [imageFile, setImageFile] = useState(null);
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+        googleMapsApiKey: "AIzaSyDRX596iAVeF6aX9PT3PkgeN-GK0ytG99A",
         libraries: libs
     });
 
@@ -45,7 +46,6 @@ const UserProfile = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
 
         fetch('http://localhost:3001/api/users/profile', {
             method: 'GET',
@@ -86,39 +86,7 @@ const UserProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const token = localStorage.getItem('authToken');
-        console.log(selectedInterests);
-        setUserData({ ...userData, trainingPreferences: selectedInterests })
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(userData)
-        };
-
-        try {
-            const response = await fetch('http://localhost:3001/api/users/edit', requestOptions);
-            const data = await response.json();
-            console.log(data);
-            if (data.status == 0) {
-                console.log()
-                alert('Profile updated successfully');
-            } else {
-                showPopup('Error updating profile', data.error, true);
-            }
-        } catch (error) {
-            showPopup('Error updating profile', error, true);
-        }
-    };
-
-    const handleSubmitPhoto = async (e) => {
-        e.preventDefault();
-    
-        const token = localStorage.getItem('authToken');
-    
+      
         if (imageFile) {
             const formDataImage = new FormData();
             formDataImage.append('img', imageFile);
@@ -135,9 +103,11 @@ const UserProfile = () => {
                 const imageResult = await imageUploadResponse.json();
     
                 if (imageResult.status === 0) {
-                    // Actualiza la URL de la imagen en el estado del componente
+                    // Actualiza la URL de la imagen 
                     setUserData({ ...userData, img: imageResult.imageUrl });
-                    alert('Image uploaded successfully');
+                    alert('Changes commited');
+                    navigate('/');
+
                 } else if (imageResult.status === NO_PERMISSION) {
                     alert('No permission to upload the image');
                 } else {
@@ -146,10 +116,40 @@ const UserProfile = () => {
             } catch (error) {
                 showPopup('Error uploading image', error, true);
             }
-        } else {
-            alert('Please select an image to upload');
         }
-    };    
+        
+        console.log(selectedInterests);
+        setUserData({ ...userData, trainingPreferences: selectedInterests })
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(userData)
+        };
+
+        try {
+            const response = await fetch('http://localhost:3001/api/users/edit', requestOptions);
+            const data = await response.json();
+            console.log(data);
+            if (data.status == 0) {
+                navigate("/userProfile");
+                alert('bip bop no peta');
+                
+            } else {
+                alert('bip bop peta');
+                
+            }
+        } catch (error) {
+            showPopup('Error updating profile', error, true);
+        }
+    };
+
+    const handleImageChange = (e) => {
+        setImageFile(e.target.files[0] || null);
+      };
+        
 
     const handleInterestClick = (interest) => {
         if (selectedInterests.includes(interest)) {
@@ -182,9 +182,17 @@ const UserProfile = () => {
                      src={`http://localhost:3001/uploads/${userData.img}`}
                         alt={userData.name}
                      className="imagen-perfil-derecha"/>
-        <button className="edit-button" onClick={handleSubmitPhoto}>
-        <Pencil size={20} />
-      </button>
+                     
+        <Form.Control
+              type="file"
+              name="img"
+              onChange={handleImageChange}
+               id="fileInput"
+              style={{ display: 'none' }}
+            />
+<Button variant="outline-primary" onClick={() => document.getElementById('fileInput').click()}>
+  <Pencil size={20} /> Nueva imagen
+</Button>
                 <div className="dias-horarios">
                   <div className="dias-semana">
                     {userData.monday ? (
@@ -304,11 +312,12 @@ const UserProfile = () => {
                         placeholder="Escribe una breve descripción sobre ti"
                     />
                 </Form.Group>
-                <div className="button-group d-flex justify-content-center mt-4">
+                <div className="button-group ">
                     <Button
-                        className="submit-button"
+                        className="form-group-profile mb-6"
                         variant="primary"
                         type="submit"
+                        
                     >
                         Guardar
                     </Button>

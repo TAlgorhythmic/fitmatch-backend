@@ -41,7 +41,7 @@ function ActivityDayDisplay(props) {
                                 loading="lazy"
                                 allowFullScreen
                                 referrerPolicy="no-referrer-when-downgrade"
-                                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc&q=${data.latitude},${data.longitude}`}>
+                                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDRX596iAVeF6aX9PT3PkgeN-GK0ytG99A&q=${data.latitude},${data.longitude}`}>
                             </iframe>
                             <p className='actUserName'>Localización: {data.placeholder}</p>
                             <div className="actDayLeaveButton">

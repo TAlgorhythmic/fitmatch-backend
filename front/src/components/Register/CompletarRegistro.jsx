@@ -99,7 +99,7 @@ const RegisterForm = () => {
   });
 
   const isApiLoaded = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCtcO9aN0PUYJuxoL_kwckAAKUU5x1fUYc",
+    googleMapsApiKey: "AIzaSyDRX596iAVeF6aX9PT3PkgeN-GK0ytG99A",
     libraries: libs
   }).isLoaded;
 
