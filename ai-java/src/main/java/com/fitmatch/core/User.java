@@ -30,13 +30,13 @@ public class User {
     }
 
     private volatile int id;
-    private String name, lastname, phone, description, proficiency, img, city, country;
+    private final String name, lastname, phone, description, proficiency, img, city, country;
     private final String email;
-    private String[] trainingPreferences;
-    private double latitude, longitude;
-    private boolean isSetup;
-    private boolean monday, tuesday, wednesday, thursday, friday, saturday, sunday;
-    private int timetable1, timetable2;
+    private final String[] trainingPreferences;
+    private final double latitude, longitude;
+    private final boolean isSetup;
+    private final boolean monday, tuesday, wednesday, thursday, friday, saturday, sunday;
+    private final int timetable1, timetable2;
     private final String password;
     private volatile String token = null;
     private volatile AIBot bot;
