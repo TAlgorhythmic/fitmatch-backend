@@ -20,13 +20,13 @@ Make sure to have the following programs installed before starting:
 1. Clone this repository to your local machine.
 
 ```
-git clone https://github.com/your-username/fitmatch.git
+git clone https://github.com/TAlgorhythmic/fitmatch-backend.git
 ```
 
 2. Navigate to the project directory.
 
 ```
-cd fitmatch
+cd fitmatch-backend
 ```
 
 3. Install the project dependencies.
@@ -42,6 +42,7 @@ npm install
 To start the back-end, use the following command:
     
 ```
+cd back-end
 npm start
 ```
     
@@ -50,7 +51,8 @@ npm start
 To start the front-end, use the following command:
     
 ```
+cd front
 npm run dev
 ```
     
-Once both servers are running, open your browser and go to `http://localhost:3000` to use the application.
+Once both servers are running, open your browser and go to `http://localhost:3001` to use the application.
