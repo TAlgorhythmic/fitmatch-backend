@@ -28,7 +28,6 @@ const UserProfile = () => {
     });
     const token = localStorage.getItem('authToken');
 
-    const token = localStorage.getItem('authToken');
 
     const sportsInterests = [
         'Swimming', 'Cycling', 'Powerlifting', 'Yoga', 'Running',
@@ -45,6 +44,7 @@ const UserProfile = () => {
     });
 
     const ref = useRef(null);
+
 
     const [error, setError] = useState(null);
 
@@ -109,7 +109,7 @@ const UserProfile = () => {
                     // Actualiza la URL de la imagen 
                     setUserData({ ...userData, img: imageResult.imageUrl });
                     alert('Changes commited');
-                    navigate('/');
+                
 
                 } else if (imageResult.status === NO_PERMISSION) {
                     alert('No permission to upload the image');
