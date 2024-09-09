@@ -113,15 +113,15 @@ export function sketchyOrder(array) {
 
     if (!array.length && !likelyMatch.length) return feed;
 
-    if (likelyMatch.length) feed.push(likelyMatch.pop());
+    if (likelyMatch.length) feed.push(likelyMatch.shift());
     let i = 1;
     while (array.length || likelyMatch.length) {
         if (i % 4 === 0 && likelyMatch.length) {
-            const pop = likelyMatch.pop();
+            const pop = likelyMatch.shift();
             feed.push(pop);
         }
         else {
-            const pop = array.pop();
+            const pop = array.shift();
             feed.push(pop);
         }
         i++;
